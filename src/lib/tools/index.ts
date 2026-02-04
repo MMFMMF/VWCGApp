@@ -12,10 +12,11 @@ export { toolRegistry } from './toolRegistry';
 // Re-export types for convenience
 export type { ToolDefinition, ToolProps, ToolMetadata } from '../../types/tool';
 
-// Tool imports will be added here as tools are created
-// Example:
+// Import tools to trigger auto-registration
+// Each tool file registers itself when imported
+import '../../components/tools/ExampleTool';
+
+// Future tools will be added here:
 // import '../../components/tools/AIReadinessTool';
 // import '../../components/tools/LeadershipDNATool';
-
-// For now, just export the registry
-// Tools self-register when imported
+// etc.
