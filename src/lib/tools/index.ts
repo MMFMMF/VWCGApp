@@ -16,8 +16,8 @@ export type { ToolDefinition, ToolProps, ToolMetadata } from '../../types/tool';
 // Each tool file registers itself when imported
 import '../../components/tools/ExampleTool';
 import '../../components/tools/AIReadinessTool';
+import '../../components/tools/LeadershipDNATool';
 import '../../components/tools/BusinessEQTool';
 
 // Future tools will be added here:
-// import '../../components/tools/LeadershipDNATool';
 // etc.
