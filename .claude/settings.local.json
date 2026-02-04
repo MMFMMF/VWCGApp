@@ -38,7 +38,8 @@
       "Bash(npx astro add react --yes)",
       "Bash(npx astro:*)",
       "Bash(npx tsc:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(timeout 10 npm run dev:*)"
     ]
   }
 }
