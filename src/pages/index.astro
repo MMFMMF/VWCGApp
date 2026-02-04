@@ -1,17 +1,106 @@
 ---
-
+import BaseLayout from '@layouts/BaseLayout.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout>
+  <div class="min-h-screen bg-gradient-to-b from-primary-50 to-white">
+    <!-- Hero Section -->
+    <section class="pt-20 pb-32 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto text-center">
+        <h1 class="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-gray-900 mb-6 animate-slide-in-up">
+          VWCGApp
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto animate-slide-in-up" style="animation-delay: 0.1s;">
+          Strategic Assessment Platform for SMB Owners
+        </p>
+        <p class="text-lg text-gray-500 mb-12 max-w-2xl mx-auto animate-slide-in-up" style="animation-delay: 0.2s;">
+          Comprehensive tools to evaluate and improve your business operations through strategic assessments.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-in-up" style="animation-delay: 0.3s;">
+          <a href="/app" class="btn-primary px-8 py-3 text-lg">
+            Get Started
+          </a>
+          <a href="#features" class="btn-outline px-8 py-3 text-lg">
+            Learn More
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+      <div class="max-w-7xl mx-auto">
+        <h2 class="text-4xl font-display font-bold text-center text-gray-900 mb-16">
+          Assessment Tools
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div class="card animate-in hover:shadow-md transition-shadow">
+            <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-display font-semibold text-gray-900 mb-2">
+              Strategic Assessment
+            </h3>
+            <p class="text-gray-600">
+              Evaluate your business strategy and identify areas for improvement.
+            </p>
+          </div>
+
+          <div class="card animate-in hover:shadow-md transition-shadow" style="animation-delay: 0.1s;">
+            <div class="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-display font-semibold text-gray-900 mb-2">
+              Progress Tracking
+            </h3>
+            <p class="text-gray-600">
+              Monitor your improvement over time with detailed reports.
+            </p>
+          </div>
+
+          <div class="card animate-in hover:shadow-md transition-shadow" style="animation-delay: 0.2s;">
+            <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-display font-semibold text-gray-900 mb-2">
+              Actionable Insights
+            </h3>
+            <p class="text-gray-600">
+              Get practical recommendations to enhance your business performance.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8 bg-primary-600">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-4xl font-display font-bold text-white mb-6">
+          Ready to Transform Your Business?
+        </h2>
+        <p class="text-xl text-primary-100 mb-8">
+          Start your strategic assessment today and unlock your business potential.
+        </p>
+        <a href="/app" class="inline-flex items-center justify-center px-8 py-3 text-lg font-medium bg-white text-primary-600 rounded-lg hover:bg-primary-50 transition-colors">
+          Start Assessment
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 py-12 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto text-center">
+        <p class="text-sm">
+          © {new Date().getFullYear()} VWCGApp. All rights reserved.
+        </p>
+      </div>
+    </footer>
+  </div>
+</BaseLayout>
