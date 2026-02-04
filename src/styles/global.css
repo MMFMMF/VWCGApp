@@ -1,63 +1,109 @@
 @import "tailwindcss";
 
-@layer base {
-  :root {
-    --color-text-primary: #1f2937;
-    --color-text-secondary: #6b7280;
-    --color-bg-primary: #ffffff;
-    --color-bg-secondary: #f9fafb;
-  }
-
-  * {
-    @apply border-gray-200;
-  }
-
-  html {
-    @apply antialiased;
-    scroll-behavior: smooth;
-  }
-
-  body {
-    @apply bg-white text-gray-900 font-sans;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-display font-semibold;
-  }
+/* Base styles */
+:root {
+  --color-text-primary: #1f2937;
+  --color-text-secondary: #6b7280;
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f9fafb;
 }
 
-@layer components {
-  .btn {
-    @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
-  }
-
-  .btn-primary {
-    @apply btn bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500;
-  }
-
-  .btn-secondary {
-    @apply btn bg-secondary-600 text-white hover:bg-secondary-700 focus:ring-secondary-500;
-  }
-
-  .btn-outline {
-    @apply btn border-2 border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-500;
-  }
-
-  .card {
-    @apply bg-white rounded-xl shadow-sm border border-gray-200 p-6;
-  }
-
-  .input {
-    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
-@layer utilities {
-  .animate-in {
-    animation: fadeIn 0.3s ease-in-out;
-  }
+body {
+  font-family: 'Inter var', 'Inter', system-ui, sans-serif;
+}
 
-  .text-balance {
-    text-wrap: balance;
-  }
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Lexend', 'Inter var', 'Inter', system-ui, sans-serif;
+  font-weight: 600;
+}
+
+/* Component classes */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: colors 200ms;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.btn:focus {
+  outline: 2px solid;
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background-color: #0284c7;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0369a1;
+}
+
+.btn-primary:focus {
+  outline-color: #0ea5e9;
+}
+
+.btn-secondary {
+  background-color: #9333ea;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #7e22ce;
+}
+
+.btn-secondary:focus {
+  outline-color: #a855f7;
+}
+
+.btn-outline {
+  border: 2px solid #d1d5db;
+  color: #374151;
+}
+
+.btn-outline:hover {
+  background-color: #f9fafb;
+}
+
+.btn-outline:focus {
+  outline-color: #6b7280;
+}
+
+.card {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  border: 1px solid #e5e7eb;
+  padding: 1.5rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  transition: colors 200ms;
+}
+
+.input:focus {
+  outline: 2px solid #0ea5e9;
+  border-color: transparent;
+}
+
+/* Utility classes */
+.animate-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.text-balance {
+  text-wrap: balance;
 }

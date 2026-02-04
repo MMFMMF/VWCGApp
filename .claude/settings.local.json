@@ -36,7 +36,9 @@
       "Bash(npm install:*)",
       "Bash(find:*)",
       "Bash(npx astro add react --yes)",
-      "Bash(npx astro:*)"
+      "Bash(npx astro:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run build:*)"
     ]
   }
 }

@@ -1,10 +1,13 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import { fileURLToPath } from 'node:url';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 import react from '@astrojs/react';
 
 import tailwindcss from '@tailwindcss/vite';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // https://astro.build/config
 export default defineConfig({
@@ -14,12 +17,12 @@ export default defineConfig({
     plugins: [tailwindcss()],
     resolve: {
       alias: {
-        '@': fileURLToPath(new URL('./src', import.meta.url)),
-        '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
-        '@layouts': fileURLToPath(new URL('./src/layouts', import.meta.url)),
-        '@lib': fileURLToPath(new URL('./src/lib', import.meta.url)),
-        '@stores': fileURLToPath(new URL('./src/stores', import.meta.url)),
-        '@types': fileURLToPath(new URL('./src/types', import.meta.url)),
+        '@': path.resolve(__dirname, './src'),
+        '@components': path.resolve(__dirname, './src/components'),
+        '@layouts': path.resolve(__dirname, './src/layouts'),
+        '@lib': path.resolve(__dirname, './src/lib'),
+        '@stores': path.resolve(__dirname, './src/stores'),
+        '@types': path.resolve(__dirname, './src/types'),
       },
     },
   }
