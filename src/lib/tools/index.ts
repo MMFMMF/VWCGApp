@@ -19,6 +19,9 @@ import '../../components/tools/AIReadinessTool';
 import '../../components/tools/LeadershipDNATool';
 import '../../components/tools/BusinessEQTool';
 import '../../components/tools/VisionCanvasTool';
+import '../../components/tools/SWOTAnalysisTool';
+import '../../components/tools/AdvisorReadinessTool';
+import '../../components/tools/FinancialReadinessTool';
 
 // Future tools will be added here:
 // etc.
