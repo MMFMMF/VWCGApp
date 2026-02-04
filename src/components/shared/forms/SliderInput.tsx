@@ -3,6 +3,7 @@ import { cn } from '@lib/utils';
 
 interface SliderInputProps {
   label: string;
+  description?: string;
   value: number;
   min?: number;
   max?: number;
@@ -15,6 +16,7 @@ interface SliderInputProps {
 
 export function SliderInput({
   label,
+  description,
   value,
   min = 0,
   max = 100,
@@ -27,7 +29,12 @@ export function SliderInput({
   return (
     <div className={cn('space-y-2', className)}>
       <div className="flex justify-between items-center">
-        <label className="text-sm font-medium text-gray-700">{label}</label>
+        <div className="flex-1">
+          <label className="text-sm font-medium text-gray-700">{label}</label>
+          {description && (
+            <p className="text-xs text-gray-500 mt-0.5">{description}</p>
+          )}
+        </div>
         {showValue && (
           <span className="text-sm font-semibold text-primary-600">{value}</span>
         )}
