@@ -9,9 +9,11 @@ export type {
   Insight
 } from './types';
 
-// Rules will be imported here as they are created
+// Import rules to auto-register them
 // Each rule file auto-registers itself when imported
-// Example:
+import './rules/test-rule';
+
+// Production rules will be imported here as they are created:
 // import './rules/executionCapabilityGap';
 // import './rules/unmitigatedThreat';
 // import './rules/burnoutRisk';
