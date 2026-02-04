@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(if [ -f .planning/PROJECT.md ])",
+      "Bash(then echo \"ERROR: Project already initialized. Use /gsd:progress\")",
+      "Bash(exit 1)",
+      "Bash(else echo \"No existing project\")",
+      "Bash(fi)",
+      "Bash(if [ -d .git ])",
+      "Bash([ -f .git ])",
+      "Bash(then echo \"Git repo exists in current directory\")",
+      "Bash(else git init)",
+      "Bash(if [ -f package.json ])",
+      "Bash([ -f requirements.txt ])",
+      "Bash([ -f Cargo.toml ])",
+      "Bash([ -f go.mod ])",
+      "Bash([ -f Package.swift ])",
+      "Bash(then echo \"HAS_PACKAGE=yes\")",
+      "Bash(else echo \"HAS_PACKAGE=no\")",
+      "Bash(if [ -d .planning/codebase ])",
+      "Bash(then echo \"HAS_CODEBASE_MAP=yes\")",
+      "Bash(else echo \"HAS_CODEBASE_MAP=no\")",
+      "WebFetch(domain:vwcgapp.web.app)",
+      "Bash(mkdir:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git config:*)",
+      "WebSearch",
+      "SlashCommand(/gsd:plan-phase:*)",
+      "Bash(cat:*)",
+      "Bash(ls:*)",
+      "SlashCommand(/gsd:execute-phase:*)",
+      "Bash(done)",
+      "Bash(test:*)",
+      "Bash(npm create astro:*)",
+      "Bash(npm install:*)",
+      "Bash(find:*)",
+      "Bash(npx astro add react --yes)",
+      "Bash(npx astro:*)"
+    ]
+  }
+}
