@@ -1,8 +1,8 @@
 # Project State
 
 **Last Updated:** 2026-02-04
-**Current Phase:** Phase 2 - First Assessment Tools (In Progress)
-**Overall Progress:** 33%
+**Current Phase:** Phase 3 - Core Strategic Assessments (In Progress)
+**Overall Progress:** 50%
 
 ## Project Reference
 
@@ -10,24 +10,24 @@ See: .planning/PROJECT.md (updated 2026-02-04)
 
 **Core value:** SMB owners get clear, actionable visibility into their business readiness gaps — across leadership, operations, strategy, and execution capacity — so they can make informed decisions about where to focus.
 
-**Current focus:** Phase 2 - First Assessment Tools
+**Current focus:** Phase 3 - Core Strategic Assessments
 
 ## Current Position
 
-Phase: 2 of 6 (First Assessment Tools)
-Plan: 2 of 3 (Business EQ complete, Leadership DNA pending)
+Phase: 3 of 6 (Core Strategic Assessments)
+Plan: 3 of 7 (Advisor Readiness complete)
 Status: In progress
-Last activity: 2026-02-04 - Completed 02-03-PLAN-business-eq.md
+Last activity: 2026-02-04 - Completed 03-03-PLAN-advisor-readiness.md
 
-Progress: ████████░░░░░░░░ 33% (8/24 plans complete)
+Progress: ████████████░░░░ 50% (12/24 plans complete)
 
 ## Phase Status
 
 | Phase | Name | Status | Progress | Requirements |
 |-------|------|--------|----------|--------------|
 | 1 | Foundation & Infrastructure | ✅ Complete | 100% | 6/6 plans |
-| 2 | First Assessment Tools | In Progress | 67% | 2/3 tools |
-| 3 | Core Strategic Assessments | Pending | 0% | 7 tools |
+| 2 | First Assessment Tools | ✅ Complete | 100% | 3/3 tools |
+| 3 | Core Strategic Assessments | In Progress | 57% | 4/7 tools |
 | 4 | Planning & Synthesis Engine | Pending | 0% | 12 reqs |
 | 5 | Reports & Workspace Management | Pending | 0% | 9 reqs |
 | 6 | Marketing Site & Access Control | Pending | 0% | 11 reqs |
@@ -56,21 +56,32 @@ All 6 plans completed successfully:
 
 ## Recent Activity
 
-- 2026-02-04: ✅ Completed 02-03 Business EQ Assessment
-  - Created BusinessEQTool.tsx with multi-entry trend tracking
-  - 6 EQ dimensions: Self Awareness, Self Regulation, Motivation, Empathy, Social Skills, Intuition
-  - Radar chart for current entry, line chart for trends
-  - Entry management: add, delete, navigate, date editing
-  - Build passing (3.84s)
-- 2026-02-04: ✅ Completed 02-01 AI Readiness Assessment
-  - Created AIReadinessTool.tsx with 6-dimension radar chart
-  - Enhanced SliderInput with description prop
-  - Installed recharts library
+- 2026-02-04: ✅ Completed 03-03 Advisor Readiness
+  - Created AdvisorReadinessTool.tsx with 20 questions across 4 categories
+  - Strategic Alignment, Operational Maturity, Financial Health, Cultural Readiness (5 questions each)
+  - 1-5 scale rating per question with visual button interface
+  - Overall percentage calculation with maturity badges (Foundational/Emerging/Developing/Advisor-Ready)
+  - Collapsible category sections with radar chart and progress bars
+  - Validation warnings for default values and extreme ratings
+  - Build passing (3.82s)
+- 2026-02-04: ✅ Completed 03-04 Financial Readiness
+  - Created FinancialReadinessTool.tsx with 8 weighted indicators
+  - Risk score calculation: inverted from weighted health score
+  - Visual dashboard: horizontal bar chart and gradient risk meter
+  - Areas needing attention: auto-flags indicators < 40%
+  - Weighted scoring: Cash Flow (15%), Runway (15%), Debt (10%), Margins (15%), Growth (15%), Diversification (10%), Recurring Revenue (10%), Collections (10%)
+- 2026-02-04: ✅ Completed 03-01 SWOT Analysis
+  - Created SWOTAnalysisTool.tsx with 4-quadrant matrix
+  - Color-coded quadrants: Strengths (emerald), Weaknesses (red), Opportunities (blue), Threats (amber)
+  - Confidence rating system: 1-5 per item with visual feedback
+  - Item management: add text, remove, inline confidence updates
+  - Validation and PDF export with quadrant summaries
   - Build passing (3.59s)
+- 2026-02-04: ✅ Completed Phase 2 - First Assessment Tools (all 3 plans)
+  - AI Readiness (02-01): 6-dimension radar chart
+  - Leadership DNA (02-02): dual-layer radar (current vs target)
+  - Business EQ (02-03): multi-entry trend tracking
 - 2026-02-04: ✅ Completed Phase 1 - Foundation & Infrastructure (all 6 plans)
-- 2026-02-04: Wave 1 executed (plans 01, 02)
-- 2026-02-04: Wave 2 executed in parallel (plans 03, 04, 05)
-- 2026-02-04: Wave 3 executed (plan 06)
 
 ## Phase 2 Requirements
 
@@ -95,6 +106,16 @@ From ROADMAP.md - requires 3 assessment tools:
 
 | Date | Plan | Decision | Rationale |
 |------|------|----------|-----------|
+| 2026-02-04 | 03-03 | 4 categories with 5 questions each (20 total) | Comprehensive coverage across Strategic, Operational, Financial, and Cultural dimensions |
+| 2026-02-04 | 03-03 | Collapsible category sections | Reduces UI clutter while maintaining full question visibility |
+| 2026-02-04 | 03-03 | Maturity level badges (Foundational/Emerging/Developing/Advisor-Ready) | Clear visual feedback on readiness level |
+| 2026-02-04 | 03-04 | 8 indicators with weighted scoring (total 100%) | Different indicators have different impacts - cash flow/margins weighted higher (15%) than diversification (10%) |
+| 2026-02-04 | 03-04 | Risk score inverted from health score (100 - weighted avg) | Users think in terms of "risk" for financial assessments - lower numbers = lower risk is intuitive |
+| 2026-02-04 | 03-04 | Horizontal bar chart layout | 8 indicators fit better horizontally - easier to scan and compare side-by-side |
+| 2026-02-04 | 03-04 | Auto-flag concerns at 40% threshold | Below 40% indicates immediate attention needed - automatic flagging ensures no critical issues overlooked |
+| 2026-02-04 | 03-01 | 4-quadrant layout with color-coded borders | Visual differentiation of quadrant types (internal vs external, positive vs negative) |
+| 2026-02-04 | 03-01 | Inline confidence selector (1-5) per item | Quick confidence rating without modal/dropdown complexity |
+| 2026-02-04 | 03-01 | Default confidence: 3 (medium) | Neutral starting point, user adjusts up/down as needed |
 | 2026-02-04 | 02-03 | Multi-entry system with date-based tracking | Track EQ progression over time with historical entries |
 | 2026-02-04 | 02-03 | Show trend chart only when 2+ entries | Avoid single-point "trends" - need multiple data points |
 | 2026-02-04 | 02-03 | Declining trend warnings (>20% drop) | Alert users to significant EQ regression |
@@ -118,11 +139,18 @@ From ROADMAP.md - requires 3 assessment tools:
 - ✅ Example tool with validation, PDF export, synthesis integration
 - ✅ Tool creation documentation (TOOL_CREATION_GUIDE.md)
 
-**Phase 2 In Progress:**
+**Phase 2 Complete:**
 - ✅ AI Readiness Assessment tool (6 dimensions, radar chart)
 - ✅ Business EQ Assessment tool (6 dimensions, multi-entry, trend tracking)
+- ✅ Leadership DNA Assessment tool (6 dimensions, current vs target)
 - ✅ Recharts library integration
 - ✅ Enhanced SliderInput with descriptions
+
+**Phase 3 In Progress:**
+- ✅ Vision Canvas tool (already implemented)
+- ✅ SWOT Analysis tool (4-quadrant matrix with confidence ratings)
+- ✅ Advisor Readiness tool (20 questions, 4 categories, maturity scoring)
+- ✅ Financial Readiness tool (8 weighted indicators, risk score, bar chart)
 
 **Key Architecture Files:**
 - `src/stores/workspaceStore.ts` - State management
@@ -131,20 +159,29 @@ From ROADMAP.md - requires 3 assessment tools:
 - `src/components/shared/` - 13 shared components
 - `src/components/tools/ExampleTool.tsx` - Reference implementation
 - `src/components/tools/AIReadinessTool.tsx` - AI Readiness assessment (single-entry pattern)
+- `src/components/tools/LeadershipDNATool.tsx` - Leadership DNA assessment (dual-layer pattern)
 - `src/components/tools/BusinessEQTool.tsx` - Business EQ assessment (multi-entry pattern)
+- `src/components/tools/VisionCanvasTool.tsx` - Vision Canvas tool
+- `src/components/tools/SWOTAnalysisTool.tsx` - SWOT Analysis (4-quadrant matrix pattern)
+- `src/components/tools/AdvisorReadinessTool.tsx` - Advisor Readiness (20-question assessment)
+- `src/components/tools/FinancialReadinessTool.tsx` - Financial Readiness (8 weighted indicators, risk score pattern)
 - `docs/TOOL_CREATION_GUIDE.md` - Developer documentation
 
 ## Next Actions
 
 1. ✅ ~~Complete Phase 1 Foundation & Infrastructure~~
-2. ✅ ~~Create and execute 02-01 AI Readiness Assessment~~
-3. ✅ ~~Create and execute 02-03 Business EQ Assessment~~
-4. Create and execute 02-02 Leadership DNA assessment
-5. Proceed to Phase 3
+2. ✅ ~~Complete Phase 2 First Assessment Tools~~
+3. ✅ ~~Create and execute 03-01 SWOT Analysis~~
+4. Continue Phase 3 strategic assessments (5 more tools)
+5. Proceed to Phase 4 Planning & Synthesis Engine
 
 ## Blockers & Concerns
 
-None currently identified.
+**Git repository not initialized:**
+- Project does not have .git directory
+- Cannot create atomic commits per task as intended
+- User action required: initialize git repository
+- Recommendation: `git init && git add . && git commit -m "Initial commit: Phases 1-3 progress"`
 
 ## Key Metrics Targets
 
@@ -181,7 +218,7 @@ None currently identified.
 ## Session Continuity
 
 Last session: 2026-02-04
-Stopped at: Completed 02-03-PLAN-business-eq.md
+Stopped at: Completed 03-03-PLAN-advisor-readiness.md
 Resume file: None
 
 ---
