@@ -53,22 +53,16 @@ export function useWorkspace(): UseWorkspaceReturn {
   /**
    * Get data for a specific tool
    */
-  const getToolData = useCallback(
-    (toolId: ToolId): ToolData | undefined => {
-      return workspace.tools[toolId];
-    },
-    [workspace.tools]
-  );
+  const getToolData = (toolId: ToolId): ToolData | undefined => {
+    return workspace.tools[toolId];
+  };
 
   /**
    * Check if a tool is completed
    */
-  const isToolCompleted = useCallback(
-    (toolId: ToolId): boolean => {
-      return workspace.tools[toolId]?.completed ?? false;
-    },
-    [workspace.tools]
-  );
+  const isToolCompleted = (toolId: ToolId): boolean => {
+    return workspace.tools[toolId]?.completed ?? false;
+  };
 
   /**
    * Count of completed tools
@@ -80,39 +74,30 @@ export function useWorkspace(): UseWorkspaceReturn {
   /**
    * Handle workspace export
    */
-  const handleExport = useCallback(
-    (filename?: string) => {
-      try {
-        setLoading(true, 'Exporting workspace...');
+  const handleExport = (filename?: string) => {
+    try {
+      setLoading(true, 'Exporting workspace...');
 
-        const state = {
-          meta: workspace.meta,
-          tools: workspace.tools,
-          insights: workspace.insights,
-          synthesis: workspace.synthesis,
-        };
+      const state = {
+        meta: workspace.meta,
+        tools: workspace.tools,
+        insights: workspace.insights,
+        synthesis: workspace.synthesis,
+      };
 
-        exportWorkspace(state, filename);
-      } catch (error) {
-        console.error('Export failed:', error);
-        throw error;
-      } finally {
-        setLoading(false);
-      }
-    },
-    [
-      workspace.meta,
-      workspace.tools,
-      workspace.insights,
-      workspace.synthesis,
-      setLoading,
-    ]
-  );
+      exportWorkspace(state, filename);
+    } catch (error) {
+      console.error('Export failed:', error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
 
   /**
    * Export workspace as JSON string
    */
-  const exportAsJSON = useCallback((): string => {
+  const exportAsJSON = (): string => {
     const state = {
       meta: workspace.meta,
       tools: workspace.tools,
@@ -121,12 +106,12 @@ export function useWorkspace(): UseWorkspaceReturn {
     };
 
     return exportWorkspaceAsJSON(state);
-  }, [workspace.meta, workspace.tools, workspace.insights, workspace.synthesis]);
+  };
 
   /**
    * Generate human-readable summary
    */
-  const generateSummary = useCallback((): string => {
+  const generateSummary = (): string => {
     const state = {
       meta: workspace.meta,
       tools: workspace.tools,
@@ -135,51 +120,48 @@ export function useWorkspace(): UseWorkspaceReturn {
     };
 
     return generateWorkspaceSummary(state);
-  }, [workspace.meta, workspace.tools, workspace.insights, workspace.synthesis]);
+  };
 
   /**
    * Handle workspace import
    */
-  const handleImport = useCallback(
-    async (file: File): Promise<ImportResult> => {
-      try {
-        setLoading(true, 'Importing workspace...');
+  const handleImport = async (file: File): Promise<ImportResult> => {
+    try {
+      setLoading(true, 'Importing workspace...');
 
-        const result = await importWorkspaceFromFile(file);
+      const result = await importWorkspaceFromFile(file);
 
-        if (result.success && result.workspace) {
-          // Load the imported workspace
-          workspace.loadWorkspace(result.workspace);
-        }
-
-        return result;
-      } catch (error) {
-        console.error('Import failed:', error);
-        return {
-          success: false,
-          errors: [
-            {
-              field: 'import',
-              message:
-                error instanceof Error
-                  ? error.message
-                  : 'Failed to import workspace',
-            },
-          ],
-        };
-      } finally {
-        setLoading(false);
+      if (result.success && result.workspace) {
+        // Load the imported workspace
+        workspace.loadWorkspace(result.workspace);
       }
-    },
-    [workspace, setLoading]
-  );
+
+      return result;
+    } catch (error) {
+      console.error('Import failed:', error);
+      return {
+        success: false,
+        errors: [
+          {
+            field: 'import',
+            message:
+              error instanceof Error
+                ? error.message
+                : 'Failed to import workspace',
+          },
+        ],
+      };
+    } finally {
+      setLoading(false);
+    }
+  };
 
   /**
    * Handle workspace clear
    */
-  const handleClear = useCallback(() => {
+  const handleClear = () => {
     workspace.clearWorkspace();
-  }, [workspace]);
+  };
 
   return {
     workspace,
