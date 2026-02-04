@@ -136,60 +136,60 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| MKT-01 | TBD | Pending |
-| MKT-02 | TBD | Pending |
-| MKT-03 | TBD | Pending |
-| MKT-04 | TBD | Pending |
-| ACC-01 | TBD | Pending |
-| ACC-02 | TBD | Pending |
-| ACC-03 | TBD | Pending |
-| ACC-04 | TBD | Pending |
-| AST-01 | TBD | Pending |
-| AST-02 | TBD | Pending |
-| AST-03 | TBD | Pending |
-| AST-04 | TBD | Pending |
-| AST-05 | TBD | Pending |
-| AST-06 | TBD | Pending |
-| AST-07 | TBD | Pending |
-| SOP-01 | TBD | Pending |
-| SOP-02 | TBD | Pending |
-| SOP-03 | TBD | Pending |
-| PLN-01 | TBD | Pending |
-| PLN-02 | TBD | Pending |
-| PLN-03 | TBD | Pending |
-| PLN-04 | TBD | Pending |
-| SYN-01 | TBD | Pending |
-| SYN-02 | TBD | Pending |
-| SYN-03 | TBD | Pending |
-| SYN-04 | TBD | Pending |
-| SYN-05 | TBD | Pending |
-| SYN-06 | TBD | Pending |
-| SYN-07 | TBD | Pending |
-| SYN-08 | TBD | Pending |
-| SYN-09 | TBD | Pending |
-| RPT-01 | TBD | Pending |
-| RPT-02 | TBD | Pending |
-| RPT-03 | TBD | Pending |
-| RPT-04 | TBD | Pending |
-| WRK-01 | TBD | Pending |
-| WRK-02 | TBD | Pending |
-| WRK-03 | TBD | Pending |
-| WRK-04 | TBD | Pending |
-| WRK-05 | TBD | Pending |
-| CTT-01 | TBD | Pending |
-| CTT-02 | TBD | Pending |
-| CTT-03 | TBD | Pending |
-| ARC-01 | TBD | Pending |
-| ARC-02 | TBD | Pending |
-| ARC-03 | TBD | Pending |
-| ARC-04 | TBD | Pending |
-| ARC-05 | TBD | Pending |
+| MKT-01 | Phase 6 | Pending |
+| MKT-02 | Phase 6 | Pending |
+| MKT-03 | Phase 6 | Pending |
+| MKT-04 | Phase 6 | Pending |
+| ACC-01 | Phase 6 | Pending |
+| ACC-02 | Phase 6 | Pending |
+| ACC-03 | Phase 6 | Pending |
+| ACC-04 | Phase 6 | Pending |
+| AST-01 | Phase 2 | Pending |
+| AST-02 | Phase 2 | Pending |
+| AST-03 | Phase 2 | Pending |
+| AST-04 | Phase 3 | Pending |
+| AST-05 | Phase 3 | Pending |
+| AST-06 | Phase 3 | Pending |
+| AST-07 | Phase 3 | Pending |
+| SOP-01 | Phase 3 | Pending |
+| SOP-02 | Phase 3 | Pending |
+| SOP-03 | Phase 3 | Pending |
+| PLN-01 | Phase 4 | Pending |
+| PLN-02 | Phase 4 | Pending |
+| PLN-03 | Phase 4 | Pending |
+| PLN-04 | Phase 4 | Pending |
+| SYN-01 | Phase 4 | Pending |
+| SYN-02 | Phase 4 | Pending |
+| SYN-03 | Phase 4 | Pending |
+| SYN-04 | Phase 4 | Pending |
+| SYN-05 | Phase 4 | Pending |
+| SYN-06 | Phase 4 | Pending |
+| SYN-07 | Phase 4 | Pending |
+| SYN-08 | Phase 4 | Pending |
+| SYN-09 | Phase 4 | Pending |
+| RPT-01 | Phase 5 | Pending |
+| RPT-02 | Phase 5 | Pending |
+| RPT-03 | Phase 5 | Pending |
+| RPT-04 | Phase 5 | Pending |
+| WRK-01 | Phase 5 | Pending |
+| WRK-02 | Phase 5 | Pending |
+| WRK-03 | Phase 5 | Pending |
+| WRK-04 | Phase 5 | Pending |
+| WRK-05 | Phase 5 | Pending |
+| CTT-01 | Phase 6 | Pending |
+| CTT-02 | Phase 6 | Pending |
+| CTT-03 | Phase 6 | Pending |
+| ARC-01 | Phase 1 | Pending |
+| ARC-02 | Phase 1 | Pending |
+| ARC-03 | Phase 1 | Pending |
+| ARC-04 | Phase 1 | Pending |
+| ARC-05 | Phase 1 | Pending |
 
 **Coverage:**
 - v1 requirements: 44 total
-- Mapped to phases: 0
-- Unmapped: 44
+- Mapped to phases: 44
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-02-04*
-*Last updated: 2026-02-04 after initial definition*
+*Last updated: 2026-02-04 after roadmap creation (all 44 requirements mapped to phases)*
