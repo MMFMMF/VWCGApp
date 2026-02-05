@@ -22,6 +22,8 @@ import '../../components/tools/VisionCanvasTool';
 import '../../components/tools/SWOTAnalysisTool';
 import '../../components/tools/AdvisorReadinessTool';
 import '../../components/tools/FinancialReadinessTool';
+import '../../components/tools/SOPMaturityTool';
+import '../../components/tools/RoadmapTool';
 
 // Future tools will be added here:
 // etc.
