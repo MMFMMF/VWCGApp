@@ -1,6 +1,7 @@
 ---
 import AppLayout from '@layouts/AppLayout.astro';
 import AssessmentApp from '@components/AssessmentApp';
+import InviteGate from '@components/auth/InviteGate';
 
 // For static build, we only need the /app route
 export function getStaticPaths() {
@@ -11,5 +12,7 @@ export function getStaticPaths() {
 ---
 
 <AppLayout title="Assessment Tools - VWCGApp">
-  <AssessmentApp client:only="react" />
+  <InviteGate client:load>
+    <AssessmentApp client:only="react" />
+  </InviteGate>
 </AppLayout>

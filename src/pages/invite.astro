@@ -1,0 +1,19 @@
+---
+import MarketingLayout from '../layouts/MarketingLayout.astro';
+import InviteGate from '../components/auth/InviteGate';
+---
+
+<MarketingLayout
+  title="Enter Invite Code"
+  description="Enter your invite code to access VWCGApp assessment tools."
+>
+  <InviteGate client:load fallbackUrl="/invite">
+    <script>
+      // If authenticated, redirect to app
+      window.location.href = '/app';
+    </script>
+    <div class="min-h-screen flex items-center justify-center">
+      <p>Redirecting to app...</p>
+    </div>
+  </InviteGate>
+</MarketingLayout>
