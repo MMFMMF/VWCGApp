@@ -37,21 +37,19 @@ const siteUrl = 'https://vwcgapp.com'; // Update for production
   <meta name="twitter:image" content={`${siteUrl}${ogImage}`} />
 
   <!-- Structured Data (MKT-03) -->
-  <script type="application/ld+json">
-    {JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "VWCGApp",
-      "applicationCategory": "BusinessApplication",
-      "description": description,
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "operatingSystem": "Web Browser"
-    })}
-  </script>
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "VWCGApp",
+    "applicationCategory": "BusinessApplication",
+    "description": description,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "operatingSystem": "Web Browser"
+  })} />
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
