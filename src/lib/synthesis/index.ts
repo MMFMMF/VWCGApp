@@ -14,7 +14,5 @@ export type {
 import './rules/test-rule';
 import './rules/exampleRule';
 
-// Production rules will be imported here as they are created:
-// import './rules/executionCapabilityGap';
-// import './rules/unmitigatedThreat';
-// import './rules/burnoutRisk';
+// Production synthesis rules (SYN-01 to SYN-07)
+import './rules';
