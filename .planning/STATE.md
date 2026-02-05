@@ -1,8 +1,8 @@
 # Project State
 
-**Last Updated:** 2026-02-04
-**Current Phase:** Phase 3 - Core Strategic Assessments (In Progress)
-**Overall Progress:** 50%
+**Last Updated:** 2026-02-05
+**Current Phase:** Phase 4 - Planning & Synthesis Engine (In Progress)
+**Overall Progress:** 63%
 
 ## Project Reference
 
@@ -10,16 +10,16 @@ See: .planning/PROJECT.md (updated 2026-02-04)
 
 **Core value:** SMB owners get clear, actionable visibility into their business readiness gaps — across leadership, operations, strategy, and execution capacity — so they can make informed decisions about where to focus.
 
-**Current focus:** Phase 3 - Core Strategic Assessments
+**Current focus:** Phase 4 - Planning & Synthesis Engine
 
 ## Current Position
 
-Phase: 3 of 6 (Core Strategic Assessments)
-Plan: 3 of 7 (Advisor Readiness complete)
-Status: In progress
-Last activity: 2026-02-04 - Completed 03-03-PLAN-advisor-readiness.md
+Phase: 4 of 6 (Planning & Synthesis Engine)
+Plan: 01 of 3 (90-Day Roadmap)
+Status: Plan 01 complete
+Last activity: 2026-02-05 - Completed 04-01-PLAN-90day-roadmap.md
 
-Progress: ████████████░░░░ 50% (12/24 plans complete)
+Progress: ███████████████░ 63% (15/24 plans complete)
 
 ## Phase Status
 
@@ -27,8 +27,8 @@ Progress: ████████████░░░░ 50% (12/24 plans comp
 |-------|------|--------|----------|--------------|
 | 1 | Foundation & Infrastructure | ✅ Complete | 100% | 6/6 plans |
 | 2 | First Assessment Tools | ✅ Complete | 100% | 3/3 tools |
-| 3 | Core Strategic Assessments | In Progress | 57% | 4/7 tools |
-| 4 | Planning & Synthesis Engine | Pending | 0% | 12 reqs |
+| 3 | Core Strategic Assessments | ✅ Complete | 100% | 7/7 reqs |
+| 4 | Planning & Synthesis Engine | In Progress | 33% | 4/12 reqs |
 | 5 | Reports & Workspace Management | Pending | 0% | 9 reqs |
 | 6 | Marketing Site & Access Control | Pending | 0% | 11 reqs |
 
@@ -45,17 +45,50 @@ All 6 plans completed successfully:
 **Total Phase 1 commits:** 33
 **Build status:** ✅ Passing (2.29s build time)
 
-## Phase 2 Progress
+## Phase 2 Completion Summary
 
-**Completed:**
-- ✅ 02-01-PLAN-ai-readiness: AI Readiness Assessment tool with radar chart (4 commits, 3min)
-- ✅ 02-03-PLAN-business-eq: Business EQ Assessment tool with multi-entry trend tracking (1 commit, 2min)
+All 3 plans completed successfully:
+- ✅ 02-01-PLAN-ai-readiness: AI Readiness Assessment tool with radar chart
+- ✅ 02-02-PLAN-leadership-dna: Leadership DNA Assessment tool with dual-layer radar
+- ✅ 02-03-PLAN-business-eq: Business EQ Assessment tool with multi-entry trend tracking
 
-**In Progress:**
-- 02-02-PLAN-leadership-dna: Leadership DNA assessment (pending)
+## Phase 3 Completion Summary
+
+All 7 requirements completed across 5 plans:
+- ✅ 03-01-PLAN-swot-analysis: SWOT Analysis (AST-04) - 4-quadrant matrix with confidence ratings
+- ✅ 03-02-PLAN-vision-canvas: Vision Canvas (AST-05) - North Star, pillars, values
+- ✅ 03-03-PLAN-advisor-readiness: Advisor Readiness (AST-06) - 20 questions, 4 categories
+- ✅ 03-04-PLAN-financial-readiness: Financial Readiness (AST-07) - 8 weighted indicators, risk score
+- ✅ 03-05-PLAN-sop-maturity: SOP Maturity Suite (SOP-01, SOP-02, SOP-03) - 14 process areas, gap analysis, templates
+
+**Build status:** ✅ Passing (3.91s build time)
 
 ## Recent Activity
 
+- 2026-02-05: ✅ Completed 04-01 90-Day Roadmap (PLN-01 to PLN-04)
+  - Created RoadmapTool.tsx with 12-week timeline across 3 phases (Foundation 1-4, Growth 5-8, Scale 9-12)
+  - Task management: add, edit, remove, status tracking (planned, in-progress, completed)
+  - Dependencies tracking between tasks via IDs
+  - Timeline view with phase-based color coding (Foundation: indigo, Growth: green, Scale: amber)
+  - List view grouped by phase with status dropdowns
+  - Progress statistics and visualization (percentage complete, status breakdown)
+  - Auto-registration at position 9 in planning category
+  - Build passing (3.73s)
+- 2026-02-04: ✅ Completed 03-05 SOP Maturity
+  - Created SOPMaturityTool.tsx with 14 process areas across 4 categories (Operations, Customer, Finance, Quality)
+  - 0-5 maturity scale (Non-existent to Automated) with level descriptions
+  - 1-5 importance rating for business criticality
+  - Gap score calculation: importance × (5 - maturity) for ranking critical needs
+  - Top 3 critical SOPs automatically identified and displayed with template suggestions
+  - Template recommendations for 9 common SOP types (Employee Onboarding, Sales Process, etc.)
+  - Category breakdown with filtering capability
+  - Build passing (3.80s)
+- 2026-02-04: ✅ Completed 03-04 Financial Readiness
+  - Created FinancialReadinessTool.tsx with 8 weighted indicators
+  - Risk score calculation: inverted from weighted health score
+  - Visual dashboard: horizontal bar chart and gradient risk meter
+  - Areas needing attention: auto-flags indicators < 40%
+  - Weighted scoring: Cash Flow (15%), Runway (15%), Debt (10%), Margins (15%), Growth (15%), Diversification (10%), Recurring Revenue (10%), Collections (10%)
 - 2026-02-04: ✅ Completed 03-03 Advisor Readiness
   - Created AdvisorReadinessTool.tsx with 20 questions across 4 categories
   - Strategic Alignment, Operational Maturity, Financial Health, Cultural Readiness (5 questions each)
@@ -64,12 +97,6 @@ All 6 plans completed successfully:
   - Collapsible category sections with radar chart and progress bars
   - Validation warnings for default values and extreme ratings
   - Build passing (3.82s)
-- 2026-02-04: ✅ Completed 03-04 Financial Readiness
-  - Created FinancialReadinessTool.tsx with 8 weighted indicators
-  - Risk score calculation: inverted from weighted health score
-  - Visual dashboard: horizontal bar chart and gradient risk meter
-  - Areas needing attention: auto-flags indicators < 40%
-  - Weighted scoring: Cash Flow (15%), Runway (15%), Debt (10%), Margins (15%), Growth (15%), Diversification (10%), Recurring Revenue (10%), Collections (10%)
 - 2026-02-04: ✅ Completed 03-01 SWOT Analysis
   - Created SWOTAnalysisTool.tsx with 4-quadrant matrix
   - Color-coded quadrants: Strengths (emerald), Weaknesses (red), Opportunities (blue), Threats (amber)
@@ -83,29 +110,34 @@ All 6 plans completed successfully:
   - Business EQ (02-03): multi-entry trend tracking
 - 2026-02-04: ✅ Completed Phase 1 - Foundation & Infrastructure (all 6 plans)
 
-## Phase 2 Requirements
+## Phase 4 Requirements
 
-From ROADMAP.md - requires 3 assessment tools:
+From ROADMAP.md - requires 12 requirements:
 
-**AST-01: AI Readiness Assessment** ✅ Complete
-- 6 dimensions: Strategy, Data, Infrastructure, Talent, Governance, Culture
-- 0-100% sliders per dimension
-- Radar chart visualization
+**Planning Tools (PLN-01 to PLN-04):**
+- PLN-01: 90-Day Roadmap - 12-week timeline across 3 phases
+- PLN-02: Task creation with title, owner, week, status, dependencies
+- PLN-03: Status tracking (planned, in-progress, completed)
+- PLN-04: Timeline visualization with phase-based coloring
 
-**AST-02: Leadership DNA** (Next)
-- 6 dimensions: Vision, Execution, Empowerment, Decisiveness, Adaptability, Integrity
-- Current vs Target values (0-10 scale)
-- Dual-layer radar chart (current + target)
-
-**AST-03: Business Emotional Intelligence** ✅ Complete
-- 6 dimensions: Self Awareness, Self Regulation, Motivation, Empathy, Social Skills, Intuition
-- Multi-entry support (track changes over time)
-- Trend tracking visualization with line chart
+**Synthesis Engine (SYN-01 to SYN-09):**
+- SYN-01: E1 — Execution Capability Gap
+- SYN-02: E2 — Unmitigated Threat
+- SYN-03: E3 — Burnout Risk
+- SYN-04: E4 — Strength Leverage
+- SYN-05: E5 — SOP Metric Missing
+- SYN-06: E10 — Opportunity-Capability Match
+- SYN-07: E11 — Strength Multiplication
+- SYN-08: Automatic synthesis on every state update
+- SYN-09: Insight display with severity badges, recommendations, related tools
 
 ## Decisions Log
 
 | Date | Plan | Decision | Rationale |
 |------|------|----------|-----------|
+| 2026-02-05 | 04-01 | Three 4-week phases (Foundation, Growth, Scale) | Clear structure for 90-day planning aligned with typical quarterly cycles |
+| 2026-02-05 | 04-01 | Phase-specific colors (indigo, green, amber) | Visual distinction helps with planning clarity and phase identification |
+| 2026-02-05 | 04-01 | Task dependencies via IDs (non-blocking) | Track dependencies for visibility but don't enforce blocking for flexible planning |
 | 2026-02-04 | 03-03 | 4 categories with 5 questions each (20 total) | Comprehensive coverage across Strategic, Operational, Financial, and Cultural dimensions |
 | 2026-02-04 | 03-03 | Collapsible category sections | Reduces UI clutter while maintaining full question visibility |
 | 2026-02-04 | 03-03 | Maturity level badges (Foundational/Emerging/Developing/Advisor-Ready) | Clear visual feedback on readiness level |
@@ -113,6 +145,9 @@ From ROADMAP.md - requires 3 assessment tools:
 | 2026-02-04 | 03-04 | Risk score inverted from health score (100 - weighted avg) | Users think in terms of "risk" for financial assessments - lower numbers = lower risk is intuitive |
 | 2026-02-04 | 03-04 | Horizontal bar chart layout | 8 indicators fit better horizontally - easier to scan and compare side-by-side |
 | 2026-02-04 | 03-04 | Auto-flag concerns at 40% threshold | Below 40% indicates immediate attention needed - automatic flagging ensures no critical issues overlooked |
+| 2026-02-04 | 03-05 | 14 SOP areas across 4 categories | Comprehensive coverage of core business processes (Operations, Customer, Finance, Quality) aligned with SMB organizational structure |
+| 2026-02-04 | 03-05 | Gap score = importance × (5 - maturity) | Prioritizes both high-importance areas AND large maturity gaps for actionable recommendations |
+| 2026-02-04 | 03-05 | Template suggestions for identified gaps | Reduces SOP creation friction - users see concrete next steps (which templates to use) |
 | 2026-02-04 | 03-01 | 4-quadrant layout with color-coded borders | Visual differentiation of quadrant types (internal vs external, positive vs negative) |
 | 2026-02-04 | 03-01 | Inline confidence selector (1-5) per item | Quick confidence rating without modal/dropdown complexity |
 | 2026-02-04 | 03-01 | Default confidence: 3 (medium) | Neutral starting point, user adjusts up/down as needed |
@@ -146,11 +181,15 @@ From ROADMAP.md - requires 3 assessment tools:
 - ✅ Recharts library integration
 - ✅ Enhanced SliderInput with descriptions
 
-**Phase 3 In Progress:**
-- ✅ Vision Canvas tool (already implemented)
+**Phase 3 Complete:**
 - ✅ SWOT Analysis tool (4-quadrant matrix with confidence ratings)
+- ✅ Vision Canvas tool (North Star, pillars, values)
 - ✅ Advisor Readiness tool (20 questions, 4 categories, maturity scoring)
 - ✅ Financial Readiness tool (8 weighted indicators, risk score, bar chart)
+- ✅ SOP Maturity tool (14 process areas, gap analysis, template suggestions)
+
+**Phase 4 In Progress:**
+- ✅ 90-Day Roadmap tool (12-week timeline, 3 phases, task dependencies, dual views)
 
 **Key Architecture Files:**
 - `src/stores/workspaceStore.ts` - State management
@@ -165,15 +204,20 @@ From ROADMAP.md - requires 3 assessment tools:
 - `src/components/tools/SWOTAnalysisTool.tsx` - SWOT Analysis (4-quadrant matrix pattern)
 - `src/components/tools/AdvisorReadinessTool.tsx` - Advisor Readiness (20-question assessment)
 - `src/components/tools/FinancialReadinessTool.tsx` - Financial Readiness (8 weighted indicators, risk score pattern)
+- `src/components/tools/SOPMaturityTool.tsx` - SOP Maturity (14 process areas, gap analysis, template suggestions)
+- `src/components/tools/RoadmapTool.tsx` - 90-Day Roadmap (12-week timeline, phase-based planning, task dependencies)
 - `docs/TOOL_CREATION_GUIDE.md` - Developer documentation
 
 ## Next Actions
 
 1. ✅ ~~Complete Phase 1 Foundation & Infrastructure~~
 2. ✅ ~~Complete Phase 2 First Assessment Tools~~
-3. ✅ ~~Create and execute 03-01 SWOT Analysis~~
-4. Continue Phase 3 strategic assessments (5 more tools)
-5. Proceed to Phase 4 Planning & Synthesis Engine
+3. ✅ ~~Complete Phase 3 Core Strategic Assessments~~
+4. **CONTINUE Phase 4: Planning & Synthesis Engine** (33% complete - 4/12 reqs)
+   - ✅ Build 90-Day Roadmap tool (PLN-01 to PLN-04)
+   - Implement 7 synthesis rules (SYN-01 to SYN-07)
+   - Add auto-synthesis and insight display (SYN-08, SYN-09)
+5. Proceed to Phase 5 Reports & Workspace Management
 
 ## Blockers & Concerns
 
@@ -209,20 +253,21 @@ From ROADMAP.md - requires 3 assessment tools:
 | Milestone | Target Week | Status |
 |-----------|-------------|--------|
 | Infrastructure complete | Week 2 | ✅ Complete |
-| First tools working | Week 4 | In Progress (33%) |
-| Core assessments complete | Week 7 | Pending |
-| Synthesis MVP working | Week 10 | Pending |
+| First tools working | Week 4 | ✅ Complete |
+| Core assessments complete | Week 7 | ✅ Complete |
+| Synthesis MVP working | Week 10 | Ready to Begin |
 | Full feature set complete | Week 13 | Pending |
 | Production launch | Week 15 | Pending |
 
 ## Session Continuity
 
-Last session: 2026-02-04
-Stopped at: Completed 03-03-PLAN-advisor-readiness.md
+Last session: 2026-02-05
+Stopped at: Completed 04-01-PLAN-90day-roadmap.md (PLN-01 to PLN-04)
 Resume file: None
+Next action: Continue Phase 4 - implement synthesis rules (SYN-01 to SYN-09)
 
 ---
 
 *State tracking initialized: 2026-02-04*
-*Last updated: 2026-02-04*
+*Last updated: 2026-02-05*
 *See ROADMAP.md for detailed phase breakdown*
