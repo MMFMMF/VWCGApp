@@ -1,0 +1,69 @@
+---
+interface Props {
+  ctaHref?: string;
+}
+
+const { ctaHref = '/app' } = Astro.props;
+---
+
+<section class="relative bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-800 text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-32">
+    <div class="text-center">
+      <!-- Headline (MKT-01) -->
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight">
+        See Where Your Business<br class="hidden sm:inline" />
+        <span class="text-indigo-200">Really Stands</span>
+      </h1>
+
+      <!-- Subheadline -->
+      <p class="mt-6 text-lg sm:text-xl lg:text-2xl text-indigo-100 max-w-3xl mx-auto">
+        Get clear, actionable visibility into leadership, operations, strategy, and execution gaps—so you know exactly where to focus.
+      </p>
+
+      <!-- Value Props -->
+      <div class="mt-8 flex flex-wrap justify-center gap-4 text-sm sm:text-base text-indigo-200">
+        <span class="flex items-center gap-2">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+          10+ Assessment Tools
+        </span>
+        <span class="flex items-center gap-2">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+          AI-Powered Insights
+        </span>
+        <span class="flex items-center gap-2">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+          PDF Reports
+        </span>
+      </div>
+
+      <!-- CTA Buttons -->
+      <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
+        <a
+          href={ctaHref}
+          class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold rounded-lg bg-white text-indigo-700 hover:bg-indigo-50 shadow-lg hover:shadow-xl transition-all"
+        >
+          Start Free Assessment
+          <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+        </a>
+        <a
+          href="#sample-report"
+          class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold rounded-lg border-2 border-white/30 text-white hover:bg-white/10 transition-all"
+        >
+          See Sample Report
+        </a>
+      </div>
+
+      <!-- Trust Signal -->
+      <p class="mt-8 text-sm text-indigo-200">
+        No email required • Get results instantly • 100% private
+      </p>
+    </div>
+  </div>
+
+  <!-- Wave Divider -->
+  <div class="absolute bottom-0 left-0 right-0">
+    <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto">
+      <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="white"/>
+    </svg>
+  </div>
+</section>

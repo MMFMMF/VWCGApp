@@ -1,0 +1,57 @@
+---
+const features = [
+  {
+    title: 'AI Readiness Assessment',
+    description: 'Evaluate your organization across 6 AI dimensions—strategy, data, infrastructure, talent, governance, and culture.',
+    icon: '🤖'
+  },
+  {
+    title: 'Leadership DNA Analysis',
+    description: 'Map current vs target leadership capabilities across vision, execution, empowerment, and more.',
+    icon: '🧬'
+  },
+  {
+    title: 'Business Emotional Intelligence',
+    description: 'Track organizational EQ over time with trend analysis and actionable insights.',
+    icon: '💡'
+  },
+  {
+    title: 'SWOT Matrix Builder',
+    description: 'Build a confidence-weighted SWOT analysis with strategic prioritization.',
+    icon: '📊'
+  },
+  {
+    title: '90-Day Roadmap Planner',
+    description: 'Create an actionable 12-week plan with dependencies and phase-based execution.',
+    icon: '🗺️'
+  },
+  {
+    title: 'Cross-Tool Synthesis',
+    description: 'Get AI-powered insights that connect findings across all your assessments.',
+    icon: '✨'
+  }
+];
+---
+
+<section class="py-16 sm:py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center">
+      <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">
+        10+ Strategic Assessment Tools
+      </h2>
+      <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+        Comprehensive analysis across leadership, operations, strategy, and execution—all in one place.
+      </p>
+    </div>
+
+    <div class="mt-16 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {features.map(feature => (
+        <div class="relative p-6 bg-gray-50 rounded-2xl hover:bg-indigo-50 transition-colors">
+          <div class="text-4xl mb-4">{feature.icon}</div>
+          <h3 class="text-lg font-semibold text-gray-900">{feature.title}</h3>
+          <p class="mt-2 text-gray-600">{feature.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
