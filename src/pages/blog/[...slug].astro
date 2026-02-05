@@ -1,0 +1,145 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import MarketingLayout from '../../layouts/MarketingLayout.astro';
+import Footer from '../../components/marketing/Footer.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    props: { post }
+  }));
+}
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<MarketingLayout
+  title={post.data.title}
+  description={post.data.description}
+  ogImage={post.data.heroImage}
+>
+  <article class="bg-white">
+    <!-- Hero -->
+    <header class="bg-indigo-600 text-white py-12">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center gap-2 text-sm text-indigo-200 mb-4">
+          <a href="/blog" class="hover:text-white">Blog</a>
+          <span>/</span>
+          <span>{post.data.tags[0] || 'Article'}</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-bold">{post.data.title}</h1>
+        <div class="mt-4 flex items-center gap-4 text-sm text-indigo-200">
+          <span>{post.data.author}</span>
+          <span>•</span>
+          <time>
+            {post.data.pubDate.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            })}
+          </time>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Image -->
+    {post.data.heroImage && (
+      <div class="max-w-4xl mx-auto -mt-6 px-4">
+        <img
+          src={post.data.heroImage}
+          alt={post.data.title}
+          class="w-full rounded-xl shadow-lg"
+        />
+      </div>
+    )}
+
+    <!-- Content -->
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="prose prose-lg prose-indigo max-w-none">
+        <Content />
+      </div>
+
+      <!-- Tags -->
+      <div class="mt-8 pt-8 border-t border-gray-200">
+        <div class="flex flex-wrap gap-2">
+          {post.data.tags.map(tag => (
+            <span class="px-3 py-1 bg-indigo-50 text-indigo-700 text-sm rounded-full">
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="mt-12 p-8 bg-indigo-50 rounded-xl text-center">
+        <h3 class="text-xl font-semibold text-gray-900">Ready to assess your business?</h3>
+        <p class="mt-2 text-gray-600">Get clear visibility into your gaps with our free tools.</p>
+        <a
+          href="/app"
+          class="mt-4 inline-flex items-center justify-center px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors"
+        >
+          Start Free Assessment
+        </a>
+      </div>
+    </div>
+  </article>
+
+  <Footer />
+</MarketingLayout>
+
+<style is:global>
+  /* Tailwind Typography overrides - using plain CSS for Tailwind v4 compatibility */
+  .prose h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  .prose h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .prose p {
+    margin-bottom: 1rem;
+  }
+  .prose ul, .prose ol {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+  }
+  .prose li {
+    margin-bottom: 0.5rem;
+  }
+  .prose a {
+    color: rgb(79 70 229);
+  }
+  .prose a:hover {
+    color: rgb(67 56 202);
+  }
+  .prose blockquote {
+    border-left: 4px solid rgb(99 102 241);
+    padding-left: 1rem;
+    font-style: italic;
+    color: rgb(55 65 81);
+  }
+  .prose code {
+    background-color: rgb(243 244 246);
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+  }
+  .prose pre {
+    background-color: rgb(17 24 39);
+    color: rgb(243 244 246);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+  }
+</style>

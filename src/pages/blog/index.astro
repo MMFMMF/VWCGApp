@@ -1,0 +1,70 @@
+---
+import { getCollection } from 'astro:content';
+import MarketingLayout from '../../layouts/MarketingLayout.astro';
+import Footer from '../../components/marketing/Footer.astro';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<MarketingLayout
+  title="Blog - Business Insights & Strategies"
+  description="Expert insights on leadership, business assessment, strategic planning, and operational excellence for SMB owners."
+>
+  <header class="bg-indigo-600 text-white py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="text-3xl sm:text-4xl font-bold">Blog</h1>
+      <p class="mt-2 text-indigo-100">Insights for growing businesses</p>
+    </div>
+  </header>
+
+  <main class="py-12 bg-gray-50 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {posts.length === 0 ? (
+        <div class="text-center py-12">
+          <p class="text-gray-500">No posts yet. Check back soon!</p>
+        </div>
+      ) : (
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {posts.map(post => (
+            <article class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+              {post.data.heroImage && (
+                <img
+                  src={post.data.heroImage}
+                  alt={post.data.title}
+                  class="w-full h-48 object-cover"
+                />
+              )}
+              <div class="p-6">
+                <time class="text-sm text-gray-500">
+                  {post.data.pubDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </time>
+                <h2 class="mt-2 text-xl font-semibold text-gray-900">
+                  <a href={`/blog/${post.slug}`} class="hover:text-indigo-600 transition-colors">
+                    {post.data.title}
+                  </a>
+                </h2>
+                <p class="mt-2 text-gray-600 line-clamp-3">
+                  {post.data.description}
+                </p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                  {post.data.tags.slice(0, 3).map(tag => (
+                    <span class="px-2 py-1 bg-indigo-50 text-indigo-700 text-xs rounded-full">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+    </div>
+  </main>
+
+  <Footer />
+</MarketingLayout>
