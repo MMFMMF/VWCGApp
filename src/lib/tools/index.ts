@@ -25,6 +25,7 @@ import '../../components/tools/FinancialReadinessTool';
 import '../../components/tools/SOPMaturityTool';
 import '../../components/tools/RoadmapTool';
 import '../../components/tools/InsightsDashboard';
+import '../../components/tools/ReportCenterTool';
 
 // Import synthesis rules to trigger registration
 import '../synthesis/rules';
