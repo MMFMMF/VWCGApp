@@ -146,6 +146,12 @@ export interface WorkspaceActions {
 
   /** Run synthesis evaluation on current workspace data */
   runSynthesis: () => void;
+
+  /** Export workspace to .vwcg file */
+  exportWorkspace: () => void;
+
+  /** Import workspace from data (merge or replace mode) */
+  importWorkspace: (workspace: WorkspaceState, merge?: boolean) => void;
 }
 
 /**

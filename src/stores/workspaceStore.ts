@@ -20,6 +20,7 @@ import type {
 } from '../types/workspace';
 import { initialWorkspaceState, WORKSPACE_VERSION } from '../types/workspace';
 import type { SynthesisResult, SynthesisContext } from '../lib/synthesis/types';
+import { exportToFile } from '../lib/workspace/fileHandler';
 
 /**
  * Generate a unique ID for workspace and insights
@@ -205,6 +206,49 @@ export const useWorkspaceStore = create<WorkspaceStore>()(
         }).catch(error => {
           console.error('Synthesis evaluation failed:', error);
         });
+      },
+
+      exportWorkspace: () => {
+        const state = useWorkspaceStore.getState();
+        exportToFile(state);
+      },
+
+      importWorkspace: (workspace: WorkspaceState, merge = false) => {
+        set((state) => {
+          if (merge) {
+            // Merge tool data
+            return {
+              ...state,
+              tools: {
+                ...state.tools,
+                ...workspace.tools,
+              },
+              insights: [
+                ...state.insights,
+                ...workspace.insights,
+              ],
+              meta: {
+                ...state.meta,
+                updatedAt: getTimestamp(),
+              },
+            };
+          } else {
+            // Replace workspace
+            return {
+              ...workspace,
+              meta: {
+                ...workspace.meta,
+                updatedAt: getTimestamp(),
+              },
+            };
+          }
+        });
+
+        // Trigger synthesis after import
+        setTimeout(() => {
+          const currentState = useWorkspaceStore.getState();
+          currentState.runSynthesis();
+        }, 500);
       },
     }),
     {
