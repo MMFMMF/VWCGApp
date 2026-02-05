@@ -152,3 +152,12 @@ export interface WorkspaceActions {
  * Combined workspace store type
  */
 export type WorkspaceStore = WorkspaceState & WorkspaceActions;
+
+/**
+ * Workspace export format for .vwcg files
+ */
+export interface WorkspaceExport {
+  version: string;
+  exportedAt: string;
+  workspace: Omit<WorkspaceState, 'synthesisResult'>;
+}
