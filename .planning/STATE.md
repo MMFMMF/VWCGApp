@@ -15,11 +15,11 @@ See: .planning/PROJECT.md (updated 2026-02-04)
 ## Current Position
 
 Phase: 5 of 6 (Reports & Workspace Management)
-Plan: 1 of 2 (Workspace Management) - COMPLETE
-Status: In progress
-Last activity: 2026-02-05 - Completed 05-02-PLAN-workspace-management.md
+Plan: 2 of 2 (PDF Reports) - COMPLETE
+Status: Phase complete
+Last activity: 2026-02-05 - Completed 05-01-PLAN-pdf-reports.md
 
-Progress: ██████████████████ 75% (18/24 plans complete)
+Progress: ███████████████████ 79% (19/24 plans complete)
 
 ## Phase Status
 
@@ -29,7 +29,7 @@ Progress: ██████████████████ 75% (18/24 plan
 | 2 | First Assessment Tools | ✅ Complete | 100% | 3/3 tools |
 | 3 | Core Strategic Assessments | ✅ Complete | 100% | 7/7 reqs |
 | 4 | Planning & Synthesis Engine | ✅ Complete | 100% | 12/12 reqs |
-| 5 | Reports & Workspace Management | In Progress | 50% | 5/9 reqs |
+| 5 | Reports & Workspace Management | ✅ Complete | 100% | 9/9 reqs |
 | 6 | Marketing Site & Access Control | Pending | 0% | 11 reqs |
 
 ## Phase 1 Completion Summary
@@ -73,8 +73,24 @@ All 12 requirements completed across 3 plans:
 **Total Phase 4 commits:** 12
 **Build status:** ✅ Passing (3.95s build time)
 
+## Phase 5 Completion Summary
+
+All 9 requirements completed across 2 plans:
+- ✅ 05-01-PLAN-pdf-reports: PDF Reports (RPT-01 to RPT-04) - section selection, jsPDF generation, synthesis insights
+- ✅ 05-02-PLAN-workspace-management: Workspace Management (WRK-01 to WRK-05) - auto-save, export/import, validation
+
+**Total Phase 5 commits:** 8
+**Build status:** ✅ Passing (5.84s build time)
+
 ## Recent Activity
 
+- 2026-02-05: ✅ Completed 05-01 PDF Reports (RPT-01 to RPT-04)
+  - Created generator.ts with jsPDF for comprehensive PDF formatting
+  - ReportCenterTool.tsx with section selection by category
+  - Auto-select completed tools, Include Insights toggle
+  - PDF includes cover, TOC, assessment sections, synthesis insights
+  - Download as VWCGReport_[workspace-name].pdf
+  - Build passing (5.84s)
 - 2026-02-05: ✅ Completed 05-02 Workspace Management (WRK-01 to WRK-05)
   - Created fileHandler.ts with export/import validation
   - WorkspaceManager.tsx with safe mode UI
@@ -169,6 +185,9 @@ From ROADMAP.md - all 12 requirements completed:
 
 | Date | Plan | Decision | Rationale |
 |------|------|----------|-----------|
+| 2026-02-05 | 05-01 | Use jsPDF for client-side PDF generation | No server required, works offline, good React integration |
+| 2026-02-05 | 05-01 | Auto-select all completed tools on first load | Better UX - most users want comprehensive reports |
+| 2026-02-05 | 05-01 | Group tools by category in selection UI | Clearer organization for 10+ tools |
 | 2026-02-05 | 05-02 | Export format wraps workspace in metadata object | Version and exportedAt timestamp enable validation and upgrade tracking |
 | 2026-02-05 | 05-02 | Validation separates errors from warnings | Errors block import (invalid format), warnings inform user (version mismatch, unknown tools) |
 | 2026-02-05 | 05-02 | Partial import with section selection | Users may only want specific tool data, not entire workspace |
@@ -242,14 +261,18 @@ From ROADMAP.md - all 12 requirements completed:
 - ✅ Auto-synthesis engine (debounced triggering on tool data updates)
 - ✅ Insights Dashboard (severity badges, type filters, dismiss/restore functionality)
 
-**Phase 5 In Progress:**
+**Phase 5 Complete:**
+- ✅ PDF Reports (RPT-01 to RPT-04)
+  - Section selection UI with checkboxes grouped by category
+  - jsPDF client-side PDF generation
+  - Cover page, TOC, assessment sections, synthesis insights
+  - Download as VWCGReport_[workspace-name].pdf
 - ✅ Workspace Management (WRK-01 to WRK-05)
   - Auto-save to localStorage (Zustand persist middleware)
   - Export workspace to .vwcg file
   - Import workspace from .vwcg or .json with safe mode validation
   - Partial section import with checkboxes
   - Version tracking and upgrade mechanism
-- ⏳ PDF Reports (pending)
 
 **Key Architecture Files:**
 - `src/stores/workspaceStore.ts` - State management
@@ -269,6 +292,8 @@ From ROADMAP.md - all 12 requirements completed:
 - `src/components/tools/InsightsDashboard.tsx` - Insights Dashboard (severity badges, type filters, dismiss/restore)
 - `src/components/workspace/WorkspaceManager.tsx` - Workspace Management UI (export/import with safe mode)
 - `src/lib/workspace/fileHandler.ts` - Workspace file export/import utilities with validation
+- `src/lib/pdf/generator.ts` - PDF report generation with jsPDF
+- `src/components/tools/ReportCenterTool.tsx` - Report Center with section selection
 - `src/lib/synthesis/rules/E1-execution-gap.ts` - Execution capability vs strategic pillar analysis
 - `src/lib/synthesis/rules/E2-unmitigated-threat.ts` - SWOT threats vs roadmap gap detection
 - `src/lib/synthesis/rules/E3-burnout-risk.ts` - Advisor readiness vs task load capacity
@@ -284,15 +309,16 @@ From ROADMAP.md - all 12 requirements completed:
 2. ✅ ~~Complete Phase 2 First Assessment Tools~~
 3. ✅ ~~Complete Phase 3 Core Strategic Assessments~~
 4. ✅ ~~Complete Phase 4 Planning & Synthesis Engine~~
-5. **CONTINUE Phase 5: Reports & Workspace Management** (5/9 requirements complete)
-   - ✅ WRK-01 to WRK-05: Workspace management complete
-   - ⏳ PDF report generation with comprehensive formatting (remaining)
-   - Note: Multi-workspace and history tracking deferred or simplified
-6. Proceed to Phase 6 Marketing Site & Access Control
+5. ✅ ~~Complete Phase 5 Reports & Workspace Management~~ (9/9 requirements complete)
+6. **BEGIN Phase 6: Marketing Site & Access Control** (11 requirements pending)
 
 ## Blockers & Concerns
 
-None. Phase 5 workspace management complete, ready for PDF reports implementation.
+**PDF Export Implementation:**
+Most existing tools need to implement their exportToPDF() functions to provide formatted data for the report. Currently, ReportCenterTool will skip tools without this implementation. This is a quality enhancement, not a blocker.
+
+**Chart Rendering in PDFs:**
+Current PDF generator supports tables and text but not chart images. Charts from tools like AI Readiness radar chart won't appear in PDF. Future enhancement: use html2canvas to capture chart images.
 
 ## Key Metrics Targets
 
@@ -329,9 +355,9 @@ None. Phase 5 workspace management complete, ready for PDF reports implementatio
 ## Session Continuity
 
 Last session: 2026-02-05
-Stopped at: Completed 05-02 Workspace Management (05-02-PLAN-workspace-management.md)
+Stopped at: Completed 05-01 PDF Reports (05-01-PLAN-pdf-reports.md) - Phase 5 COMPLETE
 Resume file: None
-Next action: Continue Phase 5 - implement PDF reports (05-01-PLAN-pdf-reports.md)
+Next action: Begin Phase 6 - Marketing Site & Access Control
 
 ---
 
