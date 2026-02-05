@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { persist, createJSONStorage, type StateStorage } from 'zustand/middleware';
 
 interface AuthState {
   // ACC-04: Session persistence
@@ -12,6 +12,19 @@ interface AuthState {
   logout: () => void;
   checkSession: () => boolean;
 }
+
+// SSR-safe storage that only uses sessionStorage on the client
+const getSessionStorage = (): StateStorage => {
+  // Return a no-op storage during SSR
+  if (typeof window === 'undefined') {
+    return {
+      getItem: () => null,
+      setItem: () => {},
+      removeItem: () => {}
+    };
+  }
+  return sessionStorage;
+};
 
 export const useAuthStore = create<AuthState>()(
   persist(
@@ -57,12 +70,13 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'vwcg-auth',
-      storage: createJSONStorage(() => sessionStorage), // ACC-04: sessionStorage
+      storage: createJSONStorage(getSessionStorage), // ACC-04: SSR-safe sessionStorage
       partialize: (state) => ({
         isAuthenticated: state.isAuthenticated,
         inviteCode: state.inviteCode,
         authenticatedAt: state.authenticatedAt
-      })
+      }),
+      skipHydration: false
     }
   )
 );

@@ -45,7 +45,13 @@
       "Bash(git rev-parse:*)",
       "Bash(powershell -Command \"Get-Date -Format ''yyyy-MM-dd''\")",
       "Bash(git init:*)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Bash(gh auth status:*)",
+      "Bash(gh auth login:*)",
+      "Bash(gh repo create:*)",
+      "Bash(gh repo view:*)",
+      "Bash(git push)",
+      "WebFetch(domain:sparkly-speculoos-87b564.netlify.app)"
     ]
   }
 }
