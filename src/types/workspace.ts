@@ -96,6 +96,9 @@ export interface WorkspaceState {
 
   /** Synthesis state */
   synthesis: SynthesisState;
+
+  /** Latest synthesis result from rule evaluation */
+  synthesisResult: any | null;
 }
 
 /**
@@ -113,6 +116,7 @@ export const initialWorkspaceState: WorkspaceState = {
   synthesis: {
     completed: false,
   },
+  synthesisResult: null,
 };
 
 /**
@@ -139,6 +143,9 @@ export interface WorkspaceActions {
 
   /** Load workspace from external data */
   loadWorkspace: (workspace: WorkspaceState) => void;
+
+  /** Run synthesis evaluation on current workspace data */
+  runSynthesis: () => void;
 }
 
 /**

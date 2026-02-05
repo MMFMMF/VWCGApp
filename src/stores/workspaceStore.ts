@@ -19,6 +19,7 @@ import type {
   Insight,
 } from '../types/workspace';
 import { initialWorkspaceState, WORKSPACE_VERSION } from '../types/workspace';
+import type { SynthesisResult, SynthesisContext } from '../lib/synthesis/types';
 
 /**
  * Generate a unique ID for workspace and insights
@@ -106,6 +107,12 @@ export const useWorkspaceStore = create<WorkspaceStore>()(
             updatedAt: getTimestamp(),
           },
         }));
+
+        // Trigger synthesis after state update (debounced)
+        setTimeout(() => {
+          const currentState = useWorkspaceStore.getState();
+          currentState.runSynthesis();
+        }, 500);
       },
 
       setMeta: (meta: Partial<WorkspaceMeta>) => {
@@ -172,6 +179,33 @@ export const useWorkspaceStore = create<WorkspaceStore>()(
           },
         });
       },
+
+      runSynthesis: () => {
+        const state = useWorkspaceStore.getState();
+
+        // Dynamic import to avoid circular dependencies
+        import('../lib/synthesis/rules').then(({ synthesisRuleRegistry }) => {
+          const context: SynthesisContext = {
+            tools: state.tools as Record<string, unknown>,
+            meta: {
+              companyName: state.meta.name || '',
+              assessmentDate: new Date().toISOString(),
+            },
+          };
+
+          const result = synthesisRuleRegistry.evaluateAll(context);
+
+          set((state) => ({
+            synthesisResult: result,
+            meta: {
+              ...state.meta,
+              updatedAt: getTimestamp(),
+            },
+          }));
+        }).catch(error => {
+          console.error('Synthesis evaluation failed:', error);
+        });
+      },
     }),
     {
       name: 'vwcg-workspace',
@@ -184,6 +218,7 @@ export const useWorkspaceStore = create<WorkspaceStore>()(
         tools: state.tools,
         insights: state.insights,
         synthesis: state.synthesis,
+        synthesisResult: state.synthesisResult,
       }),
     }
   )
