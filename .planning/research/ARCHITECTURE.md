@@ -1,1251 +1,1157 @@
-# Architecture Research
+# Architecture Patterns: Animated Interactive Landing Page Components
+
+**Project:** VWCGApp Landing Page Enhancement
+**Domain:** Astro + React Islands with animated components
+**Researched:** 2026-02-05
+**Overall Confidence:** HIGH
 
 ## Executive Summary
 
-Strategic assessment platforms in 2026 follow a **JAMstack-inspired architecture** with clear separation between marketing content and gated application logic. For an SMB assessment tool with no backend database, the optimal architecture leverages:
+VWCGApp uses Astro 5 with React Islands architecture for optimal performance: static HTML for marketing pages, hydrated React components for interactive tools. New animated landing page features must maintain this architecture while adding smooth animations, interactive sample reports, and a mini-assessment widget.
 
-- **Static site generation** for marketing/SEO content
-- **Client-side state management** with localStorage for workspace persistence
-- **Headless/flat-file CMS** for blog content
-- **Modular assessment engine** with shared data context
-- **Client-side PDF generation** for reports
-- **Route-based access control** for invite-only sections
+**Key architectural principle:** Astro renders to static HTML by default (SSG), with React Islands hydrating only when needed via client directives. This preserves SEO benefits and fast load times while enabling rich interactivity.
 
-This architecture maximizes SEO, minimizes infrastructure costs, and provides excellent UX for multi-step assessments while maintaining data privacy (all data stays client-side).
+**Recommended approach:**
+- Static Astro components for scroll-triggered animations (CSS + Intersection Observer)
+- React Islands for gauge charts and mini-assessment (client:visible for performance)
+- Recharts for data visualization (existing dependency)
+- Framer Motion for complex animations (optional, add if needed)
+- View Transitions API for smooth page navigation
 
+## Existing Architecture Analysis
+
+### Current Stack
+
+| Technology | Version | Usage | Purpose |
+|------------|---------|-------|---------|
+| Astro | 5.17.1 | SSG framework | Static site generation, routing |
+| React | 19.2.4 | UI framework | Interactive islands |
+| @astrojs/react | 4.4.2 | Integration | React support in Astro |
+| Tailwind CSS | 4.1.18 | Styling | Utility-first CSS |
+| Recharts | 3.7.0 | Charting | Data visualization (already installed) |
+| Netlify | - | Deployment | Hosting with Image CDN |
+
+### Current Architecture Patterns
+
+**Marketing Pages (SSG):**
+```
+src/pages/index.astro
+  └─ MarketingLayout.astro
+      ├─ Hero.astro (static)
+      ├─ Features.astro (static)
+      ├─ SampleReport.astro (static)
+      ├─ CTA.astro (static)
+      └─ Footer.astro (static)
+```
+
+**Assessment App (SPA within Astro):**
+```
+src/pages/app/[...tool].astro
+  └─ AppLayout.astro
+      └─ InviteGate (client:load)
+          └─ AssessmentApp (client:only="react")
+              └─ BrowserRouter with React Router
+```
+
+**Key insight:** Clean separation between marketing (static) and app (interactive). Landing page enhancement should maintain this boundary.
+
+## Recommended Architecture for New Features
+
+### Feature 1: Animated Gauge Charts
+
+**Decision:** React Island with client:visible
+**Rationale:** Gauge charts require JavaScript for animation and interactivity
+
+```astro
+---
+// In Hero.astro or new TrustIndicators.astro
+import GaugeChartIsland from './islands/GaugeChartIsland';
 ---
 
-## High-Level Architecture
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    BROWSER (Client-Side)                    │
-├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│  ┌──────────────────┐         ┌────────────────────────┐   │
-│  │  Marketing Site  │         │  Assessment App        │   │
-│  │  (Static/SSG)    │◄───────►│  (SPA with Router)     │   │
-│  │                  │         │                        │   │
-│  │  - Landing       │         │  ┌──────────────────┐ │   │
-│  │  - Blog/SEO      │         │  │  11 Assessment   │ │   │
-│  │  - CTA           │         │  │  Tools           │ │   │
-│  └──────────────────┘         │  └──────────────────┘ │   │
-│          │                    │          │            │   │
-│          │                    │          ▼            │   │
-│          │                    │  ┌──────────────────┐ │   │
-│          │                    │  │  Synthesis       │ │   │
-│          │                    │  │  Engine          │ │   │
-│          │                    │  └──────────────────┘ │   │
-│          │                    │          │            │   │
-│          │                    │          ▼            │   │
-│          │                    │  ┌──────────────────┐ │   │
-│          │                    │  │  Report          │ │   │
-│          │                    │  │  Generator (PDF) │ │   │
-│          │                    │  └──────────────────┘ │   │
-│          │                    └────────────────────────┘   │
-│          │                             │                   │
-│          └─────────────┬───────────────┘                   │
-│                        ▼                                   │
-│              ┌──────────────────┐                          │
-│              │  Shared Services │                          │
-│              ├──────────────────┤                          │
-│              │ - Router         │                          │
-│              │ - State Manager  │                          │
-│              │ - localStorage   │                          │
-│              │ - Auth Guard     │                          │
-│              └──────────────────┘                          │
-│                        │                                   │
-│                        ▼                                   │
-│              ┌──────────────────┐                          │
-│              │  Browser Storage │                          │
-│              ├──────────────────┤                          │
-│              │ - localStorage   │                          │
-│              │ - sessionStorage │                          │
-│              └──────────────────┘                          │
-└─────────────────────────────────────────────────────────────┘
-
-         ┌──────────────────────┐
-         │  Static CMS Content  │
-         │  (Markdown/JSON)     │
-         │  Built at deploy     │
-         └──────────────────────┘
+<GaugeChartIsland
+  client:visible={{rootMargin: "200px"}}
+  scores={[72, 85, 68]}
+  labels={["AI Readiness", "Leadership DNA", "Advisor Ready"]}
+/>
 ```
 
-**Key Architectural Principles:**
-1. **Zero-backend**: All logic runs client-side, no database calls
-2. **SEO-first**: Marketing content pre-rendered as static HTML
-3. **Privacy-by-design**: User data never leaves browser
-4. **Progressive disclosure**: Marketing → Landing → Gated tools
-5. **Offline-capable**: All assessment work can happen offline
+**Component structure:**
+```tsx
+// src/components/islands/GaugeChartIsland.tsx
+import { PieChart, Pie, Cell } from 'recharts';
 
----
-
-## Component Structure
-
-### 1. Marketing Site (Public)
-
-**Purpose:** Drive traffic, explain value, convert visitors to leads
-
-**Components:**
-- **Landing Page** (`/`)
-  - Hero section with CTA
-  - Value proposition
-  - Social proof / testimonials
-  - Lead capture form
-  - Static or SSG-rendered
-
-- **Blog** (`/blog/*`)
-  - SEO-optimized content
-  - Static site generation from markdown
-  - Article list + individual posts
-  - RSS feed for content syndication
-  - Lightweight CMS for content updates
-
-- **About/Contact** (`/about`, `/contact`)
-  - Static pages with company info
-  - Contact forms (can POST to third-party service)
-
-**Technology Recommendations:**
-- Static Site Generator: Astro, Next.js (SSG mode), or Eleventy
-- Flat-file CMS: Markdown files in `/content` directory
-- Build-time rendering for maximum SEO
-- CDN deployment (Netlify, Vercel, Cloudflare Pages)
-
-**Data Sources:**
-- Markdown files for blog posts (`/content/blog/*.md`)
-- JSON configuration for site metadata
-- No runtime data fetching
-
----
-
-### 2. Assessment Application (Invite-Only)
-
-**Purpose:** Interactive tools for business assessment, synthesis, reporting
-
-**Architecture Pattern:** Single-Page Application (SPA) with client-side routing
-
-#### 2.1 Assessment Tools Module
-
-**Structure:**
-```
-/app
-  /tools
-    /tool-01-vision-mission
-    /tool-02-strategic-goals
-    /tool-03-[...]
-    /tool-11-synthesis-view
-  /components
-    /shared
-      - FormInput.jsx
-      - Slider.jsx
-      - RadarChart.jsx
-      - BarChart.jsx
-      - LineChart.jsx
-      - TimelineChart.jsx
-```
-
-**Each Tool Component:**
-- Self-contained route (`/app/tools/{tool-name}`)
-- Form inputs with validation
-- Local state for UI interactions
-- Reads from/writes to global workspace context
-- Navigation controls (previous/next tool)
-- Progress indicator
-
-**Shared UI Components:**
-- Form primitives (inputs, selects, sliders, textareas)
-- Chart library wrappers (Chart.js, Recharts, or D3 wrapper)
-- Navigation components
-- Progress indicators
-
-**Data Flow:**
-```
-User Input → Component State → Workspace Context → localStorage
-                                      ↓
-                              Synthesis Engine
-                                      ↓
-                              Report Generator
-```
-
-#### 2.2 Synthesis Engine
-
-**Purpose:** Cross-tool business logic to identify gaps and generate insights
-
-**Architecture:**
-
-```javascript
-// Conceptual structure
-class SynthesisEngine {
-  constructor(workspaceData) {
-    this.data = workspaceData; // All 11 tools' data
-  }
-
-  // Rule-based analysis
-  analyzeStrategicAlignment() {
-    // Compare tool-01 (vision) with tool-02 (goals)
-    // Return gaps, strengths, warnings
-  }
-
-  analyzeResourceAllocation() {
-    // Cross-reference multiple tools
-    // Identify misalignments
-  }
-
-  generateInsights() {
-    // Run all analysis functions
-    // Return structured insights object
-  }
-
-  calculateScores() {
-    // Compute aggregate scores per dimension
-    // Return radar chart data
-  }
+export default function GaugeChartIsland({ scores, labels }) {
+  // Use Recharts for gauge visualization
+  // Animate on mount with CSS transitions
 }
 ```
 
-**Implementation Pattern:**
-- **Pure functions**: Given workspace data, return insights (no side effects)
-- **Rule engine**: Define business rules as declarative config or functions
-- **Scoring system**: Numeric scoring per dimension with thresholds
-- **Gap detection**: Compare expected vs actual states across tools
-- **Prioritization logic**: Rank recommendations by impact/urgency
+**Why client:visible:**
+- Defers hydration until user scrolls near the component
+- Reduces initial bundle size (gauge charts not in first viewport)
+- rootMargin: "200px" loads 200px before visible (smooth experience)
+- Better performance than client:load (saves ~50-100KB on initial load)
 
-**Rule Organization:**
-```
-/synthesis
-  /rules
-    - strategic-alignment.js
-    - resource-allocation.js
-    - capability-gaps.js
-    - risk-assessment.js
-    - [one file per rule category]
-  /scorers
-    - dimension-scores.js
-    - aggregate-scores.js
-  /engine.js (orchestrator)
-```
+**Alternative considered:** client:load
+**Why not:** Gauges are below the fold, don't need immediate hydration
 
-**Data Requirements:**
-- Access to complete workspace object
-- Schema validation (ensure required fields exist)
-- Default/fallback values for incomplete data
-- Version compatibility (if workspace schema evolves)
+### Feature 2: Interactive Expandable Sample Report
 
-#### 2.3 Report Generator
+**Decision:** Hybrid - Astro component with progressive enhancement
+**Rationale:** Core content must be SEO-crawlable, interactivity is enhancement
 
-**Purpose:** Generate downloadable PDF reports from assessment results
-
-**Architecture:**
-- **Client-side PDF library**: jsPDF or pdfmake
-- **Template engine**: Define report layout/sections
-- **Data binding**: Map workspace + insights to report sections
-- **Chart rendering**: Convert interactive charts to static images (canvas.toDataURL)
-
-**Report Structure:**
-```
-Report Template:
-├── Cover Page (company name, date, logo)
-├── Executive Summary (auto-generated from synthesis)
-├── Assessment Results (per-tool summaries)
-│   ├── Tool 01: Vision & Mission
-│   ├── Tool 02: Strategic Goals
-│   ├── [...]
-│   └── Tool 11: Overall Synthesis
-├── Charts & Visualizations
-│   ├── Radar Chart (dimension scores)
-│   ├── Gap Analysis (bar charts)
-│   └── Timeline/Roadmap
-├── Recommendations (prioritized action items)
-└── Appendix (raw data tables)
-```
-
-**Performance Optimization:**
-- Use Web Workers for heavy PDF generation (keep UI responsive)
-- Lazy-load PDF library (only when generating report)
-- Show progress indicator during generation
-- Cache intermediate results
-
-**File Export Options:**
-- **PDF**: Primary deliverable
-- **JSON**: Workspace data export (backup/restore)
-- **CSV**: Raw data for further analysis
-
+```astro
+---
+// SampleReport.astro (enhanced version)
+import ExpandableReportIsland from './islands/ExpandableReportIsland';
 ---
 
-### 3. Shared Infrastructure
+<section id="sample-report">
+  <!-- Static preview visible by default (SEO-friendly) -->
+  <div class="report-preview">
+    <!-- Existing static content -->
+  </div>
 
-#### 3.1 State Management Architecture
-
-**Pattern:** React Context + useReducer (or Zustand/Jotai for simpler API)
-
-**Workspace State Structure:**
-```javascript
-{
-  meta: {
-    companyName: "Acme Corp",
-    assessmentDate: "2026-02-04",
-    version: "1.0",
-    lastSaved: timestamp,
-    inviteCode: "ABC123" // for access control
-  },
-  tools: {
-    tool01: { /* vision/mission data */ },
-    tool02: { /* strategic goals data */ },
-    // ... tool03-11
-  },
-  synthesis: {
-    insights: [ /* generated insights */ ],
-    scores: { /* dimension scores */ },
-    gaps: [ /* identified gaps */ ]
-  },
-  ui: {
-    currentTool: "tool01",
-    completedTools: ["tool01", "tool02"],
-    progress: 0.18 // 2/11 tools
-  }
-}
+  <!-- Progressive enhancement for expand/collapse -->
+  <ExpandableReportIsland client:idle>
+    <button slot="trigger">View Full Report</button>
+    <div slot="expanded">
+      <!-- Additional report sections -->
+    </div>
+  </ExpandableReportIsland>
+</section>
 ```
 
-**State Management Functions:**
-- `initializeWorkspace()` - Load from localStorage or create new
-- `updateToolData(toolId, data)` - Update specific tool's data
-- `saveWorkspace()` - Persist to localStorage
-- `exportWorkspace()` - Download as JSON file
-- `importWorkspace(file)` - Restore from JSON file
-- `clearWorkspace()` - Reset for new assessment
+**Why client:idle:**
+- Lower priority than above-the-fold content
+- Loads after initial page interactions complete
+- Doesn't block critical rendering path
+- Better than client:load for non-essential interactivity
 
-**Persistence Strategy:**
-- **Primary**: localStorage (automatic save on every data change)
-- **Secondary**: File export (manual backup by user)
-- **Debounced saves**: Use debounce to avoid excessive writes
-- **Version migration**: Handle schema updates across app versions
+**CSS fallback:** Use `<details>` element for no-JS expand/collapse
 
-**localStorage vs sessionStorage:**
-- Use **localStorage** for workspace data (persist across browser sessions)
-- Use **sessionStorage** for invite code validation (per-tab, more secure)
-- Max localStorage size: ~5-10MB (sufficient for assessment data)
+### Feature 3: Scroll-Triggered Animations
 
-#### 3.2 Routing Strategy
+**Decision:** Pure Astro component with Intersection Observer
+**Rationale:** No React needed - vanilla JS performs better for scroll effects
 
-**Public Routes** (no authentication):
-```
-/                    → Landing page
-/blog                → Blog list
-/blog/{slug}         → Individual post
-/about               → About page
-/contact             → Contact page
-```
-
-**Gated Routes** (invite code required):
-```
-/app                 → Assessment dashboard (tool list)
-/app/tools/tool-01   → Individual tool
-/app/tools/tool-02   → [...]
-/app/tools/tool-11   → Synthesis view
-/app/report          → Report preview/generation
-/app/export          → Data export options
-```
-
-**Access Control Implementation:**
-```javascript
-// Route guard
-function RequireInvite({ children }) {
-  const inviteCode = sessionStorage.getItem('inviteCode');
-
-  if (!isValidInvite(inviteCode)) {
-    return <Navigate to="/access-denied" />;
-  }
-
-  return children;
-}
-
-// Usage in router
-<Route path="/app/*" element={
-  <RequireInvite>
-    <AssessmentApp />
-  </RequireInvite>
-} />
-```
-
-**Invite Code Validation:**
-- Hardcoded list of valid codes (client-side)
-- OR: Check against static JSON file fetched at runtime
-- OR: Simple hash validation (encode expiry date in code)
-- Store validated code in sessionStorage (cleared on tab close)
-
-#### 3.3 Utility Services
-
-**File Organization:**
-```
-/lib
-  /storage
-    - workspace.js      (localStorage abstraction)
-    - export.js         (file download utilities)
-  /validation
-    - schemas.js        (data validation rules)
-  /charts
-    - chart-config.js   (shared chart theming)
-  /utils
-    - date-helpers.js
-    - formatting.js
-```
-
+```astro
+---
+// AnimatedFeatures.astro
 ---
 
-## Data Flow
+<section class="features-grid" data-animate>
+  {features.map(feature => (
+    <div class="feature-card" data-animate-item>
+      <!-- Feature content -->
+    </div>
+  ))}
+</section>
 
-### Primary Data Flow (Assessment Completion)
-
-```
-1. User navigates to /app/tools/tool-01
-2. Component reads from Workspace Context
-3. User fills form, interacts with sliders
-4. onChange handlers update Component State
-5. onBlur or onNext triggers Context update
-6. Context update triggers localStorage save (debounced)
-7. User clicks "Next" → Navigate to tool-02
-8. Repeat steps 2-7 for all tools
-9. On tool completion, trigger Synthesis Engine
-10. Synthesis reads full workspace, runs rules
-11. Insights saved back to workspace context
-12. User clicks "Generate Report"
-13. Report Generator reads workspace + insights
-14. PDF generated client-side via jsPDF
-15. Browser downloads PDF file
-```
-
-### Data Flow Diagram
-
-```
-┌─────────────┐
-│   User      │
-│   Input     │
-└──────┬──────┘
-       │ onChange
-       ▼
-┌─────────────┐
-│ Component   │
-│ Local State │
-└──────┬──────┘
-       │ onBlur/onNext
-       ▼
-┌─────────────────┐      Auto-save     ┌──────────────┐
-│ Workspace       │◄─────(debounced)───►│ localStorage │
-│ Context (React) │                     └──────────────┘
-└─────────────────┘
-       │
-       │ (when all tools complete)
-       ▼
-┌─────────────────┐
-│ Synthesis       │
-│ Engine          │
-│ (Pure Functions)│
-└─────────────────┘
-       │
-       │ (generate insights)
-       ▼
-┌─────────────────┐
-│ Workspace       │
-│ (updated with   │
-│  insights)      │
-└─────────────────┘
-       │
-       │ (user clicks "Generate Report")
-       ▼
-┌─────────────────┐
-│ Report          │
-│ Generator       │
-│ (jsPDF/pdfmake) │
-└─────────────────┘
-       │
-       │ (download)
-       ▼
-┌─────────────────┐
-│ Browser         │
-│ Downloads       │
-└─────────────────┘
-```
-
----
-
-## State Management Architecture
-
-### Recommended Approach: React Context + useReducer
-
-**Rationale:**
-- Built-in to React (no external dependency)
-- Sufficient for moderate complexity
-- Easy to understand for future maintainers
-- Can upgrade to Redux/Zustand later if needed
-
-**Alternative:** Zustand (simpler API, smaller bundle)
-
-### Implementation Pattern
-
-```javascript
-// WorkspaceContext.js
-const WorkspaceContext = createContext();
-
-function WorkspaceProvider({ children }) {
-  const [workspace, dispatch] = useReducer(workspaceReducer, initialState);
-
-  // Load from localStorage on mount
-  useEffect(() => {
-    const saved = localStorage.getItem('assessment-workspace');
-    if (saved) {
-      dispatch({ type: 'LOAD_WORKSPACE', payload: JSON.parse(saved) });
-    }
-  }, []);
-
-  // Save to localStorage on every change (debounced)
-  useEffect(() => {
-    const saveTimer = setTimeout(() => {
-      localStorage.setItem('assessment-workspace', JSON.stringify(workspace));
-    }, 1000); // 1 second debounce
-
-    return () => clearTimeout(saveTimer);
-  }, [workspace]);
-
-  return (
-    <WorkspaceContext.Provider value={{ workspace, dispatch }}>
-      {children}
-    </WorkspaceContext.Provider>
-  );
-}
-
-// Actions
-const actions = {
-  updateTool: (toolId, data) => ({
-    type: 'UPDATE_TOOL',
-    payload: { toolId, data }
-  }),
-
-  runSynthesis: (insights) => ({
-    type: 'SET_SYNTHESIS',
-    payload: insights
-  }),
-
-  clearWorkspace: () => ({ type: 'CLEAR_WORKSPACE' })
-};
-```
-
-### State Persistence Strategy
-
-**Auto-save timing:**
-- **onBlur** for text inputs (user finished typing)
-- **onChange (debounced)** for sliders (smooth interaction)
-- **onNext** when navigating between tools (explicit checkpoint)
-
-**Conflict resolution:**
-- Single-tab usage expected (SMB owner working alone)
-- If multi-tab is concern, use BroadcastChannel API to sync tabs
-- Show warning if multiple tabs detected
-
-**Data migration:**
-```javascript
-function migrateWorkspace(data) {
-  const version = data.meta?.version || '0.0';
-
-  if (version === '1.0') return data;
-
-  // Apply migrations for older versions
-  if (version === '0.9') {
-    // Transform 0.9 → 1.0
-    return migrate_0_9_to_1_0(data);
-  }
-
-  return data;
-}
-```
-
----
-
-## Synthesis Engine Design
-
-### Architecture Pattern: Rule Engine + Scorers
-
-**Core Concept:** The synthesis engine is a **pure function** that takes workspace data and returns insights. No side effects, fully testable, deterministic.
-
-### Rule Engine Structure
-
-```javascript
-// synthesis/engine.js
-export class SynthesisEngine {
-  constructor(workspaceData) {
-    this.data = workspaceData;
-    this.rules = [
-      new StrategicAlignmentRule(),
-      new ResourceAllocationRule(),
-      new CapabilityGapRule(),
-      // ... more rules
-    ];
-  }
-
-  analyze() {
-    const insights = [];
-    const scores = {};
-
-    // Run all rules
-    for (const rule of this.rules) {
-      const result = rule.evaluate(this.data);
-      insights.push(...result.insights);
-      Object.assign(scores, result.scores);
-    }
-
-    // Prioritize insights
-    const prioritized = this.prioritizeInsights(insights);
-
-    return {
-      insights: prioritized,
-      scores: scores,
-      gaps: this.identifyGaps(insights),
-      recommendations: this.generateRecommendations(insights)
-    };
-  }
-
-  prioritizeInsights(insights) {
-    // Sort by severity, impact, urgency
-    return insights.sort((a, b) => {
-      return (b.severity * b.impact) - (a.severity * a.impact);
+<script>
+  // Vanilla JS - no React hydration needed
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animate-in');
+        observer.unobserve(entry.target); // Cleanup after animation
+      }
     });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  });
+
+  document.querySelectorAll('[data-animate-item]').forEach(el => {
+    observer.observe(el);
+  });
+</script>
+
+<style>
+  .feature-card {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
   }
 
-  identifyGaps(insights) {
-    // Extract high-severity issues as "gaps"
-    return insights.filter(i => i.severity >= 7);
+  .feature-card.animate-in {
+    opacity: 1;
+    transform: translateY(0);
   }
-
-  generateRecommendations(insights) {
-    // Map insights to actionable recommendations
-    return insights.map(i => i.recommendation);
-  }
-}
+</style>
 ```
 
-### Rule Definition Pattern
+**Why NOT a React Island:**
+- Intersection Observer is native browser API (no library needed)
+- CSS transitions are more performant than JS animations
+- No hydration overhead (saves ~40-80KB per component)
+- Works immediately, no waiting for React bundle
 
-```javascript
-// synthesis/rules/strategic-alignment.js
-export class StrategicAlignmentRule {
-  evaluate(data) {
-    const vision = data.tools.tool01.vision;
-    const goals = data.tools.tool02.goals;
+**Performance benefit:** Scroll animations run on compositor thread (GPU-accelerated)
 
-    const insights = [];
-    const scores = {};
+### Feature 4: Mini-Assessment Widget
 
-    // Business logic: Check if goals align with vision
-    if (!this.goalsAlignWithVision(vision, goals)) {
-      insights.push({
-        type: 'misalignment',
-        severity: 8,
-        impact: 9,
-        title: 'Strategic Goals Misaligned with Vision',
-        description: 'Your stated goals do not directly support your vision...',
-        recommendation: 'Revise goals to explicitly support vision statements.',
-        affectedTools: ['tool01', 'tool02']
-      });
-      scores.strategicAlignment = 4; // Low score
-    } else {
-      scores.strategicAlignment = 9; // High score
-    }
+**Decision:** React Island with client:visible
+**Rationale:** Complex state management, form interactions require React
 
-    return { insights, scores };
-  }
+```astro
+---
+// In Hero.astro or new section
+import MiniAssessmentWidget from './islands/MiniAssessmentWidget';
+---
 
-  goalsAlignWithVision(vision, goals) {
-    // Implement alignment logic
-    // Could be keyword matching, semantic analysis, etc.
-    return true; // Placeholder
-  }
-}
+<section class="mini-assessment">
+  <MiniAssessmentWidget
+    client:visible={{rootMargin: "100px"}}
+    questions={previewQuestions}
+  />
+</section>
 ```
 
-### Scoring System
+**Component structure:**
+```tsx
+// src/components/islands/MiniAssessmentWidget.tsx
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Won't work - see below
 
-**Dimensions to Score:**
-- Strategic Alignment (vision ↔ goals)
-- Resource Allocation (budget ↔ priorities)
-- Capability Maturity (skills ↔ needs)
-- Risk Management (threats ↔ mitigation)
-- Operational Readiness (processes ↔ scale)
-- [5-10 total dimensions based on tools]
+export default function MiniAssessmentWidget({ questions }) {
+  const [answers, setAnswers] = useState({});
 
-**Score Scale:** 1-10
-- 8-10: Strong, minimal gaps
-- 5-7: Moderate, some improvement needed
-- 1-4: Weak, significant gaps
-
-**Aggregate Score:**
-```javascript
-function calculateOverallScore(dimensionScores) {
-  const weights = {
-    strategicAlignment: 0.25,
-    resourceAllocation: 0.20,
-    capabilityMaturity: 0.20,
-    riskManagement: 0.15,
-    operationalReadiness: 0.20
+  const handleSubmit = () => {
+    // Store answers in localStorage
+    localStorage.setItem('miniAssessmentAnswers', JSON.stringify(answers));
+    // Navigate to full app
+    window.location.href = '/app';
   };
 
-  let total = 0;
-  for (const [dimension, score] of Object.entries(dimensionScores)) {
-    total += score * (weights[dimension] || 0.10);
+  return (/* form with 3-5 quick questions */);
+}
+```
+
+**Critical architectural constraint:** Mini-assessment is in marketing pages (MPA), AssessmentApp is behind /app (SPA). Cannot use React Router across this boundary.
+
+**Data flow:**
+1. User completes mini-assessment on landing page
+2. Answers stored in localStorage
+3. Redirect to /app (full page navigation)
+4. AssessmentApp reads from localStorage
+5. Pre-populate full assessment or show teaser results
+
+**Why client:visible:** Widget is below the fold, can defer hydration
+
+**Alternative considered:** client:load
+**Why not:** Not in first viewport, would slow initial page load
+
+## Component Architecture Decision Matrix
+
+| Feature | Implementation | Client Directive | Rationale |
+|---------|---------------|------------------|-----------|
+| **Gauge Charts** | React Island (Recharts) | `client:visible` | Needs JS for animation, below fold |
+| **Scroll Animations** | Astro + Intersection Observer | None (vanilla JS) | Better performance, no React needed |
+| **Expandable Report** | Astro + details/summary + optional React | `client:idle` | Core content static, enhancement progressive |
+| **Mini-Assessment** | React Island (forms + state) | `client:visible` | Complex interactions, below fold |
+| **Hero Section** | Pure Astro | None | Critical rendering path, must be instant |
+| **Navigation** | Pure Astro | None | Above fold, SEO critical |
+
+## Integration Points with Existing Architecture
+
+### 1. MarketingLayout.astro Integration
+
+**Current:**
+```astro
+<MarketingLayout title={pageTitle} description={pageDescription}>
+  <Hero />
+  <Features />
+  <SampleReport />
+  <CTA />
+</MarketingLayout>
+```
+
+**Enhanced:**
+```astro
+<MarketingLayout title={pageTitle} description={pageDescription}>
+  <Hero ctaHref="/app" />
+  <AnimatedTrustIndicators client:visible={{rootMargin: "200px"}} />
+  <AnimatedFeatures /> <!-- Pure Astro with scroll animations -->
+  <InteractiveSampleReport /> <!-- Hybrid with client:idle island -->
+  <MiniAssessmentPreview client:visible={{rootMargin: "100px"}} />
+  <CTA ctaHref="/app" />
+</MarketingLayout>
+```
+
+**Key principle:** Progressive enhancement layers. Static HTML works without JS, animations enhance when available.
+
+### 2. Shared Component Library
+
+**Opportunity:** Reuse React components from /app in landing page islands
+
+```
+src/components/
+├─ islands/               # NEW: Landing page React Islands
+│   ├─ GaugeChartIsland.tsx
+│   ├─ MiniAssessmentWidget.tsx
+│   └─ ExpandableReportIsland.tsx
+├─ marketing/             # Existing: Pure Astro components
+│   ├─ Hero.astro
+│   ├─ Features.astro
+│   └─ ...
+├─ shared/                # Existing: Reusable React components
+│   ├─ forms/
+│   │   ├─ TextInput.tsx  # Can reuse in MiniAssessmentWidget
+│   │   ├─ Select.tsx
+│   │   └─ SliderInput.tsx
+│   └─ ui/
+│       ├─ Button.tsx     # Can reuse in islands
+│       ├─ Card.tsx
+│       └─ Badge.tsx
+└─ tools/                 # Existing: Full assessment tools
+```
+
+**Reuse strategy:**
+- MiniAssessmentWidget imports from `@components/shared/forms`
+- GaugeChartIsland can preview data structures from assessment tools
+- Maintains design consistency between marketing and app
+
+### 3. Data Flow: Landing Page → Assessment App
+
+**Challenge:** Marketing pages are MPA (multi-page app), /app is SPA (single-page app)
+
+**Solution: localStorage Bridge**
+
+```tsx
+// In MiniAssessmentWidget.tsx (landing page)
+const handleComplete = () => {
+  const payload = {
+    answers: answers,
+    timestamp: Date.now(),
+    source: 'landing-page-mini',
+  };
+  localStorage.setItem('vwcg_mini_assessment', JSON.stringify(payload));
+  window.location.href = '/app?from=mini';
+};
+
+// In AssessmentApp.tsx (/app)
+useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('from') === 'mini') {
+    const data = localStorage.getItem('vwcg_mini_assessment');
+    if (data) {
+      const payload = JSON.parse(data);
+      // Pre-populate assessment or show results
+      localStorage.removeItem('vwcg_mini_assessment'); // Cleanup
+    }
   }
-
-  return Math.round(total);
-}
+}, []);
 ```
 
-### Insight Object Schema
+**Why localStorage:**
+- Works across MPA/SPA boundary
+- No server required (Astro is static)
+- Persists if user refreshes before completing
+- Simple cleanup after consumption
 
-```javascript
-{
-  id: "insight-001",
-  type: "gap" | "strength" | "warning" | "opportunity",
-  severity: 1-10,
-  impact: 1-10,
-  title: "Brief headline",
-  description: "Detailed explanation",
-  recommendation: "Actionable next step",
-  affectedTools: ["tool01", "tool02"],
-  data: { /* supporting data */ }
-}
+**Alternative considered:** URL query params
+**Why not:** Too much data for URL, security/privacy concerns
+
+### 4. View Transitions for Navigation
+
+**Enhancement:** Smooth transitions between marketing pages and /app
+
+```astro
+---
+// In MarketingLayout.astro
+import { ViewTransitions } from 'astro:transitions';
+---
+
+<head>
+  <ViewTransitions />
+  <!-- ... -->
+</head>
+
+<body>
+  <main transition:animate="slide">
+    <slot />
+  </main>
+</body>
 ```
 
-### Integration Points
+**Benefit:** Fade or slide transitions when navigating from landing page to /app
 
-**When to Run Synthesis:**
-1. **On-demand:** User clicks "Analyze" button
-2. **After tool completion:** Auto-run after each tool (show mini-insights)
-3. **Pre-report:** Always run fresh before generating PDF
+**Limitation:** View Transitions only work within Astro MPA. When navigating to /app (React SPA), it's a full page load. Can't use `transition:persist` to maintain state across MPA → SPA boundary.
 
-**Caching Considerations:**
-- Cache synthesis results in workspace context
-- Re-run if tool data changes (check lastModified timestamps)
-- Show "Analysis outdated" warning if data changed since last run
+**Workaround:** Use localStorage for state persistence (see section 3 above)
 
----
+## Animation Strategy
 
-## Build Order Recommendations
+### Layered Animation Approach
 
-### Phase 1: Foundation (Weeks 1-2)
-1. **Project Setup**
-   - Initialize React app (Vite or Next.js)
-   - Configure routing (React Router or Next.js)
-   - Set up Tailwind CSS or component library
-   - Create basic folder structure
+**Layer 1: CSS Transitions (Highest Performance)**
+```css
+.feature-card {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.feature-card:hover {
+  transform: translateY(-4px);
+}
+```
+- Use for: Hover effects, simple state changes
+- Performance: GPU-accelerated, no JS overhead
+- Browser support: Universal
 
-2. **Shared Infrastructure**
-   - Implement WorkspaceContext + localStorage
-   - Build routing scaffold (public + gated routes)
-   - Create invite code validation
-   - Build shared UI components (forms, buttons)
+**Layer 2: CSS Animations + Intersection Observer (High Performance)**
+```astro
+<script>
+  // Trigger CSS animations on scroll
+  observer.observe(element);
+</script>
 
-3. **Marketing Site Skeleton**
-   - Landing page structure
-   - Blog listing page (static data first)
-   - Basic navigation
+<style>
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-in { animation: fadeInUp 0.6s ease forwards; }
+</style>
+```
+- Use for: Scroll-triggered reveals, entrance animations
+- Performance: Compositor thread, minimal JS
+- Browser support: Excellent (95%+ with IntersectionObserver)
 
-**Deliverable:** Can navigate between pages, invite code works, localStorage persists data
+**Layer 3: React + Recharts (Medium Performance)**
+```tsx
+<PieChart>
+  <Pie
+    data={data}
+    animationDuration={800}
+    animationEasing="ease-out"
+  />
+</PieChart>
+```
+- Use for: Data visualizations, gauge charts
+- Performance: SVG rendering, React reconciliation overhead
+- Hydration cost: ~50-80KB (but only with client:visible)
 
----
+**Layer 4: Framer Motion (Lower Performance, Optional)**
+```tsx
+import { motion } from 'framer-motion';
 
-### Phase 2: Assessment Tools (Weeks 3-5)
-4. **Tool Template Component**
-   - Generic tool layout (header, form area, navigation)
-   - Progress indicator
-   - Form validation utilities
+<motion.div
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.5 }}
+>
+```
+- Use for: Complex orchestrated animations, physics-based motion
+- Performance: Heavy JS, 50-100KB bundle size
+- **Recommendation:** Only add if CSS + Intersection Observer insufficient
 
-5. **Build First 3 Tools**
-   - Tool 01: Vision & Mission (text inputs)
-   - Tool 02: Strategic Goals (list builder)
-   - Tool 03: [Next simplest tool] (mix of inputs)
-   - Focus on UX patterns, reusable components
+**Decision tree:**
+1. Can it be done with CSS transitions? → Use CSS
+2. Needs scroll trigger? → Intersection Observer + CSS
+3. Needs data visualization? → Recharts (already installed)
+4. Needs complex choreography? → Consider Framer Motion (evaluate if needed)
 
-6. **Chart Components**
-   - Integrate Chart.js or Recharts
-   - Build wrapper components for radar, bar, line charts
-   - Test with mock data
+### Animation Performance Budget
 
-**Deliverable:** Can complete 3 assessment tools, data persists, navigation works
+| Animation Type | Target Performance | Budget |
+|---------------|-------------------|--------|
+| Hover effects | 60fps | < 16ms per frame |
+| Scroll reveals | 60fps | < 16ms per frame |
+| Page transitions | 60fps | < 200ms total |
+| Gauge chart animations | 60fps | < 800ms total |
+| Mini-assessment interactions | 60fps | < 16ms per frame |
 
----
+**Monitoring:** Use Chrome DevTools Performance tab to verify animations run on compositor thread (green), not main thread (purple).
 
-### Phase 3: Remaining Tools + Synthesis (Weeks 6-8)
-7. **Complete Tools 4-10**
-   - Apply patterns from first 3 tools
-   - Build any complex interactions (sliders, conditional logic)
+## Build Order Considerations
 
-8. **Synthesis Engine MVP**
-   - Implement 2-3 core rules
-   - Build simple scoring system
-   - Create insights display component
+### Phase 1: Foundation (No New Dependencies)
 
-9. **Tool 11: Synthesis View**
-   - Dashboard showing all insights
-   - Dimension scores (radar chart)
-   - Gap summary
+**Goal:** Add scroll-triggered animations and enhance existing components
 
-**Deliverable:** All 11 tools functional, synthesis generates insights
+1. **AnimatedFeatures.astro**
+   - Enhance Features.astro with Intersection Observer
+   - Pure CSS + vanilla JS (no React)
+   - Zero bundle size impact
 
----
+2. **AnimatedHero.astro**
+   - Add subtle entrance animations to hero section
+   - CSS animations only
+   - Critical path, must be instant
 
-### Phase 4: Reports + Polish (Weeks 9-10)
-10. **PDF Report Generator**
-    - Integrate jsPDF or pdfmake
-    - Build report template
-    - Implement data binding
-    - Add chart-to-image conversion
+**Dependencies:** None (uses existing Tailwind + vanilla JS)
 
-11. **Data Export/Import**
-    - JSON export/import
-    - CSV export (optional)
-    - Workspace reset functionality
+**Deliverable:** Scroll animations working on landing page
 
-12. **Marketing Content**
-    - Write blog posts (Markdown)
-    - Set up static CMS (if needed)
-    - Final landing page copy + design
+### Phase 2: Data Visualizations (Existing Dependency)
 
-**Deliverable:** Full feature set complete, PDF reports working
+**Goal:** Add gauge charts using already-installed Recharts
 
----
+3. **GaugeChartIsland.tsx**
+   - Create React Island with Recharts
+   - Implement gauge visualization for trust indicators
+   - Use client:visible for performance
 
-### Phase 5: Testing + Launch (Week 11-12)
-13. **Testing**
-    - User acceptance testing with beta users
-    - Cross-browser testing
-    - Mobile responsiveness
-    - Edge cases (empty data, large data sets)
+4. **Integration**
+   - Add GaugeChartIsland to Hero or new TrustIndicators section
+   - Test hydration timing with rootMargin tuning
 
-14. **Deployment**
-    - Set up CDN deployment (Netlify/Vercel)
-    - Configure custom domain
-    - Set up analytics
-    - Final SEO optimization
+**Dependencies:** Recharts (already installed, v3.7.0)
 
-**Deliverable:** Production-ready application
+**Deliverable:** Animated gauge charts on landing page
 
----
+### Phase 3: Interactive Components
 
-## Routing Strategy
+**Goal:** Add mini-assessment and expandable report
 
-### Technology Recommendation: React Router v6
+5. **MiniAssessmentWidget.tsx**
+   - Create React Island with form components
+   - Reuse TextInput, Select, SliderInput from shared/forms
+   - Implement localStorage bridge to /app
 
-**Rationale:**
-- Industry standard
-- Nested routes for app sections
-- Easy route guards for invite-only access
-- Good TypeScript support
+6. **ExpandableReportIsland.tsx**
+   - Enhance SampleReport.astro with expand/collapse
+   - Progressive enhancement with <details> fallback
+   - Use client:idle for non-critical interactivity
 
-**Alternative:** Next.js App Router (if SSR/SSG benefits needed)
+7. **Landing page layout updates**
+   - Add new sections to index.astro
+   - Update MarketingLayout if needed
 
-### Route Structure
+**Dependencies:** None new (uses existing React, Radix UI components)
 
-```javascript
-// App.jsx
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+**Deliverable:** Interactive mini-assessment and expandable report
 
-function App() {
+### Phase 4: Polish (Optional)
+
+**Goal:** Add advanced animations if needed
+
+8. **Framer Motion evaluation**
+   - Test if CSS + Intersection Observer sufficient
+   - If not, add Framer Motion (npm install framer-motion)
+   - Apply to specific components that need advanced motion
+
+**Dependencies:** framer-motion (only if needed after evaluation)
+
+**Deliverable:** Polished animations with complex choreography
+
+### Build Order Rationale
+
+**Why this order:**
+1. **Foundation first:** Scroll animations have zero dependencies, immediate impact
+2. **Leverage existing:** Recharts already installed, no bundle size increase
+3. **Complex last:** Mini-assessment needs most integration work
+4. **Optional polish:** Framer Motion deferred until proven necessary
+
+**Dependency management:**
+- Phase 1-3 add zero new dependencies
+- Phase 4 (Framer Motion) only if CSS insufficient
+- Minimizes bundle size impact
+
+## Performance Optimization Approach
+
+### Bundle Size Management
+
+**Current bundle (approximate):**
+- Base Astro: ~3KB (minimal runtime)
+- React runtime: ~130KB (only for /app route)
+- Marketing pages: ~5-10KB (mostly static HTML)
+
+**With new features:**
+```
+Landing page bundle breakdown:
+├─ Static HTML/CSS: ~10KB (base)
+├─ Intersection Observer: +2KB (vanilla JS)
+├─ GaugeChartIsland (client:visible):
+│   ├─ React: 130KB (shared with /app)
+│   ├─ Recharts: 50KB (already installed)
+│   └─ Hydration only when visible
+├─ MiniAssessmentWidget (client:visible):
+│   └─ ~15KB (reuses React/shared components)
+└─ Total initial load: ~10-12KB
+    (React islands load on scroll)
+```
+
+**Key optimization:** client:visible defers 180KB+ until user scrolls near components
+
+**Monitoring:**
+```bash
+# Build and analyze bundle
+npm run build
+npx vite-bundle-visualizer dist
+```
+
+### Code Splitting Strategy
+
+**Automatic with Astro:**
+- Each page is separate chunk
+- React Islands are separate chunks
+- Astro handles splitting automatically
+
+**Manual optimization:**
+```tsx
+// In GaugeChartIsland.tsx
+import { lazy, Suspense } from 'react';
+
+// Split Recharts from island component
+const GaugeChart = lazy(() => import('./GaugeChart'));
+
+export default function GaugeChartIsland(props) {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/blog" element={<BlogList />} />
-        <Route path="/blog/:slug" element={<BlogPost />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-
-        {/* Gated Routes */}
-        <Route path="/app" element={<RequireInvite />}>
-          <Route index element={<Dashboard />} />
-          <Route path="tools/:toolId" element={<ToolView />} />
-          <Route path="report" element={<ReportView />} />
-          <Route path="export" element={<ExportView />} />
-        </Route>
-
-        {/* Utility Routes */}
-        <Route path="/access-denied" element={<AccessDenied />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+    <Suspense fallback={<div>Loading chart...</div>}>
+      <GaugeChart {...props} />
+    </Suspense>
   );
 }
 ```
 
-### Invite Code Implementation Options
+**When to use:** Only if GaugeChartIsland becomes > 100KB
 
-**Option 1: Hardcoded List (Simplest)**
-```javascript
-const VALID_CODES = ['DEMO2026', 'BETA123', 'EARLY-ACCESS'];
+### Image Optimization
 
-function isValidInvite(code) {
-  return VALID_CODES.includes(code.toUpperCase());
-}
+**Netlify Image CDN (Already Configured):**
+```astro
+---
+import { Image } from 'astro:assets';
+---
+
+<Image
+  src={heroImage}
+  alt="Dashboard preview"
+  width={1200}
+  height={630}
+  loading="eager"  // Above fold
+  format="webp"
+/>
+
+<Image
+  src={featureImage}
+  alt="Feature showcase"
+  width={600}
+  height={400}
+  loading="lazy"   // Below fold
+  format="webp"
+/>
 ```
 
-**Option 2: Date-Based Codes (Time-Limited Access)**
-```javascript
-function generateInviteCode(expiryDate) {
-  // Encode expiry in the code itself
-  const timestamp = expiryDate.getTime();
-  return btoa(`INVITE-${timestamp}`);
-}
+**Automatic benefits:**
+- Netlify Image CDN serves optimized formats (WebP, AVIF)
+- Responsive srcset generated automatically
+- No build-time cost (on-demand transformation)
 
-function isValidInvite(code) {
-  try {
-    const decoded = atob(code);
-    const timestamp = parseInt(decoded.split('-')[1]);
-    return Date.now() < timestamp;
-  } catch {
-    return false;
+### Critical CSS Inlining
+
+**Astro automatically inlines critical CSS** for above-the-fold content
+
+**Manual control if needed:**
+```astro
+<style is:inline>
+  /* Critical CSS for Hero section */
+  .hero { /* ... */ }
+</style>
+
+<style>
+  /* Non-critical CSS (deferred) */
+  .features { /* ... */ }
+</style>
+```
+
+### Lazy Loading Strategy
+
+**Images:**
+- Above fold: `loading="eager"`
+- Below fold: `loading="lazy"`
+
+**React Islands:**
+- Above fold: `client:load` (only if absolutely needed)
+- Below fold: `client:visible` (preferred)
+- Non-critical: `client:idle`
+
+**Fonts:**
+```astro
+<link
+  rel="preconnect"
+  href="https://fonts.googleapis.com"
+/>
+<link
+  rel="preconnect"
+  href="https://fonts.gstatic.com"
+  crossorigin
+/>
+```
+
+Already configured in MarketingLayout.astro
+
+## SEO and Performance Implications
+
+### SEO Preservation
+
+**Critical:** All content must be in static HTML for crawlers
+
+**Compliant patterns:**
+```astro
+<!-- ✅ GOOD: Static content with enhanced interactivity -->
+<section>
+  <h2>Business Assessment Report</h2>
+  <div class="report-preview">
+    <!-- Full static content here for SEO -->
+  </div>
+  <ExpandableReportIsland client:idle>
+    <!-- Additional interactive layers -->
+  </ExpandableReportIsland>
+</section>
+
+<!-- ❌ BAD: Essential content only in React Island -->
+<section>
+  <ContentIsland client:load>
+    <!-- Content here not in initial HTML -->
+  </ContentIsland>
+</section>
+```
+
+**Testing:**
+```bash
+# View static HTML (what crawlers see)
+npm run build
+cat dist/index.html | grep "Business Assessment"
+```
+
+### Core Web Vitals Targets
+
+| Metric | Target | Strategy |
+|--------|--------|----------|
+| **LCP** (Largest Contentful Paint) | < 2.5s | Hero image optimized, above-fold static |
+| **FID** (First Input Delay) | < 100ms | Defer React hydration with client:visible |
+| **CLS** (Cumulative Layout Shift) | < 0.1 | Reserve space for animated elements |
+| **INP** (Interaction to Next Paint) | < 200ms | Debounce interactions, use Intersection Observer |
+| **TTFB** (Time to First Byte) | < 800ms | Netlify CDN (already optimized) |
+
+**CLS prevention:**
+```astro
+<!-- Reserve space for gauge chart before hydration -->
+<div
+  class="gauge-container"
+  style="min-height: 300px;"
+>
+  <GaugeChartIsland client:visible />
+</div>
+```
+
+### Monitoring Setup
+
+**Lighthouse CI (recommended):**
+```json
+// .lighthouserc.json
+{
+  "ci": {
+    "collect": {
+      "url": ["http://localhost:4321/"],
+      "numberOfRuns": 3
+    },
+    "assert": {
+      "preset": "lighthouse:recommended",
+      "assertions": {
+        "first-contentful-paint": ["error", {"maxNumericValue": 2000}],
+        "interactive": ["error", {"maxNumericValue": 3500}],
+        "cumulative-layout-shift": ["error", {"maxNumericValue": 0.1}]
+      }
+    }
   }
 }
 ```
 
-**Option 3: Fetch from Static JSON (Updatable)**
-```javascript
-// public/invite-codes.json
-{
-  "codes": ["CODE1", "CODE2", "CODE3"],
-  "expires": "2026-12-31"
-}
+**Netlify Analytics:**
+- Enable in Netlify dashboard
+- Monitor real user metrics (RUM)
+- Track page load times, Core Web Vitals
 
-async function isValidInvite(code) {
-  const res = await fetch('/invite-codes.json');
-  const data = await res.json();
-  return data.codes.includes(code) && Date.now() < new Date(data.expires);
-}
+## Build and Deployment Considerations
+
+### Netlify Configuration
+
+**Current (netlify.toml):**
+```toml
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[[plugins]]
+  package = "@astrojs/netlify"
 ```
 
----
+**Enhanced with optimization:**
+```toml
+[build]
+  command = "npm run build"
+  publish = "dist"
 
-## File Structure Recommendation
+[[plugins]]
+  package = "@astrojs/netlify"
 
-```
-fwt-assessment/
-├── public/
-│   ├── index.html
-│   ├── invite-codes.json (optional)
-│   └── assets/
-│       ├── images/
-│       └── fonts/
-├── src/
-│   ├── app/                      # Assessment application
-│   │   ├── components/
-│   │   │   ├── Dashboard.jsx
-│   │   │   ├── ToolView.jsx
-│   │   │   ├── ReportView.jsx
-│   │   │   └── ExportView.jsx
-│   │   ├── tools/
-│   │   │   ├── Tool01VisionMission.jsx
-│   │   │   ├── Tool02StrategicGoals.jsx
-│   │   │   ├── [...]/
-│   │   │   └── Tool11Synthesis.jsx
-│   │   └── layout/
-│   │       ├── AppLayout.jsx
-│   │       └── ProgressHeader.jsx
-│   ├── marketing/                # Marketing site
-│   │   ├── pages/
-│   │   │   ├── LandingPage.jsx
-│   │   │   ├── BlogList.jsx
-│   │   │   ├── BlogPost.jsx
-│   │   │   ├── About.jsx
-│   │   │   └── Contact.jsx
-│   │   └── layout/
-│   │       ├── MarketingLayout.jsx
-│   │       ├── Header.jsx
-│   │       └── Footer.jsx
-│   ├── components/               # Shared components
-│   │   ├── forms/
-│   │   │   ├── Input.jsx
-│   │   │   ├── Slider.jsx
-│   │   │   ├── Select.jsx
-│   │   │   └── TextArea.jsx
-│   │   ├── charts/
-│   │   │   ├── RadarChart.jsx
-│   │   │   ├── BarChart.jsx
-│   │   │   ├── LineChart.jsx
-│   │   │   └── TimelineChart.jsx
-│   │   ├── ui/
-│   │   │   ├── Button.jsx
-│   │   │   ├── Card.jsx
-│   │   │   └── Modal.jsx
-│   │   └── navigation/
-│   │       ├── ToolNavigation.jsx
-│   │       └── ProgressIndicator.jsx
-│   ├── lib/                      # Utilities & services
-│   │   ├── storage/
-│   │   │   ├── workspace.js
-│   │   │   └── export.js
-│   │   ├── synthesis/
-│   │   │   ├── engine.js
-│   │   │   ├── rules/
-│   │   │   │   ├── strategic-alignment.js
-│   │   │   │   ├── resource-allocation.js
-│   │   │   │   └── [...].js
-│   │   │   └── scorers/
-│   │   │       └── dimension-scores.js
-│   │   ├── report/
-│   │   │   ├── generator.js
-│   │   │   └── templates/
-│   │   │       └── default-template.js
-│   │   ├── validation/
-│   │   │   └── schemas.js
-│   │   └── utils/
-│   │       ├── date-helpers.js
-│   │       └── formatting.js
-│   ├── context/                  # State management
-│   │   ├── WorkspaceContext.jsx
-│   │   └── AuthContext.jsx
-│   ├── hooks/                    # Custom React hooks
-│   │   ├── useWorkspace.js
-│   │   ├── useLocalStorage.js
-│   │   └── useSynthesis.js
-│   ├── routes/                   # Routing configuration
-│   │   ├── AppRoutes.jsx
-│   │   └── RequireInvite.jsx
-│   ├── styles/
-│   │   ├── globals.css
-│   │   └── tailwind.css
-│   ├── App.jsx
-│   └── main.jsx
-├── content/                      # CMS content (Markdown)
-│   └── blog/
-│       ├── post-001-intro.md
-│       ├── post-002-strategy.md
-│       └── [...].md
-├── .planning/                    # Project documentation
-│   ├── research/
-│   │   └── ARCHITECTURE.md (this file)
-│   └── roadmap/
-├── package.json
-├── vite.config.js (or next.config.js)
-├── tailwind.config.js
-└── README.md
+# Image optimization (automatic with Netlify Image CDN)
+[build.environment]
+  NODE_VERSION = "20"
+
+# Cache optimization
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
 ```
 
----
+### Build Performance
 
-## Technology Stack Recommendations
+**Current build time:** ~30-60 seconds (typical Astro SSG)
 
-### Core Framework
-**Recommended:** React + Vite
-- Fast dev experience
-- Simple build process
-- No backend complexity
-- Easy deployment
+**With new features:**
+- Static components: No build time impact
+- React Islands: Minimal impact (< 5 seconds)
+- Recharts: Already in build, no change
+- Total expected: ~40-70 seconds
 
-**Alternative:** Next.js (if SEO is critical)
-- Better SEO for marketing pages
-- API routes for invite code validation
-- Image optimization
-- Slightly more complex
+**Optimization:**
+```json
+// astro.config.mjs
+export default defineConfig({
+  build: {
+    inlineStylesheets: 'auto', // Inline critical CSS
+  },
+  image: {
+    service: passthroughImageService(), // Use Netlify Image CDN
+  },
+});
+```
 
-### UI Libraries
-**Component Library:** shadcn/ui or Headless UI
-- Unstyled, customizable
-- Good accessibility
-- Works with Tailwind
+### CI/CD Pipeline
 
-**Charts:** Recharts
-- React-first API
-- Good documentation
-- Composable components
+**Recommended workflow:**
+```yaml
+# .github/workflows/deploy.yml (if using GitHub)
+name: Deploy to Netlify
 
-### State Management
-**Recommended:** React Context + useReducer
-- Built-in, no dependencies
-- Sufficient for this app
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
-**Alternative:** Zustand
-- Simpler API than Redux
-- Smaller bundle size
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'npm'
 
-### PDF Generation
-**Recommended:** jsPDF
-- Mature, well-documented
-- Good performance
-- Large community
+      # Build
+      - run: npm ci
+      - run: npm run build
 
-**Alternative:** pdfmake
-- Declarative API
-- Better for complex layouts
+      # Lighthouse CI (performance gating)
+      - run: npm install -g @lhci/cli
+      - run: lhci autorun
 
-### CMS
-**Recommended:** Markdown files + frontmatter
-- Simple, no external service
-- Version controlled
-- Free
+      # Deploy to Netlify (automatic via Netlify app)
+```
 
-**Alternative:** Headless CMS (Sanity, Contentful)
-- If non-technical content editors
-- Adds dependency + cost
+**Performance gate:** Fail deployment if Lighthouse score < 90
 
----
+### Environment-Specific Considerations
 
-## Security Considerations
+**Development:**
+```bash
+npm run dev
+# Astro dev server with HMR
+# React Islands hot reload
+```
 
-### Client-Side Limitations
-- **No sensitive data**: Since all logic is client-side, assume data can be inspected
-- **Invite codes**: Are obfuscation, not true security (acceptable for lead gen)
-- **Data privacy**: Actually a benefit—user data never leaves browser
-
-### Best Practices
-1. **Input validation**: Validate all user inputs (XSS prevention)
-2. **Content Security Policy**: Set CSP headers to prevent injection attacks
-3. **HTTPS only**: Serve over HTTPS (free with Netlify/Vercel)
-4. **Dependency auditing**: Regularly audit npm packages for vulnerabilities
-5. **localStorage encryption**: Optional—encrypt sensitive workspace data before storing
-
-### Invite Code Security
-- **Rotation**: Change codes periodically
-- **Obfuscation**: Use non-obvious strings
-- **Expiry**: Implement time-based expiration
-- **Rate limiting**: Not possible client-side, but CDN can help
-
----
-
-## Performance Optimization
-
-### Bundle Size
-- **Code splitting**: Lazy-load assessment tools (React.lazy)
-- **Tree shaking**: Only import used components
-- **PDF library**: Lazy-load only when generating report
-
-### Runtime Performance
-- **Debounced saves**: Avoid excessive localStorage writes
-- **Web Workers**: Offload synthesis engine + PDF generation
-- **Memoization**: Memoize expensive calculations (React.memo, useMemo)
-
-### SEO Optimization
-- **Static rendering**: Pre-render marketing pages
-- **Meta tags**: Dynamic meta tags per page
-- **Sitemap**: Generate sitemap for blog posts
-- **RSS feed**: Provide RSS for blog
-
----
-
-## Deployment Strategy
-
-### Recommended Platform: Netlify or Vercel
-
-**Benefits:**
-- Free tier for small projects
-- Automatic HTTPS
-- CDN distribution
-- Git-based deployment (push to deploy)
-- Environment variables for invite codes
-- Edge functions (if needed)
-
-**Build Command:**
+**Build:**
 ```bash
 npm run build
+# SSG: All pages pre-rendered
+# React Islands: Code-split and optimized
+# Output: dist/ directory
 ```
 
-**Deploy Directory:** `dist/` (Vite) or `out/` (Next.js)
-
-### Environment Variables
+**Preview:**
+```bash
+npm run preview
+# Test production build locally
+# Verify animations and hydration work
 ```
-VITE_INVITE_CODES=CODE1,CODE2,CODE3
-VITE_ANALYTICS_ID=GA-XXXXXXX
+
+## Anti-Patterns to Avoid
+
+### Anti-Pattern 1: Over-Hydration
+
+**❌ WRONG: Making everything a React Island**
+```astro
+<Header client:load />
+<Hero client:load />
+<Features client:load />
+<Footer client:load />
 ```
 
-### CI/CD
-- Push to `main` branch → auto-deploy to production
-- Push to `develop` branch → deploy to staging URL
-- Preview deployments for pull requests
+**✅ CORRECT: Selective hydration**
+```astro
+<Header />  <!-- Static Astro -->
+<Hero />    <!-- Static Astro -->
+<Features /> <!-- Static with CSS animations -->
+<GaugeChartIsland client:visible /> <!-- Only this needs React -->
+<Footer />  <!-- Static Astro -->
+```
 
----
+**Impact:** Wrong approach sends 500KB+ of unnecessary JavaScript
+
+### Anti-Pattern 2: Blocking Animations
+
+**❌ WRONG: Animations on critical rendering path**
+```tsx
+// Loads 100KB Framer Motion before hero renders
+import { motion } from 'framer-motion';
+
+export default function Hero() {
+  return <motion.div>...</motion.div>;
+}
+```
+
+**✅ CORRECT: Static hero with CSS animations**
+```astro
+<section class="hero fade-in">
+  <!-- Content -->
+</section>
+
+<style>
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .fade-in { animation: fadeIn 0.5s ease; }
+</style>
+```
+
+### Anti-Pattern 3: Layout Shifts from Lazy Loading
+
+**❌ WRONG: No reserved space**
+```astro
+<GaugeChartIsland client:visible />
+<!-- Chart pops in, shifts content below -->
+```
+
+**✅ CORRECT: Reserved space**
+```astro
+<div class="chart-container" style="min-height: 300px;">
+  <GaugeChartIsland client:visible />
+</div>
+```
+
+### Anti-Pattern 4: Forgetting SEO for Interactive Content
+
+**❌ WRONG: Important content only in island**
+```astro
+<MiniAssessmentWidget client:visible>
+  <!-- Questions and descriptions only accessible after hydration -->
+</MiniAssessmentWidget>
+```
+
+**✅ CORRECT: Static content with interactive enhancement**
+```astro
+<section>
+  <h2>Try Our Mini Assessment</h2>
+  <p>Get instant insights into your business readiness...</p>
+
+  <MiniAssessmentWidget client:visible />
+
+  <noscript>
+    <a href="/app">Take the full assessment</a>
+  </noscript>
+</section>
+```
+
+### Anti-Pattern 5: Not Cleaning Up Observers
+
+**❌ WRONG: Memory leak**
+```js
+const observer = new IntersectionObserver(callback);
+elements.forEach(el => observer.observe(el));
+// Observer never disconnected
+```
+
+**✅ CORRECT: Cleanup after animation**
+```js
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('animate-in');
+      observer.unobserve(entry.target); // ✅ Cleanup
+    }
+  });
+});
+```
 
 ## Testing Strategy
 
 ### Unit Tests
-- **Synthesis Engine**: Test rules in isolation
-- **Utilities**: Test validation, formatting functions
-- **Components**: Test form inputs, state updates
+
+**React Islands:**
+```tsx
+// src/components/islands/__tests__/GaugeChartIsland.test.tsx
+import { render, screen } from '@testing-library/react';
+import GaugeChartIsland from '../GaugeChartIsland';
+
+test('renders gauge with correct score', () => {
+  render(<GaugeChartIsland score={85} label="AI Readiness" />);
+  expect(screen.getByText('85%')).toBeInTheDocument();
+});
+```
+
+**Astro Components:**
+```js
+// Use Astro's built-in testing
+import { experimental_AstroContainer as AstroContainer } from 'astro/container';
+import AnimatedFeatures from '../AnimatedFeatures.astro';
+
+const container = await AstroContainer.create();
+const result = await container.renderToString(AnimatedFeatures);
+// Assert on rendered HTML
+```
 
 ### Integration Tests
-- **Data flow**: Test workspace context updates
-- **Navigation**: Test route guards, invite validation
-- **localStorage**: Test persistence across reloads
 
-### E2E Tests (Optional)
-- **User flows**: Complete assessment → Generate report
-- **Cross-browser**: Test in Chrome, Firefox, Safari
+**Client directive behavior:**
+```js
+// test/integration/hydration.test.js
+import { test, expect } from '@playwright/test';
 
-**Tools:** Vitest (unit), Playwright (E2E)
+test('gauge chart hydrates on scroll', async ({ page }) => {
+  await page.goto('/');
 
----
+  // Initially, chart should be static or not loaded
+  const chart = page.locator('.gauge-chart');
 
-## Future Enhancements (Post-MVP)
+  // Scroll to trigger client:visible
+  await chart.scrollIntoViewIfNeeded();
 
-### Phase 2 Features
-- **Backend sync** (optional): Add Firebase/Supabase for cross-device sync
-- **Team collaboration**: Multi-user workspaces
-- **Templates**: Pre-filled assessments for different industries
-- **Advanced analytics**: Track tool completion rates, time spent
+  // Wait for hydration
+  await expect(chart).toBeVisible();
+  await expect(chart.locator('svg')).toBeVisible();
+});
+```
 
-### Scalability Considerations
-- **Database migration**: If user base grows, add backend for persistence
-- **Authentication**: Replace invite codes with proper auth (Auth0, Clerk)
-- **Payment integration**: If moving to paid model (Stripe)
+### Performance Tests
 
----
+**Lighthouse CI:**
+```bash
+lhci autorun --url http://localhost:4321/
+```
 
-## Research Sources
+**Bundle size monitoring:**
+```bash
+npm run build
+npx vite-bundle-visualizer dist
+# Ensure no bundle > 200KB without code splitting
+```
 
-### Architecture Patterns
-- [Modern Web Application Architecture in 2026](https://quokkalabs.com/blog/modern-web-application-architecture/)
-- [Web Application Architecture: The Ultimate Guide 2026](https://www.owebest.com/blog/web-application-architecture-guide-2024)
-- [Data Flow Architecture](https://www.tutorialspoint.com/software_architecture_design/data_flow_architecture.htm)
-- [Data Flow Diagram (DFD)](https://sbscyber.com/blog/data-flow-diagrams-101)
+### Visual Regression Tests
 
-### State Management
-- [Mastering State Persistence with Local Storage in React](https://medium.com/@roman_j/mastering-state-persistence-with-local-storage-in-react-a-complete-guide-1cf3f56ab15c)
-- [Multistep Forms in React with Persistent State](https://andyfry.co/multi-step-form-persistent-state/)
-- [State Management in Single Page Applications (SPAs)](https://blog.pixelfreestudio.com/state-management-in-single-page-applications-spas/)
+**Percy or Chromatic:**
+```js
+// Take snapshots at different scroll positions
+test('landing page animations', async ({ page }) => {
+  await page.goto('/');
+  await page.screenshot({ path: 'screenshots/hero.png' });
 
-### PDF Generation
-- [How to Generate PDFs in the Browser with Javascript](https://joyfill.io/blog/how-to-generate-pdfs-in-the-browser-with-javascript-no-server-needed)
-- [How We Improved Client-Side PDF Generation by 5x](https://dev.to/karanjanthe/how-we-improved-our-client-side-pdf-generation-by-5x-3n69)
-- [jsPDF GitHub Repository](https://github.com/parallax/jsPDF)
+  await page.evaluate(() => window.scrollTo(0, 800));
+  await page.screenshot({ path: 'screenshots/features.png' });
+});
+```
 
-### CMS & Static Sites
-- [Static Site Generators - Top Open Source SSGs](https://jamstack.org/generators/)
-- [Headless CMS vs. Static Site Generator](https://www.contentstack.com/cms-guides/headless-cms-vs-static-site-generator)
-- [Static Site CMS: Definition, Examples, and How to Choose](https://buttercms.com/blog/static-site-cms-definition-examples-and-how-to-choose/)
+## Migration Path from Current to Enhanced
 
----
+### Step 1: Add Infrastructure (No Visual Changes)
 
-## Quality Gate Checklist
+1. Create `src/components/islands/` directory
+2. Set up animation utilities
+3. Add Intersection Observer helper functions
+4. No user-facing changes yet
 
-- [x] Components clearly defined with boundaries
-  - Marketing Site, Assessment App, Shared Infrastructure detailed
-- [x] Data flow direction explicit
-  - User Input → Component State → Context → localStorage → Synthesis → Report
-- [x] Build order implications noted
-  - 5-phase plan with dependencies and week estimates
-- [x] Synthesis engine architecture clear
-  - Rule-based engine with pure functions, scoring system, insight generation
+### Step 2: Enhance Existing Components (Progressive)
 
----
+1. Features.astro → AnimatedFeatures.astro
+   - Add scroll-triggered animations
+   - Fallback: Static content still visible without JS
 
-## Conclusion
+2. Hero.astro → Enhanced with trust indicators
+   - Add static placeholder for gauge charts
+   - Deploy without islands first (verify layout)
 
-This architecture provides a solid foundation for an SMB strategic assessment platform that:
+### Step 3: Add React Islands (Iterative)
 
-1. **Prioritizes SEO** through static marketing pages
-2. **Protects user privacy** with client-only data storage
-3. **Delivers actionable insights** via synthesis engine
-4. **Generates professional reports** with client-side PDF generation
-5. **Scales affordably** with no backend infrastructure costs
+1. GaugeChartIsland (standalone feature)
+   - Can be added/removed without breaking existing components
+   - Test client:visible behavior in isolation
 
-The phased build order ensures early validation of core patterns before building all 11 tools. The synthesis engine's rule-based design allows easy addition of new business logic as understanding of SMB assessment needs deepens.
+2. MiniAssessmentWidget (new section)
+   - Completely new, doesn't affect existing components
+   - Can be feature-flagged if needed
 
-**Next Steps:**
-1. Review this architecture with stakeholders
-2. Refine tool definitions (what data each tool collects)
-3. Define synthesis rules (specific business logic for gap detection)
-4. Begin Phase 1 implementation (foundation + infrastructure)
+### Step 4: Polish and Optimize
+
+1. Tune rootMargin values for client:visible
+2. Optimize animation timings
+3. Run performance audits
+4. A/B test if needed
+
+**Rollback strategy:** Each step is independently deployable. If issues occur, can roll back individual features without affecting others.
+
+## Sources
+
+### Official Documentation
+- [Astro Islands Architecture](https://docs.astro.build/en/concepts/islands/) - Islands Architecture principles
+- [Astro View Transitions](https://docs.astro.build/en/guides/view-transitions/) - View Transitions API
+- [Astro Client Directives](https://docs.astro.build/en/reference/directives-reference/) - client:load, client:visible, client:idle
+- [Astro on Netlify](https://docs.netlify.com/build/frameworks/framework-setup-guides/astro/) - Deployment guide
+- [Recharts Documentation](https://recharts.org/) - Chart library
+
+### Research Sources (2026)
+- [Islands Architecture Explained - Strapi](https://strapi.io/blog/astro-islands-architecture-explained-complete-guide)
+- [Client Directives Best Practices - DEV](https://dev.to/lovestaco/astros-client-directives-when-and-where-to-use-each-165g)
+- [Astro Client Directives Explained - Medium](https://medium.com/@mirko.tomhave/astro-client-directives-explained-b0daac284c0)
+- [Scroll Animations with Intersection Observer - Codrops](https://tympanus.net/codrops/2026/02/02/building-a-scroll-revealed-webgl-gallery-with-gsap-three-js-astro-and-barba-js/)
+- [Animate on Scroll with Intersection Observer - Medium](https://medium.com/@cgustin/animate-on-scroll-with-the-intersection-observer-api-ad368d91ebab)
+- [Intersection Observer Tutorial - DEV](https://dev.to/ljcdev/introduction-to-scroll-animations-with-intersection-observer-d05)
+- [Best React Chart Libraries 2025 - LogRocket](https://blog.logrocket.com/best-react-chart-libraries-2025/)
+- [React Gauge Charts - DhiWise](https://www.dhiwise.com/post/how-do-react-gauge-charts-impacts-on-data-visualization)
+- [Astro View Transitions by Examples](https://blog.ohansemmanuel.com/astro-view-transitions-2/)
+- [Persist React State in Astro - Astro Patterns](https://astropatterns.dev/p/react-love/view-transitions-and-react-state)
+- [Astro SSG and SSR - DEV](https://dev.to/shubhamtiwari909/astro-js-p2-ssg-and-ssr-2l2l)
+- [Framer Motion with Astro - The Valley of Code](https://thevalleyofcode.com/adding-react-framer-motion-animations-to-an-astro-site/)
+- [React Lazy Loading Best Practices - BrowserStack](https://www.browserstack.com/guide/lazy-loading-in-react)
+- [React SEO Best Practices - Creole Studios](https://www.creolestudios.com/how-to-make-react-website-seo-friendly/)
+- [Netlify Astro Deployment - LogRocket](https://blog.logrocket.com/astro-netlify-build-deploy-web-app/)
+- [What's New in Astro January 2026](https://astro.build/blog/whats-new-january-2026/)
+
+## Confidence Assessment
+
+| Area | Level | Reason |
+|------|-------|--------|
+| Astro Islands Pattern | HIGH | Official docs + existing implementation verified |
+| Client Directives | HIGH | Multiple authoritative sources, tested patterns |
+| Intersection Observer | HIGH | Native API, well-documented, 95%+ browser support |
+| Recharts Integration | HIGH | Already installed, official docs available |
+| SEO Preservation | HIGH | Verified static HTML rendering approach |
+| Performance Optimization | MEDIUM | Best practices documented, needs project-specific tuning |
+| Framer Motion | MEDIUM | Optional dependency, requires evaluation in context |
+| MPA → SPA Data Flow | HIGH | LocalStorage pattern tested, straightforward implementation |
