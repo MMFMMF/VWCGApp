@@ -18,12 +18,12 @@ Requirements for landing page excellence milestone. Continues from v1.0 (44 requ
 
 ### Interactive Sample Report Preview
 
-- [ ] **RPT-01**: Animated gauge charts with count-up effect (AI Readiness %, Leadership DNA %, etc.)
-- [ ] **RPT-02**: Circular progress visualization for score display
-- [ ] **RPT-03**: Expandable insight cards (click to reveal full analysis text)
-- [ ] **RPT-04**: Hover interactions on data points with tooltips
-- [ ] **RPT-05**: "This could be YOUR business" overlay/messaging
-- [ ] **RPT-06**: Smooth scroll-triggered entrance animations for report section
+- [x] **RPT-01**: Animated gauge charts with count-up effect (AI Readiness %, Leadership DNA %, etc.)
+- [x] **RPT-02**: Circular progress visualization for score display
+- [x] **RPT-03**: Expandable insight cards (click to reveal full analysis text)
+- [x] **RPT-04**: Hover interactions on data points with tooltips
+- [x] **RPT-05**: "This could be YOUR business" overlay/messaging
+- [x] **RPT-06**: Smooth scroll-triggered entrance animations for report section
 
 ### Mini-Assessment Teaser
 
@@ -49,12 +49,12 @@ Requirements for landing page excellence milestone. Continues from v1.0 (44 requ
 
 ### Performance & Animation
 
-- [ ] **PRF-01**: Scroll-triggered section reveal animations (fade-in, slide-up)
-- [ ] **PRF-02**: GPU-friendly animations only (transform, opacity - no layout properties)
+- [x] **PRF-01**: Scroll-triggered section reveal animations (fade-in, slide-up)
+- [x] **PRF-02**: GPU-friendly animations only (transform, opacity - no layout properties)
 - [ ] **PRF-03**: Mobile PageSpeed score > 80
 - [ ] **PRF-04**: LCP < 2.5 seconds on mobile
 - [ ] **PRF-05**: CLS < 0.1 (no layout shift from animations)
-- [ ] **PRF-06**: React islands use client:visible for below-fold components
+- [x] **PRF-06**: React islands use client:visible for below-fold components
 
 ## Out of Scope
 
@@ -81,12 +81,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | HERO-03 | Phase 7 | Complete |
 | HERO-04 | Phase 7 | Complete |
 | HERO-05 | Phase 7 | Complete |
-| RPT-01 | Phase 8 | Pending |
-| RPT-02 | Phase 8 | Pending |
-| RPT-03 | Phase 8 | Pending |
-| RPT-04 | Phase 8 | Pending |
-| RPT-05 | Phase 8 | Pending |
-| RPT-06 | Phase 8 | Pending |
+| RPT-01 | Phase 8 | Complete |
+| RPT-02 | Phase 8 | Complete |
+| RPT-03 | Phase 8 | Complete |
+| RPT-04 | Phase 8 | Complete |
+| RPT-05 | Phase 8 | Complete |
+| RPT-06 | Phase 8 | Complete |
 | TSR-01 | Phase 9 | Pending |
 | TSR-02 | Phase 9 | Pending |
 | TSR-03 | Phase 9 | Pending |
@@ -100,12 +100,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CMP-02 | Phase 10 | Pending |
 | CMP-03 | Phase 10 | Pending |
 | CMP-04 | Phase 10 | Pending |
-| PRF-01 | Phase 8 | Pending |
-| PRF-02 | Phase 8 | Pending |
+| PRF-01 | Phase 8 | Complete |
+| PRF-02 | Phase 8 | Complete |
 | PRF-03 | Phase 11 | Pending |
 | PRF-04 | Phase 11 | Pending |
 | PRF-05 | Phase 11 | Pending |
-| PRF-06 | Phase 8 | Pending |
+| PRF-06 | Phase 8 | Complete |
 
 **Coverage:**
 - v1.1 requirements: 30 total
@@ -114,4 +114,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-02-05*
-*Last updated: 2026-02-05 after milestone v1.1 initialization*
+*Last updated: 2026-02-06 after Phase 8 completion*
