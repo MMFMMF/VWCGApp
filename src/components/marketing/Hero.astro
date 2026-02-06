@@ -1,4 +1,6 @@
 ---
+import CounterIsland from '../islands/CounterIsland';
+
 interface Props {
   ctaHref?: string;
 }
@@ -9,34 +11,58 @@ const { ctaHref = '/app' } = Astro.props;
 <section class="relative bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-800 text-white">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-32">
     <div class="text-center">
-      <!-- Headline (MKT-01) -->
+      <!-- Headline (HERO-01) - Pain-focused messaging -->
       <h1 class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight">
-        See Where Your Business<br class="hidden sm:inline" />
-        <span class="text-indigo-200">Really Stands</span>
+        Stop Running Your Business<br class="hidden sm:inline" />
+        <span class="text-indigo-200">Blind</span>
       </h1>
 
-      <!-- Subheadline -->
+      <!-- Subheadline (HERO-02) - Clear value proposition above the fold -->
       <p class="mt-6 text-lg sm:text-xl lg:text-2xl text-indigo-100 max-w-3xl mx-auto">
-        Get clear, actionable visibility into leadership, operations, strategy, and execution gaps—so you know exactly where to focus.
+        Get a complete diagnostic of your leadership, operations, and strategy gaps—in just 10 minutes. No consultants, no guessing.
       </p>
 
-      <!-- Value Props -->
-      <div class="mt-8 flex flex-wrap justify-center gap-4 text-sm sm:text-base text-indigo-200">
-        <span class="flex items-center gap-2">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
-          10+ Assessment Tools
-        </span>
-        <span class="flex items-center gap-2">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
-          AI-Powered Insights
-        </span>
-        <span class="flex items-center gap-2">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
-          PDF Reports
-        </span>
+      <!-- Animated Statistics (HERO-03) - Count-up effect with viewport trigger -->
+      <div class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
+        <div class="flex flex-col items-center">
+          <div class="text-4xl sm:text-5xl font-bold text-white">
+            <CounterIsland
+              end={11}
+              suffix="+"
+              duration={2.0}
+              description="11 plus assessment tools available"
+              client:visible
+            />
+          </div>
+          <p class="mt-2 text-sm sm:text-base text-indigo-200">Assessment Tools</p>
+        </div>
+        <div class="flex flex-col items-center">
+          <div class="text-4xl sm:text-5xl font-bold text-white">
+            <CounterIsland
+              end={500}
+              suffix="+"
+              duration={2.5}
+              description="500 plus business owners served"
+              client:visible
+            />
+          </div>
+          <p class="mt-2 text-sm sm:text-base text-indigo-200">Business Owners Served</p>
+        </div>
+        <div class="flex flex-col items-center">
+          <div class="text-4xl sm:text-5xl font-bold text-white">
+            <CounterIsland
+              end={10}
+              suffix=""
+              duration={1.8}
+              description="10 minutes to complete assessment"
+              client:visible
+            />
+          </div>
+          <p class="mt-2 text-sm sm:text-base text-indigo-200">Minutes to Complete</p>
+        </div>
       </div>
 
-      <!-- CTA Buttons -->
+      <!-- CTA Buttons (HERO-04 & HERO-05) - Primary and secondary CTAs -->
       <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
         <a
           href={ctaHref}
@@ -53,10 +79,33 @@ const { ctaHref = '/app' } = Astro.props;
         </a>
       </div>
 
-      <!-- Trust Signal -->
-      <p class="mt-8 text-sm text-indigo-200">
-        No email required • Get results instantly • 100% private
-      </p>
+      <!-- Trust Signals (TRS-01 to TRS-04) - 4 specific trust signals in responsive grid -->
+      <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto text-sm text-indigo-100">
+        <div class="flex flex-col items-center gap-2">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          <span class="font-medium">No Email Required</span>
+        </div>
+        <div class="flex flex-col items-center gap-2">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+          <span class="font-medium">No Account Required</span>
+        </div>
+        <div class="flex flex-col items-center gap-2">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+          <span class="font-medium">100% Private</span>
+        </div>
+        <div class="flex flex-col items-center gap-2">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          <span class="font-medium">Results in 10 Minutes</span>
+        </div>
+      </div>
     </div>
   </div>
 
