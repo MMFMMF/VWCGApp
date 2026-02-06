@@ -250,6 +250,102 @@ export const useWorkspaceStore = create<WorkspaceStore>()(
           currentState.runSynthesis();
         }, 500);
       },
+
+      loadTeaserAnswers: () => {
+        // Read teaser data from localStorage
+        const teaserAnswersRaw = localStorage.getItem('vwcg-teaser-answers');
+        const teaserCompletedRaw = localStorage.getItem('vwcg-teaser-completed');
+
+        // Exit if no teaser data exists
+        if (!teaserAnswersRaw || !teaserCompletedRaw) {
+          return false;
+        }
+
+        try {
+          const teaserAnswers = JSON.parse(teaserAnswersRaw);
+          const completedTimestamp = parseInt(teaserCompletedRaw, 10);
+
+          // Check expiry: 24 hours
+          const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
+          const age = Date.now() - completedTimestamp;
+
+          if (age > TWENTY_FOUR_HOURS) {
+            // Expired: clean up and exit
+            localStorage.removeItem('vwcg-teaser-answers');
+            localStorage.removeItem('vwcg-teaser-completed');
+            localStorage.removeItem('vwcg-teaser-score');
+            console.log('[Teaser Bridge] Teaser data expired, cleared');
+            return false;
+          }
+
+          // Check if AI Readiness tool already has data (prevent overwrite)
+          const currentState = useWorkspaceStore.getState();
+          const currentToolData = currentState.tools['ai-readiness'];
+
+          // Only load if tool is in default state (lastRun is undefined or old)
+          // Check if any dimension has been modified from default (50)
+          const hasExistingData = currentToolData && (
+            (currentToolData.data as any).strategy !== 50 ||
+            (currentToolData.data as any).data !== 50 ||
+            (currentToolData.data as any).infrastructure !== 50 ||
+            (currentToolData.data as any).talent !== 50 ||
+            (currentToolData.data as any).governance !== 50 ||
+            (currentToolData.data as any).culture !== 50
+          );
+
+          if (hasExistingData) {
+            // Tool already has user data - don't overwrite
+            localStorage.removeItem('vwcg-teaser-answers');
+            localStorage.removeItem('vwcg-teaser-completed');
+            localStorage.removeItem('vwcg-teaser-score');
+            console.log('[Teaser Bridge] AI Readiness already has data, skipping teaser load');
+            return false;
+          }
+
+          // Safe to load teaser data into AI Readiness tool
+          set((state) => ({
+            tools: {
+              ...state.tools,
+              'ai-readiness': {
+                completed: false,
+                lastRun: getTimestamp(),
+                data: {
+                  // Map teaser answers to AI Readiness fields
+                  strategy: teaserAnswers.strategy ?? 50,
+                  data: teaserAnswers.data ?? 50,
+                  talent: teaserAnswers.talent ?? 50,
+                  // Keep other dimensions at default
+                  infrastructure: ((state.tools['ai-readiness']?.data as any)?.infrastructure) ?? 50,
+                  governance: ((state.tools['ai-readiness']?.data as any)?.governance) ?? 50,
+                  culture: ((state.tools['ai-readiness']?.data as any)?.culture) ?? 50,
+                  notes: ((state.tools['ai-readiness']?.data as any)?.notes) ?? '',
+                  lastUpdated: Date.now(),
+                },
+              },
+            },
+            meta: {
+              ...state.meta,
+              updatedAt: getTimestamp(),
+            },
+          }));
+
+          // Clear teaser data after successful load (one-time bridge)
+          localStorage.removeItem('vwcg-teaser-answers');
+          localStorage.removeItem('vwcg-teaser-completed');
+          localStorage.removeItem('vwcg-teaser-score');
+
+          console.log('[Teaser Bridge] Successfully loaded teaser answers:', teaserAnswers);
+          return true;
+
+        } catch (error) {
+          console.error('[Teaser Bridge] Failed to load teaser answers:', error);
+          // Clean up corrupt data
+          localStorage.removeItem('vwcg-teaser-answers');
+          localStorage.removeItem('vwcg-teaser-completed');
+          localStorage.removeItem('vwcg-teaser-score');
+          return false;
+        }
+      },
     }),
     {
       name: 'vwcg-workspace',

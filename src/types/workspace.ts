@@ -152,6 +152,9 @@ export interface WorkspaceActions {
 
   /** Import workspace from data (merge or replace mode) */
   importWorkspace: (workspace: WorkspaceState, merge?: boolean) => void;
+
+  /** Load teaser answers from landing page mini-assessment into AI Readiness tool */
+  loadTeaserAnswers: () => boolean;
 }
 
 /**
