@@ -1,436 +1,293 @@
 # Project State
 
 **Last Updated:** 2026-02-05
-**Current Phase:** Phase 6 - Marketing Site & Access Control (COMPLETE)
-**Overall Progress:** 100%
+**Current Milestone:** v1.1 Landing Page Excellence
+**Current Phase:** Phase 7 - Hero & Trust Messaging
+**Overall Progress:** 0% (v1.1 milestone)
 
 ## Project Reference
 
 See: .planning/PROJECT.md (updated 2026-02-04)
 
-**Core value:** SMB owners get clear, actionable visibility into their business readiness gaps — across leadership, operations, strategy, and execution capacity — so they can make informed decisions about where to focus.
+**Core value:** Make the landing page a traffic magnet that converts cold traffic into assessment users
 
-**Current focus:** PROJECT COMPLETE - v1 MVP Delivered
+**Current focus:** Transform landing page with pain-focused messaging, interactive elements, and performance optimization
 
 ## Current Position
 
-Phase: 6 of 6 (Marketing Site & Access Control)
-Plan: 3 of 3 (Blog & Contact Form) - COMPLETE
-Status: ALL PHASES COMPLETE - v1 MVP DELIVERED
-Last activity: 2026-02-05 - Completed Phase 6 (06-01, 06-02, 06-03)
+Milestone: v1.1 Landing Page Excellence
+Phase: 7 of 11 (Hero & Trust Messaging)
+Plan: Not started
+Status: Ready to begin Phase 7
+Last activity: 2026-02-05 - v1.1 milestone initialized
 
-Progress: ████████████████████ 100% (24/24 plans complete)
+Progress: ░░░░░░░░░░░░░░░░░░░░ 0% (0/5 phases complete)
 
 ## Phase Status
 
 | Phase | Name | Status | Progress | Requirements |
 |-------|------|--------|----------|--------------|
-| 1 | Foundation & Infrastructure | ✅ Complete | 100% | 6/6 plans |
-| 2 | First Assessment Tools | ✅ Complete | 100% | 3/3 tools |
-| 3 | Core Strategic Assessments | ✅ Complete | 100% | 7/7 reqs |
-| 4 | Planning & Synthesis Engine | ✅ Complete | 100% | 12/12 reqs |
-| 5 | Reports & Workspace Management | ✅ Complete | 100% | 9/9 reqs |
-| 6 | Marketing Site & Access Control | ✅ Complete | 100% | 11/11 reqs |
+| 7 | Hero & Trust Messaging | Pending | 0% | 9 reqs |
+| 8 | Interactive Sample Report | Pending | 0% | 9 reqs |
+| 9 | Mini-Assessment Teaser | Pending | 0% | 5 reqs |
+| 10 | Competitive Positioning | Pending | 0% | 4 reqs |
+| 11 | Performance Optimization | Pending | 0% | 3 reqs |
 
-## Phase 1 Completion Summary
+## v1.1 Milestone Overview
 
-All 6 plans completed successfully:
-- ✅ 01-PLAN-project-setup: Astro 5 + React Islands initialized
-- ✅ 02-PLAN-zustand-store: State management with localStorage persistence
-- ✅ 03-PLAN-tool-registry: Tool registry pattern for dynamic registration
-- ✅ 04-PLAN-shared-components: 13 shared UI components
-- ✅ 05-PLAN-synthesis-registry: Synthesis rule registry system
-- ✅ 06-PLAN-example-tool: Example tool with validation, PDF export, synthesis
+**Goal:** Make the landing page a traffic magnet that converts cold traffic into assessment users
 
-**Total Phase 1 commits:** 33
-**Build status:** ✅ Passing (2.29s build time)
+**Key Deliverables:**
+1. Pain-focused hero section with trust signals (Phase 7)
+2. Animated sample report preview with scroll interactions (Phase 8)
+3. 3-question mini-assessment teaser widget (Phase 9)
+4. Competitive positioning comparison table (Phase 10)
+5. Mobile performance optimization (PageSpeed >80, LCP <2.5s) (Phase 11)
 
-## Phase 2 Completion Summary
+**Total Requirements:** 30 (HERO: 5, RPT: 6, TSR: 5, TRS: 4, CMP: 4, PRF: 6)
 
-All 3 plans completed successfully:
-- ✅ 02-01-PLAN-ai-readiness: AI Readiness Assessment tool with radar chart
-- ✅ 02-02-PLAN-leadership-dna: Leadership DNA Assessment tool with dual-layer radar
-- ✅ 02-03-PLAN-business-eq: Business EQ Assessment tool with multi-entry trend tracking
+**Target Conversion:** 25%+ assessment starts from landing page traffic
 
-## Phase 3 Completion Summary
+## Phase 7 Requirements - PENDING
 
-All 7 requirements completed across 5 plans:
-- ✅ 03-01-PLAN-swot-analysis: SWOT Analysis (AST-04) - 4-quadrant matrix with confidence ratings
-- ✅ 03-02-PLAN-vision-canvas: Vision Canvas (AST-05) - North Star, pillars, values
-- ✅ 03-03-PLAN-advisor-readiness: Advisor Readiness (AST-06) - 20 questions, 4 categories
-- ✅ 03-04-PLAN-financial-readiness: Financial Readiness (AST-07) - 8 weighted indicators, risk score
-- ✅ 03-05-PLAN-sop-maturity: SOP Maturity Suite (SOP-01, SOP-02, SOP-03) - 14 process areas, gap analysis, templates
+From ROADMAP.md - 9 requirements pending:
 
-**Build status:** ✅ Passing (3.91s build time)
+**Hero & Messaging (HERO-01 to HERO-05):**
+- [ ] HERO-01: Pain-focused headline ("Stop running your business blind")
+- [ ] HERO-02: Clear value proposition above the fold
+- [ ] HERO-03: Animated statistics counters (count-up effect)
+- [ ] HERO-04: Single primary CTA button
+- [ ] HERO-05: Secondary CTA for "See Sample Report" anchor link
 
-## Phase 4 Completion Summary
+**Trust & Credibility (TRS-01 to TRS-04):**
+- [ ] TRS-01: Privacy badge ("100% Private - Data never leaves your browser")
+- [ ] TRS-02: Security messaging ("No account required")
+- [ ] TRS-03: "No email required" trust signal
+- [ ] TRS-04: Instant results messaging ("Get results in 10 minutes")
 
-All 12 requirements completed across 3 plans:
-- ✅ 04-01-PLAN-90day-roadmap: 90-Day Roadmap (PLN-01 to PLN-04) - 12-week timeline, task dependencies, dual views
-- ✅ 04-02-PLAN-synthesis-rules: Synthesis Rules (SYN-01 to SYN-07) - 7 cross-tool analysis rules
-- ✅ 04-03-PLAN-synthesis-integration: Synthesis Integration (SYN-08, SYN-09) - auto-synthesis, insights dashboard
-
-**Total Phase 4 commits:** 12
-**Build status:** ✅ Passing (3.95s build time)
-
-## Phase 5 Completion Summary
-
-All 9 requirements completed across 2 plans:
-- ✅ 05-01-PLAN-pdf-reports: PDF Reports (RPT-01 to RPT-04) - section selection, jsPDF generation, synthesis insights
-- ✅ 05-02-PLAN-workspace-management: Workspace Management (WRK-01 to WRK-05) - auto-save, export/import, validation
-
-**Total Phase 5 commits:** 8
-**Build status:** ✅ Passing (5.84s build time)
-
-## Phase 6 Completion Summary
-
-All 11 requirements completed across 3 plans:
-- ✅ 06-01-PLAN-marketing-landing: Marketing Landing Page (MKT-01, MKT-03, MKT-04)
-  - SEO-optimized landing page with conversion focus
-  - Hero, Features, Sample Report, CTA, Footer components
-  - MarketingLayout with Open Graph, Twitter Cards, JSON-LD structured data
-  - Mobile-first responsive design (tested 375px+)
-  - sitemap.xml for search engines
-- ✅ 06-02-PLAN-access-control: Access Control Gate (ACC-01 to ACC-04)
-  - InviteGate component with beautiful code entry form
-  - Auth store with sessionStorage persistence (24hr sessions)
-  - Invite code validation (dev mode accepts any, prod validates codes)
-  - URL parameter support for direct access links (?code=XXXX)
-- ✅ 06-03-PLAN-blog-contact: Blog & Contact Form (MKT-02, CTT-01 to CTT-03)
-  - Blog with Astro content collections and 2 sample posts
-  - Decap CMS at /admin for WordPress-like editing
-  - Contact form with Netlify Forms (no backend needed)
-  - Pre-filled message template for lead capture
-
-**Total Phase 6 commits:** ~10
-**Build status:** ✅ Passing (6.50s build time)
-**Pages built:** 6 (/, /app, /blog, /blog/[slug]x2, /invite)
+**Success Criteria:**
+1. Visitor immediately understands the problem (pain point clear <3 seconds)
+2. Value proposition visible above fold on mobile and desktop
+3. Trust signals displayed near CTA without overwhelming design
+4. Statistics counters animate with count-up effect (respects prefers-reduced-motion)
 
 ## Recent Activity
 
-- 2026-02-05: PROJECT COMPLETE - v1 MVP DELIVERED
+- 2026-02-05: v1.1 Milestone Initialized
+  - Research synthesis complete (SUMMARY.md)
+  - Requirements defined (30 requirements across 5 phases)
+  - Roadmap created with goal-backward success criteria
+  - Phase structure: Hero & Trust → Sample Report → Mini-Assessment → Competitive Positioning → Performance
+- 2026-02-05: v1.0 MILESTONE COMPLETE
   - All 44 requirements implemented across 6 phases
   - 24 plans executed successfully
   - Final build: 6.50s, 6 pages, production-ready
-- 2026-02-05: ✅ Completed Phase 6 - Marketing Site & Access Control (all 11 requirements)
-  - Marketing landing page with SEO optimization
-  - Invite-only access control for assessment tools
-  - Blog with Decap CMS integration
-  - Contact form with Netlify Forms
-- 2026-02-05: ✅ Completed 05-01 PDF Reports (RPT-01 to RPT-04)
-  - Created generator.ts with jsPDF for comprehensive PDF formatting
-  - ReportCenterTool.tsx with section selection by category
-  - Auto-select completed tools, Include Insights toggle
-  - PDF includes cover, TOC, assessment sections, synthesis insights
-  - Download as VWCGReport_[workspace-name].pdf
-  - Build passing (5.84s)
-- 2026-02-05: ✅ Completed 05-02 Workspace Management (WRK-01 to WRK-05)
-  - Created fileHandler.ts with export/import validation
-  - WorkspaceManager.tsx with safe mode UI
-  - Export to .vwcg file format with version tracking
-  - Import with partial section selection and merge/replace modes
-  - Auto-save verified working via Zustand persist
-  - Build passing (4.62s)
-- 2026-02-05: ✅ Completed Phase 4 - Planning & Synthesis Engine (all 12 requirements)
-- 2026-02-05: ✅ Completed 04-03 Synthesis Integration (SYN-08, SYN-09)
-  - Auto-synthesis on tool data updates with 500ms debounce
-  - InsightsDashboard.tsx with severity badges, type filters, dismiss/restore
-  - Dynamic import of synthesis rules to avoid circular dependencies
-  - Build passing (3.95s)
-- 2026-02-05: ✅ Completed 04-02 Synthesis Rules (SYN-01 to SYN-07)
-  - Created 7 synthesis rules analyzing cross-tool data patterns
-  - E1 - Execution Capability Gap: leadership execution < 6 + pillars exceed capacity
-  - E2 - Unmitigated Threat: high-confidence threats without roadmap tasks
-  - E3 - Burnout Risk: advisor readiness < 50% + tasks exceed safe capacity
-  - E4 - Strength Leverage: high-confidence strengths not in strategic pillars
-  - E5 - SOP Metric Missing: critical processes immature while tracking metrics
-  - E10 - Opportunity-Capability Match: opportunities aligned with existing strengths
-  - E11 - Strength Multiplication: 5+ high-scoring dimensions create compounding advantages
-  - Self-registering rules pattern with generateInsightId() for unique identifiers
-  - Build passing (3.59s)
-- 2026-02-05: ✅ Completed 04-01 90-Day Roadmap (PLN-01 to PLN-04)
-  - Created RoadmapTool.tsx with 12-week timeline across 3 phases (Foundation 1-4, Growth 5-8, Scale 9-12)
-  - Task management: add, edit, remove, status tracking (planned, in-progress, completed)
-  - Dependencies tracking between tasks via IDs
-  - Timeline view with phase-based color coding (Foundation: indigo, Growth: green, Scale: amber)
-  - List view grouped by phase with status dropdowns
-  - Progress statistics and visualization (percentage complete, status breakdown)
-  - Auto-registration at position 9 in planning category
-  - Build passing (3.73s)
-- 2026-02-04: ✅ Completed 03-05 SOP Maturity
-  - Created SOPMaturityTool.tsx with 14 process areas across 4 categories (Operations, Customer, Finance, Quality)
-  - 0-5 maturity scale (Non-existent to Automated) with level descriptions
-  - 1-5 importance rating for business criticality
-  - Gap score calculation: importance × (5 - maturity) for ranking critical needs
-  - Top 3 critical SOPs automatically identified and displayed with template suggestions
-  - Template recommendations for 9 common SOP types (Employee Onboarding, Sales Process, etc.)
-  - Category breakdown with filtering capability
-  - Build passing (3.80s)
-- 2026-02-04: ✅ Completed 03-04 Financial Readiness
-  - Created FinancialReadinessTool.tsx with 8 weighted indicators
-  - Risk score calculation: inverted from weighted health score
-  - Visual dashboard: horizontal bar chart and gradient risk meter
-  - Areas needing attention: auto-flags indicators < 40%
-  - Weighted scoring: Cash Flow (15%), Runway (15%), Debt (10%), Margins (15%), Growth (15%), Diversification (10%), Recurring Revenue (10%), Collections (10%)
-- 2026-02-04: ✅ Completed 03-03 Advisor Readiness
-  - Created AdvisorReadinessTool.tsx with 20 questions across 4 categories
-  - Strategic Alignment, Operational Maturity, Financial Health, Cultural Readiness (5 questions each)
-  - 1-5 scale rating per question with visual button interface
-  - Overall percentage calculation with maturity badges (Foundational/Emerging/Developing/Advisor-Ready)
-  - Collapsible category sections with radar chart and progress bars
-  - Validation warnings for default values and extreme ratings
-  - Build passing (3.82s)
-- 2026-02-04: ✅ Completed 03-01 SWOT Analysis
-  - Created SWOTAnalysisTool.tsx with 4-quadrant matrix
-  - Color-coded quadrants: Strengths (emerald), Weaknesses (red), Opportunities (blue), Threats (amber)
-  - Confidence rating system: 1-5 per item with visual feedback
-  - Item management: add text, remove, inline confidence updates
-  - Validation and PDF export with quadrant summaries
-  - Build passing (3.59s)
-- 2026-02-04: ✅ Completed Phase 2 - First Assessment Tools (all 3 plans)
-  - AI Readiness (02-01): 6-dimension radar chart
-  - Leadership DNA (02-02): dual-layer radar (current vs target)
-  - Business EQ (02-03): multi-entry trend tracking
-- 2026-02-04: ✅ Completed Phase 1 - Foundation & Infrastructure (all 6 plans)
 
-## Phase 4 Requirements - ✅ COMPLETE
+## v1.0 Completion Summary (REFERENCE)
 
-From ROADMAP.md - all 12 requirements completed:
+**Milestone:** Core Platform
+**Phases:** 1-6
+**Status:** Complete (2026-02-05)
+**Requirements:** 44/44 complete
 
-**Planning Tools (PLN-01 to PLN-04): ✅ COMPLETE**
-- ✅ PLN-01: 90-Day Roadmap - 12-week timeline across 3 phases
-- ✅ PLN-02: Task creation with title, owner, week, status, dependencies
-- ✅ PLN-03: Status tracking (planned, in-progress, completed)
-- ✅ PLN-04: Timeline visualization with phase-based coloring
+<details>
+<summary>Phase 1: Foundation & Infrastructure (COMPLETE)</summary>
 
-**Synthesis Engine (SYN-01 to SYN-09): ✅ COMPLETE**
-- ✅ SYN-01: E1 — Execution Capability Gap
-- ✅ SYN-02: E2 — Unmitigated Threat
-- ✅ SYN-03: E3 — Burnout Risk
-- ✅ SYN-04: E4 — Strength Leverage
-- ✅ SYN-05: E5 — SOP Metric Missing
-- ✅ SYN-06: E10 — Opportunity-Capability Match
-- ✅ SYN-07: E11 — Strength Multiplication
-- ✅ SYN-08: Automatic synthesis on every state update
-- ✅ SYN-09: Insight display with severity badges, recommendations, related tools
+**Deliverables:**
+- ✅ Astro 5 + React Islands architecture
+- ✅ Zustand state management with localStorage persistence
+- ✅ Tool registry pattern
+- ✅ Shared UI component library (13 components)
+- ✅ Synthesis rule registry
+- ✅ Example tool pattern
+
+**Build status:** ✅ Passing (2.29s)
+**Commits:** 33
+</details>
+
+<details>
+<summary>Phase 2: First Assessment Tools (COMPLETE)</summary>
+
+**Deliverables:**
+- ✅ AI Readiness Assessment (6-dimension radar chart)
+- ✅ Leadership DNA Assessment (dual-layer radar)
+- ✅ Business EQ Assessment (multi-entry trend tracking)
+
+**Build status:** ✅ Passing
+</details>
+
+<details>
+<summary>Phase 3: Core Strategic Assessments (COMPLETE)</summary>
+
+**Deliverables:**
+- ✅ SWOT Analysis (4-quadrant matrix with confidence ratings)
+- ✅ Vision Canvas (North Star, pillars, values)
+- ✅ Advisor Readiness (20 questions, 4 categories)
+- ✅ Financial Readiness (8 weighted indicators, risk score)
+- ✅ SOP Maturity Suite (14 process areas, gap analysis)
+
+**Build status:** ✅ Passing (3.91s)
+</details>
+
+<details>
+<summary>Phase 4: Planning & Synthesis Engine (COMPLETE)</summary>
+
+**Deliverables:**
+- ✅ 90-Day Roadmap (12-week timeline, task dependencies)
+- ✅ Synthesis Rules (7 rules: E1-E5, E10-E11)
+- ✅ Auto-synthesis engine (debounced triggering)
+- ✅ Insights Dashboard (severity badges, filters)
+
+**Build status:** ✅ Passing (3.95s)
+**Commits:** 12
+</details>
+
+<details>
+<summary>Phase 5: Reports & Workspace Management (COMPLETE)</summary>
+
+**Deliverables:**
+- ✅ PDF Reports (section selection, jsPDF generation, synthesis insights)
+- ✅ Workspace Management (auto-save, export/import, validation)
+
+**Build status:** ✅ Passing (5.84s)
+**Commits:** 8
+</details>
+
+<details>
+<summary>Phase 6: Marketing Site & Access Control (COMPLETE)</summary>
+
+**Deliverables:**
+- ✅ SEO-optimized landing page (Hero, Features, Sample Report, CTA, Footer)
+- ✅ Invite-only access control (sessionStorage persistence, URL params)
+- ✅ Blog with Decap CMS (WordPress-like editing at /admin)
+- ✅ Contact form with Netlify Forms (pre-filled message template)
+
+**Build status:** ✅ Passing (6.50s)
+**Pages built:** 6
+**Commits:** ~10
+</details>
 
 ## Decisions Log
 
-| Date | Plan | Decision | Rationale |
-|------|------|----------|-----------|
+| Date | Phase | Decision | Rationale |
+|------|-------|----------|-----------|
+| 2026-02-05 | v1.1 | Start phase numbering at 7 | Continues from v1.0 Phase 6, maintains historical continuity |
+| 2026-02-05 | v1.1 | 5 phases for 30 requirements | Natural delivery boundaries: messaging → value demo → engagement → positioning → performance |
+| 2026-02-05 | v1.1 | Phase 7 combines HERO + TRS requirements | Hero messaging and trust signals work together to establish credibility above fold |
+| 2026-02-05 | v1.1 | Phase 8 includes PRF-01, PRF-02, PRF-06 | Animation performance requirements belong with interactive sample report implementation |
+| 2026-02-05 | v1.1 | Phase 11 pure performance optimization | Optimize after all features complete, not during development |
 | 2026-02-05 | 05-01 | Use jsPDF for client-side PDF generation | No server required, works offline, good React integration |
-| 2026-02-05 | 05-01 | Auto-select all completed tools on first load | Better UX - most users want comprehensive reports |
-| 2026-02-05 | 05-01 | Group tools by category in selection UI | Clearer organization for 10+ tools |
-| 2026-02-05 | 05-02 | Export format wraps workspace in metadata object | Version and exportedAt timestamp enable validation and upgrade tracking |
-| 2026-02-05 | 05-02 | Validation separates errors from warnings | Errors block import (invalid format), warnings inform user (version mismatch, unknown tools) |
-| 2026-02-05 | 05-02 | Partial import with section selection | Users may only want specific tool data, not entire workspace |
-| 2026-02-05 | 05-02 | Auto-trigger synthesis after import | Imported data needs cross-tool analysis to generate insights |
-| 2026-02-05 | 04-03 | 500ms debounce on synthesis trigger | Prevents excessive re-evaluation during rapid tool updates while maintaining responsiveness |
-| 2026-02-05 | 04-03 | Dynamic import of synthesis rules | Avoids circular dependencies between workspaceStore and synthesis rules |
-| 2026-02-05 | 04-03 | Persist synthesisResult in store | Enables offline access to latest synthesis without re-evaluation |
-| 2026-02-05 | 04-03 | Type-based color coding (red/amber/blue/green) | Visual distinction helps users quickly scan for specific insight types |
-| 2026-02-05 | 04-02 | E1 dynamic capacity = execution × 0.6 | Scales pillar capacity with leadership capability (10→6 pillars, 5→3 pillars) |
-| 2026-02-05 | 04-02 | E2 high-confidence threshold = 4+ | Focus on critical threats that need immediate attention |
-| 2026-02-05 | 04-02 | E3 safe capacity = (readiness%/100) × 5 | Linear scaling: 100% readiness = 5 tasks/week, 50% = 2.5 tasks/week |
-| 2026-02-05 | 04-02 | E4/E2 keyword matching: 4+ char words | Balance between semantic significance and false negatives |
-| 2026-02-05 | 04-02 | E5 critical immature = importance ≥4 AND maturity <3 | Focus on high-importance processes that aren't yet standardized |
-| 2026-02-05 | 04-02 | E11 multiplication threshold = 5+ dimensions | Rare achievement indicating truly exceptional multi-dimensional strength |
-| 2026-02-05 | 04-01 | Three 4-week phases (Foundation, Growth, Scale) | Clear structure for 90-day planning aligned with typical quarterly cycles |
-| 2026-02-05 | 04-01 | Phase-specific colors (indigo, green, amber) | Visual distinction helps with planning clarity and phase identification |
-| 2026-02-05 | 04-01 | Task dependencies via IDs (non-blocking) | Track dependencies for visibility but don't enforce blocking for flexible planning |
-| 2026-02-04 | 03-03 | 4 categories with 5 questions each (20 total) | Comprehensive coverage across Strategic, Operational, Financial, and Cultural dimensions |
-| 2026-02-04 | 03-03 | Collapsible category sections | Reduces UI clutter while maintaining full question visibility |
-| 2026-02-04 | 03-03 | Maturity level badges (Foundational/Emerging/Developing/Advisor-Ready) | Clear visual feedback on readiness level |
-| 2026-02-04 | 03-04 | 8 indicators with weighted scoring (total 100%) | Different indicators have different impacts - cash flow/margins weighted higher (15%) than diversification (10%) |
-| 2026-02-04 | 03-04 | Risk score inverted from health score (100 - weighted avg) | Users think in terms of "risk" for financial assessments - lower numbers = lower risk is intuitive |
-| 2026-02-04 | 03-04 | Horizontal bar chart layout | 8 indicators fit better horizontally - easier to scan and compare side-by-side |
-| 2026-02-04 | 03-04 | Auto-flag concerns at 40% threshold | Below 40% indicates immediate attention needed - automatic flagging ensures no critical issues overlooked |
-| 2026-02-04 | 03-05 | 14 SOP areas across 4 categories | Comprehensive coverage of core business processes (Operations, Customer, Finance, Quality) aligned with SMB organizational structure |
-| 2026-02-04 | 03-05 | Gap score = importance × (5 - maturity) | Prioritizes both high-importance areas AND large maturity gaps for actionable recommendations |
-| 2026-02-04 | 03-05 | Template suggestions for identified gaps | Reduces SOP creation friction - users see concrete next steps (which templates to use) |
-| 2026-02-04 | 03-01 | 4-quadrant layout with color-coded borders | Visual differentiation of quadrant types (internal vs external, positive vs negative) |
-| 2026-02-04 | 03-01 | Inline confidence selector (1-5) per item | Quick confidence rating without modal/dropdown complexity |
-| 2026-02-04 | 03-01 | Default confidence: 3 (medium) | Neutral starting point, user adjusts up/down as needed |
-| 2026-02-04 | 02-03 | Multi-entry system with date-based tracking | Track EQ progression over time with historical entries |
-| 2026-02-04 | 02-03 | Show trend chart only when 2+ entries | Avoid single-point "trends" - need multiple data points |
-| 2026-02-04 | 02-03 | Declining trend warnings (>20% drop) | Alert users to significant EQ regression |
-| 2026-02-04 | 02-01 | Use recharts library | Industry-standard React charting, well-documented |
-| 2026-02-04 | 02-01 | Enhanced SliderInput with descriptions | Reusable pattern for all assessment tools |
-| 2026-02-04 | 02-01 | AI Readiness order: 1 | Foundational assessment should appear first |
-| 2026-02-04 | 01-03 | Singleton Tool Registry | Single instance prevents registry fragmentation |
-| 2026-02-04 | 01-03 | Self-Registration Pattern | Tools register on import, no manual maintenance |
-| 2026-02-04 | 01-05 | Singleton Synthesis Registry | Single registry instance for all synthesis rules |
-| 2026-02-04 | 01-05 | Self-Registering Rules | Rules auto-register on import |
-| 2026-02-04 | 01-06 | Example Tool Pattern | Comprehensive example demonstrates all patterns |
+| 2026-02-05 | 04-03 | 500ms debounce on synthesis trigger | Prevents excessive re-evaluation during rapid tool updates |
+| 2026-02-05 | 04-02 | E1 dynamic capacity = execution × 0.6 | Scales pillar capacity with leadership capability |
+| 2026-02-05 | 04-01 | Three 4-week phases (Foundation, Growth, Scale) | Clear structure for 90-day planning |
+| 2026-02-04 | 03-05 | Gap score = importance × (5 - maturity) | Prioritizes both high-importance areas AND large maturity gaps |
 
-## Key Deliverables Completed
+## Key Deliverables Planned (v1.1)
 
-**Phase 1 Complete:**
-- ✅ Astro 5 project with React Islands architecture
-- ✅ Zustand stores (workspace + UI) with localStorage persistence
-- ✅ Tool registry system with dynamic routing
-- ✅ Shared UI component library (13 components)
-- ✅ Synthesis rule registry system
-- ✅ Example tool with validation, PDF export, synthesis integration
-- ✅ Tool creation documentation (TOOL_CREATION_GUIDE.md)
+**Phase 7: Hero & Trust Messaging**
+- Pain-focused headline and value proposition
+- Animated statistics counters (count-up effect)
+- Primary and secondary CTAs
+- Trust signals (privacy, no account, no email, instant results)
 
-**Phase 2 Complete:**
-- ✅ AI Readiness Assessment tool (6 dimensions, radar chart)
-- ✅ Business EQ Assessment tool (6 dimensions, multi-entry, trend tracking)
-- ✅ Leadership DNA Assessment tool (6 dimensions, current vs target)
-- ✅ Recharts library integration
-- ✅ Enhanced SliderInput with descriptions
+**Phase 8: Interactive Sample Report**
+- Animated gauge charts with count-up effect
+- Circular progress visualizations
+- Expandable insight cards
+- Scroll-triggered entrance animations
+- GPU-friendly animations (transform/opacity only)
+- React islands with client:visible hydration
 
-**Phase 3 Complete:**
-- ✅ SWOT Analysis tool (4-quadrant matrix with confidence ratings)
-- ✅ Vision Canvas tool (North Star, pillars, values)
-- ✅ Advisor Readiness tool (20 questions, 4 categories, maturity scoring)
-- ✅ Financial Readiness tool (8 weighted indicators, risk score, bar chart)
-- ✅ SOP Maturity tool (14 process areas, gap analysis, template suggestions)
+**Phase 9: Mini-Assessment Teaser**
+- 3-question quick assessment widget (inline, not modal)
+- Progress indicator (1/3, 2/3, 3/3)
+- Real-time result calculation
+- localStorage bridge to full assessment
 
-**Phase 4 Complete:**
-- ✅ 90-Day Roadmap tool (12-week timeline, 3 phases, task dependencies, dual views)
-- ✅ Synthesis Rules (7 rules: E1-E5, E10-E11 analyzing cross-tool patterns)
-- ✅ Auto-synthesis engine (debounced triggering on tool data updates)
-- ✅ Insights Dashboard (severity badges, type filters, dismiss/restore functionality)
+**Phase 10: Competitive Positioning**
+- Comparison table (VWCGApp vs Consultant vs DIY)
+- Time, cost, and objectivity comparisons
+- Visual design showing VWCGApp advantages
 
-**Phase 5 Complete:**
-- ✅ PDF Reports (RPT-01 to RPT-04)
-  - Section selection UI with checkboxes grouped by category
-  - jsPDF client-side PDF generation
-  - Cover page, TOC, assessment sections, synthesis insights
-  - Download as VWCGReport_[workspace-name].pdf
-- ✅ Workspace Management (WRK-01 to WRK-05)
-  - Auto-save to localStorage (Zustand persist middleware)
-  - Export workspace to .vwcg file
-  - Import workspace from .vwcg or .json with safe mode validation
-  - Partial section import with checkboxes
-  - Version tracking and upgrade mechanism
-
-**Key Architecture Files:**
-- `src/stores/workspaceStore.ts` - State management
-- `src/lib/tools/toolRegistry.ts` - Tool registry
-- `src/lib/synthesis/ruleRegistry.ts` - Synthesis rule registry
-- `src/components/shared/` - 13 shared components
-- `src/components/tools/ExampleTool.tsx` - Reference implementation
-- `src/components/tools/AIReadinessTool.tsx` - AI Readiness assessment (single-entry pattern)
-- `src/components/tools/LeadershipDNATool.tsx` - Leadership DNA assessment (dual-layer pattern)
-- `src/components/tools/BusinessEQTool.tsx` - Business EQ assessment (multi-entry pattern)
-- `src/components/tools/VisionCanvasTool.tsx` - Vision Canvas tool
-- `src/components/tools/SWOTAnalysisTool.tsx` - SWOT Analysis (4-quadrant matrix pattern)
-- `src/components/tools/AdvisorReadinessTool.tsx` - Advisor Readiness (20-question assessment)
-- `src/components/tools/FinancialReadinessTool.tsx` - Financial Readiness (8 weighted indicators, risk score pattern)
-- `src/components/tools/SOPMaturityTool.tsx` - SOP Maturity (14 process areas, gap analysis, template suggestions)
-- `src/components/tools/RoadmapTool.tsx` - 90-Day Roadmap (12-week timeline, phase-based planning, task dependencies)
-- `src/components/tools/InsightsDashboard.tsx` - Insights Dashboard (severity badges, type filters, dismiss/restore)
-- `src/components/workspace/WorkspaceManager.tsx` - Workspace Management UI (export/import with safe mode)
-- `src/lib/workspace/fileHandler.ts` - Workspace file export/import utilities with validation
-- `src/lib/pdf/generator.ts` - PDF report generation with jsPDF
-- `src/components/tools/ReportCenterTool.tsx` - Report Center with section selection
-- `src/lib/synthesis/rules/E1-execution-gap.ts` - Execution capability vs strategic pillar analysis
-- `src/lib/synthesis/rules/E2-unmitigated-threat.ts` - SWOT threats vs roadmap gap detection
-- `src/lib/synthesis/rules/E3-burnout-risk.ts` - Advisor readiness vs task load capacity
-- `src/lib/synthesis/rules/E4-strength-leverage.ts` - SWOT strengths vs strategic alignment
-- `src/lib/synthesis/rules/E5-sop-metric-missing.ts` - SOP maturity vs metric reliability
-- `src/lib/synthesis/rules/E10-opportunity-match.ts` - Strength-opportunity alignment detection
-- `src/lib/synthesis/rules/E11-strength-multiplication.ts` - Multi-dimensional compounding advantages
-- `docs/TOOL_CREATION_GUIDE.md` - Developer documentation
-
-**Phase 6 Architecture Files:**
-- `src/layouts/MarketingLayout.astro` - SEO-optimized marketing layout
-- `src/components/marketing/Hero.astro` - Conversion-focused hero section
-- `src/components/marketing/Features.astro` - Assessment tools showcase
-- `src/components/marketing/SampleReport.astro` - Report preview section
-- `src/components/marketing/CTA.astro` - Call-to-action section
-- `src/components/marketing/ContactForm.astro` - Netlify Forms contact form
-- `src/components/marketing/Footer.astro` - Site footer
-- `src/lib/auth/inviteCode.ts` - Invite code validation utilities
-- `src/stores/authStore.ts` - Auth state with sessionStorage
-- `src/components/auth/InviteGate.tsx` - Protected content wrapper
-- `src/pages/invite.astro` - Dedicated invite code entry page
-- `src/content/config.ts` - Blog content collection schema
-- `public/admin/config.yml` - Decap CMS configuration
-- `public/sitemap.xml` - SEO sitemap
+**Phase 11: Performance Optimization**
+- Mobile PageSpeed score >80
+- LCP <2.5s on mobile
+- CLS <0.1 (no layout shift)
+- Hero image optimization (WebP/AVIF, srcset)
+- Bundle analysis (<100KB increase)
 
 ## Next Actions
 
-1. ✅ ~~Complete Phase 1 Foundation & Infrastructure~~
-2. ✅ ~~Complete Phase 2 First Assessment Tools~~
-3. ✅ ~~Complete Phase 3 Core Strategic Assessments~~
-4. ✅ ~~Complete Phase 4 Planning & Synthesis Engine~~
-5. ✅ ~~Complete Phase 5 Reports & Workspace Management~~ (9/9 requirements complete)
-6. ✅ ~~Complete Phase 6 Marketing Site & Access Control~~ (11/11 requirements complete)
+1. Begin Phase 7: Hero & Trust Messaging
+   - Run `/gsd:plan-phase 7` to create execution plan
+   - Focus on pain-focused messaging and trust signal placement
+   - Implement animated counters with prefers-reduced-motion support
 
-**PROJECT COMPLETE - v1 MVP DELIVERED**
+2. Research Flags (from SUMMARY.md)
+   - Phase 9: Determine optimal mini-assessment questions during planning
+   - Phase 9: UX validation critical for widget design
 
-## Post-Launch Recommendations
-
-1. **Deploy to Production**
-   - Deploy to Netlify (for Forms and Identity)
-   - Configure Netlify Identity and Git Gateway for Decap CMS
-   - Add production invite codes to inviteCode.ts
-   - Set up form notification emails
-
-2. **Content & SEO**
-   - Create og-image.png (1200x630px) for social sharing
-   - Write 5-10 initial blog posts
-   - Submit sitemap to Google Search Console
-
-3. **Quality Enhancements**
-   - Implement exportToPDF() in remaining tools
-   - Add chart rendering in PDFs (html2canvas)
-   - Add Google Analytics tracking
+3. Technology Stack for v1.1
+   - Motion (LazyMotion + domAnimation): 15KB for React island animations
+   - react-intersection-observer: 2KB for viewport detection
+   - react-countup: 4KB for animated number counters
+   - react-circular-progressbar: 5KB for gauge indicators
+   - tailwindcss-animate: 0KB (JIT compilation)
+   - Total new bundle: ~42KB gzipped (within 50KB/island target)
 
 ## Blockers & Concerns
 
-**None - Project Complete**
+**None - Ready to Begin Phase 7**
 
-**Known Limitations (Post-Launch Enhancements):**
-1. PDF Export: Most tools need exportToPDF() implementation for formatted data
-2. Chart Rendering: PDFs support tables/text but not chart images (use html2canvas)
-3. Invite Codes: Currently hardcoded; consider database integration for admin panel
+**Considerations:**
+- Research suggests mini-assessment questions need UX validation (Phase 9)
+- Performance budget: <100KB total JavaScript increase from v1.0
+- Must maintain LCP <2.5s while adding animations
+- All animations must respect prefers-reduced-motion
 
-## Key Metrics Targets
+## Key Metrics Targets (v1.1)
 
-**Technical:**
-- localStorage persistence: <2MB per workspace ✅
-- PDF generation time: <5 seconds
-- Mobile completion rate: ≥60% of desktop
-- Build time: <30 seconds ✅ (currently 3.59s)
+**Performance:**
+- Mobile PageSpeed score: >80
+- LCP: <2.5s on mobile (throttled 3G)
+- CLS: <0.1 (no layout shift from animations)
+- Total bundle increase: <100KB from v1.0
+- FCP: <1.5s
+- TBT: <200ms
+
+**Conversion:**
+- Assessment start conversion: ≥25% (up from baseline)
+- Mini-assessment completion rate: ≥60%
+- Mini-assessment → full assessment bridge: working (localStorage handoff)
+- Mobile conversion: within 20% of desktop
 
 **User Experience:**
-- Assessment completion time: <10 minutes ✅
-- Completion rate: 70%+
-- PDF download rate: 80%+ of completions
-- Synthesis insights: ≥3 specific recommendations per user
+- Hero pain point understood: <3 seconds
+- Sample report preview: 2-3 assessment scores visible
+- Mini-assessment completion time: <2 minutes
+- Comparison table: VWCGApp advantages clear
 
-**Business:**
-- Email opt-in rate: 30%+ (voluntary)
-- Advisory inquiry rate: 10%+ of completions
-- Blog traffic → assessment starts: 20%+
+## Project Timeline (v1.1)
 
-## Project Timeline
+**Estimated Duration:** 10 weeks to v1.1 production launch
 
-**COMPLETED:** All phases finished ahead of schedule
-
-| Milestone | Target Week | Status |
-|-----------|-------------|--------|
-| Infrastructure complete | Week 2 | ✅ Complete |
-| First tools working | Week 4 | ✅ Complete |
-| Core assessments complete | Week 7 | ✅ Complete |
-| Synthesis MVP working | Week 10 | ✅ Complete |
-| Full feature set complete | Week 13 | ✅ Complete |
-| Production launch | Week 15 | ✅ Ready for Deploy |
+| Phase | Duration | Cumulative | Milestone |
+|-------|----------|------------|-----------|
+| 7 | 2 weeks | Week 2 | Hero transformation complete |
+| 8 | 3 weeks | Week 5 | Interactive report preview working |
+| 9 | 2 weeks | Week 7 | Mini-assessment live |
+| 10 | 1 week | Week 8 | Competitive positioning added |
+| 11 | 2 weeks | Week 10 | **v1.1 PRODUCTION LAUNCH** |
 
 ## Session Continuity
 
 Last session: 2026-02-05
-Status: PROJECT COMPLETE - v1 MVP DELIVERED
+Status: v1.1 milestone initialized, ready to begin Phase 7
 Resume file: None
-Next action: Deploy to production (Netlify recommended)
+Next action: Run `/gsd:plan-phase 7` to create execution plan for Hero & Trust Messaging
 
 ---
 
-*State tracking initialized: 2026-02-04*
-*Last updated: 2026-02-05*
+*State tracking initialized: 2026-02-04 (v1.0)*
+*v1.1 milestone initialized: 2026-02-05*
 *See ROADMAP.md for detailed phase breakdown*

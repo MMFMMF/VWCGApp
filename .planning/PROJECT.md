@@ -8,40 +8,66 @@ A strategic assessment platform for SMB owners and entrepreneurs that provides g
 
 **SMB owners get clear, actionable visibility into their business readiness gaps** — across leadership, operations, strategy, and execution capacity — so they can make informed decisions about where to focus.
 
+## Current Milestone: v1.1 Landing Page Excellence
+
+**Goal:** Transform the landing page into a traffic magnet that converts cold traffic into assessment users
+
+**Target features:**
+- Pain-focused hero messaging with animated statistics
+- Interactive sample report preview with animated gauges and expandable insights
+- Mini-assessment teaser (3 questions) with instant result
+- Trust badges and credibility signals
+- Competitive positioning table (VWCGApp vs Consultant vs DIY)
+- Performance optimization (PageSpeed >80, LCP <2.5s)
+
 ## Requirements
 
-### Validated
+### Validated (v1.0 Complete)
 
-(None yet — ship to validate)
+<!-- Shipped and confirmed working. -->
 
-### Active
+- ✓ Public marketing site with landing page — v1.0
+- ✓ WordPress-like blog system (Decap CMS) — v1.0
+- ✓ Invite-only access gate for assessment tools — v1.0
+- ✓ 11 strategic assessment tools — v1.0
+- ✓ Synthesis engine with 7 cross-tool insight rules — v1.0
+- ✓ PDF report generation (jsPDF) — v1.0
+- ✓ Contact form (Netlify Forms) — v1.0
+- ✓ Workspace save/load functionality (.vwcg files) — v1.0
+- ✓ Data persistence via localStorage — v1.0
 
-- [ ] Public marketing site with landing page optimized for cold traffic conversion (PPC, social ads)
-- [ ] WordPress-like blog system for SEO and organic traffic building
-- [ ] Invite-only access gate for assessment tools
-- [ ] 11 strategic assessment tools (AI Readiness, Leadership DNA, Business EI, Vision Canvas, SWOT, SOP Taxonomy, SOP Creation, SOP Management, 90-Day Roadmap, Advisor Readiness, Report Center)
-- [ ] Synthesis engine with cross-tool insight rules
-- [ ] PDF report generation
-- [ ] Simple contact form for users who want help
-- [ ] Workspace save/load functionality (.vwcg files)
-- [ ] Data persistence via localStorage (no database)
+### Active (v1.1)
+
+<!-- Current scope. Building toward these. -->
+
+- [ ] Pain-focused hero messaging with animated statistics
+- [ ] Interactive sample report preview (animated gauges, expandable insight cards)
+- [ ] Mini-assessment teaser widget (3 questions, instant result)
+- [ ] Trust and credibility badges
+- [ ] Competitive positioning comparison table
+- [ ] Performance optimization (Core Web Vitals targets)
 
 ### Out of Scope
+
+<!-- Explicit boundaries. Includes reasoning to prevent re-adding. -->
 
 - Database backend — localStorage only, keep it simple
 - User accounts/authentication system — invite codes, not user management
 - Hard-sell tactics, aggressive CTAs, gated reports — genuine value first
-- Auto-attaching PDF to contact form — user sends PDF when consultant responds
+- Video testimonials — no video content available yet
+- "As seen in" logos — no press coverage to reference yet
+- Newsletter signup — conflicts with "no email required" messaging
+- A/B testing infrastructure — build first, test later
 
 ## Context
 
-**Origin:** Previously built with Google Gravity AI, which produced structurally unsound code with poor dependency management, no testing, and extremely limited context. The instructional manual describes intent, but the implementation quality is suspect.
+**v1.0 Complete:** 44 requirements across 6 phases delivered 2026-02-05. All core functionality working.
 
-**Validation needed:** The 11 tools and 5 synthesis rules (E1-E5) are inherited from the original spec but need validation. Research required to determine if these are the right tools for SMB owners and if the synthesis thresholds generate genuinely useful insights.
+**v1.1 Focus:** The user stated "this is my livelihood" — landing page must convert cold traffic (PPC, social ads) into assessment users. Research indicates interactive elements (mini-assessment + sample report) drive 3-4x conversion improvement.
 
-**Reference material:** Instructional manual at `C:\Users\Kamyar\Downloads\vwcgapp_instructional_manual.md` contains detailed specs for all tools, UI layouts, data structures, and synthesis rules.
+**Deployment:** https://sparkly-speculoos-87b564.netlify.app/ (v1.0 deployed)
 
-**Existing deployment:** https://vwcgapp.web.app/ (quality unknown, built with problematic tooling)
+**GitHub:** https://github.com/MMFMMF/VWCGApp
 
 ## Constraints
 
@@ -50,15 +76,18 @@ A strategic assessment platform for SMB owners and entrepreneurs that provides g
 - **Blog CMS**: Needs WordPress-like content management for non-technical editing
 - **SEO + Conversion**: Landing page must perform for both organic search and paid traffic
 - **Lead gen, not SaaS**: No user accounts, no recurring revenue model — this is a funnel top
+- **Performance**: Mobile PageSpeed >80, LCP <2.5s, CLS <0.1
 
 ## Key Decisions
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| No database | Keeps infrastructure simple, no backend to maintain | — Pending |
-| Manual invites | Lowest friction to implement, consultant controls access | — Pending |
-| Research-first approach | Original spec may be flawed, validate before building | — Pending |
-| Genuine value over hard sell | Builds trust, attracts quality leads who self-select | — Pending |
+| No database | Keeps infrastructure simple, no backend to maintain | ✓ Good — v1.0 validated |
+| Manual invites | Lowest friction to implement, consultant controls access | ✓ Good — working |
+| Genuine value over hard sell | Builds trust, attracts quality leads who self-select | ✓ Good — philosophy maintained |
+| Motion + react-countup for animations | Research validated: ~42KB gzipped, GPU-friendly, Astro-compatible | — Pending (v1.1) |
+| Mini-assessment bridges to full app | localStorage handoff, teaser answers pre-populate full assessment | — Pending (v1.1) |
+| client:visible for below-fold React | Defers 180KB until user scrolls, improves LCP | — Pending (v1.1) |
 
 ---
-*Last updated: 2026-02-04 after initialization*
+*Last updated: 2026-02-05 after v1.1 milestone initialization*
