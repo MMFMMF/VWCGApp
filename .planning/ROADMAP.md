@@ -35,8 +35,8 @@
 |-------|------|------|--------------|--------|
 | 7 | Hero & Trust Messaging | Transform hero section and establish trust signals | 9 | Complete |
 | 8 | Interactive Sample Report | Add animated report preview with scroll-triggered reveals | 9 | Complete |
-| 9 | Mini-Assessment Teaser | Build 3-question quick assessment widget | 5 | Pending |
-| 10 | Competitive Positioning | Add comparison table showing value vs alternatives | 4 | Pending |
+| 9 | Mini-Assessment Teaser | Build 3-question quick assessment widget | 5 | Complete |
+| 10 | Competitive Positioning | Add comparison table showing value vs alternatives | 4 | Planned |
 | 11 | Performance Optimization | Achieve mobile PageSpeed >80 and LCP <2.5s | 3 | Pending |
 
 ---
@@ -111,6 +111,16 @@ Plans:
 
 **Goal:** Build 3-question quick assessment widget that provides instant value and drives full assessment completion
 
+**Status:** Complete - Delivered 2026-02-06
+
+**Plans:** 4 plans
+
+Plans:
+- [x] 09-01-PLAN.md — Create MiniAssessmentIsland component with linear wizard, progress indicator, and result display
+- [x] 09-02-PLAN.md — Create Astro wrapper and integrate into landing page between SampleReport and CTA
+- [x] 09-03-PLAN.md — Implement localStorage bridge to pre-populate AI Readiness tool with teaser answers
+- [x] 09-04-PLAN.md — Human verification of complete mini-assessment flow
+
 **Requirements:**
 - **TSR-01**: 3-question quick assessment widget embedded on landing page
 - **TSR-02**: Progress indicator showing question completion (1/3, 2/3, 3/3)
@@ -132,6 +142,14 @@ Plans:
 ## Phase 10: Competitive Positioning
 
 **Goal:** Add comparison table demonstrating value proposition versus consultants and DIY approaches
+
+**Status:** Planned
+
+**Plans:** 2 plans
+
+Plans:
+- [ ] 10-01-PLAN.md — Create ComparisonTable.astro component and integrate into landing page
+- [ ] 10-02-PLAN.md — Human verification of comparison table visual design and responsiveness
 
 **Requirements:**
 - **CMP-01**: Comparison table: VWCGApp vs Consultant vs DIY/Guessing
@@ -359,5 +377,6 @@ Based on research recommendations and complexity analysis:
 *v1.1 milestone added: 2026-02-05*
 *Phase 7 complete: 2026-02-06*
 *Phase 8 complete: 2026-02-06*
+*Phase 9 complete: 2026-02-06*
 *Derived from: PROJECT.md, REQUIREMENTS-v1.1.md, research/SUMMARY.md*
-*Next step: Plan Phase 9 - Mini-Assessment Teaser*
+*Next step: Plan Phase 10 - Competitive Positioning*
