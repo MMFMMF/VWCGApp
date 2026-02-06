@@ -2,8 +2,8 @@
 
 **Last Updated:** 2026-02-06
 **Current Milestone:** v1.1 Landing Page Excellence
-**Current Phase:** Phase 9 - Mini-Assessment Teaser
-**Overall Progress:** 30% (v1.1 milestone)
+**Current Phase:** Phase 10 - Competitive Positioning
+**Overall Progress:** 35% (v1.1 milestone)
 
 ## Project Reference
 
@@ -16,12 +16,12 @@ See: .planning/PROJECT.md (updated 2026-02-04)
 ## Current Position
 
 Milestone: v1.1 Landing Page Excellence
-Phase: 9 of 11 (Mini-Assessment Teaser)
-Plan: 04 of 04 - COMPLETE
+Phase: 10 of 11 (Competitive Positioning)
+Plan: 01 of 02 - COMPLETE
 Status: In Progress
-Last activity: 2026-02-06 - Completed 09-04-PLAN.md (Human verification approved)
+Last activity: 2026-02-06 - Completed 10-01-PLAN.md (Comparison table integrated)
 
-Progress: ███████████░░░░░░░░░░ 70% (3.5/5 phases complete)
+Progress: ███████████░░░░░░░░░░ 75% (3.75/5 phases complete)
 
 ## Phase Status
 
@@ -30,7 +30,7 @@ Progress: ███████████░░░░░░░░░░ 70% (3
 | 7 | Hero & Trust Messaging | Complete | 100% | 9 reqs |
 | 8 | Interactive Sample Report | Complete | 100% | 9 reqs |
 | 9 | Mini-Assessment Teaser | Complete | 100% | 5 reqs (All plans complete) |
-| 10 | Competitive Positioning | Pending | 0% | 4 reqs |
+| 10 | Competitive Positioning | In Progress | 50% | 4 reqs (Plan 01 complete) |
 | 11 | Performance Optimization | Pending | 0% | 3 reqs |
 
 ## v1.1 Milestone Overview
@@ -40,8 +40,8 @@ Progress: ███████████░░░░░░░░░░ 70% (3
 **Key Deliverables:**
 1. Pain-focused hero section with trust signals (Phase 7) ✅
 2. Animated sample report preview with scroll interactions (Phase 8) ✅
-3. 3-question mini-assessment teaser widget (Phase 9)
-4. Competitive positioning comparison table (Phase 10)
+3. 3-question mini-assessment teaser widget (Phase 9) ✅
+4. Competitive positioning comparison table (Phase 10) 🔄 (Plan 01 complete)
 5. Mobile performance optimization (PageSpeed >80, LCP <2.5s) (Phase 11)
 
 **Total Requirements:** 30 (HERO: 5, RPT: 6, TSR: 5, TRS: 4, CMP: 4, PRF: 6)
@@ -102,7 +102,41 @@ From ROADMAP.md - All requirements complete:
 8. React islands hydrate only when visible (client:visible) ✅
 9. Human verification approved ✅
 
+## Phase 10 Requirements - IN PROGRESS
+
+From ROADMAP.md - 4 requirements:
+
+**Competitive Positioning (CMP-01 to CMP-04):**
+- [x] CMP-01: Comparison table section on landing page
+- [x] CMP-02: Time to insight comparison (10 min vs 2-4 weeks vs Never)
+- [x] CMP-03: Cost comparison (Free vs $5k-$20k vs $0 but no insights)
+- [x] CMP-04: Objectivity comparison (AI-based vs Varies vs Biased)
+
+**Success Criteria (Plan 01):**
+1. ComparisonTable.astro exists and renders semantic table ✅
+2. Landing page includes comparison between MiniAssessment and CTA ✅
+3. VWCGApp column highlighted with Recommended badge ✅
+4. All 4 CMP requirements satisfied ✅
+5. Build passes with no errors ✅
+6. Zero new JavaScript bundle impact (pure static HTML) ✅
+
+**Status:** Plan 01 complete (50% of phase)
+
 ## Recent Activity
+
+- 2026-02-06: Phase 10 IN PROGRESS - Competitive Positioning
+  - Plan 01: Comparison Table Component (COMPLETE)
+    - ComparisonTable.astro created with semantic HTML and WCAG compliance
+    - 4 columns: Feature, VWCGApp (highlighted), Consultant, DIY/Guessing
+    - 5 comparison rows: Time to Insight, Cost, Objectivity, Instant Results, Privacy
+    - VWCGApp column highlighted with Recommended badge and indigo styling
+    - Responsive design: sticky first column on mobile, horizontal scroll wrapper
+    - Inline SVG check/X icons with sr-only text for accessibility
+    - Integrated between MiniAssessment and CTA sections
+    - Conversion flow complete: Try tool → See comparison → Get full assessment
+    - Zero JavaScript bundle impact (pure static HTML)
+    - Build status: ✅ Passing (5.86s, 6 pages)
+    - Commits: 9584464, 261fcce
 
 - 2026-02-06: Phase 9 COMPLETE - Mini-Assessment Teaser
   - Plan 04: Human Verification (COMPLETE)
@@ -311,6 +345,11 @@ From ROADMAP.md - All requirements complete:
 | 2026-02-06 | 09-03 | Check for existing AI Readiness data before overwriting | Users may already have full assessment data - don't overwrite their work |
 | 2026-02-06 | 09-03 | One-time bridge: clear teaser data after load | Prevents re-loading same answers on subsequent visits |
 | 2026-02-06 | 09-03 | Load after store hydration (isHydrated check) | Zustand store must be fully hydrated before checking/modifying state |
+| 2026-02-06 | 10-01 | Pure Astro component for comparison table | Content is entirely static, no interactivity needed, zero JavaScript bundle impact |
+| 2026-02-06 | 10-01 | Indigo-600 for Recommended badge | Matches existing CTA section and report header color scheme |
+| 2026-02-06 | 10-01 | 5 comparison rows (Time, Cost, Objectivity, Instant Results, Privacy) | Covers all 4 CMP requirements plus 2 bonus differentiators |
+| 2026-02-06 | 10-01 | Sticky first column on mobile | Keeps feature labels visible while horizontally scrolling through comparison options |
+| 2026-02-06 | 10-01 | Position between MiniAssessment and CTA | Creates natural conversion flow: Try tool → See comparison → Get full assessment |
 
 ## Key Deliverables Planned (v1.1)
 
@@ -349,33 +388,25 @@ From ROADMAP.md - All requirements complete:
 
 ## Next Actions
 
-1. Begin Phase 9: Mini-Assessment Teaser
-   - 3-question quick assessment widget (inline, not modal)
-   - Progress indicator (1/3, 2/3, 3/3)
-   - Real-time result calculation
-   - localStorage bridge to full assessment
+1. **Plan Phase 10: Competitive Positioning**
+   - Comparison table: VWCGApp vs Consultant vs DIY/Guessing
+   - Time, cost, and objectivity comparisons (CMP-01 to CMP-04)
+   - Visual design showing VWCGApp advantages
 
-2. Research Flags (from SUMMARY.md)
-   - Phase 9: Determine optimal mini-assessment questions during planning
-   - Phase 9: UX validation critical for widget design
-
-3. Technology Stack for v1.1
-   - Motion (LazyMotion + domAnimation): 15KB for React island animations
+2. Technology Stack for v1.1
    - react-intersection-observer: 2KB for viewport detection ✅
    - react-countup: 4KB for animated number counters ✅
    - react-circular-progressbar: 5KB for gauge indicators ✅
-   - tailwindcss-animate: 0KB (JIT compilation)
    - Total new bundle: ~16KB gzipped so far (within 50KB/island target)
 
 ## Blockers & Concerns
 
-**None - Phase 8 Complete**
+**None - Phase 9 Complete**
 
-**Considerations for Phase 9:**
-- Determine optimal 3 mini-assessment questions during planning
-- UX validation critical for widget design (inline vs modal)
-- localStorage bridge pattern to full assessment
-- Widget should not block hero CTA visibility
+**Considerations for Phase 10:**
+- Comparison table layout (responsive design for 3-column table on mobile)
+- Visual differentiation showing VWCGApp as superior choice
+- Factual accuracy of time/cost comparisons
 
 ## Key Metrics Targets (v1.1)
 
@@ -414,9 +445,9 @@ From ROADMAP.md - All requirements complete:
 ## Session Continuity
 
 Last session: 2026-02-06
-Status: Phase 9 COMPLETE - All 4 plans finished and verified
+Status: Session resumed, recovering from interrupted post-Phase-9 transition
 Resume file: None
-Next action: Phase 10 - Competitive Positioning
+Next action: Plan Phase 10 - Competitive Positioning
 
 ---
 
