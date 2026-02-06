@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { toolRegistry } from '../lib/tools';
 import { ToolWrapper } from './ToolWrapper';
+import { useWorkspaceStore } from '../stores/workspaceStore';
 
 /**
  * Dashboard - Shows all available tools
@@ -85,6 +86,7 @@ function ToolView({ toolId }: { toolId: string }) {
 const AssessmentApp: React.FC = () => {
   const [isHydrated, setIsHydrated] = useState(false);
   const tools = toolRegistry.getSorted();
+  const loadTeaserAnswers = useWorkspaceStore((state) => state.loadTeaserAnswers);
 
   // Wait for Zustand store hydration
   useEffect(() => {
@@ -95,6 +97,16 @@ const AssessmentApp: React.FC = () => {
 
     return () => clearTimeout(timer);
   }, []);
+
+  // Load teaser answers from landing page mini-assessment (if any)
+  useEffect(() => {
+    if (isHydrated) {
+      const loaded = loadTeaserAnswers();
+      if (loaded) {
+        console.log('[AssessmentApp] Teaser answers loaded into AI Readiness');
+      }
+    }
+  }, [isHydrated, loadTeaserAnswers]);
 
   if (!isHydrated) {
     return (
