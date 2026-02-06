@@ -27,11 +27,11 @@ Requirements for landing page excellence milestone. Continues from v1.0 (44 requ
 
 ### Mini-Assessment Teaser
 
-- [ ] **TSR-01**: 3-question quick assessment widget embedded on landing page
-- [ ] **TSR-02**: Progress indicator showing question completion (1/3, 2/3, 3/3)
-- [ ] **TSR-03**: Real-time result calculation displayed after 3 questions
-- [ ] **TSR-04**: Clear CTA to "Get Full Assessment" linking to /app
-- [ ] **TSR-05**: localStorage bridge to pass teaser answers to full assessment
+- [x] **TSR-01**: 3-question quick assessment widget embedded on landing page
+- [x] **TSR-02**: Progress indicator showing question completion (1/3, 2/3, 3/3)
+- [x] **TSR-03**: Real-time result calculation displayed after 3 questions
+- [x] **TSR-04**: Clear CTA to "Get Full Assessment" linking to /app
+- [x] **TSR-05**: localStorage bridge to pass teaser answers to full assessment
 
 ### Trust & Credibility
 
@@ -42,10 +42,10 @@ Requirements for landing page excellence milestone. Continues from v1.0 (44 requ
 
 ### Competitive Positioning
 
-- [ ] **CMP-01**: Comparison table: VWCGApp vs Consultant vs DIY/Guessing
-- [ ] **CMP-02**: Time to insight comparison (10 min vs 2-4 weeks vs Never)
-- [ ] **CMP-03**: Cost comparison (Free vs $5k-$20k vs $0)
-- [ ] **CMP-04**: Objectivity comparison (AI-based vs Varies vs Biased)
+- [x] **CMP-01**: Comparison table: VWCGApp vs Consultant vs DIY/Guessing
+- [x] **CMP-02**: Time to insight comparison (10 min vs 2-4 weeks vs Never)
+- [x] **CMP-03**: Cost comparison (Free vs $5k-$20k vs $0)
+- [x] **CMP-04**: Objectivity comparison (AI-based vs Varies vs Biased)
 
 ### Performance & Animation
 
@@ -87,19 +87,19 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RPT-04 | Phase 8 | Complete |
 | RPT-05 | Phase 8 | Complete |
 | RPT-06 | Phase 8 | Complete |
-| TSR-01 | Phase 9 | Pending |
-| TSR-02 | Phase 9 | Pending |
-| TSR-03 | Phase 9 | Pending |
-| TSR-04 | Phase 9 | Pending |
-| TSR-05 | Phase 9 | Pending |
+| TSR-01 | Phase 9 | Complete |
+| TSR-02 | Phase 9 | Complete |
+| TSR-03 | Phase 9 | Complete |
+| TSR-04 | Phase 9 | Complete |
+| TSR-05 | Phase 9 | Complete |
 | TRS-01 | Phase 7 | Complete |
 | TRS-02 | Phase 7 | Complete |
 | TRS-03 | Phase 7 | Complete |
 | TRS-04 | Phase 7 | Complete |
-| CMP-01 | Phase 10 | Pending |
-| CMP-02 | Phase 10 | Pending |
-| CMP-03 | Phase 10 | Pending |
-| CMP-04 | Phase 10 | Pending |
+| CMP-01 | Phase 10 | Complete |
+| CMP-02 | Phase 10 | Complete |
+| CMP-03 | Phase 10 | Complete |
+| CMP-04 | Phase 10 | Complete |
 | PRF-01 | Phase 8 | Complete |
 | PRF-02 | Phase 8 | Complete |
 | PRF-03 | Phase 11 | Pending |
@@ -114,4 +114,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-02-05*
-*Last updated: 2026-02-06 after Phase 8 completion*
+*Last updated: 2026-02-06 after Phase 10 completion*
