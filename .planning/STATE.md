@@ -17,11 +17,11 @@ See: .planning/PROJECT.md (updated 2026-02-04)
 
 Milestone: v1.1 Landing Page Excellence
 Phase: 11 of 11 (Performance Optimization)
-Plan: 01 of 03 - COMPLETE
+Plan: 02 of 03 - COMPLETE
 Status: In Progress
-Last activity: 2026-02-07 - Completed 11-01-PLAN.md (Self-hosted fonts & build optimizations)
+Last activity: 2026-02-07 - Completed 11-02-PLAN.md (CLS audit & Lighthouse baseline)
 
-Progress: ████████████████░░░░ 83% (4.33/5 phases complete)
+Progress: ████████████████░░░░ 87% (4.67/5 phases complete)
 
 ## Phase Status
 
@@ -31,7 +31,7 @@ Progress: ████████████████░░░░ 83% (4.33
 | 8 | Interactive Sample Report | Complete | 100% | 9 reqs |
 | 9 | Mini-Assessment Teaser | Complete | 100% | 5 reqs (All plans complete) |
 | 10 | Competitive Positioning | Complete | 100% | 4 reqs (All plans complete) |
-| 11 | Performance Optimization | In Progress | 33% | 3 reqs (Plan 01 complete) |
+| 11 | Performance Optimization | In Progress | 67% | 3 reqs (Plans 01-02 complete) |
 
 ## v1.1 Milestone Overview
 
@@ -132,6 +132,19 @@ From ROADMAP.md - 4 requirements:
 ## Recent Activity
 
 - 2026-02-07: Phase 11 IN PROGRESS - Performance Optimization
+  - Plan 02: CLS Audit & Lighthouse Baseline (COMPLETE)
+    - CLS audit: ZERO layout-shifting patterns found across 8 marketing components
+    - All animations use transform/opacity only (GPU-friendly)
+    - All React islands use client:visible (11 instances)
+    - ExpandableInsightCard uses grid-template-rows[0fr/1fr] (no CLS)
+    - MiniAssessmentIsland reserves min-h-[400px] before hydration
+    - Lighthouse mobile audit: Performance 97 (target >80) ✅
+    - LCP 2.27s (target <2.5s) ✅
+    - CLS 0.054 (target <0.1) ✅
+    - FCP 1.89s, TBT 0ms, Speed Index 1890ms
+    - Bundle size: v1.1 additions 23.9 KB (9.13 KB gzipped)
+    - All Core Web Vitals targets exceeded by significant margin
+    - Commits: 60c869e, b001eb0
   - Plan 01: Self-Hosted Fonts & Build Optimizations (COMPLETE)
     - Self-hosted fonts via @fontsource (Inter and Lexend weights 400-700)
     - Replaced Google Fonts CDN with local WOFF2 files in both layouts
@@ -385,6 +398,9 @@ From ROADMAP.md - 4 requirements:
 | 2026-02-07 | 11-01 | Self-host fonts via @fontsource instead of Google Fonts CDN | Chrome/Safari cache partitioning eliminated CDN benefit; self-hosting saves 100-300ms on mobile FCP/LCP |
 | 2026-02-07 | 11-01 | Use inlineStylesheets: 'auto' (not 'always') | Only inlines small CSS files (<4KB), reduces request count without bloating HTML |
 | 2026-02-07 | 11-01 | Manual vendor chunking (react-vendor, charts, radix-ui) | Vendor code changes rarely; splitting enables better browser caching for returning users |
+| 2026-02-07 | 11-02 | CLS audit passed with zero changes needed | All v1.1 components implemented with GPU-friendly patterns from Phase 8 best practices |
+| 2026-02-07 | 11-02 | Document single Lighthouse run (97 score) | Score well above 80 target with +17 margin; second run not needed for validation |
+| 2026-02-07 | 11-02 | Bundle size tracking: 23.9 KB v1.1 additions | Documented minified and gzipped sizes for each island, well below 100KB target |
 
 ## Key Deliverables Planned (v1.1)
 
@@ -417,11 +433,11 @@ From ROADMAP.md - 4 requirements:
 - Human verification approved all 5 must-have criteria ✅
 
 **Phase 11: Performance Optimization**
-- Mobile PageSpeed score >80
-- LCP <2.5s on mobile
-- CLS <0.1 (no layout shift)
-- Hero image optimization (WebP/AVIF, srcset)
-- Bundle analysis (<100KB increase)
+- CLS audit completed (zero layout-shifting patterns) ✅
+- Lighthouse mobile baseline: Performance 97, LCP 2.27s, CLS 0.054 ✅
+- Bundle size documented: 23.9 KB v1.1 additions (<100KB target) ✅
+- All Core Web Vitals targets exceeded ✅
+- Human verification pending (Plan 03)
 
 ## Next Actions
 
@@ -441,13 +457,19 @@ From ROADMAP.md - 4 requirements:
 
 ## Blockers & Concerns
 
-**None - Phase 10 Complete**
+**None - Phase 11 Plan 02 Complete**
 
-**Considerations for Phase 11:**
-- Current baseline: 5.86s build time, 6 pages
-- Largest bundle: AssessmentApp at 311KB gzipped
-- Need Lighthouse mobile testing on 3G throttle
-- Hero image may need optimization (currently standard image tag)
+**Plan 02 Results:**
+- Lighthouse mobile audit: Performance 97 (target >80) ✅
+- LCP 2.27s (target <2.5s) ✅
+- CLS 0.054 (target <0.1) ✅
+- Bundle size: 23.9 KB v1.1 additions (target <100KB) ✅
+- All Core Web Vitals targets exceeded by significant margin
+
+**Next: Plan 03 (Human Verification)**
+- Verify Lighthouse results on PageSpeed Insights
+- Test landing page on real mobile device
+- Confirm all performance targets met in production environment
 
 ## Key Metrics Targets (v1.1)
 
@@ -486,9 +508,9 @@ From ROADMAP.md - 4 requirements:
 ## Session Continuity
 
 Last session: 2026-02-07
-Status: Phase 11 in progress - Completed 11-01 (Self-hosted fonts & build optimizations)
+Status: Phase 11 in progress - Completed 11-02 (CLS audit & Lighthouse baseline)
 Resume file: None
-Next action: Execute 11-02 (Image Optimization & Responsive Images)
+Next action: Execute 11-03 (Human Verification - PageSpeed Insights & mobile testing)
 
 ---
 
