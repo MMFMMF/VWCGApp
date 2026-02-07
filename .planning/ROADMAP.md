@@ -170,6 +170,15 @@ Plans:
 
 **Goal:** Achieve production-ready mobile performance meeting Core Web Vitals standards
 
+**Status:** Planning Complete
+
+**Plans:** 3 plans
+
+Plans:
+- [ ] 11-01-PLAN.md — Self-host fonts with @fontsource and configure Astro build optimizations
+- [ ] 11-02-PLAN.md — CLS audit of marketing components and Lighthouse mobile performance test
+- [ ] 11-03-PLAN.md — Human verification of performance metrics and Phase 11 completion
+
 **Requirements:**
 - **PRF-03**: Mobile PageSpeed score > 80
 - **PRF-04**: LCP < 2.5 seconds on mobile
