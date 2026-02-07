@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import react from '@astrojs/react';
 
 import tailwindcss from '@tailwindcss/vite';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -16,8 +17,23 @@ export default defineConfig({
 
   integrations: [react()],
 
+  // Build optimizations (PRF-03)
+  build: {
+    // Inline CSS files < 4KB to reduce request count
+    inlineStylesheets: 'auto',
+  },
+
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [
+      tailwindcss(),
+      visualizer({
+        open: false,
+        filename: './dist/stats.html',
+        template: 'treemap',
+        gzipSize: true,
+        brotliSize: true,
+      }),
+    ],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
@@ -26,6 +42,24 @@ export default defineConfig({
         '@lib': path.resolve(__dirname, './src/lib'),
         '@stores': path.resolve(__dirname, './src/stores'),
         '@types': path.resolve(__dirname, './src/types'),
+      },
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          // Split vendor bundles for better caching
+          manualChunks: (id) => {
+            if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/')) {
+              return 'react-vendor';
+            }
+            if (id.includes('recharts') || id.includes('react-circular-progressbar')) {
+              return 'charts';
+            }
+            if (id.includes('@radix-ui')) {
+              return 'radix-ui';
+            }
+          },
+        },
       },
     },
   }
