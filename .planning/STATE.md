@@ -1,9 +1,9 @@
 # Project State
 
-**Last Updated:** 2026-02-06
+**Last Updated:** 2026-02-07
 **Current Milestone:** v1.1 Landing Page Excellence
-**Current Phase:** Phase 10 - Competitive Positioning
-**Overall Progress:** 35% (v1.1 milestone)
+**Current Phase:** Phase 11 - Performance Optimization
+**Overall Progress:** 40% (v1.1 milestone)
 
 ## Project Reference
 
@@ -16,12 +16,12 @@ See: .planning/PROJECT.md (updated 2026-02-04)
 ## Current Position
 
 Milestone: v1.1 Landing Page Excellence
-Phase: 10 of 11 (Competitive Positioning)
-Plan: 02 of 02 - COMPLETE
-Status: Phase Complete
-Last activity: 2026-02-06 - Completed 10-02-PLAN.md (Comparison table verification approved)
+Phase: 11 of 11 (Performance Optimization)
+Plan: 01 of 03 - COMPLETE
+Status: In Progress
+Last activity: 2026-02-07 - Completed 11-01-PLAN.md (Self-hosted fonts & build optimizations)
 
-Progress: ████████████░░░░░░░░ 80% (4/5 phases complete)
+Progress: ████████████████░░░░ 83% (4.33/5 phases complete)
 
 ## Phase Status
 
@@ -31,7 +31,7 @@ Progress: ████████████░░░░░░░░ 80% (4/5 
 | 8 | Interactive Sample Report | Complete | 100% | 9 reqs |
 | 9 | Mini-Assessment Teaser | Complete | 100% | 5 reqs (All plans complete) |
 | 10 | Competitive Positioning | Complete | 100% | 4 reqs (All plans complete) |
-| 11 | Performance Optimization | Pending | 0% | 3 reqs |
+| 11 | Performance Optimization | In Progress | 33% | 3 reqs (Plan 01 complete) |
 
 ## v1.1 Milestone Overview
 
@@ -130,6 +130,20 @@ From ROADMAP.md - 4 requirements:
 **Status:** Phase Complete (100%)
 
 ## Recent Activity
+
+- 2026-02-07: Phase 11 IN PROGRESS - Performance Optimization
+  - Plan 01: Self-Hosted Fonts & Build Optimizations (COMPLETE)
+    - Self-hosted fonts via @fontsource (Inter and Lexend weights 400-700)
+    - Replaced Google Fonts CDN with local WOFF2 files in both layouts
+    - Removed all Google Fonts preconnect and link tags
+    - Eliminates external DNS lookup + TLS handshake (~100-300ms saved on mobile)
+    - Configured Astro build optimizations (inlineStylesheets: 'auto')
+    - Vendor chunk splitting: react-vendor (60KB), charts (117KB), radix-ui (27KB)
+    - Bundle visualizer integration (rollup-plugin-visualizer)
+    - Generated dist/stats.html treemap report (1.2 MB HTML)
+    - Added 'analyze' npm script for bundle analysis
+    - Build verified: 8.26s, 6 pages, separate vendor chunks
+    - Commits: 5da6f18, d146a31
 
 - 2026-02-06: Phase 10 COMPLETE - Competitive Positioning
   - Plan 02: Comparison Table Verification (COMPLETE)
@@ -368,6 +382,9 @@ From ROADMAP.md - 4 requirements:
 | 2026-02-06 | 10-02 | Approved visual design integration | Comparison table background, typography, and spacing align with existing marketing sections |
 | 2026-02-06 | 10-02 | Approved VWCGApp differentiation strategy | Indigo-600 badge + subtle background + border create clear visual hierarchy |
 | 2026-02-06 | 10-02 | Approved mobile responsive pattern | Sticky first column with horizontal scroll provides good UX on small screens |
+| 2026-02-07 | 11-01 | Self-host fonts via @fontsource instead of Google Fonts CDN | Chrome/Safari cache partitioning eliminated CDN benefit; self-hosting saves 100-300ms on mobile FCP/LCP |
+| 2026-02-07 | 11-01 | Use inlineStylesheets: 'auto' (not 'always') | Only inlines small CSS files (<4KB), reduces request count without bloating HTML |
+| 2026-02-07 | 11-01 | Manual vendor chunking (react-vendor, charts, radix-ui) | Vendor code changes rarely; splitting enables better browser caching for returning users |
 
 ## Key Deliverables Planned (v1.1)
 
@@ -468,10 +485,10 @@ From ROADMAP.md - 4 requirements:
 
 ## Session Continuity
 
-Last session: 2026-02-06
-Status: Phase 10 complete, ready for Phase 11 - Performance Optimization
+Last session: 2026-02-07
+Status: Phase 11 in progress - Completed 11-01 (Self-hosted fonts & build optimizations)
 Resume file: None
-Next action: Plan Phase 11 - Performance Optimization
+Next action: Execute 11-02 (Image Optimization & Responsive Images)
 
 ---
 
