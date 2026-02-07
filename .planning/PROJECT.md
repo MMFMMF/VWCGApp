@@ -2,27 +2,20 @@
 
 ## What This Is
 
-A strategic assessment platform for SMB owners and entrepreneurs that provides genuine value through self-guided business diagnostics. Users complete 11 interconnected assessment tools, receive synthesized insights about their organizational gaps, and can generate professional PDF reports. Serves as a lead generation tool — when users see their gaps clearly, they reach out for help executing recommendations.
+A strategic assessment platform for SMB owners and entrepreneurs that provides genuine value through self-guided business diagnostics. Users complete 11 interconnected assessment tools, receive synthesized insights about their organizational gaps, and can generate professional PDF reports. The landing page features interactive previews, a mini-assessment teaser, and conversion-optimized messaging. Serves as a lead generation tool — when users see their gaps clearly, they reach out for help executing recommendations.
 
 ## Core Value
 
 **SMB owners get clear, actionable visibility into their business readiness gaps** — across leadership, operations, strategy, and execution capacity — so they can make informed decisions about where to focus.
 
-## Current Milestone: v1.1 Landing Page Excellence
+## Current State
 
-**Goal:** Transform the landing page into a traffic magnet that converts cold traffic into assessment users
-
-**Target features:**
-- Pain-focused hero messaging with animated statistics
-- Interactive sample report preview with animated gauges and expandable insights
-- Mini-assessment teaser (3 questions) with instant result
-- Trust badges and credibility signals
-- Competitive positioning table (VWCGApp vs Consultant vs DIY)
-- Performance optimization (PageSpeed >80, LCP <2.5s)
+**Shipped:** v1.1 Landing Page Excellence (2026-02-07)
+**Next Milestone:** TBD — plan with `/gsd:new-milestone`
 
 ## Requirements
 
-### Validated (v1.0 Complete)
+### Validated
 
 <!-- Shipped and confirmed working. -->
 
@@ -35,17 +28,18 @@ A strategic assessment platform for SMB owners and entrepreneurs that provides g
 - ✓ Contact form (Netlify Forms) — v1.0
 - ✓ Workspace save/load functionality (.vwcg files) — v1.0
 - ✓ Data persistence via localStorage — v1.0
+- ✓ Pain-focused hero messaging with animated statistics — v1.1
+- ✓ Interactive sample report preview (animated gauges, expandable insight cards) — v1.1
+- ✓ Mini-assessment teaser widget (3 questions, instant result, localStorage bridge) — v1.1
+- ✓ Trust and credibility badges (privacy, no account, no email, instant results) — v1.1
+- ✓ Competitive positioning comparison table (VWCGApp vs Consultant vs DIY) — v1.1
+- ✓ Performance optimization: PageSpeed 97, LCP 2.27s, CLS 0.054 — v1.1
 
-### Active (v1.1)
+### Active
 
 <!-- Current scope. Building toward these. -->
 
-- [ ] Pain-focused hero messaging with animated statistics
-- [ ] Interactive sample report preview (animated gauges, expandable insight cards)
-- [ ] Mini-assessment teaser widget (3 questions, instant result)
-- [ ] Trust and credibility badges
-- [ ] Competitive positioning comparison table
-- [ ] Performance optimization (Core Web Vitals targets)
+(None — define with `/gsd:new-milestone`)
 
 ### Out of Scope
 
@@ -63,9 +57,13 @@ A strategic assessment platform for SMB owners and entrepreneurs that provides g
 
 **v1.0 Complete:** 44 requirements across 6 phases delivered 2026-02-05. All core functionality working.
 
-**v1.1 Focus:** The user stated "this is my livelihood" — landing page must convert cold traffic (PPC, social ads) into assessment users. Research indicates interactive elements (mini-assessment + sample report) drive 3-4x conversion improvement.
+**v1.1 Complete:** 30 requirements across 5 phases delivered 2026-02-07. Landing page transformed with interactive elements, conversion-optimized messaging, and Core Web Vitals targets exceeded.
 
-**Deployment:** https://sparkly-speculoos-87b564.netlify.app/ (v1.0 deployed)
+**Tech Stack:** Astro 5, React 18 (islands), Zustand, Tailwind CSS, Recharts, jsPDF, Decap CMS. Self-hosted fonts (@fontsource/inter, @fontsource/lexend). Vendor chunk splitting (react-vendor, charts, radix-ui).
+
+**Performance:** Lighthouse mobile 97/100, LCP 2.27s, CLS 0.054, TBT 0ms, bundle 23.9KB v1.1 additions (9.13KB gzipped).
+
+**Deployment:** https://sparkly-speculoos-87b564.netlify.app/
 
 **GitHub:** https://github.com/MMFMMF/VWCGApp
 
@@ -85,9 +83,13 @@ A strategic assessment platform for SMB owners and entrepreneurs that provides g
 | No database | Keeps infrastructure simple, no backend to maintain | ✓ Good — v1.0 validated |
 | Manual invites | Lowest friction to implement, consultant controls access | ✓ Good — working |
 | Genuine value over hard sell | Builds trust, attracts quality leads who self-select | ✓ Good — philosophy maintained |
-| Motion + react-countup for animations | Research validated: ~42KB gzipped, GPU-friendly, Astro-compatible | — Pending (v1.1) |
-| Mini-assessment bridges to full app | localStorage handoff, teaser answers pre-populate full assessment | — Pending (v1.1) |
-| client:visible for below-fold React | Defers 180KB until user scrolls, improves LCP | — Pending (v1.1) |
+| react-countup + react-intersection-observer for counters | 6KB gzipped, viewport-triggered, smooth easing | ✓ Good — v1.1 validated |
+| react-circular-progressbar for gauges | 5KB gzipped, SVG-based, customizable | ✓ Good — v1.1 validated |
+| Grid-template-rows for expandable cards | Prevents CLS, smoother than max-height transition | ✓ Good — CLS 0.054 |
+| Mini-assessment bridges to full app via localStorage | 24h expiry, overwrite prevention, one-time bridge | ✓ Good — v1.1 validated |
+| client:visible for below-fold React islands | Defers hydration until scroll, 11 instances, TBT 0ms | ✓ Good — v1.1 validated |
+| @fontsource self-hosted fonts | Eliminated Google Fonts CDN, saved 100-300ms on mobile | ✓ Good — v1.1 validated |
+| Pure Astro for comparison table | Zero JS impact, semantic HTML, accessible | ✓ Good — v1.1 validated |
 
 ---
-*Last updated: 2026-02-05 after v1.1 milestone initialization*
+*Last updated: 2026-02-07 after v1.1 milestone completion*
