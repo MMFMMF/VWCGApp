@@ -51,9 +51,9 @@ Requirements for landing page excellence milestone. Continues from v1.0 (44 requ
 
 - [x] **PRF-01**: Scroll-triggered section reveal animations (fade-in, slide-up)
 - [x] **PRF-02**: GPU-friendly animations only (transform, opacity - no layout properties)
-- [ ] **PRF-03**: Mobile PageSpeed score > 80
-- [ ] **PRF-04**: LCP < 2.5 seconds on mobile
-- [ ] **PRF-05**: CLS < 0.1 (no layout shift from animations)
+- [x] **PRF-03**: Mobile PageSpeed score > 80
+- [x] **PRF-04**: LCP < 2.5 seconds on mobile
+- [x] **PRF-05**: CLS < 0.1 (no layout shift from animations)
 - [x] **PRF-06**: React islands use client:visible for below-fold components
 
 ## Out of Scope
@@ -102,9 +102,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CMP-04 | Phase 10 | Complete |
 | PRF-01 | Phase 8 | Complete |
 | PRF-02 | Phase 8 | Complete |
-| PRF-03 | Phase 11 | Pending |
-| PRF-04 | Phase 11 | Pending |
-| PRF-05 | Phase 11 | Pending |
+| PRF-03 | Phase 11 | Complete |
+| PRF-04 | Phase 11 | Complete |
+| PRF-05 | Phase 11 | Complete |
 | PRF-06 | Phase 8 | Complete |
 
 **Coverage:**
@@ -114,4 +114,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-02-05*
-*Last updated: 2026-02-06 after Phase 10 completion*
+*Last updated: 2026-02-07 after Phase 11 completion — all 30 requirements complete*
