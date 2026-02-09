@@ -1,33 +1,28 @@
 ---
 import MarketingLayout from '../layouts/MarketingLayout.astro';
 import Hero from '../components/marketing/Hero.astro';
-import Features from '../components/marketing/Features.astro';
+import HowItWorks from '../components/marketing/HowItWorks.astro';
 import SampleReport from '../components/marketing/SampleReport.astro';
-import MiniAssessment from '../components/marketing/MiniAssessment.astro';
 import ComparisonTable from '../components/marketing/ComparisonTable.astro';
 import CTA from '../components/marketing/CTA.astro';
-import ContactForm from '../components/marketing/ContactForm.astro';
 import Footer from '../components/marketing/Footer.astro';
 
-const pageTitle = 'Business Assessment & Gap Analysis';
-const pageDescription = 'Get clear, actionable visibility into your business readiness gaps across leadership, operations, strategy, and execution. Free assessment tools with instant results.';
+const pageTitle = 'Free Business Gap Assessment — Find What\'s Holding You Back';
+const pageDescription = 'Free diagnostic tools that score your leadership, operations, strategy, and execution in 10 minutes. No signup required. Instant results with PDF export.';
 ---
 
 <MarketingLayout title={pageTitle} description={pageDescription}>
   <main>
     <Hero ctaHref="/app" />
-    <Features />
+    <HowItWorks ctaHref="/app" />
     <SampleReport />
-    <MiniAssessment />
     <ComparisonTable />
     <CTA ctaHref="/app" />
-    <ContactForm />
   </main>
   <Footer />
 </MarketingLayout>
 
 <style is:global>
-  /* Smooth scroll for anchor links */
   html {
     scroll-behavior: smooth;
   }

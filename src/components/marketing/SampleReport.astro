@@ -3,192 +3,118 @@ import GaugeIsland from '../islands/GaugeIsland';
 import ExpandableInsightCard from '../islands/ExpandableInsightCard';
 ---
 
-<section id="sample-report" class="py-16 sm:py-24 bg-gray-50">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center fade-slide-up">
+<section id="sample-report" class="py-16 sm:py-24 bg-slate-50">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
       <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">
-        See What You'll Get
+        Here's What Your Report Looks Like
       </h2>
-      <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-        Comprehensive reports with actionable insights—download as PDF anytime.
+      <p class="mt-3 text-gray-600 max-w-xl mx-auto">
+        Real scores. Real insights. Prioritized actions — not vague advice.
       </p>
     </div>
 
-    <div class="mt-12 relative fade-slide-up">
-      <!-- Report Preview Card -->
-      <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden relative">
-        <!-- "This could be YOUR report" badge -->
-        <div class="absolute top-4 right-4 z-10">
-          <div class="bg-indigo-600 text-white px-4 py-2 rounded-full shadow-lg">
-            <span class="text-sm font-semibold">This could be YOUR report</span>
-          </div>
-        </div>
-
+    <!-- Report Card -->
+    <div class="max-w-3xl mx-auto">
+      <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
         <!-- Report Header -->
-        <div class="bg-indigo-600 text-white p-6">
+        <div class="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-6 py-5">
           <div class="flex items-center justify-between">
             <div>
-              <h3 class="text-xl font-bold">Business Assessment Report</h3>
-              <p class="text-indigo-200">Sample Company Inc.</p>
+              <h3 class="text-lg font-bold">Business Assessment Report</h3>
+              <p class="text-indigo-200 text-sm">Sample Company Inc.</p>
             </div>
-            <div class="text-right">
-              <div class="text-sm text-indigo-200">Generated</div>
-              <div class="font-medium">Feb 5, 2026</div>
-            </div>
+            <span class="text-xs bg-white/15 backdrop-blur px-3 py-1.5 rounded-full font-medium">
+              Sample Report
+            </span>
           </div>
         </div>
 
-        <!-- Report Content Preview -->
-        <div class="p-6 space-y-8">
-          <!-- Animated Gauges - replaces static scores -->
-          <div class="py-6 border-y border-gray-100">
-            <h4 class="text-center text-sm font-semibold text-gray-700 uppercase tracking-wide mb-6">
-              Assessment Scores
-            </h4>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
-              <GaugeIsland
-                value={72}
-                label="AI Readiness"
-                description="AI Readiness score: 72 out of 100"
-                duration={2.0}
-                color="#4F46E5"
-                client:visible
-              />
-              <GaugeIsland
-                value={85}
-                label="Leadership DNA"
-                description="Leadership DNA score: 85 out of 100"
-                duration={2.5}
-                color="#7C3AED"
-                client:visible
-              />
-              <GaugeIsland
-                value={68}
-                label="Advisor Ready"
-                description="Advisor Readiness score: 68 out of 100"
-                duration={1.8}
-                color="#2563EB"
-                client:visible
-              />
-            </div>
-          </div>
-
-          <!-- Strategic Insights Section -->
-          <div>
-            <h4 class="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-4">
-              Strategic Insights
-            </h4>
-
-            <!-- Expandable Insight Cards - replaces static cards -->
-            <div class="grid md:grid-cols-2 gap-4">
-              <ExpandableInsightCard
-                severity="high"
-                title="Execution Capability Gap"
-                summary="Leadership execution score limits strategic pillars to 3. Consider focusing on fewer priorities."
-                details="Your current execution capacity can safely support 3 strategic pillars based on your leadership DNA score. Adding more initiatives would dilute focus and reduce success probability. Consider consolidating similar initiatives or deferring lower-priority items to later phases."
-                client:visible
-              />
-
-              <ExpandableInsightCard
-                severity="medium"
-                title="Burnout Risk Detected"
-                summary="Tasks exceed safe capacity. Reduce scope or extend timeline to prevent team burnout."
-                details="Current roadmap tasks require 127% of available team capacity, creating significant burnout risk. Recommend reducing scope by 25% or extending timeline by 3 weeks. High-risk areas: Week 4 (185% capacity) and Week 8 (142% capacity). Consider moving non-critical items to Phase 2."
-                client:visible
-              />
-
-              <ExpandableInsightCard
-                severity="info"
-                title="Strength Multiplication"
-                summary="Strong alignment between leadership vision and data readiness creates competitive advantage."
-                details="Your Vision Canvas pillars align exceptionally well with your AI Readiness data capabilities (89% alignment score). This creates a force multiplier effect—you can execute data-driven strategies faster than competitors. Recommend accelerating AI-powered initiatives in Q2 to capitalize on this advantage."
-                client:visible
-              />
-
-              <ExpandableInsightCard
-                severity="opportunity"
-                title="Opportunity Match"
-                summary="High-confidence market opportunity aligns with your AI capabilities. Prioritize this initiative."
-                details="Market opportunity 'Predictive Customer Analytics' has 87% confidence rating and perfectly matches your AI Readiness strengths in data infrastructure and ML capabilities. Early mover advantage window: 6-9 months. Recommend allocating 30% of Q2 engineering capacity to proof-of-concept development."
-                client:visible
-              />
-            </div>
+        <!-- Scores -->
+        <div class="px-6 py-8 border-b border-gray-100">
+          <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-6 text-center">
+            Assessment Scores
+          </h4>
+          <div class="grid grid-cols-3 gap-6 max-w-md mx-auto">
+            <GaugeIsland
+              value={72}
+              label="AI Readiness"
+              description="AI Readiness score: 72 out of 100"
+              duration={2.0}
+              color="#4F46E5"
+              client:visible
+            />
+            <GaugeIsland
+              value={85}
+              label="Leadership DNA"
+              description="Leadership DNA score: 85 out of 100"
+              duration={2.5}
+              color="#7C3AED"
+              client:visible
+            />
+            <GaugeIsland
+              value={68}
+              label="Advisor Ready"
+              description="Advisor Readiness score: 68 out of 100"
+              duration={1.8}
+              color="#2563EB"
+              client:visible
+            />
           </div>
         </div>
 
-        <!-- Fade Overlay at bottom -->
-        <div class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
+        <!-- Insights -->
+        <div class="px-6 py-6">
+          <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">
+            Key Findings
+          </h4>
+          <div class="grid sm:grid-cols-2 gap-3">
+            <ExpandableInsightCard
+              severity="high"
+              title="Execution Capability Gap"
+              summary="Leadership execution score limits strategic pillars to 3."
+              details="Your current execution capacity can safely support 3 strategic pillars based on your leadership DNA score. Adding more initiatives would dilute focus and reduce success probability. Consider consolidating similar initiatives or deferring lower-priority items."
+              client:visible
+            />
+            <ExpandableInsightCard
+              severity="medium"
+              title="Burnout Risk Detected"
+              summary="Tasks exceed safe capacity by 27%. Reduce scope or extend timeline."
+              details="Current roadmap tasks require 127% of available team capacity. High-risk areas: Week 4 (185% capacity) and Week 8 (142% capacity). Recommend reducing scope by 25% or extending timeline by 3 weeks."
+              client:visible
+            />
+            <ExpandableInsightCard
+              severity="info"
+              title="Strength: Vision-Data Alignment"
+              summary="Strong alignment between leadership vision and data readiness."
+              details="Your Vision Canvas pillars align exceptionally well with your AI Readiness data capabilities (89% alignment score). This creates a force multiplier—you can execute data-driven strategies faster than competitors."
+              client:visible
+            />
+            <ExpandableInsightCard
+              severity="opportunity"
+              title="Opportunity: Predictive Analytics"
+              summary="High-confidence market opportunity matches your AI capabilities."
+              details="Market opportunity 'Predictive Customer Analytics' has 87% confidence rating and matches your AI Readiness strengths. Early mover advantage window: 6-9 months. Recommend allocating 30% of Q2 engineering capacity to proof-of-concept."
+              client:visible
+            />
+          </div>
+        </div>
+
+        <!-- Fade overlay -->
+        <div class="h-16 bg-gradient-to-t from-white to-transparent -mt-16 relative z-10 pointer-events-none"></div>
       </div>
-    </div>
 
-    <div class="mt-8 text-center fade-slide-up">
-      <a
-        href="/app"
-        class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg hover:shadow-xl transition-all"
-      >
-        Get Your Own Report
-        <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
-      </a>
+      <!-- CTA below report -->
+      <div class="mt-8 text-center">
+        <a
+          href="/app"
+          class="group inline-flex items-center justify-center px-8 py-4 text-lg font-semibold rounded-xl bg-indigo-600 text-white hover:bg-indigo-500 shadow-lg transition-all duration-200"
+        >
+          Get Your Own Report
+          <svg class="ml-2 w-5 h-5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+        </a>
+        <p class="mt-3 text-sm text-gray-500">Free. No account needed. Download as PDF.</p>
+      </div>
     </div>
   </div>
 </section>
-
-<style>
-  /* Scroll-triggered entrance animation */
-  .fade-slide-up {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  }
-
-  .fade-slide-up.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Respect reduced motion preference */
-  @media (prefers-reduced-motion: reduce) {
-    .fade-slide-up {
-      opacity: 1;
-      transform: none;
-      transition: none;
-    }
-  }
-</style>
-
-<script>
-  // Intersection Observer for scroll-triggered animations
-  // Runs once when section enters viewport
-  document.addEventListener('DOMContentLoaded', () => {
-    const animatedElements = document.querySelectorAll('.fade-slide-up');
-
-    // Check if user prefers reduced motion
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (prefersReducedMotion) {
-      // Skip animations if user prefers reduced motion
-      animatedElements.forEach(el => el.classList.add('visible'));
-      return;
-    }
-
-    // Create Intersection Observer
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            // Stop observing once animated (trigger once)
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      {
-        threshold: 0.1, // Trigger when 10% visible
-        rootMargin: '0px 0px -50px 0px' // Start animation slightly before element enters
-      }
-    );
-
-    // Observe all animated elements
-    animatedElements.forEach(el => observer.observe(el));
-  });
-</script>

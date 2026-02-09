@@ -1,0 +1,54 @@
+---
+interface Props {
+  ctaHref?: string;
+}
+
+const { ctaHref = '/app' } = Astro.props;
+
+const steps = [
+  {
+    number: '1',
+    title: 'Pick an Assessment',
+    description: 'Choose from AI readiness, leadership DNA, SWOT analysis, and 7 more diagnostic tools.',
+  },
+  {
+    number: '2',
+    title: 'Answer the Questions',
+    description: 'Rate your business across key dimensions. Takes 5-10 minutes per tool. No trick questions.',
+  },
+  {
+    number: '3',
+    title: 'Get Your Report',
+    description: 'Instant scores, cross-tool insights, and a prioritized action plan you can download as PDF.',
+  },
+];
+---
+
+<section class="py-16 sm:py-24 bg-white">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-14">
+      <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">
+        How It Works
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8 lg:gap-12">
+      {steps.map((step, i) => (
+        <div class="relative text-center">
+          {/* Connector line (hidden on mobile, shown between cards on desktop) */}
+          {i < steps.length - 1 && (
+            <div class="hidden md:block absolute top-8 left-[calc(50%+40px)] w-[calc(100%-80px)] h-px bg-indigo-200" aria-hidden="true"></div>
+          )}
+
+          {/* Step number */}
+          <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-indigo-50 text-indigo-600 text-2xl font-bold mb-5 ring-4 ring-white relative z-10">
+            {step.number}
+          </div>
+
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">{step.title}</h3>
+          <p class="text-gray-600 text-sm leading-relaxed">{step.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
