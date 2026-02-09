@@ -65,20 +65,26 @@ const siteUrl = 'https://vwcgapp.com';
 </head>
 <body class="bg-white text-gray-900 antialiased font-sans">
   <!-- Sticky navigation -->
-  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-gray-100">
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200/50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-14">
-        <a href="/" class="flex items-center gap-2">
-          <span class="text-lg font-bold text-gray-900">VWCG</span>
-          <span class="hidden sm:inline text-xs text-gray-400 border-l border-gray-200 pl-2">by World Consulting Group</span>
+      <div class="flex items-center justify-between h-16">
+        <a href="/" class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center">
+            <span class="text-sm font-black text-white">V</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-sm font-bold text-gray-900 leading-none">VWCG</span>
+            <span class="hidden sm:inline text-[10px] text-gray-400 leading-none mt-0.5">World Consulting Group</span>
+          </div>
         </a>
         <div class="flex items-center gap-4 sm:gap-6">
           <a href="/blog" class="hidden sm:inline text-sm text-gray-600 hover:text-gray-900 transition-colors">Blog</a>
           <a
             href="/app"
-            class="inline-flex items-center px-4 py-2 text-sm font-semibold rounded-lg bg-indigo-600 text-white hover:bg-indigo-500 transition-colors"
+            class="inline-flex items-center px-5 py-2.5 text-sm font-semibold rounded-lg bg-slate-900 text-white hover:bg-slate-800 transition-all shadow-sm"
           >
             Start Assessment
+            <svg class="ml-1.5 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
           </a>
         </div>
       </div>
