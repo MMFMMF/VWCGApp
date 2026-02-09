@@ -18,7 +18,7 @@ Milestone: Between milestones (v1.1 complete, next TBD)
 Phase: N/A
 Plan: N/A
 Status: Ready to plan next milestone
-Last activity: 2026-02-09 — Completed quick-1: delete invite system dead code
+Last activity: 2026-02-09 — Completed quick-3: Restore invite code gating system
 
 Progress: v1.0 (44 reqs) + v1.1 (30 reqs) = 74 requirements shipped
 
@@ -31,6 +31,19 @@ Progress: v1.0 (44 reqs) + v1.1 (30 reqs) = 74 requirements shipped
 
 ## Recent Activity
 
+- 2026-02-09: Quick task 3 — Restore invite code gating system
+  - Restored 4 auth files: inviteCode.ts, authStore.ts, InviteGate.tsx, invite.astro
+  - Added 3 new invite codes (8 total): VWCG-CLIENT-001, VWCG-CLIENT-002, VWCG-VIP-2026
+  - Wired InviteGate into AssessmentApp.tsx wrapping BrowserRouter
+  - Updated CLAUDE.md: three-store architecture, auth section restored
+  - Build verified clean
+- 2026-02-09: Quick task 2 — SEO optimization + blog content migration
+  - Technical SEO: meta robots, og:site_name, Organization+WebSite schema, article OG tags, apple-touch-icon
+  - Blog listing: Blog schema, updated title/description
+  - Blog posts: BlogPosting schema, reading time, "Back to Blog" link, title format
+  - 5 original blog posts written (SOP guide, SWOT, 90-day roadmap, SOP tools, AI readiness)
+  - 5 301 redirects from old /guide/* URLs
+  - Build verified, deployed to production
 - 2026-02-09: Quick task 1 — deleted invite system dead code
   - Removed 4 files (266 lines): InviteGate.tsx, inviteCode.ts, authStore.ts, invite.astro
   - Updated CLAUDE.md: two-store architecture, removed auth documentation
@@ -48,11 +61,13 @@ Progress: v1.0 (44 reqs) + v1.1 (30 reqs) = 74 requirements shipped
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 1 | Delete invite system dead code | 2026-02-09 | e782957 | [1-delete-invite-system-dead-code](./quick/1-delete-invite-system-dead-code/) |
+| 2 | SEO optimization + blog content migration | 2026-02-09 | f888fd2 | — |
+| 3 | Restore invite code gating system | 2026-02-09 | 12f3eaf | [3-restore-invite-code-gating-system](./quick/3-restore-invite-code-gating-system/) |
 
 ## Session Continuity
 
 Last session: 2026-02-09
-Status: Quick task 1 complete, ready for next milestone
+Status: Quick task 3 complete, invite code gating restored
 Resume file: None
 Next action: `/gsd:new-milestone` to define v1.2 goals and requirements
 
