@@ -43,6 +43,12 @@ Progress: v1.0 (44 reqs) + v1.1 (30 reqs) = 74 requirements shipped
   - ROADMAP.md collapsed to summary with archive links
   - Git tagged: v1.1
 
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 1 | Delete invite system dead code | 2026-02-09 | e782957 | [1-delete-invite-system-dead-code](./quick/1-delete-invite-system-dead-code/) |
+
 ## Session Continuity
 
 Last session: 2026-02-09
