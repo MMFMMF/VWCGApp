@@ -4,6 +4,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import react from '@astrojs/react';
+import sitemap from '@astrojs/sitemap';
 
 import tailwindcss from '@tailwindcss/vite';
 import { visualizer } from 'rollup-plugin-visualizer';
@@ -15,7 +16,7 @@ export default defineConfig({
   // Add site URL for SEO (MKT-03)
   site: 'https://vwcgapp.com',
 
-  integrations: [react()],
+  integrations: [react(), sitemap()],
 
   // Build optimizations (PRF-03)
   build: {

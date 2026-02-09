@@ -10,48 +10,51 @@ const { ctaHref = '/app' } = Astro.props;
   <!-- Subtle grid pattern -->
   <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0wIDBoNDB2NDBoLTQweiIvPjxwYXRoIGQ9Ik00MCAwaDB2NDBoMHoiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTAgNDBoNDB2MGgtNDB6IiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4wMykiIHN0cm9rZS13aWR0aD0iMSIvPjwvZz48L3N2Zz4=')] opacity-50"></div>
 
-  <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-36">
+  <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-32">
     <div class="text-center">
-      <!-- Pre-headline - specificity builds trust -->
-      <p class="text-indigo-300 font-medium text-sm sm:text-base tracking-wide uppercase mb-4">
-        Free Business Diagnostic — No Login Required
+      <!-- Audience qualifier -->
+      <p class="text-indigo-300 font-medium text-sm tracking-wide uppercase mb-5">
+        For founders &amp; ops leaders running $1M–$50M businesses
       </p>
 
-      <!-- Headline - outcome-focused -->
-      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight">
-        Find the Gaps Holding<br class="hidden sm:inline" />
-        Your Business Back
+      <!-- Headline — specific outcome, not consultant-speak -->
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1]">
+        Get the $15k Strategy Diagnosis.<br class="hidden sm:inline" />
+        <span class="text-amber-400">Free. In 10 Minutes.</span>
       </h1>
 
-      <!-- Subheadline - specific + time-boxed -->
+      <!-- Subheadline — what you actually get -->
       <p class="mt-6 text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed">
-        10 strategic assessments that show you exactly where you're strong, where you're bleeding money, and what to fix first.
+        Score your leadership, operations, AI readiness, and execution across 10 strategic dimensions. See exactly where you're strong, where you're bleeding money, and what to fix first.
       </p>
 
-      <!-- Single primary CTA -->
+      <!-- Primary CTA — contrasting color, specific next step -->
       <div class="mt-10">
         <a
           href={ctaHref}
-          class="group inline-flex items-center justify-center px-8 py-4 text-lg font-semibold rounded-xl bg-indigo-500 text-white hover:bg-indigo-400 shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/30 transition-all duration-200"
+          class="group inline-flex items-center justify-center px-8 py-4 text-lg font-bold rounded-xl bg-amber-400 text-slate-900 hover:bg-amber-300 shadow-lg shadow-amber-400/20 hover:shadow-xl hover:shadow-amber-400/30 transition-all duration-200"
         >
-          Start Your Free Assessment
-          <svg class="ml-2 w-5 h-5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+          Choose Your First Assessment
+          <svg class="ml-2 w-5 h-5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
         </a>
+        <p class="mt-3 text-sm text-slate-400">
+          Pick a tool, answer a few questions, get your report. Takes 30 seconds to start.
+        </p>
       </div>
 
-      <!-- Trust bar - compact, specific -->
-      <div class="mt-8 flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-slate-400">
+      <!-- Trust bar -->
+      <div class="mt-10 flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-slate-400">
         <span class="flex items-center gap-1.5">
           <svg class="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
           No email or signup
         </span>
         <span class="flex items-center gap-1.5">
           <svg class="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-          Results in 10 minutes
+          100% private — stays in your browser
         </span>
         <span class="flex items-center gap-1.5">
           <svg class="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-          100% private — your data stays in your browser
+          Export to PDF anytime
         </span>
       </div>
     </div>

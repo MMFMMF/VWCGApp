@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vwcgapp.com/sitemap-index.xml

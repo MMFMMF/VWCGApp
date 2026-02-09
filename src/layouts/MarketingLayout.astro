@@ -19,7 +19,7 @@ interface Props {
 }
 
 const { title, description, ogImage = '/og-image.png', canonical } = Astro.props;
-const siteUrl = 'https://vwcgapp.com'; // Update for production
+const siteUrl = 'https://vwcgapp.com';
 ---
 
 <!DOCTYPE html>
@@ -29,15 +29,14 @@ const siteUrl = 'https://vwcgapp.com'; // Update for production
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content={description} />
 
-  <!-- SEO Meta Tags (MKT-03) -->
-  <title>{title} | VWCGApp</title>
-  <link rel="canonical" href={canonical || Astro.url.href} />
+  <title>{title}</title>
+  <link rel="canonical" href={canonical || `${siteUrl}${Astro.url.pathname}`} />
 
   <!-- Open Graph -->
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:image" content={`${siteUrl}${ogImage}`} />
-  <meta property="og:url" content={Astro.url.href} />
+  <meta property="og:url" content={`${siteUrl}${Astro.url.pathname}`} />
   <meta property="og:type" content="website" />
 
   <!-- Twitter Card -->
@@ -46,11 +45,11 @@ const siteUrl = 'https://vwcgapp.com'; // Update for production
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={`${siteUrl}${ogImage}`} />
 
-  <!-- Structured Data (MKT-03) -->
+  <!-- Structured Data -->
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "VWCGApp",
+    "name": "VWCGApp — Business Gap Assessment",
     "applicationCategory": "BusinessApplication",
     "description": description,
     "offers": {
@@ -65,6 +64,27 @@ const siteUrl = 'https://vwcgapp.com'; // Update for production
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 </head>
 <body class="bg-white text-gray-900 antialiased font-sans">
+  <!-- Sticky navigation -->
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-14">
+        <a href="/" class="flex items-center gap-2">
+          <span class="text-lg font-bold text-gray-900">VWCG</span>
+          <span class="hidden sm:inline text-xs text-gray-400 border-l border-gray-200 pl-2">by World Consulting Group</span>
+        </a>
+        <div class="flex items-center gap-4 sm:gap-6">
+          <a href="/blog" class="hidden sm:inline text-sm text-gray-600 hover:text-gray-900 transition-colors">Blog</a>
+          <a
+            href="/app"
+            class="inline-flex items-center px-4 py-2 text-sm font-semibold rounded-lg bg-indigo-600 text-white hover:bg-indigo-500 transition-colors"
+          >
+            Start Assessment
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
   <slot />
 </body>
 </html>

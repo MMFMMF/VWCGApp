@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",
+    "@astrojs/sitemap": "^3.7.0",
     "@fontsource/inter": "^5.2.8",
     "@fontsource/lexend": "^5.2.11",
     "@radix-ui/react-dialog": "^1.1.15",
