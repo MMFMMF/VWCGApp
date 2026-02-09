@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0F172A"/>
+      <stop offset="50%" style="stop-color:#1E1B4B"/>
+      <stop offset="100%" style="stop-color:#0F172A"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Subtle grid -->
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <!-- Brand -->
+  <text x="100" y="120" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="700" fill="#FFFFFF">VWCG</text>
+  <text x="172" y="120" font-family="system-ui, -apple-system, sans-serif" font-size="16" fill="#94A3B8">by World Consulting Group</text>
+
+  <!-- Audience qualifier -->
+  <text x="100" y="220" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="500" fill="#818CF8" letter-spacing="2">FOR FOUNDERS &amp; OPS LEADERS</text>
+
+  <!-- Headline -->
+  <text x="100" y="290" font-family="system-ui, -apple-system, sans-serif" font-size="52" font-weight="700" fill="#FFFFFF">Get the $15k Strategy</text>
+  <text x="100" y="355" font-family="system-ui, -apple-system, sans-serif" font-size="52" font-weight="700" fill="#FFFFFF">Diagnosis.</text>
+  <text x="100" y="430" font-family="system-ui, -apple-system, sans-serif" font-size="52" font-weight="700" fill="#FBBF24">Free. In 10 Minutes.</text>
+
+  <!-- Subtext -->
+  <text x="100" y="500" font-family="system-ui, -apple-system, sans-serif" font-size="22" fill="#CBD5E1">Score leadership, operations, AI readiness across 10 dimensions.</text>
+
+  <!-- CTA badge -->
+  <rect x="100" y="540" width="260" height="50" rx="12" fill="#FBBF24"/>
+  <text x="132" y="572" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#0F172A">Start Free Assessment →</text>
+
+  <!-- Mini gauge graphics on right side -->
+  <!-- Gauge 1: 72% -->
+  <circle cx="920" cy="280" r="65" fill="none" stroke="#334155" stroke-width="10"/>
+  <circle cx="920" cy="280" r="65" fill="none" stroke="#4F46E5" stroke-width="10" stroke-linecap="round"
+    stroke-dasharray="408.4" stroke-dashoffset="114.4" transform="rotate(-90 920 280)"/>
+  <text x="920" y="288" font-family="system-ui, sans-serif" font-size="28" font-weight="700" fill="#4F46E5" text-anchor="middle">72%</text>
+  <text x="920" y="370" font-family="system-ui, sans-serif" font-size="14" fill="#94A3B8" text-anchor="middle">AI Readiness</text>
+
+  <!-- Gauge 2: 85% -->
+  <circle cx="1080" cy="200" r="50" fill="none" stroke="#334155" stroke-width="8"/>
+  <circle cx="1080" cy="200" r="50" fill="none" stroke="#7C3AED" stroke-width="8" stroke-linecap="round"
+    stroke-dasharray="314.2" stroke-dashoffset="47.1" transform="rotate(-90 1080 200)"/>
+  <text x="1080" y="207" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#7C3AED" text-anchor="middle">85%</text>
+  <text x="1080" y="270" font-family="system-ui, sans-serif" font-size="12" fill="#94A3B8" text-anchor="middle">Leadership</text>
+
+  <!-- Gauge 3: 68% -->
+  <circle cx="1060" cy="420" r="45" fill="none" stroke="#334155" stroke-width="8"/>
+  <circle cx="1060" cy="420" r="45" fill="none" stroke="#2563EB" stroke-width="8" stroke-linecap="round"
+    stroke-dasharray="282.7" stroke-dashoffset="90.5" transform="rotate(-90 1060 420)"/>
+  <text x="1060" y="427" font-family="system-ui, sans-serif" font-size="20" font-weight="700" fill="#2563EB" text-anchor="middle">68%</text>
+  <text x="1060" y="485" font-family="system-ui, sans-serif" font-size="12" fill="#94A3B8" text-anchor="middle">Advisor Ready</text>
+</svg>
