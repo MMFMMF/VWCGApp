@@ -10,6 +10,8 @@ import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { toolRegistry } from '../lib/tools';
 import { ToolWrapper } from './ToolWrapper';
 import { useWorkspaceStore } from '../stores/workspaceStore';
+import { useAuthStore } from '@stores/authStore';
+import InviteGate from './auth/InviteGate';
 
 /**
  * Dashboard - Shows all available tools
@@ -87,6 +89,7 @@ const AssessmentApp: React.FC = () => {
   const [isHydrated, setIsHydrated] = useState(false);
   const tools = toolRegistry.getSorted();
   const loadTeaserAnswers = useWorkspaceStore((state) => state.loadTeaserAnswers);
+  const checkSession = useAuthStore((state) => state.checkSession);
 
   // Wait for Zustand store hydration
   useEffect(() => {
@@ -108,6 +111,13 @@ const AssessmentApp: React.FC = () => {
     }
   }, [isHydrated, loadTeaserAnswers]);
 
+  // Validate 24-hour auth session on mount
+  useEffect(() => {
+    if (isHydrated) {
+      checkSession();
+    }
+  }, [isHydrated, checkSession]);
+
   if (!isHydrated) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -117,32 +127,34 @@ const AssessmentApp: React.FC = () => {
   }
 
   return (
-    <BrowserRouter basename="/app">
-      <div className="min-h-screen bg-gray-50">
-        <Routes>
-          {/* Dashboard route */}
-          <Route path="/" element={<Dashboard />} />
+    <InviteGate>
+      <BrowserRouter basename="/app">
+        <div className="min-h-screen bg-gray-50">
+          <Routes>
+            {/* Dashboard route */}
+            <Route path="/" element={<Dashboard />} />
 
-          {/* Dynamic routes from registry */}
-          {tools.map((tool) => (
-            <Route
-              key={tool.metadata.id}
-              path={`/tools/${tool.metadata.id}`}
-              element={<ToolView toolId={tool.metadata.id} />}
-            />
-          ))}
+            {/* Dynamic routes from registry */}
+            {tools.map((tool) => (
+              <Route
+                key={tool.metadata.id}
+                path={`/tools/${tool.metadata.id}`}
+                element={<ToolView toolId={tool.metadata.id} />}
+              />
+            ))}
 
-          {/* Catch-all for unknown tool routes */}
-          <Route path="/tools/*" element={<Navigate to="/" replace />} />
+            {/* Catch-all for unknown tool routes */}
+            <Route path="/tools/*" element={<Navigate to="/" replace />} />
 
-          {/* Future routes */}
-          <Route path="/report" element={<div className="p-6">Report Center (Coming Soon)</div>} />
+            {/* Future routes */}
+            <Route path="/report" element={<div className="p-6">Report Center (Coming Soon)</div>} />
 
-          {/* Fallback for unknown routes */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </div>
-    </BrowserRouter>
+            {/* Fallback for unknown routes */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </InviteGate>
   );
 };
 
