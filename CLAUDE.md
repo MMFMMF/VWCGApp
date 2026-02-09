@@ -40,8 +40,13 @@ Netlify rewrites `/app/*` to `/app/index.html` for SPA routing.
 | `components/tools/` | Assessment tool React components (registered via tool registry) |
 | `components/islands/` | React islands hydrated on marketing pages (`client:load`) |
 | `components/marketing/` | Astro components for the landing page sections |
+| `components/auth/` | `InviteGate` authentication wrapper |
 | `components/AssessmentApp.tsx` | Root React SPA component |
 | `components/ToolWrapper.tsx` | Connects tool components to Zustand store |
+
+### Authentication
+
+The app is gated behind `InviteGate` (`src/components/auth/InviteGate.tsx`), which requires a valid invite code. The `/invite` page handles code entry; authenticated users are redirected to `/app`. Auth state lives in `authStore` (sessionStorage, 24-hour expiry). All storage access is SSR-safe (no-ops during server rendering).
 
 ### Layouts
 
@@ -69,10 +74,11 @@ Synthesis runs automatically 500ms after any tool data update. Rules are in `src
 
 ### State Management (Zustand)
 
-Two stores with strict separation:
+Three stores with strict separation:
 
 - **`workspaceStore.ts`** — Persisted to localStorage (`vwcg-workspace`). Holds workspace metadata, all tool data, insights, and synthesis results. Versioned for future migrations.
 - **`uiStore.ts`** — NOT persisted. Holds ephemeral UI state (current tool, modals, sidebar, theme).
+- **`authStore.ts`** — Persisted to sessionStorage (`vwcg-auth`). Holds invite-code authentication state with 24-hour session expiry.
 
 Custom hooks in `src/hooks/` provide granular subscriptions (`useWorkspace`, `useToolData(id)`, `useIsToolCompleted(id)`, `useInsights`, `useSynthesis`).
 
@@ -85,6 +91,7 @@ The landing page mini-assessment stores answers in localStorage (`vwcg-teaser-an
 | Key | Storage | Owner | Purpose |
 |-----|---------|-------|---------|
 | `vwcg-workspace` | localStorage | `workspaceStore` | All workspace data, tool responses, insights |
+| `vwcg-auth` | sessionStorage | `authStore` | Invite code + session expiry |
 | `vwcg-teaser-answers` | localStorage | `MiniAssessmentIsland` | Landing page mini-assessment answers (24h TTL) |
 
 ### Workspace File Format
@@ -141,7 +148,7 @@ Tailwind CSS v4 via `@tailwindcss/vite` plugin (not the older `@astrojs/tailwind
 
 - **`client:only="react"` required for `AssessmentApp`** — It uses `BrowserRouter` which accesses `window`. Using `client:load` instead will cause SSR errors.
 - **Tool registration is import-driven** — If you create a new tool but forget to add its import to `src/lib/tools/index.ts`, it will silently not appear. Same for synthesis rules in `src/lib/synthesis/rules/index.ts`.
-- **SSR-safe storage access** — All `localStorage`/`sessionStorage`/`window` usage must be guarded with `typeof window !== 'undefined'` checks. See `workspaceStore.ts` for the pattern.
+- **SSR-safe storage access** — All `localStorage`/`sessionStorage`/`window` usage must be guarded with `typeof window !== 'undefined'` checks. See `authStore.ts` `getSessionStorage()` for the pattern.
 - **Stale `ToolId` type** — `src/types/workspace.ts` defines `ToolId` as `'vision' | 'workload-capacity-gap' | 'capability-model'`, but the actual registered tools are `ai-readiness`, `leadership-dna`, `business-eq`, etc. `ToolWrapper` uses `as any` casts to work around this. Known tech debt.
 - **Tool categories** — `ToolMetadata.category` is typed as `'assessment' | 'planning' | 'sop' | 'synthesis'` in `src/types/tool.ts`. New tools must use one of these.
 - **`@hooks` alias mismatch** — `@hooks` is defined in `tsconfig.json` but missing from `astro.config.mjs` Vite aliases. TypeScript resolves it, but Vite build may not. Use relative imports or `@/hooks/` instead until this is fixed.
