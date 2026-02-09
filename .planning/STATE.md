@@ -18,7 +18,7 @@ Milestone: Between milestones (v1.1 complete, next TBD)
 Phase: N/A
 Plan: N/A
 Status: Ready to plan next milestone
-Last activity: 2026-02-09 — Completed quick-3: Restore invite code gating system
+Last activity: 2026-02-09 — Completed quick-4: Add per-assessment PDF export button
 
 Progress: v1.0 (44 reqs) + v1.1 (30 reqs) = 74 requirements shipped
 
@@ -31,6 +31,12 @@ Progress: v1.0 (44 reqs) + v1.1 (30 reqs) = 74 requirements shipped
 
 ## Recent Activity
 
+- 2026-02-09: Quick task 4 — Add per-assessment PDF export button
+  - Created src/lib/pdf/singleToolReport.ts (208 lines) with VWCG-branded PDF generation
+  - Modified src/components/ToolWrapper.tsx with Download PDF button in header
+  - Button shows only for assessment tools with exportToPDF and user data
+  - Loading state prevents double-clicks during generation
+  - Build verified clean
 - 2026-02-09: Quick task 3 — Restore invite code gating system
   - Restored 4 auth files: inviteCode.ts, authStore.ts, InviteGate.tsx, invite.astro
   - Added 3 new invite codes (8 total): VWCG-CLIENT-001, VWCG-CLIENT-002, VWCG-VIP-2026
@@ -63,11 +69,12 @@ Progress: v1.0 (44 reqs) + v1.1 (30 reqs) = 74 requirements shipped
 | 1 | Delete invite system dead code | 2026-02-09 | e782957 | [1-delete-invite-system-dead-code](./quick/1-delete-invite-system-dead-code/) |
 | 2 | SEO optimization + blog content migration | 2026-02-09 | f888fd2 | — |
 | 3 | Restore invite code gating system | 2026-02-09 | 12f3eaf | [3-restore-invite-code-gating-system](./quick/3-restore-invite-code-gating-system/) |
+| 4 | Add per-assessment PDF export button | 2026-02-09 | 2389655 | [4-add-per-assessment-pdf-export-button](./quick/4-add-per-assessment-pdf-export-button/) |
 
 ## Session Continuity
 
 Last session: 2026-02-09
-Status: Quick task 3 complete, invite code gating restored
+Status: Quick task 4 complete, per-assessment PDF export added
 Resume file: None
 Next action: `/gsd:new-milestone` to define v1.2 goals and requirements
 
