@@ -8,7 +8,7 @@ const blog = defineCollection({
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     heroImage: z.string().optional(),
-    author: z.string().default('VWCGApp Team'),
+    author: z.string().default('World Consulting Group'),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false)
   })

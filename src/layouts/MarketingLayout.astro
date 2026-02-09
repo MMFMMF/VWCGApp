@@ -15,11 +15,53 @@ interface Props {
   title: string;
   description: string;
   ogImage?: string;
+  ogType?: string;
   canonical?: string;
+  article?: {
+    author?: string;
+    publishedTime?: string;
+    modifiedTime?: string;
+    tags?: string[];
+  };
+  structuredData?: Record<string, unknown>;
 }
 
-const { title, description, ogImage = '/og-image.svg', canonical } = Astro.props;
+const {
+  title,
+  description,
+  ogImage = '/og-image.svg',
+  ogType = 'website',
+  canonical,
+  article,
+  structuredData,
+} = Astro.props;
+
 const siteUrl = 'https://vwcgapp.com';
+const siteName = 'VWCG';
+const canonicalUrl = canonical || `${siteUrl}${Astro.url.pathname}`;
+
+// Default structured data: Organization + WebSite (homepage gets both)
+const defaultStructuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "World Consulting Group",
+    "url": siteUrl,
+    "logo": `${siteUrl}/favicon.svg`,
+    "description": "Free strategic assessment tools for business leaders."
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": siteName,
+    "url": siteUrl,
+    "description": description,
+    "publisher": {
+      "@type": "Organization",
+      "name": "World Consulting Group"
+    }
+  }
+];
 ---
 
 <!DOCTYPE html>
@@ -28,16 +70,27 @@ const siteUrl = 'https://vwcgapp.com';
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content={description} />
+  <meta name="robots" content="index, follow" />
 
   <title>{title}</title>
-  <link rel="canonical" href={canonical || `${siteUrl}${Astro.url.pathname}`} />
+  <link rel="canonical" href={canonicalUrl} />
 
   <!-- Open Graph -->
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:image" content={`${siteUrl}${ogImage}`} />
-  <meta property="og:url" content={`${siteUrl}${Astro.url.pathname}`} />
-  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:type" content={ogType} />
+  <meta property="og:site_name" content={siteName} />
+
+  {article && (
+    <>
+      {article.author && <meta property="article:author" content={article.author} />}
+      {article.publishedTime && <meta property="article:published_time" content={article.publishedTime} />}
+      {article.modifiedTime && <meta property="article:modified_time" content={article.modifiedTime} />}
+      {article.tags?.map(tag => <meta property="article:tag" content={tag} />)}
+    </>
+  )}
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
@@ -46,22 +99,17 @@ const siteUrl = 'https://vwcgapp.com';
   <meta name="twitter:image" content={`${siteUrl}${ogImage}`} />
 
   <!-- Structured Data -->
-  <script type="application/ld+json" set:html={JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "VWCGApp — Business Gap Assessment",
-    "applicationCategory": "BusinessApplication",
-    "description": description,
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "operatingSystem": "Web Browser"
-  })} />
+  {structuredData ? (
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  ) : (
+    defaultStructuredData.map(data => (
+      <script type="application/ld+json" set:html={JSON.stringify(data)} />
+    ))
+  )}
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
 </head>
 <body class="bg-white text-gray-900 antialiased font-sans">
   <!-- Sticky navigation -->

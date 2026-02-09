@@ -23,3 +23,29 @@
   for = "/_astro/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# 301 redirects from old vwcg.app /guide/* URLs to new /blog/* slugs
+[[redirects]]
+  from = "/guide/sop-creation-guide-templates-tools-best-practices"
+  to = "/blog/sop-creation-guide"
+  status = 301
+
+[[redirects]]
+  from = "/guide/what-is-swot-analysis-tool"
+  to = "/blog/swot-analysis-tool"
+  status = 301
+
+[[redirects]]
+  from = "/guide/business-roadmap-guide-90-day-template"
+  to = "/blog/90-day-business-roadmap"
+  status = 301
+
+[[redirects]]
+  from = "/guide/5-best-sop-management-tools-2025"
+  to = "/blog/best-sop-management-tools-2025"
+  status = 301
+
+[[redirects]]
+  from = "/guide/what-happens-when-a-business-is-not-ready-for-ai"
+  to = "/blog/business-not-ready-for-ai"
+  status = 301

@@ -5,16 +5,45 @@ import Footer from '../../components/marketing/Footer.astro';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const siteUrl = 'https://vwcgapp.com';
+
+const blogSchema = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "VWCG Blog",
+  "description": "Expert insights on business strategy, operations, leadership, and AI readiness for SMB owners.",
+  "url": `${siteUrl}/blog`,
+  "publisher": {
+    "@type": "Organization",
+    "name": "World Consulting Group",
+    "url": siteUrl,
+    "logo": `${siteUrl}/favicon.svg`
+  },
+  "blogPost": posts.map(post => ({
+    "@type": "BlogPosting",
+    "headline": post.data.title,
+    "description": post.data.description,
+    "url": `${siteUrl}/blog/${post.slug}`,
+    "datePublished": post.data.pubDate.toISOString(),
+    ...(post.data.updatedDate && { "dateModified": post.data.updatedDate.toISOString() }),
+    "author": {
+      "@type": "Organization",
+      "name": post.data.author || "World Consulting Group"
+    }
+  }))
+};
 ---
 
 <MarketingLayout
-  title="Blog - Business Insights & Strategies"
-  description="Expert insights on leadership, business assessment, strategic planning, and operational excellence for SMB owners."
+  title="Blog — Business Strategy & Operations Insights | VWCG"
+  description="Expert insights on business strategy, operations, leadership, and AI readiness for SMB owners. Actionable guides and frameworks from World Consulting Group."
+  structuredData={blogSchema}
 >
   <header class="bg-indigo-600 text-white py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <h1 class="text-3xl sm:text-4xl font-bold">Blog</h1>
-      <p class="mt-2 text-indigo-100">Insights for growing businesses</p>
+      <p class="mt-2 text-indigo-100">Actionable strategy and operations insights for business leaders</p>
     </div>
   </header>
 
