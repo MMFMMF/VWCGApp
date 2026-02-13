@@ -6,3 +6,5 @@
  */
 
 export { UnifiedStrategicBriefing } from './UnifiedStrategicBriefing.tsx';
+export { LLMStrategicBriefing } from './LLMStrategicBriefing.tsx';
+export type { LLMStrategicBriefingProps } from './LLMStrategicBriefing.tsx';
