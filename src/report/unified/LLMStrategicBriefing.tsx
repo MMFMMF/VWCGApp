@@ -7,7 +7,7 @@
 
 import { useMemo } from 'react';
 import { useWorkspaceStore } from '@/store/workspaceStore';
-import { computeDerivedMetrics } from '@/engine';
+import { computeDerivedMetrics, runSynthesis, adjustCoherenceForContradictions } from '@/engine';
 import type { DerivedMetrics } from '@/engine';
 import type { BriefingNarrative } from '@/engine/llm';
 import {
@@ -24,6 +24,23 @@ import { REPORT_COLORS, SEVERITY_COLORS } from '@/report/design';
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
+
+/** Safety wrapper: coerce any value to a displayable string */
+function safeText(val: unknown): string {
+  if (val === null || val === undefined) return '';
+  if (typeof val === 'string') return val;
+  if (typeof val === 'number' || typeof val === 'boolean') return String(val);
+  if (typeof val === 'object') {
+    // Try common properties before falling back to JSON
+    const obj = val as Record<string, unknown>;
+    if (typeof obj.value === 'string' || typeof obj.value === 'number') return String(obj.value);
+    if (typeof obj.label === 'string') return obj.label;
+    if (typeof obj.name === 'string') return obj.name;
+    if (typeof obj.text === 'string') return obj.text;
+    return JSON.stringify(val);
+  }
+  return String(val);
+}
 
 /** Produce a human-readable date string */
 function formatDate(iso?: string): string {
@@ -154,8 +171,10 @@ function ExecutiveSnapshot({
     <ReportPage variant="standard" pageNumber={2}>
       <ReportSectionTitle>Executive Snapshot</ReportSectionTitle>
 
-      {/* Headline finding */}
-      <ReportCallout className="mb-8">{narrative.headline_finding}</ReportCallout>
+      {/* Headline finding — use LLM narrative, never template text in AI mode */}
+      <ReportCallout className="mb-8">
+        {safeText(narrative.headline_finding) || 'This AI-generated strategic briefing synthesizes your assessment data into actionable insights.'}
+      </ReportCallout>
 
       {/* Three-word descriptors */}
       <div className="flex items-center gap-4 mb-8">
@@ -184,8 +203,8 @@ function ExecutiveSnapshot({
 
         {/* Leadership archetype */}
         <div className="pt-4 border-t border-report-warm">
-          <ReportBody className="font-semibold">Leadership Archetype: {metrics.leadershipArchetype.archetype}</ReportBody>
-          <ReportCaption className="block mt-1">{metrics.leadershipArchetype.description}</ReportCaption>
+          <ReportBody className="font-semibold">Leadership Archetype: {safeText(metrics.leadershipArchetype.archetype)}</ReportBody>
+          <ReportCaption className="block mt-1">{safeText(metrics.leadershipArchetype.description)}</ReportCaption>
         </div>
 
         {/* Strategic coherence */}
@@ -262,10 +281,10 @@ function CostPage({ narrative, pageNumber }: { narrative: BriefingNarrative; pag
             }}
           >
             <div className="text-6xl font-bold leading-tight" style={{ color: SEVERITY_COLORS.high }}>
-              {impact.amount_range}
+              {safeText(impact.amount_range)}
             </div>
-            <ReportBody className="font-semibold mt-2">{impact.label}</ReportBody>
-            <ReportCaption className="block mt-2">{impact.explanation}</ReportCaption>
+            <ReportBody className="font-semibold mt-2">{safeText(impact.label)}</ReportBody>
+            <ReportCaption className="block mt-2">{safeText(impact.explanation)}</ReportCaption>
           </div>
         ))}
 
@@ -332,7 +351,9 @@ function BenchmarkingPage({ narrative, pageNumber, tools }: { narrative: Briefin
             benchmarks={[{ value: 50, label: 'Peer Median' }]}
             className="mb-2"
           />
-          <ReportCaption className="block mt-2">{narrative.benchmarking_interpretations.advisor_readiness}</ReportCaption>
+          {narrative.benchmarking_interpretations?.advisor_readiness && (
+            <ReportCaption className="block mt-2">{safeText(narrative.benchmarking_interpretations.advisor_readiness)}</ReportCaption>
+          )}
         </div>
 
         {/* AI Readiness */}
@@ -346,7 +367,9 @@ function BenchmarkingPage({ narrative, pageNumber, tools }: { narrative: Briefin
             benchmarks={[{ value: 50, label: 'Peer Median' }]}
             className="mb-2"
           />
-          <ReportCaption className="block mt-2">{narrative.benchmarking_interpretations.ai_readiness}</ReportCaption>
+          {narrative.benchmarking_interpretations?.ai_readiness && (
+            <ReportCaption className="block mt-2">{safeText(narrative.benchmarking_interpretations.ai_readiness)}</ReportCaption>
+          )}
         </div>
 
         {/* Leadership DNA */}
@@ -360,7 +383,9 @@ function BenchmarkingPage({ narrative, pageNumber, tools }: { narrative: Briefin
             benchmarks={[{ value: 70, label: 'Target Excellence' }]}
             className="mb-2"
           />
-          <ReportCaption className="block mt-2">{narrative.benchmarking_interpretations.leadership_dna}</ReportCaption>
+          {narrative.benchmarking_interpretations?.leadership_dna && (
+            <ReportCaption className="block mt-2">{safeText(narrative.benchmarking_interpretations.leadership_dna)}</ReportCaption>
+          )}
         </div>
 
         {/* SWOT Risk Profile */}
@@ -374,7 +399,9 @@ function BenchmarkingPage({ narrative, pageNumber, tools }: { narrative: Briefin
             benchmarks={[{ value: 30, label: 'Acceptable Risk' }]}
             className="mb-2"
           />
-          <ReportCaption className="block mt-2">{narrative.benchmarking_interpretations.swot_risk_profile}</ReportCaption>
+          {narrative.benchmarking_interpretations?.swot_risk_profile && (
+            <ReportCaption className="block mt-2">{safeText(narrative.benchmarking_interpretations.swot_risk_profile)}</ReportCaption>
+          )}
         </div>
       </div>
     </ReportPage>
@@ -520,9 +547,31 @@ export function LLMStrategicBriefing({ narrative }: LLMStrategicBriefingProps) {
   const { tools, metadata } = useWorkspaceStore();
 
   // Compute derived metrics for vital signs and benchmarking
-  const metrics = useMemo(() => computeDerivedMetrics({ tools, metadata }), [tools, metadata]);
+  const baseMetrics = useMemo(() => computeDerivedMetrics({ tools, metadata }), [tools, metadata]);
 
-  const clientName = metadata.name || 'Client';
+  // Run synthesis and adjust coherence for contradiction count
+  const insights = useMemo(() => runSynthesis({ tools, metadata }), [tools, metadata]);
+  const metrics = useMemo(() => {
+    const highSeverityCount = insights.filter(i => i.severity === 'high').length;
+    const conflictCount = insights.filter(i => i.type === 'conflict').length;
+    const adjusted = adjustCoherenceForContradictions(
+      baseMetrics.strategicCoherence,
+      baseMetrics.strategicCoherenceDetails,
+      highSeverityCount,
+      conflictCount,
+    );
+    return {
+      ...baseMetrics,
+      strategicCoherence: adjusted.score,
+      strategicCoherenceDetails: adjusted.details,
+    };
+  }, [baseMetrics, insights]);
+
+  // Resolve client name: business-context.companyName → metadata.name (if customized) → fallback
+  const businessCtx = tools?.['business-context'];
+  const clientName = businessCtx?.companyName
+    || (metadata?.name && metadata.name !== 'My Business Strategy' ? metadata.name : '')
+    || 'Your Organization';
   const date = formatDate(metadata.lastModified || metadata.createdAt);
 
   // Page numbering

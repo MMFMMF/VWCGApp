@@ -1,4 +1,5 @@
 export interface BusinessContext {
+  companyName: string;      // Client/company name for report cover pages
   revenueRange: string;     // '<1M' | '1-3M' | '3-8M' | '8-15M' | '15-30M' | '30-50M' | '50M+'
   industry: string;         // Professional Services, Manufacturing, Technology/SaaS, Healthcare, Distribution, Construction, Financial Services, Retail, Other
   employeeCount: string;    // '1-5' | '6-15' | '16-50' | '51-100' | '101-250' | '250+'

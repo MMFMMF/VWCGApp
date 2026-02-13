@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-02-13)
 Phase: 10 of 10 (Quality & Edge Cases)
 Plan: All complete
 Status: v1 implementation complete + LLM integration
-Last activity: 2026-02-13 - Completed quick task 2: LLM integration for strategic narrative generation
+Last activity: 2026-02-13 - Completed quick task 3: Fix remaining 3 bugs (cover name, coherence, footer URL)
 
 Progress: [██████████] 100%
 
@@ -94,9 +94,10 @@ None.
 |---|-------------|------|--------|-----------|
 | 1 | Wire new report system into UI | 2026-02-13 | bd97af0 | [1-finish-the-remaining-tasks-including-wir](./quick/1-finish-the-remaining-tasks-including-wir/) |
 | 2 | LLM integration for strategic narrative generation | 2026-02-13 | ae111bc, cf044e0 | [2-implement-llm-integration-for-strategic-](./quick/2-implement-llm-integration-for-strategic-/) |
+| 3 | Fix remaining bugs: cover page name, coherence threshold, footer URL | 2026-02-13 | — | — |
 
 ## Session Continuity
 
-Last session: 2026-02-13 (full v1 implementation + LLM integration)
-Stopped at: Quick task 2 complete — LLM integration finalized
+Last session: 2026-02-13 (full v1 implementation + LLM integration + bug fixes)
+Stopped at: Quick task 3 complete — 3 remaining bugs fixed
 Resume file: None

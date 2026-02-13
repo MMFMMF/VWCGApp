@@ -24,6 +24,7 @@ export const BusinessContextTool: React.FC = () => {
 
   // Calculate completion status
   const fields: (keyof BusinessContext)[] = [
+    'companyName',
     'revenueRange',
     'industry',
     'employeeCount',
@@ -61,6 +62,22 @@ export const BusinessContextTool: React.FC = () => {
 
       <div className="bg-white p-6 rounded-lg border border-slate-200">
         <div className="space-y-6">
+          {/* Company Name */}
+          <div className="space-y-2">
+            <label htmlFor="companyName" className="block text-sm font-medium text-slate-700">
+              Company / Client Name
+            </label>
+            <input
+              id="companyName"
+              type="text"
+              value={data.companyName || ''}
+              onChange={(e) => handleChange('companyName', e.target.value)}
+              placeholder="Enter company or client name..."
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+            />
+            <p className="text-xs text-slate-400">Used on report cover pages (e.g. &quot;Prepared for Acme Corp&quot;)</p>
+          </div>
+
           {/* Revenue Range */}
           <div className="space-y-2">
             <label htmlFor="revenueRange" className="block text-sm font-medium text-slate-700">

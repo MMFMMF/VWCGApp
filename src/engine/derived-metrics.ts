@@ -44,16 +44,10 @@ function computeExecutionAmbitionRatio(workspace: any): number {
     if (pillarCount === 0) return 1.0; // No pillars = no ambition, default safe
 
     // Compute Operational Maturity from Advisor Readiness
+    // Actual field IDs: o1-o5 (operational category, 1-5 scale each)
     let operationalMaturity = 50; // Default mid-range
     if (advisor?.answers) {
-        // Questions 6-10 roughly map to operational maturity
-        const operationalQuestions = [
-            'q6_operational_foundation',
-            'q7_delegation',
-            'q8_process_discipline',
-            'q9_team_scalability',
-            'q10_financial_health'
-        ];
+        const operationalQuestions = ['o1', 'o2', 'o3', 'o4', 'o5'];
 
         const scores = operationalQuestions
             .map(q => advisor.answers[q])
@@ -158,7 +152,7 @@ function computeStrategicCoherence(workspace: any): {
     // Check 1: Vision pillars vs SWOT strengths
     if (vision?.pillars && swot?.strengths) {
         totalChecks++;
-        const pillarNames = vision.pillars.map((p: any) => p.name?.toLowerCase() || '');
+        const pillarNames = vision.pillars.map((p: any) => (p.text ?? p.name ?? '').toLowerCase());
         const strengthText = swot.strengths.map((s: any) => s.text?.toLowerCase() || '').join(' ');
 
         const overlaps = pillarNames.filter((name: string) =>
@@ -175,7 +169,7 @@ function computeStrategicCoherence(workspace: any): {
     // Check 2: Vision pillars mention AI/technology vs AI Readiness
     if (vision?.pillars && aiReadiness) {
         totalChecks++;
-        const pillarText = vision.pillars.map((p: any) => p.name?.toLowerCase() || '').join(' ');
+        const pillarText = vision.pillars.map((p: any) => (p.text ?? p.name ?? '').toLowerCase()).join(' ');
         const hasAIFocus = /\b(ai|digital|technology|automation|data)\b/.test(pillarText);
         const avgAIReadiness = Object.values(aiReadiness as Record<string, number>)
             .filter((v): v is number => typeof v === 'number')
@@ -191,7 +185,7 @@ function computeStrategicCoherence(workspace: any): {
     // Check 3: Core values vs SWOT weaknesses (check for contradictions)
     if (vision?.values && swot?.weaknesses) {
         totalChecks++;
-        const valuesText = vision.values.map((v: string) => v.toLowerCase()).join(' ');
+        const valuesText = vision.values.map((v: any) => (typeof v === 'string' ? v : v.text ?? '').toLowerCase()).join(' ');
         const weaknessText = swot.weaknesses.map((w: any) => w.text?.toLowerCase() || '').join(' ');
 
         // Check for balance/people-first values contradicted by burnout/capacity weaknesses
@@ -236,6 +230,55 @@ function computeStrategicCoherence(workspace: any): {
         }
     }
 
+    // Check 5: Execution-Ambition Ratio
+    // If EAR < 0.7, the business is overextended — cannot be "Aligned"
+    const ear = computeExecutionAmbitionRatio({ tools: { 'leadership-dna': dna, 'vision-canvas': vision, 'advisor-readiness': { answers: (workspace.tools?.['advisor-readiness'] as any)?.answers } } });
+    if (ear > 0 && ear < 0.7) {
+        totalChecks++;
+        issues.push(`Execution-Ambition Ratio is low (${ear.toFixed(2)}) — overextended`);
+    } else if (ear > 0) {
+        totalChecks++;
+        alignmentPoints++;
+    }
+
+    // Check 6: Founder Dependency Index
+    // If FDI > 5, strategic coherence is degraded
+    const fdi = computeFounderDependencyIndex(workspace);
+    if (fdi > 5) {
+        totalChecks++;
+        issues.push(`High Founder Dependency (${fdi.toFixed(1)}/10) undermines strategic coherence`);
+    } else if (fdi > 0) {
+        totalChecks++;
+        alignmentPoints++;
+    }
+
+    // Check 7: Financial-Strategic gap override
+    // If Financial Health % - Strategic Alignment % > 40 AND Vision < 5/10 → force misaligned
+    const advisor = workspace.tools?.['advisor-readiness'];
+    if (advisor?.answers && dna) {
+        const financialQs = ['f1', 'f2', 'f3', 'f4', 'f5'];
+        const strategicQs = ['s1', 's2', 's3', 's4', 's5'];
+        const fScores = financialQs.map(q => advisor.answers[q]).filter((v: unknown): v is number => typeof v === 'number');
+        const sScores = strategicQs.map(q => advisor.answers[q]).filter((v: unknown): v is number => typeof v === 'number');
+
+        if (fScores.length > 0 && sScores.length > 0) {
+            const financialPct = (fScores.reduce((a: number, b: number) => a + b, 0) / fScores.length / 5) * 100;
+            const strategicPct = (sScores.reduce((a: number, b: number) => a + b, 0) / sScores.length / 5) * 100;
+            const gap = financialPct - strategicPct;
+            const visionScore = dna.current_Vision ?? 5;
+
+            if (gap > 40 && visionScore < 5) {
+                totalChecks++;
+                issues.push(`Financial-Strategic gap of ${Math.round(gap)} points with Vision ${visionScore}/10 — severely misaligned`);
+                // Hard override: return misaligned immediately
+                return {
+                    score: 'misaligned',
+                    details: issues.join('; '),
+                };
+            }
+        }
+    }
+
     if (totalChecks === 0) return { score: 'aligned', details: 'Insufficient data for coherence analysis' };
 
     const alignmentRatio = alignmentPoints / totalChecks;
@@ -252,6 +295,45 @@ function computeStrategicCoherence(workspace: any): {
     const details = issues.length > 0
         ? issues.join('; ')
         : 'Strategy shows strong internal alignment';
+
+    return { score, details };
+}
+
+/**
+ * Post-synthesis coherence adjustment
+ * Downgrades coherence based on contradiction count from synthesis rules.
+ * Call this AFTER running synthesis to factor in detected contradictions.
+ */
+export function adjustCoherenceForContradictions(
+    currentScore: 'aligned' | 'partially_aligned' | 'misaligned',
+    currentDetails: string,
+    highSeverityCount: number,
+    conflictCount: number,
+): { score: 'aligned' | 'partially_aligned' | 'misaligned'; details: string } {
+    let score = currentScore;
+    const extraIssues: string[] = [];
+
+    // 2+ high-severity contradictions forces "misaligned"
+    if (conflictCount >= 2) {
+        score = 'misaligned';
+        extraIssues.push(`${conflictCount} internal contradictions detected`);
+    } else if (conflictCount === 1 && score === 'aligned') {
+        score = 'partially_aligned';
+        extraIssues.push('1 internal contradiction detected');
+    }
+
+    // 3+ high-severity findings also degrades coherence
+    if (highSeverityCount >= 3 && score !== 'misaligned') {
+        score = 'misaligned';
+        extraIssues.push(`${highSeverityCount} high-severity findings`);
+    } else if (highSeverityCount >= 2 && score === 'aligned') {
+        score = 'partially_aligned';
+        extraIssues.push(`${highSeverityCount} high-severity findings`);
+    }
+
+    const details = extraIssues.length > 0
+        ? (currentDetails ? `${currentDetails}; ${extraIssues.join('; ')}` : extraIssues.join('; '))
+        : currentDetails;
 
     return { score, details };
 }
@@ -299,12 +381,19 @@ function computeRevenueRiskEstimate(workspace: any): RevenueRiskEstimate {
     }
 
     // Factor 3: Financial Health (lower risk if strong buffer)
-    if (advisor?.answers?.q10_financial_health) {
-        const financialHealth = advisor.answers.q10_financial_health;
-        if (financialHealth >= 4) {
-            // Strong financial position reduces risk
-            riskMultiplierLow *= 0.8;
-            riskMultiplierHigh *= 0.9;
+    // Actual field IDs: f1-f5 (financial category, 1-5 scale each)
+    if (advisor?.answers) {
+        const financialQuestions = ['f1', 'f2', 'f3', 'f4', 'f5'];
+        const fScores = financialQuestions
+            .map(q => advisor.answers[q])
+            .filter((v): v is number => typeof v === 'number');
+        if (fScores.length > 0) {
+            const avgFinancialHealth = fScores.reduce((sum, val) => sum + val, 0) / fScores.length;
+            if (avgFinancialHealth >= 4) {
+                // Strong financial position reduces risk
+                riskMultiplierLow *= 0.8;
+                riskMultiplierHigh *= 0.9;
+            }
         }
     }
 
@@ -328,13 +417,10 @@ function computeOrganizationalReadiness(workspace: any): { score: number; label:
     let totalScore = 0;
     let components = 0;
 
-    // Component 1: Cultural Readiness from Advisor (questions on culture/people)
+    // Component 1: Cultural Readiness from Advisor
+    // Actual field IDs: c1-c5 (cultural category, 1-5 scale each)
     if (advisor?.answers) {
-        const culturalQuestions = [
-            'q11_cultural_readiness',
-            'q12_change_appetite',
-            'q13_learning_culture'
-        ];
+        const culturalQuestions = ['c1', 'c2', 'c3', 'c4', 'c5'];
         const scores = culturalQuestions
             .map(q => advisor.answers[q])
             .filter((v): v is number => typeof v === 'number');

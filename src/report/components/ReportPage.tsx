@@ -86,7 +86,7 @@ export function ReportPage({
           <div>
             {REPORT_FOOTER.text}
             {REPORT_FOOTER.separator}
-            <span className="text-report-blue">{REPORT_FOOTER.url}</span>
+            <span className="text-report-blue" style={{ letterSpacing: '0.5px' }}>{REPORT_FOOTER.url}</span>
           </div>
           {pageNumber !== undefined && (
             <div className="font-semibold">{pageNumber}</div>

@@ -12,7 +12,7 @@
 
 import { useMemo } from 'react';
 import { useWorkspaceStore } from '@/store/workspaceStore';
-import { computeDerivedMetrics, runSynthesis } from '@/engine';
+import { computeDerivedMetrics, runSynthesis, adjustCoherenceForContradictions } from '@/engine';
 import type { DerivedMetrics, Insight } from '@/engine';
 import {
   createNarrativeContext,
@@ -925,11 +925,31 @@ export function UnifiedStrategicBriefing() {
     return computed.length > 0 ? computed : storeInsights;
   }, [workspace, storeInsights]);
 
-  // Build narrative context
-  const clientName = metadata?.name || 'Your Organization';
+  // Adjust coherence based on contradiction count from synthesis
+  const adjustedMetrics = useMemo(() => {
+    const highSeverityCount = insights.filter(i => i.severity === 'high').length;
+    const conflictCount = insights.filter(i => i.type === 'conflict').length;
+    const adjusted = adjustCoherenceForContradictions(
+      metrics.strategicCoherence,
+      metrics.strategicCoherenceDetails,
+      highSeverityCount,
+      conflictCount,
+    );
+    return {
+      ...metrics,
+      strategicCoherence: adjusted.score,
+      strategicCoherenceDetails: adjusted.details,
+    };
+  }, [metrics, insights]);
+
+  // Resolve client name: business-context.companyName → metadata.name (if customized) → fallback
+  const businessCtx = tools?.['business-context'];
+  const clientName = businessCtx?.companyName
+    || (metadata?.name && metadata.name !== 'My Business Strategy' ? metadata.name : '')
+    || 'Your Organization';
   const ctx = useMemo(
-    () => createNarrativeContext(workspace, metrics, insights, clientName),
-    [workspace, metrics, insights, clientName]
+    () => createNarrativeContext(workspace, adjustedMetrics, insights, clientName),
+    [workspace, adjustedMetrics, insights, clientName]
   );
 
   // Determine which conditional sections render
@@ -962,7 +982,7 @@ export function UnifiedStrategicBriefing() {
       {/* USB-02: Executive Snapshot */}
       <ExecutiveSnapshot
         ctx={ctx}
-        metrics={metrics}
+        metrics={adjustedMetrics}
         insights={insights}
       />
 
@@ -979,7 +999,7 @@ export function UnifiedStrategicBriefing() {
 
       {/* USB-06: What This Is Costing You (CONDITIONAL) */}
       {hasRevenue && (
-        <CostPage ctx={ctx} metrics={metrics} pageStart={costPage} />
+        <CostPage ctx={ctx} metrics={adjustedMetrics} pageStart={costPage} />
       )}
 
       {/* USB-07: Benchmarking Context */}
