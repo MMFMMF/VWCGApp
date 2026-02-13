@@ -4,174 +4,206 @@
 
 ## Pattern Overview
 
-**Overall:** React SPA with centralized state management, dynamic tool registry, and cross-tool synthesis engine.
+**Overall:** Layered MPA (Multi-Page Application) with centralized state management and cross-tool synthesis
 
 **Key Characteristics:**
-- Single Zustand store (`workspaceStore.ts`) persists all workspace data to localStorage
-- Tool Registry pattern for dynamic route + navigation generation
-- Synthesis Engine that runs cross-tool rules on every state update
-- Safe Mode validation workflow for workspace imports
-- Modular tool architecture with per-tool validation profiles
-- Optional AI consultation via Gemini API for strategic insights
+- Single Zustand store as the single source of truth for all workspace data
+- Reactive synthesis engine that runs on every tool data update
+- Tool-agnostic registry system enabling dynamic routing and validation
+- Separation of persisted (tools, metadata, provenance) and ephemeral (insights, validation results) state
+- Cross-layer validation before data commit (Safe Mode pattern)
 
 ## Layers
 
 **Presentation Layer:**
-- Purpose: React components for UI rendering and user interaction
-- Location: `src/components/`, `src/tools/*/` (component files)
-- Contains: Layout shell, tool components, dashboard, UI primitives
-- Depends on: Workspace Store (read data, dispatch actions), React Router for navigation
-- Used by: Browser/user interaction
+- Purpose: Render UI components and handle user interactions
+- Location: `src/components/`, `src/tools/`
+- Contains: React components (layout shells, tool UIs, dashboard), icons from lucide-react
+- Depends on: Zustand store (via hooks), utilities (cn, fileSystem)
+- Used by: Browser/DOM, AppShell router
 
 **State Management Layer:**
-- Purpose: Central workspace state persistence and synchronization
+- Purpose: Centralized workspace state persistence and synchronization
 - Location: `src/store/workspaceStore.ts`
-- Contains: Zustand store with persist middleware, workspace metadata, tool data, provenance tracking, ephemeral state (Safe Mode, validation results, insights)
-- Depends on: Synthesis Engine (runs on every update), Validation system (runs during import)
-- Used by: All components via `useWorkspaceStore()` hook
+- Contains: Zustand store with persist middleware, store actions (updateToolData, stageWorkspace, commitWorkspace, loadWorkspace, resetWorkspace)
+- Depends on: Synthesis engine (runSynthesis), validation system (validateWorkspace)
+- Used by: All presentation components via useWorkspaceStore hook
 
 **Synthesis Layer:**
-- Purpose: Cross-tool rule execution to generate strategic insights
-- Location: `src/engine/` (synthesis.ts, rules.ts, types.ts, cloud.ts)
-- Contains: Registered synthesis rules (E1-E5), insight generation, optional AI consultation
-- Depends on: Workspace Store data (reads tool data), optional Gemini API
-- Used by: Workspace Store on every `updateToolData()` call
-
-**Registry Layer:**
-- Purpose: Tool definition and dynamic registration
-- Location: `src/registry/` (ToolRegistry.ts, registry.ts)
-- Contains: Tool definitions with metadata (id, name, path, icon, component, validationProfileId)
-- Depends on: Tool definitions from `src/tools/*/index.ts`
-- Used by: App.tsx (route generation), AppShell (sidebar navigation), Validation system (per-tool profiles)
+- Purpose: Generate cross-tool insights by analyzing multi-tool data patterns
+- Location: `src/engine/synthesis.ts`, `src/engine/rules-v2.ts`, `src/engine/derived-metrics.ts`, `src/engine/swot-keywords.ts`
+- Contains: SynthesisRule registry, 8 v2 rules with complex cross-tool logic, derived metrics computation, keyword analysis
+- Depends on: Store data structure (workspace.tools)
+- Used by: Store's updateToolData action, onRehydrateStorage lifecycle
 
 **Validation Layer:**
-- Purpose: Multi-level workspace validation (structural, per-tool, cross-tool)
-- Location: `src/validation/` (types.ts, index.ts, validator.ts, profiles_p*.ts)
-- Contains: Validation profiles per tool, validator orchestrator, issue tracking
-- Depends on: Tool Registry (lookup registered tools), per-tool profile definitions
-- Used by: Safe Mode workflow (stageWorkspace → commitWorkspace)
+- Purpose: Enforce data integrity at import time using multi-level profiles
+- Location: `src/validation/`
+- Contains: L0-L3 validation profiles (profiles_p1.ts, profiles_p2.ts, profiles_p3.ts), validator.ts (applies profiles), types.ts (profile interface)
+- Depends on: Tool registry (getTools) to iterate registered tools
+- Used by: Store's stageWorkspace action, Safe Mode workflow
+
+**Registry Layer:**
+- Purpose: Maintain dynamic catalog of all tools and their metadata
+- Location: `src/registry/ToolRegistry.ts`, `src/registry/registry.ts`
+- Contains: ToolDefinition interface, registerTool/getTools/getTool functions, initialization that registers all 12 tools
+- Depends on: Individual tool definitions (imported from src/tools/*/index.ts)
+- Used by: App.tsx (dynamic routing), AppShell (sidebar nav), validator.ts (profile lookup)
 
 **Tool Layer:**
-- Purpose: Individual assessment tools with domain logic
+- Purpose: Individual assessment tools with their data models
 - Location: `src/tools/{tool-name}/`
-- Contains: Tool component (React), tool definition (ToolDefinition), optional validation profile
-- Depends on: Workspace Store (read/write tool data), optional UI components
-- Used by: Router (renders on path match), Dashboard (tool listing)
+- Contains: Tool component (*.tsx), ToolDefinition export (index.ts with validation profile reference)
+- Depends on: Zustand store (read/write via updateToolData), utilities
+- Used by: Presentation layer (rendered via routes), Synthesis engine (data reading)
 
-**Infrastructure:**
-- Purpose: Charts, utilities, file I/O
-- Location: `src/lib/charts.ts`, `src/utils/`, `src/components/ui/`
-- Contains: Chart.js registration, className utilities (clsx + tailwind-merge), file system (save/load .vwcg files)
-- Depends on: External libraries (chart.js, lucide-react)
-- Used by: Tool components, AppShell
+**Report System Layer:**
+- Purpose: Multi-format report generation and narrative composition
+- Location: `src/report/`
+- Contains: PDF generation (pdf/PdfGenerator.ts), charts (charts/), narratives (narrative/), individual report templates (individual/), quality checks (quality/)
+- Depends on: jsPDF, html2canvas, workspace store (reading tool data)
+- Used by: Report Center tool (`src/tools/report/`)
+
+**Utilities Layer:**
+- Purpose: Cross-cutting helper functions
+- Location: `src/utils/`
+- Contains: cn.ts (className merging), fileSystem.ts (save/load workspace files)
+- Depends on: Third-party (clsx, tailwind-merge, browser File API)
+- Used by: All presentation components, AppShell
 
 ## Data Flow
 
-**Editing a Tool:**
+**User edits tool UI:**
 
-1. User edits form in tool component (e.g., `LeadershipDnaTool.tsx`)
-2. Component calls `updateToolData(toolId, data)`
-3. Zustand store merges data into `state.tools[toolId]`
-4. Provenance tracking updates with timestamp + `LOGIC_VERSION`
-5. `runSynthesis()` executes all registered rules synchronously
-6. New insights replace `state.insights`
-7. Persist middleware saves `{version, metadata, tools, provenance}` to localStorage under key `vwcg-workspace`
-8. Component re-renders with new data from store subscription
+1. User changes value in tool component (e.g., slider in Leadership DNA)
+2. Component calls `updateToolData(toolId, data)` from store
+3. Store merges data into `state.tools[toolId]`
+4. Store updates `provenance[toolId]` with timestamp + LOGIC_VERSION
+5. Store synchronously calls `runSynthesis(simulation)` with merged state
+6. Synthesis engine evaluates all 8 rules against cross-tool data
+7. Rules return Insight[] sorted by severity (high → medium → low)
+8. Store updates `state.insights` with results
+9. Zustand persist middleware saves {version, metadata, tools, provenance} to localStorage (ephemeral state excluded)
+10. All components using `useWorkspaceStore` hooks re-render with new insights/tools/metadata
 
-**Importing a Workspace:**
+**Workspace load (Safe Mode workflow):**
 
-1. User clicks "Load" button → file input dialog
-2. `loadWorkspaceFromFile(file)` reads and parses `.vwcg` JSON
-3. Calls `loadWorkspace(data)` action
-4. `stageWorkspace(data)` runs and:
-   - Validates structure (L0: JSON, metadata, tools keys)
-   - Validates each tool via registered profiles (L1/L2)
-   - Stores validation result
-   - Sets `isSafeMode: true` and `previewData: data`
-5. `SafeModeBanner` renders full-screen modal with issues
-6. User reviews and clicks "Load Workspace" (or "Load with Repair")
-7. `commitWorkspace()` applies data, recomputes insights, exits Safe Mode
-8. On rehydration from localStorage, `queueMicrotask` recomputes insights
+1. User clicks "Load" button in AppShell topbar
+2. File picker opens; user selects .vwcg file
+3. `loadWorkspaceFromFile(file)` reads and parses JSON
+4. Store calls `stageWorkspace(parsedData)`:
+   - `validateWorkspace()` runs L0+L1+L2 checks (structural, metadata, per-tool profiles)
+   - Sets `isSafeMode: true`, stores data in `previewData`, saves validation result
+   - SafeModeBanner renders showing issues (if any)
+5. User reviews validation results, clicks "Load" or "Cancel"
+6. If "Load": `commitWorkspace()` applies repairs, merges previewData into live state, exits Safe Mode
+7. On commit, `queueMicrotask()` defers insights recomputation for proper hydration
 
-**State Management:**
+**Logic version upgrade:**
 
-- **Persisted:** `version`, `metadata` (id, createdAt, lastModified, name, schema_version, computed_under_logic_version), `tools` (all tool data), `provenance` (per-tool: timestamp, logicVersion)
-- **Ephemeral:** `isSafeMode` (boolean), `previewData` (workspace preview), `validationResults` (validation issues), `insights` (synthesis results), `lastExportTime` (cooldown timestamp)
+1. LOGIC_VERSION constant in `workspaceStore.ts` incremented (currently v1.1.0)
+2. On workspace hydration, if loaded version < current LOGIC_VERSION, topbar shows upgrade banner
+3. User clicks "Upgrade to {LOGIC_VERSION}"
+4. `recomputeLogic()` action updates all provenance entries to new version, recomputes insights
+5. Metadata.computed_under_logic_version updated
+
+## State Management Details
+
+**Persisted State (localStorage key: `vwcg-workspace`):**
+```
+{
+  version: '1.0',
+  metadata: {
+    id: UUID,
+    createdAt: ISO timestamp,
+    lastModified: ISO timestamp,
+    name: string,
+    schema_version: 'v1',
+    computed_under_logic_version: 'v1.1.0'
+  },
+  tools: {
+    'tool-id': { ...tool data },
+    ...
+  },
+  provenance: {
+    'tool-id': { timestamp: ISO, logicVersion: 'v1.1.0' },
+    ...
+  }
+}
+```
+
+**Ephemeral State (not persisted, cleared on page reload):**
+- `isSafeMode: boolean` - Safe Mode workflow active
+- `previewData: Partial<WorkspaceState> | null` - Staged workspace before commit
+- `validationResults: ValidationResult | null` - Safe Mode validation output
+- `insights: Insight[]` - Current synthesis results (recomputed on hydration)
+- `lastExportTime: number` - Export cooldown timestamp (5 seconds between exports)
 
 ## Key Abstractions
 
-**ToolDefinition Interface:**
-- Purpose: Declares a tool's metadata and component
-- Location: `src/registry/ToolRegistry.ts`
-- Example: `aiReadinessDefinition` in `src/tools/ai-readiness/index.ts`
-- Pattern: Each tool directory has `index.ts` exporting a `ToolDefinition` that gets registered in `src/registry/registry.ts`
+**ToolDefinition:**
+- Purpose: Metadata contract for each tool
+- Examples: `src/tools/ai-readiness/index.ts`, `src/tools/leadership-dna/index.ts`, `src/tools/vision-canvas/index.ts`
+- Pattern: Each tool exports a constant with id, name, description, path, icon, component, validationProfileId
 
-**Insight Object:**
-- Purpose: Represents a synthesis rule output
-- Location: `src/engine/types.ts`
-- Fields: id, type (risk|opportunity|conflict|strength), severity (high|medium|low), title, message, recommendation, relatedTools
-- Usage: Synthesis rules return `Insight | null`, stored in `state.insights`, displayed on Dashboard
+**SynthesisRule:**
+- Purpose: Encapsulate cross-tool logic with error isolation
+- Examples: `visionExecutionMismatch`, `valuesRealityContradiction` in `src/engine/rules-v2.ts`
+- Pattern: `{ id, name, description, execute(workspace) }` where execute returns `Insight | null`
 
-**SynthesisRule Interface:**
-- Purpose: Defines a cross-tool analysis rule
-- Location: `src/engine/types.ts`, implementation in `src/engine/rules.ts`
-- Pattern: Each rule has `id`, `name`, `description`, `execute(workspace) → Insight | null`
-- Examples: `executionGapRule` (Leadership DNA + Vision Canvas), `unmitigatedThreatRule` (SWOT + Roadmap)
+**ValidationProfile:**
+- Purpose: Per-tool data integrity checks
+- Examples: Profiles in `src/validation/profiles_p1.ts`, `profiles_p2.ts`, `profiles_p3.ts`
+- Pattern: `{ id, validate(toolData) }` returns `ValidationIssue[]`
 
-**ValidationProfile Interface:**
-- Purpose: Per-tool validation schema
-- Location: `src/validation/types.ts`
-- Pattern: Each tool can optionally register a profile via `validationProfileId` in ToolDefinition
-- Registration: Profiles in `profiles_p1.ts`, `profiles_p2.ts`, `profiles_p3.ts` are registered at startup in `initializeValidation()`
-- Usage: Validator looks up profile by `toolDef.validationProfileId` and calls `profile.validate(toolData)`
-
-**WorkspaceState:**
-- Purpose: Complete workspace shape
-- Location: `src/store/workspaceStore.ts`
-- Root keys: `version`, `metadata`, `tools`, `provenance`, `isSafeMode`, `previewData`, `validationResults`, `insights`, `lastExportTime`
-- Exported via `exportState()` as canonical JSON (sorted keys) with 5-second cooldown
+**Insight:**
+- Purpose: Cross-tool findings and recommendations
+- Pattern: `{ id, type: ('risk'|'opportunity'|'conflict'|'strength'), severity: ('high'|'medium'|'low'), title, message, recommendation, relatedTools: string[] }`
 
 ## Entry Points
 
-**Application Bootstrap:**
+**main.tsx:**
 - Location: `src/main.tsx`
-- Triggers: Page load
-- Responsibilities: Initializes tool registry, validation system, charts library, then renders App
+- Triggers: Browser page load
+- Responsibilities: Initialize registry, validation, charts before mounting React app; creates DOM root
 
-**App Initialization:**
+**App.tsx:**
 - Location: `src/App.tsx`
-- Triggers: React root render
-- Responsibilities: Checks if `metadata.id` exists; if not, calls `resetWorkspace()` to generate new UUID. Sets up React Router with dynamic tool routes from `getTools()`
+- Triggers: React mounting
+- Responsibilities: Set up BrowserRouter, check if workspace exists (metadata.id), call resetWorkspace if first load, render dynamic tool routes via App.tsx
 
-**Layout Shell:**
+**AppShell.tsx:**
 - Location: `src/components/layout/AppShell.tsx`
-- Triggers: Every route render
-- Responsibilities: Renders sidebar (nav to dashboard + all tools), topbar (workspace name, save/load/upgrade buttons), main content area with Outlet. Also renders SafeModeBanner overlay when in Safe Mode.
+- Triggers: App.tsx Route element (parent layout)
+- Responsibilities: Render sidebar with tool navigation, topbar with Save/Load/Upgrade buttons, logic version banner, Safe Mode overlay, outlet for tool components
 
-**Dashboard:**
+**DashboardTool.tsx:**
 - Location: `src/tools/dashboard/DashboardTool.tsx`
-- Triggers: Route `/` (home)
-- Responsibilities: Shows workspace progress, tool completion status, strategic health widget, insights list, quick-start buttons to tools
+- Triggers: "/" route
+- Responsibilities: Show workspace overview, progress metrics, getting-started steps, synthesis insights, strategic health widget
 
 ## Error Handling
 
-**Strategy:** Try-catch in async operations, console warnings for failed synthesis rules, validation issues tracked and displayed in Safe Mode banner.
+**Strategy:** Try-catch with graceful degradation; error boundaries for React component failures
 
 **Patterns:**
-- Synthesis rules wrapped in try-catch with warning log; bad rule doesn't crash app
-- File I/O errors caught and displayed via alert()
-- Validation errors accumulated and reported in Safe Mode banner
-- Invalid workspace structure detected at L0 validation before per-tool validation
+- **Synthesis rules:** Wrapped in try-catch in `runSynthesis()` loop; failed rules log warning but don't crash
+- **File I/O:** `loadWorkspaceFromFile()` rejects promise on parse error; caught in AppShell with alert dialog
+- **Validation:** Structural errors halt validation (status: 'error'); tool-level issues collected but non-fatal
+- **Store persistence:** `onRehydrateStorage()` catches hydration errors, removes corrupted localStorage, initializes fresh state
+- **React:** `ErrorBoundary` component wraps app sections; displays error details in red panel for debugging
 
 ## Cross-Cutting Concerns
 
-**Logging:** `console.log()` and `console.warn()` used throughout; key checkpoints in main.tsx (registry/validation/charts init), workspaceStore (synthesis execution), synthesis.ts (rule execution), cloud.ts (API calls)
+**Logging:** Console.log statements in synthesis, store initialization, rule execution; filterable by '[component]' prefix
 
-**Validation:** L0 (structural), L1/L2 (per-tool via registered profiles), applied during workspace import via `stageWorkspace()`. Safe Mode prevents apply until issues resolved.
+**Validation:** Three layers (L0: structural, L1-L2: per-tool) with per-tool ValidationProfile registry; Safe Mode enforces validation before commit
 
-**Authentication:** None; app is client-side only. Optional Gemini API key via environment variable `VITE_GEMINI_API_KEY` enables AI Consultation (consultAi() in `src/engine/cloud.ts`).
+**Authentication:** None (SPA, no backend auth required; workspace tied to localStorage/file system)
 
-**Provenance:** Every tool update records `{ timestamp: ISO, logicVersion: 'vX.Y.Z' }` in `state.provenance[toolId]`. When `LOGIC_VERSION` in store changes, topbar shows "Logic Outdated" banner with "Upgrade" button that calls `recomputeLogic()` to bump all provenances to current version.
+**Persistence:** Zustand persist middleware with partialize to exclude ephemeral state; export/import via .vwcg JSON files with 5-second cooldown
+
+**Logic Versioning:** LOGIC_VERSION constant tracks synthesis/validation contract; provenance tracks when each tool was last computed; upgrade banner prompts recomputation
 
 ---
 

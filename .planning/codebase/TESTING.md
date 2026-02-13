@@ -5,283 +5,340 @@
 ## Test Framework
 
 **Runner:**
-- Playwright 1.58.2 (end-to-end testing)
+- Playwright 1.58.2
 - Config: `playwright.config.ts`
-- No unit test framework (Jest, Vitest, etc.) configured
+- Only Chromium browser tested (Desktop Chrome)
 
 **Assertion Library:**
-- Playwright's built-in expect API
+- Playwright's built-in expect (`import { test, expect } from '@playwright/test'`)
 
 **Run Commands:**
 ```bash
-npm run test:e2e              # Run all E2E tests (headless, serial in CI)
-npm run test:e2e:ui          # Run with Playwright UI (local debugging)
-npm run test:e2e:headed      # Run in headed mode (visible browser)
-npm run test:e2e:generate-pdfs  # Run PDF generation tests with reporter
+npm run test:e2e                    # Run all Playwright tests
+npm run test:e2e:ui                # Open interactive test UI
+npm run test:e2e:headed            # Run with visible browser
+npm run test:e2e:generate-pdfs    # Run PDF generation journey test
 ```
+
+**Configuration Details:**
+- Base URL: `http://localhost:5173` (Vite dev server)
+- Test directory: `tests/`
+- Test output: `test-outputs/` (downloads, traces, screenshots)
+- Trace: `on-first-retry` (captures full execution trace if test fails)
+- Screenshots: `only-on-failure`
+- Parallel execution: `fullyParallel: true` (all tests run in parallel unless serialized)
+- Retries: 0 in local mode, 2 in CI environment
+- Auto-starts dev server via `webServer` config before tests run
 
 ## Test File Organization
 
 **Location:**
-- All tests in `tests/` directory at project root
-- Separate from source code (`src/`)
-- Three subdirectories: `helpers/`, `journeys/`, `personas/`, `smoke/`
+- All tests in `tests/` directory (mirrors test organization, not source)
+- No co-located tests in source directories
 
 **Naming:**
-- Spec files: `*.spec.ts` (e.g., `app.spec.ts`, `alex.spec.ts`, `pdf-generation.spec.ts`)
-- Helper modules: Named by function (e.g., `navigation.ts`, `forms.ts`, `workspace.ts`)
-- Persona data files: Named after persona (e.g., `alex.ts`, `mike.ts`, `sarah.ts`)
+- `*.spec.ts` extension
+- Descriptive names matching test suite: `app.spec.ts`, `sarah.spec.ts`, `pdf-generation.spec.ts`
 
 **Structure:**
 ```
 tests/
-├── helpers/              # Reusable test utilities
-│   ├── forms.ts         # Form filling helpers
-│   ├── navigation.ts    # Navigation helpers
-│   ├── pdf.ts          # PDF utilities
-│   └── workspace.ts    # Workspace state helpers
-├── journeys/            # User journey/scenario tests
-│   ├── alex.spec.ts
-│   ├── mike.spec.ts
-│   ├── sarah.spec.ts
-│   └── pdf-generation.spec.ts
-├── personas/            # Test data (persona definitions)
-│   ├── alex.ts
-│   ├── mike.ts
-│   └── sarah.ts
-└── smoke/              # Smoke/basic functionality tests
-    └── app.spec.ts
+├── smoke/
+│   └── app.spec.ts                 # Basic app functionality
+├── journeys/
+│   ├── sarah.spec.ts               # Persona: Sarah Chen journey
+│   ├── alex.spec.ts                # Persona: Alex Rodriguez journey
+│   ├── mike.spec.ts                # Persona: Mike Thompson journey
+│   └── pdf-generation.spec.ts      # PDF export journey
+├── personas/
+│   ├── sarah.ts                    # Test data for Sarah
+│   ├── alex.ts                     # Test data for Alex
+│   └── mike.ts                     # Test data for Mike
+└── helpers/
+    ├── navigation.ts               # Navigation utilities
+    ├── forms.ts                    # Form-filling utilities
+    ├── workspace.ts                # Workspace/synthesis helpers
+    └── pdf.ts                      # PDF verification helpers
 ```
 
 ## Test Structure
 
 **Suite Organization:**
 ```typescript
-test.describe('Persona Journey: Alex — Burned Out COO', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/');
-    await resetWorkspace(page);
+test.describe('Smoke Tests — App Basics', () => {
+  test('app loads and shows dashboard', async ({ page }) => {
+    // Test body
   });
 
-  test('specific scenario — expected outcome', async ({ page }) => {
-    // Arrange: Set up test state
-    await navigateToTool(page, 'Tool Name');
-
-    // Act: Perform user actions
-    await fillFormData(page, testData);
-
-    // Assert: Verify results
-    await expect(page.getByText('Expected text')).toBeVisible();
+  test('sidebar navigation lists all tools', async ({ page }) => {
+    // Test body
   });
 });
 ```
 
 **Patterns:**
 
-1. **Setup:** Each test resets workspace to clean state via `test.beforeEach()`
-   ```typescript
-   test.beforeEach(async ({ page }) => {
-     await page.goto('/');
-     await resetWorkspace(page);
-   });
-   ```
+1. **Setup/Teardown:**
+   - Use `test.beforeEach()` to reset state before each test
+   - Example in `tests/journeys/sarah.spec.ts`:
+     ```typescript
+     test.beforeEach(async ({ page }) => {
+       await page.goto('/');
+       await resetWorkspace(page);
+     });
+     ```
+   - No `test.afterEach()` needed (Playwright isolates each test)
 
-2. **Navigation:** Use helper functions for consistent navigation
-   ```typescript
-   await navigateToTool(page, 'AI Readiness');
-   await navigateToDashboard(page);
-   ```
+2. **Assertions:**
+   - Playwright expect with visibility checks: `await expect(page.getByText('AI Readiness')).toBeVisible()`
+   - URL assertions: `await expect(page).toHaveURL('/')`
+   - Wait with timeout: `await expect(...).toBeVisible({ timeout: 5000 })`
+   - Negative assertions: `await expect(page.getByText(pattern)).not.toBeVisible()`
 
-3. **Form Filling:** Tool-specific helpers abstract DOM selectors
-   ```typescript
-   await fillAiReadiness(page, alex.aiReadiness);
-   await fillLeadershipDna(page, alex.leadershipDna);
-   await fillSwot(page, alex.swot);
-   await fillRoadmap(page, alex.roadmap);
-   ```
+3. **Navigation:**
+   - Use role selectors: `page.getByRole('link', { name: 'AI Readiness' })`
+   - Use text selectors: `page.getByText('Dashboard')`
+   - Wait for route transitions: `await page.waitForTimeout(300)`
 
-4. **Assertions:** Use semantic locators (roles, text, etc.) for resilience
-   ```typescript
-   await expect(page.getByRole('link', { name: 'Dashboard' })).toBeVisible();
-   await expect(page.getByText('Burnout Risk', { exact: false })).toBeVisible();
-   await expect(page.getByText('100%')).toBeVisible();
-   ```
+4. **Data Entry:**
+   - Locators by type and range: `page.locator('input[type="range"][min="0"][max="100"]')`
+   - Fill method: `await slider.fill(String(value))`
+   - Textarea fill: `await page.locator('textarea').fill(text)`
+   - Button click: `await page.getByRole('button', { name: /pattern/i }).click()`
 
-5. **Waits:** Explicit timeouts after interactions (300-500ms default)
-   ```typescript
-   await page.waitForTimeout(300);
-   await page.waitForTimeout(500);
-   await expect(...).toBeVisible({ timeout: 5000 });
-   ```
+5. **Event Monitoring:**
+   - Download events: `const downloadPromise = page.waitForEvent('download')`
+   - Console errors: `page.on('console', msg => if (msg.type() === 'error') ...)`
+   - No screenshot/trace assertions; reliance on visual assertions instead
+
+## Helpers and Utilities
+
+**Navigation Helpers** (`tests/helpers/navigation.ts`):
+```typescript
+/**
+ * Navigate to a tool by clicking its sidebar link.
+ */
+export async function navigateToTool(page: Page, toolName: string) {
+  await page.getByRole('link', { name: toolName }).click();
+  await page.waitForTimeout(300);
+}
+
+/**
+ * Clear workspace by removing localStorage and reloading.
+ */
+export async function resetWorkspace(page: Page) {
+  await page.evaluate(() => localStorage.removeItem('vwcg-workspace'));
+  await page.reload();
+  await page.waitForTimeout(500);
+}
+
+/**
+ * Inject workspace data directly into localStorage.
+ */
+export async function seedWorkspaceData(page: Page, toolId: string, data: Record<string, unknown>) {
+  await page.evaluate(({ toolId, data }) => {
+    const raw = localStorage.getItem('vwcg-workspace');
+    const store = raw ? JSON.parse(raw) : { state: { version: '1.0', metadata: {}, tools: {}, provenance: {} } };
+    store.state.tools[toolId] = data;
+    store.state.provenance[toolId] = { timestamp: new Date().toISOString(), logicVersion: 'v1.1.0' };
+    localStorage.setItem('vwcg-workspace', JSON.stringify(store));
+  }, { toolId, data });
+  await page.reload();
+  await page.waitForTimeout(500);
+}
+```
+
+**Form-Filling Helpers** (`tests/helpers/forms.ts`):
+```typescript
+// Fills AI Readiness sliders
+export async function fillAiReadiness(page: Page, data: Record<string, number>) {
+  const sliders = page.locator('input[type="range"][min="0"][max="100"]');
+  for (const [dim, val] of Object.entries(data)) {
+    const idx = AI_DIMENSIONS.indexOf(dim);
+    await sliders.nth(idx).fill(String(val));
+  }
+}
+
+// Fills Leadership DNA number inputs
+export async function fillLeadershipDna(page: Page, data: Record<string, number>) {
+  const inputs = page.locator('input[type="number"][min="0"][max="10"]');
+  for (const dim of DNA_DIMENSIONS) {
+    const idx = DNA_DIMENSIONS.indexOf(dim);
+    const currentVal = data[`current_${dim}`];
+    const targetVal = data[`target_${dim}`];
+    if (currentVal !== undefined) await inputs.nth(idx * 2).fill(String(currentVal));
+    if (targetVal !== undefined) await inputs.nth(idx * 2 + 1).fill(String(targetVal));
+  }
+}
+
+// Fills SWOT quadrants
+export async function fillSwot(page: Page, data: Record<string, Array<{ text: string; confidence: number }>>) {
+  for (const [quadrant, items] of Object.entries(data)) {
+    await fillSwotQuadrant(page, quadrant, items);
+  }
+}
+```
+
+**Workspace Helpers** (`tests/helpers/workspace.ts`):
+```typescript
+// Wait for synthesis engine
+export async function waitForSynthesis(page: Page) {
+  await page.waitForTimeout(500);
+}
+
+// Check if insight is visible
+export async function expectInsightVisible(page: Page, pattern: RegExp) {
+  await expect(page.getByText(pattern).first()).toBeVisible({ timeout: 5000 });
+}
+
+// Collect console errors
+export function collectConsoleErrors(page: Page): string[] {
+  const errors: string[] = [];
+  page.on('console', msg => {
+    if (msg.type() === 'error') errors.push(msg.text());
+  });
+  return errors;
+}
+```
 
 ## Mocking
 
-**Framework:** Not applicable — E2E tests run against live application
+**Framework:** No dedicated mocking library (Playwright uses real browser)
 
-**What's Tested Live:**
-- Actual browser behavior (navigation, form submission, state persistence)
-- localStorage persistence (workspace saved and restored correctly)
-- Cross-tool data synthesis (insights calculated from multiple tool inputs)
-- File I/O (download and load workspace files)
-- PDF generation (renders and exports documents)
+**Patterns:**
+- No unit test mocking; E2E tests exercise real DOM and localStorage
+- Test data seeded via `seedWorkspaceData()` helper (injects into localStorage)
+- API calls not mocked; app works offline (no backend dependency in scope)
 
-**What's NOT Mocked:**
-- API calls: Optional Gemini API (`VITE_GEMINI_API_KEY`) is real if provided; tests pass without it
-- localStorage: Uses real browser storage; reset between tests
-- Chart rendering: Tests that canvases are present (visual rendering not asserted)
+**What to Mock (if extending):**
+- External APIs (Gemini Cloud API gated by `VITE_GEMINI_API_KEY`)
+- File downloads via `page.waitForEvent('download')`
+- Console messages via `page.on('console', ...)`
+
+**What NOT to Mock:**
+- localStorage (use real storage via `page.evaluate()`)
+- DOM interactions (let Playwright manipulate real DOM)
+- React component rendering (test full component hierarchy)
 
 ## Fixtures and Factories
 
 **Test Data:**
-- Personas are data objects in `tests/personas/*.ts`, exported as named objects
+Persona files in `tests/personas/` define complete test dataset:
 
-Example from `tests/personas/alex.ts`:
+**Example: Sarah Chen persona** (`tests/personas/sarah.ts`):
 ```typescript
-export const alex = {
+export const sarah = {
   meta: {
-    name: 'Alex Rivera',
-    company: 'Meridian Consulting Group',
-    role: 'COO',
-    industry: 'Professional Services',
-    revenue: '$12M',
-    employees: 60,
+    name: 'Sarah Chen',
+    company: 'TechFlow Analytics',
+    role: 'CEO/Founder',
+    industry: 'SaaS',
+    revenue: '$3M ARR',
+    employees: 15,
   },
   aiReadiness: {
-    Strategy: 55,
-    Data: 50,
-    Infrastructure: 45,
-    Talent: 40,
-    Governance: 35,
-    Culture: 60,
+    Strategy: 85,
+    Data: 70,
+    Infrastructure: 75,
+    Talent: 65,
+    Governance: 40,
+    Culture: 90,
   },
   leadershipDna: {
-    current_Vision: 7,
-    current_Execution: 5,
-    // ... more fields
+    current_Vision: 9,
+    current_Execution: 4,
+    target_Vision: 10,
+    target_Execution: 8,
+    // ... 10 more dimensions
   },
   swot: {
-    strengths: [
-      { text: 'Strong consulting methodology', confidence: 5 },
-      // ... more items
-    ],
-    // ... other quadrants
+    strengths: [{ text: 'Strong AI/ML expertise...', confidence: 5 }, ...],
+    weaknesses: [...],
+    opportunities: [...],
+    threats: [...]
   },
-  roadmap: [
-    { name: 'CRM Migration to Salesforce', owner: 'Sarah', priority: 'high', q: 'Q1' },
-    // ... more tasks
-  ],
+  visionCanvas: {
+    northStar: 'Democratize AI analytics...',
+    pillars: [{ title: 'Product-led growth', kpi: '10K free users → 500 paid' }, ...],
+    values: ['Move fast', 'Data-driven decisions', 'Customer obsession']
+  },
+  roadmap: { initiatives: [...] },
+  advisorReadiness: { responses: [...] }
 };
 ```
 
-**Location:**
-- Persona definitions: `tests/personas/`
-- Used by journey tests: `tests/journeys/`
-- Imported as named exports: `import { alex } from '../personas/alex'`
+**Location:** `tests/personas/`
 
-**Data Structure Conventions:**
-- Objects match tool data shapes (e.g., `aiReadiness` object has keys matching `DIMENSIONS` in tool)
-- Arrays for multi-item tools (SWOT items, roadmap tasks)
-- Metadata fields for persona context (`meta: { name, company, role, ... }`)
+**Usage:**
+- Import into journey tests
+- Pass to form helpers: `await fillAiReadiness(page, sarah.aiReadiness)`
+- Each persona tests different business archetype and triggers different synthesis rules
 
 ## Coverage
 
-**Requirements:** No explicit coverage target enforced
+**Requirements:** No coverage targets enforced (not configured in `playwright.config.ts`)
 
-**Testing Approach:**
-- Smoke tests: Basic app functionality (loading, navigation, routing)
-- Journey tests: End-to-end user scenarios (complete workflows for specific personas)
-- PDF generation tests: Export/reporting features
-- No unit test coverage requirements
+**View Coverage:** Not available (Playwright E2E tests don't have built-in coverage reporting)
 
-**Practical Coverage:**
-- Happy paths fully covered (core workflows work as expected)
-- Data persistence tested (localStorage survives reload)
-- Synthesis rule firing tested (insights appear when conditions met)
-- Error states partially tested (file load failures caught)
+**Test Categories:**
+
+1. **Smoke Tests** (`tests/smoke/app.spec.ts`):
+   - App loads and shows dashboard
+   - Sidebar navigation lists all tools
+   - Each tool route loads without crash
+   - Unknown routes redirect to dashboard
+   - Workspace persists across reload
+   - Save Workspace triggers download
+   - No console errors on fresh load
+   - Dashboard shows getting started checklist
+
+2. **Persona Journeys** (`tests/journeys/sarah|alex|mike.spec.ts`):
+   - Per-tool tests: `fillAiReadiness`, `fillLeadershipDna`, `fillSwot`, `fillVisionCanvas`, `fillRoadmap`, `fillAdvisorReadiness`
+   - Cross-tool synthesis: `E1 Execution Gap fires for Sarah`
+   - Full journey: all assessments + synthesis verification
+
+3. **PDF Generation** (`tests/journeys/pdf-generation.spec.ts`):
+   - Navigate to Report Center
+   - Generate unified report PDF
+   - Verify PDF contains expected sections
 
 ## Test Types
 
-**Smoke Tests:**
-- Location: `tests/smoke/app.spec.ts`
-- Scope: Basic app load, navigation, routing, persistence
-- Tests run: 8 tests covering app initialization and core navigation
-- Example:
-  ```typescript
-  test('app loads and shows dashboard', async ({ page }) => {
-    await page.goto('/');
-    await expect(page.getByText('VWCG Unified')).toBeVisible();
-  });
-  ```
-
-**Journey/Integration Tests:**
-- Location: `tests/journeys/`
-- Scope: Complete user workflows for specific personas (Alex, Mike, Sarah)
-- Multiple tests per persona (3-5 tests each) covering specific scenarios
-- Example:
-  ```typescript
-  test('90-Day Roadmap — overloaded with 17 initiatives', async ({ page }) => {
-    await navigateToTool(page, '90-Day Roadmap');
-    await fillRoadmap(page, alex.roadmap);
-    const taskRows = page.locator('table tbody tr');
-    await expect(taskRows).toHaveCount(alex.roadmap.length);
-  });
-  ```
-
-**Feature Tests:**
-- Location: `tests/journeys/pdf-generation.spec.ts`
-- Scope: PDF export and generation workflows
-- Tests rendering, file download, PDF content validation
-
 **E2E Tests:**
-- All tests are E2E; no isolated unit or component tests
-- Run against live dev server (`npm run dev` spun up automatically)
-- Real browser (Chromium) used
+- **Scope:** Full user journeys from app load through data entry to export
+- **Approach:** Use Playwright Page Fixtures to interact with real browser, localStorage, and DOM
+- **Coverage:** End-to-end flows; not granular unit coverage
+- **Examples:**
+  - Sarah persona completes all 6 assessments, synthesis fires, insights appear on dashboard
+  - User saves workspace to file, reloads, data persists
+  - PDF export generates multi-page document
+
+**Unit Tests:** Not present (no Jest, Vitest, or similar configured)
+
+**Integration Tests:** E2E tests serve as integration tests (cross-tool synthesis verification)
+
+**No Mocking Needed:** App is offline-first with localStorage; no backend API calls in scope
 
 ## Common Patterns
 
 **Async Testing:**
 ```typescript
-test('workspace persists across page reload', async ({ page }) => {
-  // Navigate and interact
-  await page.getByRole('link', { name: 'AI Readiness' }).click();
+test('AI Readiness — set all 6 dimension sliders', async ({ page }) => {
+  await navigateToTool(page, 'AI Readiness');
+  await fillAiReadiness(page, sarah.aiReadiness);
 
-  // Wait for async updates
-  await page.waitForTimeout(300);
-
-  // Reload and verify state restored
-  await page.reload();
-  await page.waitForTimeout(500);
-
-  // Check persistence
-  const slider = page.locator('input[type="range"]').first();
-  await expect(slider).toHaveValue('80');
+  // Verify sliders persisted
+  for (const [, val] of Object.entries(sarah.aiReadiness)) {
+    await expect(page.getByText(`${val}%`).first()).toBeVisible();
+  }
 });
 ```
 
-**File Download Testing:**
-```typescript
-test('Save Workspace triggers file download', async ({ page }) => {
-  const downloadPromise = page.waitForEvent('download');
-  await page.getByRole('button', { name: /Save Workspace/i }).click();
-  const download = await downloadPromise;
-
-  expect(download.suggestedFilename()).toContain('.vwcg');
-});
-```
-
-**Data Seeding:**
-```typescript
-// Direct localStorage injection for faster test setup
-await seedWorkspaceData(page, 'advisor-readiness', alex.advisorReadiness);
-await page.reload();
-await page.waitForTimeout(500);
-```
-
-**Console Error Tracking:**
+**Error Testing:**
 ```typescript
 test('no console errors on fresh app load', async ({ page }) => {
   const errors: string[] = [];
-  page.on('console', (msg) => {
+  page.on('console', msg => {
     if (msg.type() === 'error') errors.push(msg.text());
   });
 
@@ -294,54 +351,54 @@ test('no console errors on fresh app load', async ({ page }) => {
 
 **Synthesis Verification:**
 ```typescript
-// Wait for synthesis engine to complete
-await waitForSynthesis(page);
+test('Synthesis — E1 Execution Gap fires for Sarah', async ({ page }) => {
+  // Seed data
+  await navigateToTool(page, 'Leadership DNA');
+  await fillLeadershipDna(page, sarah.leadershipDna);
 
-// Navigate to dashboard where insights display
-await navigateToDashboard(page);
-await page.waitForTimeout(500);
+  await navigateToTool(page, 'Vision Canvas');
+  await fillVisionCanvas(page, sarah.visionCanvas);
 
-// Check if specific insight fired
-await expect(page.getByText(/Burnout.*Risk/i).first()).toBeVisible({ timeout: 5000 });
-```
+  await waitForSynthesis(page);
+  await navigateToDashboard(page);
 
-**Persona-Driven Workflow:**
-```typescript
-test.describe('Persona Journey: Alex — Burned Out COO', () => {
-  test('Synthesis — E3 Burnout Risk fires for Alex', async ({ page }) => {
-    // Seed data for multiple tools
-    await navigateToTool(page, 'Advisor Readiness');
-    await fillAdvisorReadiness(page, alex.advisorReadiness);
-
-    await navigateToTool(page, '90-Day Roadmap');
-    await fillRoadmap(page, alex.roadmap);
-
-    // Trigger and verify synthesis
-    await waitForSynthesis(page);
-    await navigateToDashboard(page);
-
-    // Assert E3 rule fired
-    await expect(page.getByText(/Burnout.*Risk/i).first()).toBeVisible();
-  });
+  // Verify insight
+  await expect(page.getByText(/Execution Capability Gap/i).first()).toBeVisible({ timeout: 5000 });
 });
 ```
 
-## Playwright Configuration Details
+**Data Persistence:**
+```typescript
+test('workspace persists across page reload', async ({ page }) => {
+  await page.goto('/');
+  await resetWorkspace(page);
 
-**Config File:** `playwright.config.ts`
+  // Set data
+  await page.getByRole('link', { name: 'AI Readiness' }).click();
+  await page.waitForTimeout(300);
+  const slider = page.locator('input[type="range"][min="0"][max="100"]').first();
+  await slider.fill('80');
+  await page.waitForTimeout(300);
 
-Key settings:
-- `testDir: './tests'` — All tests located here
-- `fullyParallel: true` — Tests run in parallel locally
-- `retries: 2` in CI, `0` locally
-- `workers: 1` in CI (serial), undefined locally (auto)
-- `baseURL: 'http://localhost:5173'` — Dev server URL
-- `trace: 'on-first-retry'` — Capture trace on first retry
-- `screenshot: 'only-on-failure'` — Save screenshots on failure
-- `downloadsPath: './test-outputs/downloads'` — Download artifacts location
-- `reporter: 'html'` — HTML test report generated
-- `webServer.command: 'npm run dev'` — Auto-start dev server
-- `webServer.reuseExistingServer: !process.env.CI` — Reuse dev server locally
+  // Reload and verify
+  await page.reload();
+  await page.waitForTimeout(500);
+  await page.getByRole('link', { name: 'AI Readiness' }).click();
+  await page.waitForTimeout(300);
+  await expect(page.getByText('80%').first()).toBeVisible();
+});
+```
+
+**File Download:**
+```typescript
+test('Save Workspace triggers file download', async ({ page }) => {
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: /Save Workspace/i }).click();
+  const download = await downloadPromise;
+
+  expect(download.suggestedFilename()).toContain('.vwcg');
+});
+```
 
 ---
 

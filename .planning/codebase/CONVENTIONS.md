@@ -5,181 +5,244 @@
 ## Naming Patterns
 
 **Files:**
-- React components: PascalCase, matching component name (e.g., `AiReadinessTool.tsx`)
-- Utility/logic files: camelCase (e.g., `fileSystem.ts`, `synthesis.ts`)
-- Type files: camelCase (e.g., `types.ts`, `prompts.ts`)
-- Index files: `index.ts` or `index.tsx` for tool/component exports
-- Tool definition files: Named after tool (e.g., `AiReadinessTool.tsx`), with companion `index.ts` for export
+- React components (`.tsx`): PascalCase (e.g., `AiReadinessTool.tsx`, `LeadershipDnaTool.tsx`, `StrategicHealthWidget.tsx`)
+- TypeScript utilities and logic (`.ts`): camelCase (e.g., `workspaceStore.ts`, `validator.ts`, `synthesis.ts`)
+- Directories: kebab-case (e.g., `src/tools/ai-readiness/`, `src/tools/leadership-dna/`)
+- Tool IDs: kebab-case strings (e.g., `ai-readiness`, `leadership-dna`, `vision-canvas`, `90-day-roadmap`)
 
 **Functions:**
-- Handlers: `handle` prefix + camelCase (e.g., `handleSave`, `handleChange`, `handleFileChange`)
-- Utilities: camelCase, verb-noun pattern (e.g., `saveWorkspaceToFile`, `loadWorkspaceFromFile`)
-- React hooks (custom): `use` prefix + camelCase (e.g., `useWorkspaceStore`)
-- Synthesis rules: camelCase + `Rule` suffix (e.g., `executionGapRule`, `burnoutRiskRule`)
+- camelCase for all functions (e.g., `runSynthesis`, `updateToolData`, `validateWorkspace`, `navigateToTool`, `fillAiReadiness`)
+- Export functions without prefix (not `export function getTools()` vs `export const getTools = ()` — use const arrow functions for consistency)
+- Helper functions in test files follow same camelCase: `resetWorkspace`, `navigateToTool`, `fillSwot`
 
 **Variables:**
-- Constants (module-level): UPPER_SNAKE_CASE (e.g., `LOGIC_VERSION`, `STORAGE_KEY`, `DIMENSIONS`, `EMPTY_DATA`)
-- Local variables: camelCase (e.g., `nextTools`, `newInsights`, `metadata`)
-- Store state: camelCase (e.g., `isSafeMode`, `lastModified`, `previewData`)
-- Data objects: camelCase (e.g., `chartData`, `simulation`)
+- camelCase for all variables (e.g., `toolId`, `metadata`, `validationResults`, `insightCount`)
+- Constants in UPPERCASE_SNAKE_CASE only for globally exported constants (e.g., `LOGIC_VERSION`, `STORAGE_KEY`, `DIMENSIONS`)
+- Local constants use camelCase unless they are module-level configuration (e.g., `const DIMENSIONS = [...]` in tool components)
 
 **Types:**
-- Interfaces: PascalCase, with `I` optional (used with interface keyword) (e.g., `Props`, `State`, `WorkspaceMetadata`, `WorkspaceState`, `ValidationResult`)
-- Type aliases: PascalCase (e.g., `ValidationStatus`)
-- Type imports: Use `type` keyword for type-only imports (required by TypeScript strict mode) (e.g., `import type { LucideIcon } from 'lucide-react'`)
+- PascalCase for all interface names (e.g., `ToolDefinition`, `WorkspaceState`, `ValidationResult`, `Insight`)
+- PascalCase for type aliases (e.g., `InsightType`, `InsightSeverity`)
+- String union types in lowercase (e.g., `'primary' | 'secondary' | 'outline'`, `'high' | 'medium' | 'low'`)
 
 ## Code Style
 
 **Formatting:**
-- Line length: No explicit limit enforced, but code remains readable
-- Indentation: 4 spaces in configuration files (e.g., `tsconfig.app.json`); otherwise follows Vite defaults
-- Semicolons: Always present at end of statements
-- Quotes: Single quotes for strings, double quotes for HTML/JSX attributes
-- Trailing commas: Present in multi-line structures
+- No explicit formatter configured (not Prettier or Biome in project config)
+- ESLint only, configured in `eslint.config.js`
+- Target: ES2022 with React 19 JSX transform
 
 **Linting:**
-- Tool: ESLint 9.39.1 with TypeScript ESLint
-- Config: `eslint.config.js` using flat config format
-- Extends: `js.configs.recommended`, `tseslint.configs.recommended`, `reactHooks.configs.flat.recommended`, `reactRefresh.configs.vite`
-- Key rules enforced:
-  - React hooks rules (`eslint-plugin-react-hooks`)
-  - React refresh rules (`eslint-plugin-react-refresh`)
-  - No undefined variables
-  - Proper promise/async handling
+- ESLint 9.39.1 with:
+  - TypeScript ESLint recommended rules
+  - React Hooks eslint-plugin
+  - React Refresh eslint-plugin
+  - No strict style rules (formatting is loose)
+- Run: `npm run lint` — checks all `.ts` and `.tsx` files
+- No `.eslintignore` — uses ESLint's flat config `globalIgnores: ['dist']`
+
+**TypeScript Strictness:**
+- Strict mode enabled (`strict: true`)
+- `noUnusedLocals: true` — unused variables cause build failures
+- `noUnusedParameters: true` — unused parameters cause build failures
+- `verbatimModuleSyntax: true` — **requires `import type` for type-only imports**
+  - Example: `import type { Insight } from './types'` (not `import { Insight }`)
+  - Example: `import { useState } from 'react'` (regular import for values)
+- `erasableSyntaxOnly: true` — no enums, use string unions instead
+- `noFallthroughCasesInSwitch: true` — all switch cases must have break or return
+- `noUncheckedSideEffectImports: true` — side-effect imports must be explicit
 
 ## Import Organization
 
-**Order:**
-1. React and core libraries (e.g., `import React from 'react'`, `import { useEffect } from 'react'`)
-2. Third-party packages (e.g., `import { create } from 'zustand'`, `import { useWorkspaceStore } from '...'`)
-3. Internal absolute imports using `@/` path alias (e.g., `import { useWorkspaceStore } from '@/store/workspaceStore'`)
-4. Relative imports (e.g., `import { Button } from '../../components/ui/Button'`)
-5. Type-only imports separate at top of each group: `import type { ToolDefinition } from '...'`
+**Order (observed pattern):**
+1. External libraries (React, zustand, lucide-react, chart.js)
+2. Local type imports (`import type { ... } from '@/...'`)
+3. Local value imports (`import { ... } from '@/...'`)
+4. Relative imports (from parent/sibling directories)
 
 **Path Aliases:**
-- `@/` maps to `src/` (configured in `vite.config.ts` and `tsconfig.app.json`)
-- Used for cleaner imports across tool components and utilities
-- Example: `import { useWorkspaceStore } from '@/store/workspaceStore'`
+- `@/` maps to `src/` (configured in both `vite.config.ts` and `tsconfig.app.json`)
+- Used throughout codebase: `import { useWorkspaceStore } from '@/store/workspaceStore'`
+- Enables clean imports without `../../../` chains
+
+**Type-only Imports:**
+Example from `src/store/workspaceStore.ts`:
+```typescript
+import type { Insight } from '../engine/types';
+import type { ValidationResult } from '../validation/types';
+```
+
+Example from test files (`tests/helpers/navigation.ts`):
+```typescript
+import { type Page } from '@playwright/test';
+```
 
 ## Error Handling
 
 **Patterns:**
-- Synthesis rules: Wrapped in try-catch with `console.warn()` logging (rule execution failures do not halt synthesis)
-  - Example in `src/engine/synthesis.ts`:
-    ```typescript
-    try {
-        const result = rule.execute(workspace);
-        if (result) insights.push(result);
-    } catch (err) {
-        console.warn(`Rule ${rule.id} failed execution:`, err);
-    }
-    ```
-- File I/O: Try-catch with user-facing error dialogs via `alert()` fallback
-  - Example in `src/components/layout/AppShell.tsx`:
-    ```typescript
-    try {
-        const data = await loadWorkspaceFromFile(file);
-        loadWorkspace(data);
-    } catch (err) {
-        console.error('Failed to load workspace', err);
-        alert('Failed to load workspace file.');
-    }
-    ```
-- Cloud API calls: Throw errors on failure with descriptive messages; caller handles
-  - Example in `src/engine/cloud.ts`:
-    ```typescript
-    if (!apiKey) throw new Error('API Key is missing');
-    throw new Error(errorData.error?.message || 'Gemini API call failed');
-    ```
-- ErrorBoundary: Class component at `src/components/ErrorBoundary.tsx` catches React render errors and displays fallback UI with error details
-
-**Logging:**
-- Debug logging: `console.log()` with prefixed context (e.g., `'[workspaceStore]'`, `'[validation]'`)
-- Errors: `console.error()` for critical failures
-- Warnings: `console.warn()` for non-fatal issues
-- Example:
+- Try-catch blocks for file operations and async calls
+- Example in `src/utils/fileSystem.ts`:
   ```typescript
-  console.log('[workspaceStore] Running synthesis with tools:', Object.keys(nextTools));
-  console.warn(`Tool with id ${tool.id} is already registered.`);
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const text = e.target?.result as string;
+        const json = JSON.parse(text);
+        if (!json.version || !json.tools) {
+          throw new Error('Invalid workspace file format');
+        }
+        resolve(json);
+      } catch (err) {
+        reject(err);
+      }
+    };
+    reader.onerror = () => reject(reader.error);
+  });
   ```
+
+- Validation returns error codes and severity levels (not exceptions)
+- Example in `src/validation/validator.ts`:
+  ```typescript
+  if (!workspace || typeof workspace !== 'object') {
+    return { status: 'error', issues: [{ code: 'STRUCT-001', message: '...', path: 'root', severity: 'error' }] };
+  }
+  ```
+
+- Synthesis rules wrap execution in try-catch and log warnings (don't throw)
+- Example in `src/engine/synthesis.ts`:
+  ```typescript
+  for (const rule of rules) {
+    try {
+      const result = rule.execute(workspace);
+      if (result) {
+        insights.push(result);
+      }
+    } catch (err) {
+      console.warn(`Rule ${rule.id} failed execution:`, err);
+    }
+  }
+  ```
+
+- UI error handling via `<ErrorBoundary>` component for React errors
+- Alert dialogs for user-facing errors: `alert(err.message)`
+
+## Logging
+
+**Framework:** `console` (no dedicated logging library)
+
+**Patterns:**
+- Development info: `console.log('[context] message')`
+  - Example: `console.log('[workspaceStore] Running synthesis with tools:', ...)`
+  - Bracketed context helps identify log source
+- Warnings: `console.warn('Rule {id} failed execution:', err)`
+- Errors: `console.error('Uncaught error:', error, errorInfo)` (in ErrorBoundary)
+- Test helpers collect errors via Playwright: `page.on('console', msg => if (msg.type() === 'error') ...)`
 
 ## Comments
 
 **When to Comment:**
-- Complex algorithmic logic (e.g., maturity calculations in synthesis rules)
-- Non-obvious state transformations (e.g., localStorage serialization in workspace store)
-- Edge cases and workarounds (e.g., "Only initialize fresh workspace if no data exists")
-- Persona/test data purposes (e.g., "Persona: Alex Rivera — Burned Out COO")
+- JSDoc for exported functions and components (not consistently used, but present in test helpers)
+- Block comments for major sections (validation profiles, synthesis rules)
+- Inline comments for non-obvious logic or workarounds
 
-**JSDoc/TSDoc:**
-- Used minimally; TypeScript interfaces and exported functions have brief descriptions
-- Example in `src/tools/ai-readiness/index.ts`:
+**Examples:**
+- In `tests/helpers/navigation.ts`:
   ```typescript
-  export const aiReadinessDefinition: ToolDefinition = {
-      id: 'ai-readiness',
-      name: 'AI Readiness',
-      description: 'Assess AI maturity across 6 dimensions',
-      ...
-  };
+  /**
+   * Navigate to a tool by clicking its sidebar link.
+   * Tool names match the sidebar text from the registry.
+   */
+  export async function navigateToTool(page: Page, toolName: string) { ... }
   ```
-- Test helpers documented with JSDoc blocks explaining parameters and behavior
+
+- In `src/validation/profiles_p1.ts`:
+  ```typescript
+  // Note: The current implementation stores flat fields like 'current_Vision', not an executives array
+  // We will validate against the CURRENT implementation structure...
+  ```
+
+- In `src/engine/synthesis.ts`:
+  ```typescript
+  // Sort by severity (High -> Low)
+  return insights.sort((a, b) => { ... });
+  ```
 
 ## Function Design
 
-**Size:** Functions are typically 20-50 lines; complex ones (synthesis rules, form handlers) reach 60-80 lines without aggressive refactoring pressure
+**Size:** Functions range from 5-50 lines; component render functions can be 100+ lines for complex UI
 
 **Parameters:**
-- Handlers and utilities take explicit parameters (e.g., `(toolId: string, data: any)`)
-- React components receive props via interface (e.g., `interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>`)
-- Store actions passed via Zustand set/get pattern: `(set, get) => ({ ... })`
+- Typed with TypeScript interfaces
+- Example: `function fillSwotQuadrant(page: Page, quadrant: string, items: Array<{ text: string; confidence: number }>) { ... }`
+- Zustand selectors use inline arrow functions: `useWorkspaceStore(state => state.metadata)`
 
 **Return Values:**
-- React components: JSX.Element or React.ReactNode
-- Handlers: void (side effects)
-- Utilities: Typed return (e.g., `string`, `ValidationResult`, `Insight[]`)
-- Store actions: Updated state object via Zustand immutability pattern
+- Explicit return types (enforced by TypeScript strict mode)
+- Null for "no result" (synthesis rules return `Insight | null`)
+- Void for side-effect functions (Zustand actions)
+- Promise wrappers for async file operations
 
 ## Module Design
 
 **Exports:**
-- Named exports for utilities and definitions (e.g., `export const cn = (...)`, `export const aiReadinessDefinition = {...}`)
-- Default export only for main App component: `export default App`
-- React components as named exports from tool index files
+- Single default export for tool components: `export const AiReadinessTool: React.FC = () => { ... }`
+- Named exports for utilities and helpers: `export function navigateToTool(...) { ... }`
+- Constants and types exported as-is: `export const LOGIC_VERSION = 'v1.1.0'`
 
 **Barrel Files:**
-- Used sparingly; most tool directories have single component + index.ts
-- Validation system uses barrel: `src/validation/index.ts` imports and registers all profiles
-- Registry uses barrel: `src/registry/registry.ts` imports and registers all tools
+- `src/registry/registry.ts` imports all tools and calls `registerTool()` for each
+- `src/validation/index.ts` imports all profiles and calls `registerProfile()` for each
+- `src/report/charts/index.ts` exports chart components
+- `src/report/components/index.ts` exports report UI components
+- Pattern: collect related exports in barrel `index.ts` files for easier imports
 
-**Type Exports:**
-- Always use `import type` for TypeScript types (required by `verbatimModuleSyntax`)
-- Example: `import type { ToolDefinition } from '../../registry/ToolRegistry'`
-- Allows tree-shaking and prevents circular import issues
+**Structure:**
+- Zustand store in single file: `src/store/workspaceStore.ts` with persist middleware
+- Validation profiles split across three files by tool group: `profiles_p1.ts`, `profiles_p2.ts`, `profiles_p3.ts`
+- Synthesis rules in `src/engine/rules-v2.ts` (old `rules.ts` kept but unused)
+- Engine utilities: `synthesis.ts`, `types.ts`, `swot-keywords.ts`, `derived-metrics.ts`
 
 ## React Patterns
 
 **Functional Components:**
-- All components are functional components with hooks
-- Typed with `React.FC` or explicit return type
-- Example from `src/components/ui/Button.tsx`:
-  ```typescript
-  export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-      ({ className, variant = 'primary', size = 'md', ...props }, ref) => {
-          return <button ref={ref} className={cn(...)} {...props} />;
-      }
-  );
-  Button.displayName = 'Button';
-  ```
+- Arrow function const: `export const ComponentName: React.FC = () => { ... }`
+- Hooks used extensively: `useState`, `useEffect`, `useRef`
+- Custom hooks for store access: `const data = useWorkspaceStore(state => state.tools[toolId])`
 
-**Hooks:**
-- `useWorkspaceStore()` from Zustand for all state management
-- `useRef()` for file inputs and imperative DOM access
-- `useEffect()` for initialization and side effects
+**Props:**
+- Typed via interfaces extending `React.HTMLAttributes<Element>` for button/input components
+- Example: `interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> { variant?: 'primary' | 'secondary' | ...; size?: 'sm' | 'md' | 'lg'; }`
 
-**ClassName Composition:**
-- Use `cn()` utility (wraps `clsx` + `tailwind-merge`) for dynamic Tailwind classes
-- Always pass component className as final argument to allow overrides
-- Example: `cn('base-styles', { 'conditional-class': condition }, className)`
+**Styling:**
+- TailwindCSS classes directly in JSX
+- `cn()` utility from `src/utils/cn.ts` for conditional class merging (uses clsx + tailwind-merge)
+- Example: `className={cn('base-classes', { 'conditional-class': condition })}`
+
+**Components Location:**
+- UI components: `src/components/ui/` (Button, ExportButton, etc.)
+- Layout components: `src/components/layout/` (AppShell, SafeModeBanner)
+- Domain components: `src/tools/{tool-name}/` (tool-specific UI)
+- Report components: `src/report/components/`, `src/report/charts/`
+- Dashboard: `src/tools/dashboard/`, `src/components/dashboard/`
+
+## Special Cases
+
+**Zustand Store:**
+- Single store for entire workspace: `useWorkspaceStore`
+- Persisted to localStorage under key `vwcg-workspace`
+- Structured as: `{ version, metadata, tools: { [toolId]: data }, provenance, ... }`
+- Actions trigger Synthesis Engine synchronously on data update
+
+**Validation:**
+- Per-tool profiles registered via `ValidationProfiles` registry
+- Validation results use code + severity + path for precise error reporting
+- Status: `'ok' | 'warn' | 'error'` (aggregate based on issue severity)
+
+**Synthesis Rules:**
+- Rule interface: `{ id, name, description, execute: (workspace) => Insight | null }`
+- Rules sorted by severity after execution
+- Rules use cross-tool pattern matching (e.g., Leadership DNA + Vision Canvas → Execution Gap)
 
 ---
 

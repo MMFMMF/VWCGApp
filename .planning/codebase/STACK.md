@@ -5,100 +5,121 @@
 ## Languages
 
 **Primary:**
-- TypeScript 5.9 - Core application language with strict mode (ES2022 target)
-- JSX/TSX - React component markup in `src/components/` and `src/tools/`
+- TypeScript 5.9 - Core application code, strict mode enabled with `verbatimModuleSyntax`, `erasableSyntaxOnly`, `noUnusedLocals`, `noUnusedParameters`, `noFallthroughCasesInSwitch`, `noUncheckedSideEffectImports`
+- JSX/TSX - React component templates using `react-jsx` compiler option
 
 **Secondary:**
-- JavaScript - Configuration files (vite, tailwind, eslint, postcss)
+- JavaScript - Configuration files (vite.config.ts, eslint.config.js, postcss.config.js, playwright.config.ts)
 
 ## Runtime
 
 **Environment:**
-- Node.js (no specific version locked, `.nvmrc` absent)
+- Node.js 22.19.0 (project uses ^22.x, as evidenced by environment)
 
 **Package Manager:**
-- npm 9+ (inferred from package.json)
+- npm 11.6.0
 - Lockfile: `package-lock.json` present
 
 ## Frameworks
 
 **Core:**
-- React 19.2.0 - UI rendering (React 19 with JSX runtime)
-- Vite 7.2.4 - Build tool and dev server
-- React Router 7.11.0 - Client-side routing (routes at `/tools/<tool-id>`)
-- Zustand 5.0.9 - State management with persist middleware
+- React 19.2.0 - UI framework with Strict Mode and new concurrent rendering
+- React DOM 19.2.0 - DOM rendering
+- React Router 7.11.0 - Client-side routing with dynamic route generation
 
 **UI & Styling:**
 - TailwindCSS 3.4.17 - Utility-first CSS framework
-- PostCSS 8.5.6 - CSS transformation pipeline
-- Autoprefixer 10.4.23 - Vendor prefix injection
-- lucide-react 0.562.0 - SVG icon library
+- PostCSS 8.5.6 - CSS preprocessing with autoprefixer plugin
+- Autoprefixer 10.4.23 - Vendor prefixing
+- tailwind-merge 3.4.0 - Class composition utility for Tailwind
 
-**Charting & Visualization:**
-- Chart.js 4.5.1 - Bar/line/pie chart rendering
+**State Management:**
+- Zustand 5.0.9 - Lightweight state management with persist middleware (localStorage key: `vwcg-workspace`)
+
+**Visualization:**
+- Chart.js 4.5.1 - Charting library for data visualization
 - react-chartjs-2 5.3.1 - React wrapper for Chart.js
-- D3 7.9.0 - Advanced data visualization (for specialized diagrams)
+- D3 7.9.0 - Advanced data manipulation and visualization
+- jsPDF 3.0.4 - PDF generation and manipulation
+- html2canvas 1.4.1 - HTML-to-canvas rendering (used for PDF generation with 3x scale for 300 DPI)
 
-**PDF & Document Export:**
-- jsPDF 3.0.4 - PDF generation
-- html2canvas 1.4.1 - HTML to canvas rendering (for PDF screenshots)
-- pdf-parse 2.4.5 - PDF text extraction (dev/testing use)
+**Icons:**
+- lucide-react 0.562.0 - Icon library with React components
+
+**Utilities:**
+- clsx 2.1.1 - Conditional className builder
+
+**Build & Development:**
+- Vite 7.2.4 - Fast build tool and dev server
+- @vitejs/plugin-react 5.1.1 - React plugin for Vite with Fast Refresh
+- ESLint 9.39.1 - Code linting
+- @eslint/js 9.39.1 - ESLint JavaScript configuration
+- typescript-eslint 8.46.4 - TypeScript ESLint support
+- eslint-plugin-react-hooks 7.0.1 - React hooks linting rules
+- eslint-plugin-react-refresh 0.4.24 - React Fast Refresh linting
 
 **Testing:**
-- Playwright 1.58.2 - E2E testing framework
-  - Config: `playwright.config.ts`
-  - Browser: Chromium only
-  - Test location: `tests/` directory
-  - Commands: `test:e2e`, `test:e2e:ui`, `test:e2e:headed`, `test:e2e:generate-pdfs`
-- Puppeteer 24.36.0 - Alternative headless browser automation (dev dependency)
+- @playwright/test 1.58.2 - End-to-end testing framework (Chromium only)
+- puppeteer 24.36.0 - Browser automation (dev dependency)
+- pdf-parse 2.4.5 - PDF parsing for test verification
 
-**Build/Dev:**
-- @vitejs/plugin-react 5.1.1 - React Fast Refresh plugin
-- TypeScript 5.9.3 - Strict type checking with `tsc -b`
-- ESLint 9.39.1 - Linting with React hooks plugin
-- typescript-eslint 8.46.4 - TypeScript ESLint support
-- eslint-plugin-react-hooks 7.0.1 - React hooks rules
-- eslint-plugin-react-refresh 0.4.24 - Fast Refresh compliance
-
-## Key Dependencies
-
-**Critical:**
-- zustand 5.0.9 - Single source of truth for all tool data; integrates with localStorage via persist middleware (key: `vwcg-workspace`)
-- react-router-dom 7.11.0 - Navigation between tools and pages
-
-**Infrastructure:**
-- clsx 2.1.1 - Conditional class composition utility
-- tailwind-merge 3.4.0 - Merges TailwindCSS classes (used with cn() utility in `src/utils/cn.ts`)
+**Type Definitions:**
+- @types/react 19.2.5 - React type definitions
+- @types/react-dom 19.2.3 - React DOM type definitions
+- @types/node 24.10.1 - Node.js type definitions
+- globals 16.5.0 - Global types for ESLint
 
 ## Configuration
 
 **Environment:**
-- `.env.example` provides template with `VITE_GEMINI_API_KEY` (optional, for AI Consultation)
-- Env vars prefixed `VITE_` are exposed to frontend via Vite's `import.meta.env`
-- **Storage:** No backend service; uses browser localStorage only (key: `vwcg-workspace`)
+- Optional `VITE_GEMINI_API_KEY` environment variable enables AI Consultation features (Gemini 1.5 Flash API)
+- Configuration via `.env` file (see `.env.example` for template)
+- Vite exposes env vars with `VITE_` prefix for client-side access
 
 **Build:**
-- `vite.config.ts` - Vite build config with React Fast Refresh and path alias `@/` → `src/`
-- `tsconfig.app.json` - TypeScript compiler options (ES2022, bundler resolution, path aliases)
-- `tsconfig.node.json` - Node-specific config for build files
-- `tsconfig.json` - Root config extending app and node configs
-- `eslint.config.js` - Flat ESLint config with React, React Hooks, React Refresh, and TypeScript rules
-- `tailwind.config.js` - Custom TailwindCSS theme (slate-based colors, custom primary/secondary/accent/destruct)
-- `postcss.config.js` - PostCSS plugin pipeline (tailwindcss, autoprefixer)
-- `playwright.config.ts` - E2E test config with Chromium, baseURL: http://localhost:5173, auto-server start
+- TypeScript compilation checked before Vite build: `tsc -b && vite build`
+- Path alias configured: `@/` maps to `src/` (tsconfig.app.json and vite.config.ts)
+- Source maps generated during build
+- Production output: `dist/` directory
+
+**Vite Configuration:**
+- Plugin: `@vitejs/plugin-react` for React JSX and Fast Refresh
+- Alias: `@/` → `./src`
+- Module format: ESNext (ES2022 target)
 
 ## Platform Requirements
 
 **Development:**
-- Node.js (no version pinned; recommend 18+)
-- npm or yarn
-- Modern browser (Chrome/Chromium for Playwright tests)
+- Node.js 22.19.0 or compatible
+- npm 11.6.0 or compatible
+- Modern browser with ES2022 support for development server
 
 **Production:**
-- Deployment target: Firebase Hosting (`vwcgapp.web.app`)
-- Build output: `dist/` directory (served via `firebase.json` rewrites)
-- No server-side runtime required; static SPA
-- Entrypoint: `main.tsx` → `App.tsx` (React Router app)
+- Deployed to Firebase Hosting (project: `vwcgapp`)
+- Base URL: `vwcgapp.web.app`
+- Serves static files from `dist/` directory with SPA rewrite rule (all routes → `/index.html`)
+- Works with modern browsers (all ES2022 features)
+
+## Type Checking & Linting
+
+**TypeScript:**
+- Target: ES2022
+- Module format: ESNext
+- JSX: react-jsx (new React 17+ transform)
+- Strict mode with comprehensive error checking
+- Compilation: `tsc -b` for multi-project build
+
+**ESLint:**
+- Config: `eslint.config.js` (flat config format)
+- Extends: ESLint base, TypeScript ESLint recommended, React Hooks recommended, React Refresh vite preset
+- Language options: ES2020, browser globals
+- File scope: `**/*.{ts,tsx}` excluding `dist/`
+
+## Additional Tools & Libraries
+
+**Package Specification:**
+- Type: `"module"` - ES modules only
+- Private package: Not published to npm
 
 ---
 
