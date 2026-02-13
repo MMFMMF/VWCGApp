@@ -1,59 +1,185 @@
 import { type Page } from '@playwright/test';
 import * as path from 'path';
+import * as fs from 'fs';
+import { navigateToTool } from './navigation';
 
 const PDF_OUTPUT_DIR = path.resolve('test-outputs/pdfs');
-const DOWNLOAD_TIMEOUT = 15_000; // html2canvas rendering can be slow
-const FULL_REPORT_DOWNLOAD_TIMEOUT = 90_000; // unified report at 300 DPI takes much longer
 const AI_BRIEFING_GENERATION_TIMEOUT = 180_000; // LLM generation can take 30-120 seconds
 
+/** Map toolId to the button label text in Report Center's individual report selector */
+const INDIVIDUAL_REPORT_LABELS: Record<string, string> = {
+  'ai-readiness': 'AI Readiness Assessment',
+  'leadership-dna': 'Leadership DNA',
+  'swot': 'SWOT Analysis',
+  'vision-canvas': 'Vision Canvas',
+  'advisor-readiness': 'Advisor Readiness',
+  'roadmap': '90-Day Roadmap',
+};
+
+/** Map toolId to PDF filename suffix */
+const TOOL_FILENAME_MAP: Record<string, string> = {
+  'ai-readiness': 'AI-Readiness',
+  'leadership-dna': 'Leadership-DNA',
+  'swot': 'SWOT-Analysis',
+  'vision-canvas': 'Vision-Canvas',
+  'advisor-readiness': 'Advisor-Readiness',
+  'roadmap': '90-Day-Roadmap',
+};
+
 /**
- * Click "Export PDF" on the current tool page, wait for download, and save it.
- * The tool must already be navigated to before calling this.
+ * Prepare the DOM for page.pdf() capture:
+ * - Hide the Report Center left panel (config panel)
+ * - Expand all scroll containers (remove height/overflow constraints)
+ * - Remove transform/scale on preview wrapper
+ * - Expand all ancestor containers up to body
  */
-export async function exportToolPdf(page: Page, personaName: string, toolDisplayName: string) {
-  const safeTool = toolDisplayName.replace(/\s+/g, '-');
+async function prepareDomForPdf(page: Page) {
+  await page.evaluate(() => {
+    // Hide the left panel (config panel)
+    const leftPanel = document.querySelector('.lg\\:col-span-1');
+    if (leftPanel) (leftPanel as HTMLElement).style.display = 'none';
+
+    // Expand scroll containers
+    const scrollContainers = document.querySelectorAll('.overflow-y-auto, .custom-scrollbar');
+    scrollContainers.forEach((el) => {
+      (el as HTMLElement).style.height = 'auto';
+      (el as HTMLElement).style.maxHeight = 'none';
+      (el as HTMLElement).style.overflow = 'visible';
+    });
+
+    // Remove transforms from the preview wrapper
+    const transformEls = document.querySelectorAll('[class*="transform"], [class*="scale-"]');
+    transformEls.forEach((el) => {
+      (el as HTMLElement).style.transform = 'none';
+      (el as HTMLElement).style.width = '100%';
+      (el as HTMLElement).style.maxWidth = 'none';
+    });
+
+    // Expand all ancestor containers of the report element
+    const report = document.querySelector('#report-preview-container')
+      || document.querySelector('#unified-strategic-briefing')
+      || document.querySelector('#llm-strategic-briefing');
+    if (report) {
+      let ancestor = report.parentElement;
+      while (ancestor && ancestor !== document.body) {
+        (ancestor as HTMLElement).style.height = 'auto';
+        (ancestor as HTMLElement).style.maxHeight = 'none';
+        (ancestor as HTMLElement).style.overflow = 'visible';
+        ancestor = ancestor.parentElement;
+      }
+    }
+  });
+}
+
+/**
+ * Ensure the persona output directory exists.
+ */
+function ensureDir(dirPath: string) {
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath, { recursive: true });
+  }
+}
+
+/**
+ * Navigate to Report Center, switch to Individual Report mode,
+ * select the specified tool, prepare DOM, and capture PDF via page.pdf().
+ */
+export async function captureIndividualReportPdf(
+  page: Page,
+  personaName: string,
+  toolId: string,
+) {
   const safePersona = personaName.toLowerCase();
-  const fileName = `${personaName}-${safeTool}.pdf`;
-  const destPath = path.join(PDF_OUTPUT_DIR, safePersona, fileName);
+  const toolSuffix = TOOL_FILENAME_MAP[toolId];
+  if (!toolSuffix) throw new Error(`Unknown toolId for PDF filename: ${toolId}`);
+  const fileName = `${personaName}-${toolSuffix}.pdf`;
+  const destDir = path.join(PDF_OUTPUT_DIR, safePersona);
+  ensureDir(destDir);
+  const destPath = path.join(destDir, fileName);
 
-  const downloadPromise = page.waitForEvent('download', { timeout: DOWNLOAD_TIMEOUT });
-  await page.getByRole('button', { name: /Export PDF/i }).click();
-  const download = await downloadPromise;
+  // Navigate to Report Center
+  await navigateToTool(page, 'Report Center');
+  await page.waitForTimeout(500);
 
-  await download.saveAs(destPath);
+  // Click "Individual Report" mode button
+  await page.getByText('Individual Report', { exact: false }).first().click();
+  await page.waitForTimeout(500);
+
+  // Click the tool selector button by its label text
+  const toolLabel = INDIVIDUAL_REPORT_LABELS[toolId];
+  if (!toolLabel) throw new Error(`Unknown toolId for label: ${toolId}`);
+  await page.getByRole('button', { name: toolLabel }).click();
+  await page.waitForTimeout(500);
+
+  // Wait for the report preview to render
+  await page.waitForSelector('#report-preview-container', { state: 'attached' });
+  await page.waitForTimeout(2000); // let charts/fonts settle
+
+  // Prepare DOM for PDF capture
+  await prepareDomForPdf(page);
+  await page.waitForTimeout(500);
+
+  // Capture PDF
+  await page.pdf({
+    path: destPath,
+    format: 'A4',
+    printBackground: true,
+    preferCSSPageSize: true,
+    margin: { top: '20mm', right: '18mm', bottom: '20mm', left: '18mm' },
+  });
+
   return destPath;
 }
 
 /**
- * Navigate to Report Center, select all tools that have data, show preview,
- * export the combined PDF report, and save it.
+ * Navigate to Report Center (Strategic Briefing mode is default),
+ * wait for unified report to render, prepare DOM, and capture PDF via page.pdf().
  */
-export async function exportFullReport(page: Page, personaName: string) {
+export async function captureUnifiedReportPdf(page: Page, personaName: string) {
   const safePersona = personaName.toLowerCase();
   const fileName = `${personaName}-Full-Report.pdf`;
-  const destPath = path.join(PDF_OUTPUT_DIR, safePersona, fileName);
+  const destDir = path.join(PDF_OUTPUT_DIR, safePersona);
+  ensureDir(destDir);
+  const destPath = path.join(destDir, fileName);
 
-  // New ReportCenter defaults to Strategic Briefing mode with preview always visible.
-  // Wait for the unified report to render fully.
-  await page.waitForTimeout(3000);
+  // Navigate to Report Center — Strategic Briefing mode is the default
+  await navigateToTool(page, 'Report Center');
+  await page.waitForTimeout(500);
 
-  // Click "Download PDF" — use longer timeout for unified report (300 DPI, 12-16 pages)
-  const downloadPromise = page.waitForEvent('download', { timeout: FULL_REPORT_DOWNLOAD_TIMEOUT });
-  await page.getByRole('button', { name: /Download PDF/i }).click();
-  const download = await downloadPromise;
+  // Wait for the unified strategic briefing to render
+  await page.waitForSelector('#unified-strategic-briefing', { state: 'attached' });
+  await page.waitForTimeout(3000); // let all charts/data settle
 
-  await download.saveAs(destPath);
+  // Prepare DOM for PDF capture
+  await prepareDomForPdf(page);
+  await page.waitForTimeout(500);
+
+  // Capture PDF
+  await page.pdf({
+    path: destPath,
+    format: 'A4',
+    printBackground: true,
+    preferCSSPageSize: true,
+    margin: { top: '20mm', right: '18mm', bottom: '20mm', left: '18mm' },
+  });
+
   return destPath;
 }
 
 /**
- * Click "AI-Powered Briefing" mode, generate the AI narrative, wait for completion,
- * then download the PDF. Data must already be seeded.
+ * Navigate to Report Center, switch to AI-Powered Briefing mode,
+ * generate AI briefing, wait for render, prepare DOM, and capture PDF via page.pdf().
  */
-export async function exportAIBriefingPdf(page: Page, personaName: string) {
+export async function captureAIBriefingPdf(page: Page, personaName: string) {
   const safePersona = personaName.toLowerCase();
   const fileName = `${personaName}-AI-Briefing.pdf`;
-  const destPath = path.join(PDF_OUTPUT_DIR, safePersona, fileName);
+  const destDir = path.join(PDF_OUTPUT_DIR, safePersona);
+  ensureDir(destDir);
+  const destPath = path.join(destDir, fileName);
+
+  // Navigate to Report Center
+  await navigateToTool(page, 'Report Center');
+  await page.waitForTimeout(500);
 
   // Switch to AI-Powered Briefing mode
   await page.getByText('AI-Powered Briefing').click();
@@ -64,14 +190,21 @@ export async function exportAIBriefingPdf(page: Page, personaName: string) {
 
   // Wait for the LLM generation to complete — spinner disappears and narrative renders
   await page.waitForSelector('#llm-strategic-briefing', { timeout: AI_BRIEFING_GENERATION_TIMEOUT });
-  await page.waitForTimeout(2000); // let the report render fully
+  await page.waitForTimeout(3000); // let the report render fully
 
-  // Download the PDF
-  const downloadPromise = page.waitForEvent('download', { timeout: FULL_REPORT_DOWNLOAD_TIMEOUT });
-  await page.getByRole('button', { name: /Download PDF/i }).click();
-  const download = await downloadPromise;
+  // Prepare DOM for PDF capture
+  await prepareDomForPdf(page);
+  await page.waitForTimeout(500);
 
-  await download.saveAs(destPath);
+  // Capture PDF
+  await page.pdf({
+    path: destPath,
+    format: 'A4',
+    printBackground: true,
+    preferCSSPageSize: true,
+    margin: { top: '20mm', right: '18mm', bottom: '20mm', left: '18mm' },
+  });
+
   return destPath;
 }
 
