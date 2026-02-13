@@ -449,17 +449,26 @@ export function VisionCanvasReport() {
   const metadata = useWorkspaceStore((state) => state.metadata);
 
   // Extract tool data
-  const visionCanvas = tools['vision-canvas'] as
-    | { northStar: string; pillars: VisionPillar[]; values: string[] }
-    | undefined;
+  const visionRaw = tools['vision-canvas'] as Record<string, unknown> | undefined;
   const swot = tools['swot'] as SwotData | undefined;
   const aiReadiness = tools['ai-readiness'] as AiReadinessData | undefined;
   const businessContext = tools['business-context'] as BusinessContextData | undefined;
 
-  // Vision data with safe defaults
-  const northStar = visionCanvas?.northStar || '';
-  const pillars = visionCanvas?.pillars || [];
-  const values = visionCanvas?.values || [];
+  // Vision data with safe defaults — normalize both UI and seeded formats
+  const northStar = (visionRaw?.northStar as string) || '';
+
+  // Pillars may be { name, kpi } (component format) or { text, kpi } (stored format)
+  const pillars: VisionPillar[] = (Array.isArray(visionRaw?.pillars) ? visionRaw.pillars : []).map(
+    (p: Record<string, unknown>) => ({
+      name: (p.name as string) || (p.text as string) || '',
+      kpi: (p.kpi as string) || '',
+    }),
+  );
+
+  // Values may be string[] or { text }[] (stored format)
+  const values: string[] = (Array.isArray(visionRaw?.values) ? visionRaw.values : []).map(
+    (v: unknown) => (typeof v === 'string' ? v : ((v as Record<string, unknown>)?.text as string) || ''),
+  );
 
   // Assessments
   const clarityRating = assessClarityRating(northStar);
