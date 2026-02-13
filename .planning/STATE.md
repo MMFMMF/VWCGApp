@@ -11,8 +11,8 @@ See: .planning/PROJECT.md (updated 2026-02-13)
 
 Phase: 10 of 10 (Quality & Edge Cases)
 Plan: All complete
-Status: v1 implementation complete
-Last activity: 2026-02-13 - Completed quick task 1: Wire new report system into UI
+Status: v1 implementation complete + LLM integration
+Last activity: 2026-02-13 - Completed quick task 2: LLM integration for strategic narrative generation
 
 Progress: [██████████] 100%
 
@@ -20,8 +20,8 @@ Progress: [██████████] 100%
 
 **Velocity:**
 - Total phases completed: 10
-- Total files created: 28 new files under src/report/ + 5 engine files + 4 business-context files + 1 registry update
-- Total lines added: ~9,400+ lines of TypeScript/TSX
+- Total files created: 28 new files under src/report/ + 5 engine files + 4 business-context files + 1 registry update + 5 LLM engine files + 1 LLM briefing component
+- Total lines added: ~11,070+ lines of TypeScript/TSX
 
 **By Phase:**
 
@@ -42,23 +42,33 @@ Progress: [██████████] 100%
 
 ### Decisions
 
-- Template-driven narratives, not runtime LLM (predictability, offline capability)
+- Template-driven narratives, not runtime LLM (predictability, offline capability) — SUPERSEDED by quick task 2: now offers BOTH template and AI options
 - Replace radar charts with horizontal bars (readability, convey insight)
 - Dark navy authority palette over light/airy (convey seniority and gravitas)
 - 8 synthesis rules replacing 5 (broader cross-assessment coverage)
 - New data inputs for financial impact calculations and benchmarking
 - New PDF service alongside old one (no breaking changes to existing PdfService.ts)
 - Report components render as React HTML for later PDF capture
+- LLM integration uses native fetch (not openai SDK) for client-side SPA context
+- Two-model pipeline: ChatGPT generator + ChatGPT Mini QA validator
+- Three report modes in UI: template Strategic Briefing, AI-Powered Briefing, Individual Reports
 
 ### Architecture Summary
 
 ```
+src/engine/llm/                  # NEW: LLM-powered narrative generation
+├── types.ts                     # BriefingNarrative, QAValidationResult, AssessmentPayload
+├── prompts.ts                   # ChatGPT generator + ChatGPT Mini QA validator system prompts
+├── openai-service.ts            # Native fetch API calls, generateWithRetry pipeline
+├── payload-assembler.ts         # Maps workspace data to spec payload format
+└── index.ts                     # Barrel exports
+
 src/report/
 ├── design.ts                    # Colors, typography, page, chart constants
 ├── charts/                      # HorizontalBar, ProgressBar, DotPlot, Gauge
 ├── components/                  # ReportPage, ReportTypography (Hero, Section, Body, etc.)
 ├── narrative/                   # Voice enforcement, templates, generator
-├── unified/                     # UnifiedStrategicBriefing (flagship 12-16 page report)
+├── unified/                     # UnifiedStrategicBriefing (template) + LLMStrategicBriefing (AI)
 ├── individual/                  # 6 individual report components
 │   ├── AdvisorReadinessReport
 │   ├── AIReadinessReport
@@ -83,9 +93,10 @@ None.
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 1 | Wire new report system into UI | 2026-02-13 | bd97af0 | [1-finish-the-remaining-tasks-including-wir](./quick/1-finish-the-remaining-tasks-including-wir/) |
+| 2 | LLM integration for strategic narrative generation | 2026-02-13 | ae111bc, cf044e0 | [2-implement-llm-integration-for-strategic-](./quick/2-implement-llm-integration-for-strategic-/) |
 
 ## Session Continuity
 
-Last session: 2026-02-13 (full v1 implementation)
-Stopped at: All 10 phases executed, committed, and verified
+Last session: 2026-02-13 (full v1 implementation + LLM integration)
+Stopped at: Quick task 2 complete — awaiting human verification of AI briefing generation
 Resume file: None
