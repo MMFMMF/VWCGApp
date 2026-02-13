@@ -1,0 +1,142 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased;
+  }
+}
+
+/* ===== PRINT STYLESHEET ===== */
+@media print {
+  /* Reset page geometry */
+  @page {
+    size: A4 portrait;
+    margin: 20mm 18mm 20mm 18mm;
+  }
+
+  /* Hide app chrome — sidebar, topbar, buttons, scrollbars */
+  nav,
+  header,
+  [data-sidebar],
+  .sidebar,
+  button,
+  [role="navigation"],
+  .no-print {
+    display: none !important;
+  }
+
+  /* Reset body/root for clean print */
+  body {
+    background: white !important;
+    color: #2D3436 !important;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+    font-size: 11pt !important;
+    line-height: 1.5 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  #root {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: none !important;
+  }
+
+  /* Typography controls */
+  h1, h2, h3, h4, h5, h6 {
+    orphans: 3;
+    widows: 3;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  p, li {
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* Images and charts — prevent splitting */
+  img, svg, canvas, figure, .chart-container {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Report page sections — each ReportPage is a full print page */
+  #llm-strategic-briefing > div,
+  #unified-strategic-briefing > div {
+    page-break-before: always;
+    break-before: page;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    min-height: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* First page (cover) — no break before */
+  #llm-strategic-briefing > div:first-child,
+  #unified-strategic-briefing > div:first-child {
+    page-break-before: auto;
+    break-before: auto;
+  }
+
+  /* Remove min-height: screen constraints that cause blank pages */
+  .min-h-screen {
+    min-height: 0 !important;
+  }
+
+  /* Footer positioning in print — static, not absolute */
+  #llm-strategic-briefing footer,
+  #unified-strategic-briefing footer {
+    position: static !important;
+    margin-top: auto;
+  }
+
+  /* Remove decorative shadows */
+  .shadow-xl, .shadow-2xl, .shadow-lg, .shadow-sm, .shadow {
+    box-shadow: none !important;
+  }
+
+  /* Ensure background colors print (for cover page, callouts) */
+  .bg-report-navy,
+  [style*="background"] {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Table handling */
+  table, tr, td, th {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  /* Gauge/chart containers */
+  .report-chart {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    max-width: 100%;
+  }
+}
+
+/* Print-specific helper classes (always available, only affect print) */
+@media print {
+  .print-break-before {
+    page-break-before: always;
+    break-before: page;
+  }
+
+  .print-break-after {
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .print-no-break {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}

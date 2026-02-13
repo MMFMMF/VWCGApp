@@ -34,7 +34,8 @@ export default {
                 }
             },
             fontFamily: {
-                sans: ['Inter', 'sans-serif'],
+                sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                serif: ['"Source Serif 4"', 'Georgia', 'serif'],
             }
         },
     },

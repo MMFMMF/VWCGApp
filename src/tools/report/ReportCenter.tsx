@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { useWorkspaceStore } from '@/store/workspaceStore';
 import { Button } from '@/components/ui/Button';
-import { FileDown, Loader2, BookOpen, FileText, AlertTriangle, Sparkles } from 'lucide-react';
+import { FileDown, Loader2, BookOpen, FileText, AlertTriangle, Sparkles, Printer } from 'lucide-react';
 import { cn } from '@/utils/cn';
 
 // New report system imports
@@ -14,7 +14,7 @@ import {
   AdvisorReadinessReport,
   RoadmapReport,
 } from '@/report/individual';
-import { savePdf } from '@/report/pdf';
+import { savePdf, printReport } from '@/report/pdf';
 import type { ReportType } from '@/report/pdf';
 import { detectEdgeCases } from '@/report/quality';
 import { assemblePayload, generateWithRetry } from '@/engine/llm';
@@ -223,9 +223,38 @@ export const ReportCenter: React.FC = () => {
     }
   }, [reportMode, selectedTool, metadata.name]);
 
+  // Print-ready PDF handler (browser print with real fonts + CSS page breaks)
+  const handlePrintPdf = useCallback(() => {
+    let targetSelector = '';
+    let title = '';
+
+    if (reportMode === 'strategic-briefing') {
+      targetSelector = '#unified-strategic-briefing';
+      title = `${metadata.name || 'Client'} — Strategic Business Assessment`;
+    } else if (reportMode === 'ai-briefing' && llmNarrative) {
+      targetSelector = '#llm-strategic-briefing';
+      title = `${metadata.name || 'Client'} — AI Strategic Business Assessment`;
+    } else if (reportMode === 'individual' && selectedTool) {
+      targetSelector = '#report-preview-container';
+      const mapping = INDIVIDUAL_REPORT_MAP.find(m => m.toolId === selectedTool);
+      title = `${metadata.name || 'Client'} — ${mapping?.label || 'Report'}`;
+    }
+
+    if (!targetSelector) return;
+
+    printReport({
+      targetSelector,
+      documentTitle: title,
+    });
+  }, [reportMode, selectedTool, metadata.name, llmNarrative]);
+
   // Determine if download button should be disabled
   const isDownloadDisabled =
     isGenerating ||
+    (reportMode === 'individual' && !selectedTool) ||
+    (reportMode === 'ai-briefing' && !llmNarrative);
+
+  const isPrintDisabled =
     (reportMode === 'individual' && !selectedTool) ||
     (reportMode === 'ai-briefing' && !llmNarrative);
 
@@ -573,20 +602,47 @@ export const ReportCenter: React.FC = () => {
             </div>
           )}
 
-          {/* Download Button */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+          {/* Download Buttons */}
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-3">
+            {/* Print-Ready PDF — recommended */}
+            <Button
+              onClick={handlePrintPdf}
+              disabled={isPrintDisabled}
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg no-print"
+            >
+              <Printer className="w-4 h-4 mr-2" />
+              Download Print-Ready PDF
+            </Button>
+            <p className="text-xs text-slate-500 text-center">
+              Best quality — real fonts, proper page breaks
+            </p>
+
+            {/* Divider */}
+            <div className="relative py-2">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-slate-200" />
+              </div>
+              <div className="relative flex justify-center">
+                <span className="bg-white px-2 text-xs text-slate-400">or</span>
+              </div>
+            </div>
+
+            {/* Existing jsPDF button — unchanged behavior */}
             <Button
               onClick={handleDownloadPdf}
               disabled={isDownloadDisabled}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white no-print"
             >
               {isGenerating ? (
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
               ) : (
                 <FileDown className="w-4 h-4 mr-2" />
               )}
-              {isGenerating ? 'Generating PDF...' : 'Download PDF'}
+              {isGenerating ? 'Generating PDF...' : 'Download PDF (Legacy)'}
             </Button>
+            <p className="text-xs text-slate-400 text-center">
+              Raster-based fallback via html2canvas + jsPDF
+            </p>
           </div>
         </div>
 
