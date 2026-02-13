@@ -152,13 +152,86 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (Populated during roadmap creation) | | |
+| DSGN-01 | Phase 1 | Pending |
+| DSGN-02 | Phase 1 | Pending |
+| DSGN-03 | Phase 1 | Pending |
+| DSGN-04 | Phase 1 | Pending |
+| DSGN-05 | Phase 1 | Pending |
+| DSGN-06 | Phase 1 | Pending |
+| DATA-01 | Phase 2 | Pending |
+| DATA-02 | Phase 2 | Pending |
+| DATA-03 | Phase 2 | Pending |
+| DATA-04 | Phase 2 | Pending |
+| DATA-05 | Phase 2 | Pending |
+| DATA-06 | Phase 2 | Pending |
+| SYNTH-01 | Phase 3 | Pending |
+| SYNTH-02 | Phase 3 | Pending |
+| SYNTH-03 | Phase 3 | Pending |
+| SYNTH-04 | Phase 3 | Pending |
+| SYNTH-05 | Phase 3 | Pending |
+| SYNTH-06 | Phase 3 | Pending |
+| SYNTH-07 | Phase 3 | Pending |
+| SYNTH-08 | Phase 3 | Pending |
+| SYNTH-09 | Phase 3 | Pending |
+| SYNTH-10 | Phase 3 | Pending |
+| SYNTH-11 | Phase 3 | Pending |
+| SYNTH-12 | Phase 3 | Pending |
+| SYNTH-13 | Phase 3 | Pending |
+| SYNTH-14 | Phase 3 | Pending |
+| SYNTH-15 | Phase 3 | Pending |
+| NARR-01 | Phase 4 | Pending |
+| NARR-02 | Phase 4 | Pending |
+| NARR-03 | Phase 4 | Pending |
+| NARR-04 | Phase 4 | Pending |
+| NARR-05 | Phase 4 | Pending |
+| USB-01 | Phase 5 | Pending |
+| USB-02 | Phase 5 | Pending |
+| USB-03 | Phase 5 | Pending |
+| USB-04 | Phase 5 | Pending |
+| USB-05 | Phase 5 | Pending |
+| USB-06 | Phase 5 | Pending |
+| USB-07 | Phase 5 | Pending |
+| USB-08 | Phase 5 | Pending |
+| USB-09 | Phase 5 | Pending |
+| USB-10 | Phase 5 | Pending |
+| USB-11 | Phase 5 | Pending |
+| USB-12 | Phase 5 | Pending |
+| ADV-01 | Phase 6 | Pending |
+| ADV-02 | Phase 6 | Pending |
+| ADV-03 | Phase 6 | Pending |
+| ADV-04 | Phase 6 | Pending |
+| AIR-01 | Phase 6 | Pending |
+| AIR-02 | Phase 6 | Pending |
+| AIR-03 | Phase 6 | Pending |
+| AIR-04 | Phase 6 | Pending |
+| LDR-01 | Phase 7 | Pending |
+| LDR-02 | Phase 7 | Pending |
+| LDR-03 | Phase 7 | Pending |
+| LDR-04 | Phase 7 | Pending |
+| SWOT-01 | Phase 7 | Pending |
+| SWOT-02 | Phase 7 | Pending |
+| SWOT-03 | Phase 7 | Pending |
+| SWOT-04 | Phase 7 | Pending |
+| VIS-01 | Phase 8 | Pending |
+| VIS-02 | Phase 8 | Pending |
+| VIS-03 | Phase 8 | Pending |
+| VIS-04 | Phase 8 | Pending |
+| RDM-01 | Phase 8 | Pending |
+| RDM-02 | Phase 8 | Pending |
+| RDM-03 | Phase 8 | Pending |
+| RDM-04 | Phase 8 | Pending |
+| PDF-01 | Phase 9 | Pending |
+| PDF-02 | Phase 9 | Pending |
+| PDF-03 | Phase 9 | Pending |
+| PDF-04 | Phase 9 | Pending |
+| PDF-05 | Phase 9 | Pending |
+| PDF-06 | Phase 10 | Pending |
 
 **Coverage:**
 - v1 requirements: 64 total
-- Mapped to phases: 0
-- Unmapped: 64
+- Mapped to phases: 64
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-13*
-*Last updated: 2026-02-13 after initial definition*
+*Last updated: 2026-02-13 after roadmap creation*
