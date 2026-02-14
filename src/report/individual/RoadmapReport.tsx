@@ -166,26 +166,126 @@ function categorizeTask(task: RoadmapTask): 'stabilize' | 'build' | 'launch' {
   return 'launch';
 }
 
-function buildPhasedItem(task: RoadmapTask, phase: 'stabilize' | 'build' | 'launch'): PhasedItem {
-  const ownerRole = task.owner || 'Leadership Team';
+// Task category mapping for assessment-aware Why Now and Success Criteria
+const TASK_CATEGORY_MAP: Array<{ pattern: RegExp; category: string }> = [
+  { pattern: /crm|salesforce|hubspot|migration/i, category: 'technology_migration' },
+  { pattern: /hire|recruit|staff|engineer|developer|talent/i, category: 'hiring' },
+  { pattern: /soc2|compliance|audit|security|insurance|legal|policy/i, category: 'compliance' },
+  { pattern: /marketing|rebrand|campaign|brand/i, category: 'marketing' },
+  { pattern: /training|safety|certification/i, category: 'training' },
+  { pattern: /office|relocation|facilities|move/i, category: 'facilities' },
+  { pattern: /platform|product|v2|release|app|dashboard|portal/i, category: 'product_launch' },
+  { pattern: /event|appreciation|client.*event/i, category: 'event' },
+  { pattern: /service line|expansion|new.*service/i, category: 'new_offering' },
+  { pattern: /forklift|equipment|fleet|upgrade|replace/i, category: 'equipment' },
+  { pattern: /pilot|enterprise|partnership/i, category: 'market_expansion' },
+  { pattern: /process|sop|document|standard/i, category: 'process' },
+];
 
-  let whyNow: string;
-  let successOutcome: string;
+function detectTaskCategory(title: string): string {
+  const match = TASK_CATEGORY_MAP.find(m => m.pattern.test(title));
+  return match?.category ?? 'general';
+}
 
-  switch (phase) {
-    case 'stabilize':
-      whyNow = 'Foundation must be solid before building new capabilities. Skipping stabilization creates compounding risk.';
-      successOutcome = `${task.title} completed with documented process and clear ownership established.`;
-      break;
-    case 'build':
-      whyNow = 'With foundations stabilized, the organization can invest in capability development without constant firefighting.';
-      successOutcome = `${task.title} operational and integrated into existing workflows with measurable improvement visible.`;
-      break;
-    case 'launch':
-      whyNow = 'Stabilized foundation and new capabilities create the conditions for successful initiatives.';
-      successOutcome = `${task.title} launched with clear metrics, stakeholder buy-in, and supporting infrastructure in place.`;
+/** Generate task-specific Why Now referencing assessment data */
+function generateWhyNow(
+  task: RoadmapTask,
+  phase: 'stabilize' | 'build' | 'launch',
+  metrics: DerivedMetrics,
+  workspace: { tools: Record<string, any> },
+): string {
+  const category = detectTaskCategory(task.title);
+  const fdi = metrics.founderDependencyIndex;
+  const ear = metrics.executionAmbitionRatio;
+  const coherence = metrics.strategicCoherence.replace(/_/g, ' ');
+  const aiReadiness = workspace.tools?.['ai-readiness'] as AiReadinessData | undefined;
+  const swot = workspace.tools?.swot;
+  const weaknesses = (swot?.weaknesses as Array<{ text?: string }>) ?? [];
+  const weaknessText = weaknesses.map(w => w.text ?? '').join(' ').toLowerCase();
+
+  // Category-specific rationale with assessment data
+  switch (category) {
+    case 'technology_migration':
+      return `Your AI Readiness data score is ${aiReadiness?.Data ?? 'not assessed'}% and ${weaknessText.includes('data') || weaknessText.includes('crm') ? 'your SWOT analysis flagged data fragmentation as a weakness' : 'data infrastructure gaps limit downstream initiatives'}. ${task.title} creates the information foundation every Phase 2 and 3 initiative depends on.`;
+    case 'hiring':
+      return `With a Founder Dependency Index of ${fdi.toFixed(1)}/10, key decisions still route through one person. ${task.title} creates the delegation capacity needed to ${phase === 'stabilize' ? 'stop the operational bottleneck your assessment flags' : 'execute the strategic initiatives in your roadmap'}.`;
+    case 'compliance':
+      return `${task.title} is a prerequisite for the growth initiatives in later phases. ${ear < 0.7 ? `Your Execution-Ambition Ratio of ${ear.toFixed(2)} means the organization is already stretched — compliance gaps compound this risk.` : `Your operational maturity needs this foundation before scaling.`}`;
+    case 'marketing':
+      return `Strategic coherence is "${coherence}" — ${task.title} ${coherence === 'aligned' || coherence === 'mostly aligned' ? 'leverages your strategic clarity to drive market awareness' : 'must be tightly aligned with vision pillars to avoid diluting an already fragmented strategy'}.`;
+    case 'training':
+      return `${task.title} builds organizational capability. ${fdi > 5 ? `With Founder Dependency at ${fdi.toFixed(1)}/10, investing in team skills reduces single-person risk.` : `Your Organizational Readiness score of ${metrics.organizationalReadinessScore}/100 indicates the team ${metrics.organizationalReadinessScore >= 60 ? 'is ready to absorb new capabilities' : 'needs structured development to execute strategic priorities'}.`}`;
+    case 'facilities':
+      return `${task.title} affects every employee daily. ${metrics.organizationalReadinessScore < 50 ? `With Organizational Readiness at ${metrics.organizationalReadinessScore}/100, minimizing disruption is critical — the team cannot absorb simultaneous operational and environmental change.` : 'Execute this during the stabilization window before strategic initiatives demand full organizational attention.'}`;
+    case 'product_launch':
+      return `${task.title} depends on the foundations built in earlier phases. ${ear < 0.7 ? `Your Execution-Ambition Ratio of ${ear.toFixed(2)} means launching without prior stabilization compounds execution risk.` : `With an EAR of ${ear.toFixed(2)}, the organization has capacity — but only if earlier phases are complete.`}`;
+    case 'event':
+      return `${task.title} is a relationship investment. ${weaknessText.includes('client') || weaknessText.includes('retention') ? 'Your SWOT analysis flagged client relationship concerns — this addresses them directly.' : `With your revenue at risk estimated at $${Math.round(metrics.revenueRiskEstimate.low / 1000)}K-$${Math.round(metrics.revenueRiskEstimate.high / 1000)}K, strengthening client relationships protects existing revenue.`}`;
+    case 'new_offering':
+      return `Strategic coherence is "${coherence}" — ${coherence === 'aligned' || coherence === 'mostly aligned' ? `${task.title} extends your strategic pillars into a new revenue stream` : `resolve the strategic alignment gaps (currently ${coherence}) before ${task.title} to prevent dilution`}. ${ear < 0.7 ? `Execution capacity (EAR: ${ear.toFixed(2)}) must improve first.` : ''}`;
+    case 'equipment':
+      return `${task.title} is a safety and efficiency priority. ${fdi > 5 ? `With Founder Dependency at ${fdi.toFixed(1)}/10, these operational decisions still land on your desk — resolving this creates delegation space.` : 'Completing operational improvements now prevents them from competing with strategic initiatives for attention.'}`;
+    case 'market_expansion':
+      return `${task.title} requires the strategic clarity and operational capacity built in earlier phases. ${coherence === 'misaligned' || coherence === 'severely misaligned' ? `Current strategic coherence is "${coherence}" — expanding into new markets amplifies existing misalignment.` : `With coherence at "${coherence}" and EAR at ${ear.toFixed(2)}, the organization has the foundation for controlled expansion.`}`;
+    case 'process':
+      return `${task.title} reduces the organizational risk your assessment data flags. ${fdi > 5 ? `Founder Dependency Index of ${fdi.toFixed(1)}/10 means undocumented processes create key-person risk.` : `Formalizing this process improves the operational maturity that supports every subsequent initiative.`}`;
+    default:
       break;
   }
+
+  // Fallback: phase-specific with metrics
+  if (phase === 'stabilize') {
+    return `${task.title} is a stabilization priority. ${fdi > 5 ? `Your Founder Dependency Index of ${fdi.toFixed(1)}/10 means completing this now frees capacity for strategic work in Phases 2 and 3.` : `With an Execution-Ambition Ratio of ${ear.toFixed(2)}, stabilizing this area before expanding scope prevents operational overload.`}`;
+  }
+  if (phase === 'build') {
+    return `${task.title} builds on the stabilized foundation. ${ear < 0.7 ? `Your EAR of ${ear.toFixed(2)} indicates the organization is stretched — this capability investment improves execution capacity.` : `Organizational Readiness at ${metrics.organizationalReadinessScore}/100 supports this level of change investment.`}`;
+  }
+  return `${task.title} launches after Phase 1 and 2 lay the groundwork. ${metrics.organizationalReadinessScore >= 60 ? `Readiness score of ${metrics.organizationalReadinessScore}/100 indicates the team can absorb this initiative.` : `Readiness at ${metrics.organizationalReadinessScore}/100 means careful change management is needed.`}`;
+}
+
+/** Generate task-specific, measurable success criteria */
+function generateSuccessCriteria(task: RoadmapTask): string {
+  const category = detectTaskCategory(task.title);
+
+  switch (category) {
+    case 'technology_migration':
+      return `${task.title} fully migrated with 100% of active records transferred, all users trained, and first automated report generated within the phase timeline.`;
+    case 'hiring':
+      return `All new hires onboarded and contributing to assigned work within 2 weeks of start date. Role-specific KPIs defined and first performance check-in completed.`;
+    case 'compliance':
+      return `${task.title} completed with zero critical findings. Compliance documentation published to shared drive and review cadence established.`;
+    case 'marketing':
+      return `${task.title} launched with baseline metrics established (website traffic, lead volume, brand awareness). 30-day post-launch performance report delivered.`;
+    case 'training':
+      return `100% of eligible team members completed ${task.title}. Certification records filed and knowledge assessment scores averaging 80%+.`;
+    case 'facilities':
+      return `${task.title} completed with zero service disruption, all employees transitioned, and post-move satisfaction survey achieving 80%+ positive rating.`;
+    case 'product_launch':
+      return `${task.title} live with launch metrics defined, first 30-day usage data collected, and iteration plan created based on user feedback.`;
+    case 'event':
+      return `${task.title} executed with 60%+ target attendee participation. Post-event survey completed and follow-up actions scheduled within 1 week.`;
+    case 'new_offering':
+      return `${task.title} market-tested with at least 3 pilot clients. Revenue forecast model built and go/no-go decision documented.`;
+    case 'equipment':
+      return `${task.title} completed with all operators certified on new equipment. Safety baseline established and efficiency metrics tracked for 30-day comparison.`;
+    case 'market_expansion':
+      return `${task.title} launched with defined success metrics, first 3 qualified prospects identified, and monthly progress review cadence established.`;
+    case 'process':
+      return `${task.title} documented, reviewed by stakeholders, and published. Process owner assigned and first adherence check scheduled within 30 days.`;
+    default:
+      return `${task.title} completed with documented outcomes, clear ownership assigned, and measurable success metrics defined for 30-day review.`;
+  }
+}
+
+function buildPhasedItem(
+  task: RoadmapTask,
+  phase: 'stabilize' | 'build' | 'launch',
+  metrics: DerivedMetrics,
+  workspace: { tools: Record<string, any> },
+): PhasedItem {
+  const ownerRole = task.owner || 'Leadership Team';
+  const whyNow = generateWhyNow(task, phase, metrics, workspace);
+  const successOutcome = generateSuccessCriteria(task);
 
   return {
     title: task.title,
@@ -202,7 +302,7 @@ function buildPhasedItem(task: RoadmapTask, phase: 'stabilize' | 'build' | 'laun
 function buildExcludedItems(
   aiReadiness: AiReadinessData | undefined,
   metrics: DerivedMetrics,
-  _businessContext: BusinessContextData | undefined
+  workspace: { tools: Record<string, any> },
 ): ExcludedItem[] {
   const items: ExcludedItem[] = [];
 
@@ -239,39 +339,49 @@ function buildExcludedItems(
   }
 
   // Check strategic coherence
-  if (metrics.strategicCoherence === 'misaligned') {
+  if (metrics.strategicCoherence === 'misaligned' || metrics.strategicCoherence === 'severely_misaligned') {
     items.push({
       title: 'New Product Lines',
-      rationale: `Strategic coherence analysis shows misalignment between vision, capabilities, and current priorities. Adding new product lines would dilute focus further and compound the alignment problem. Resolve the existing strategic contradictions before expanding the portfolio.`,
+      rationale: `Strategic coherence analysis shows ${metrics.strategicCoherence === 'severely_misaligned' ? 'severe' : ''} misalignment between vision, capabilities, and current priorities. Adding new product lines would dilute focus further and compound the alignment problem. Resolve the existing strategic contradictions before expanding the portfolio.`,
     });
   }
 
-  // Default fallbacks if fewer than 2 items
+  // Data-driven fallbacks with assessment references (not generic)
   if (items.length < 2) {
-    const defaults: ExcludedItem[] = [
-      {
-        title: 'Major Technology Platform Migration',
-        rationale:
-          'Platform migrations consume 6-12 months of organizational bandwidth and carry significant operational risk. Within a 90-day horizon, the focus should be on maximizing value from existing tools while planning migration for the next planning cycle.',
-      },
-      {
-        title: 'Organizational Restructuring',
-        rationale:
-          'Restructuring creates uncertainty and productivity loss that undermines execution. The 90-day window is better used to stabilize operations and build trust, creating the conditions for successful structural change in the future.',
-      },
-      {
-        title: 'Large-Scale Hiring Campaigns',
-        rationale:
-          'Scaling headcount before processes and systems are documented creates chaos. New hires amplify whatever culture and operations currently exist — if the foundation is unstable, more people accelerate problems rather than solving them.',
-      },
-    ];
+    const businessCtx = workspace.tools?.['business-context'] as BusinessContextData | undefined;
+    const industry = businessCtx?.industry ?? 'your industry';
+    const employees = businessCtx?.employeeCount ?? 0;
+    const swot = workspace.tools?.swot;
+    const opportunities = (swot?.opportunities as Array<{ text?: string }>) ?? [];
 
-    for (const fallback of defaults) {
-      if (items.length >= 3) break;
-      // Avoid duplicating topics
-      if (!items.some((existing) => existing.title === fallback.title)) {
-        items.push(fallback);
-      }
+    // Generate persona-specific Not Now items based on what they COULD do but shouldn't yet
+    if (employees > 50 && !items.some(i => i.title.includes('Restructuring'))) {
+      items.push({
+        title: 'Organizational Restructuring',
+        rationale: `With ${employees} employees and an Organizational Readiness score of ${metrics.organizationalReadinessScore}/100, restructuring would create uncertainty that undermines the 90-day execution plan. Stabilize operations first, then restructure from a position of strength.`,
+      });
+    }
+
+    if (opportunities.length > 2 && !items.some(i => i.title.includes('Opportunity'))) {
+      const cited = opportunities[0]?.text ?? 'an identified opportunity';
+      items.push({
+        title: 'Pursuing All SWOT Opportunities Simultaneously',
+        rationale: `Your SWOT analysis identified ${opportunities.length} opportunities including "${cited}." With an Execution-Ambition Ratio of ${metrics.executionAmbitionRatio.toFixed(2)}, pursuing multiple opportunities within 90 days risks executing none of them well. Sequence them across future quarters.`,
+      });
+    }
+
+    if (!items.some(i => i.title.includes('Platform') || i.title.includes('Migration'))) {
+      items.push({
+        title: 'Major Technology Platform Migration',
+        rationale: `Platform migrations in ${industry} consume 6-12 months of bandwidth. With current operational maturity and a Founder Dependency Index of ${metrics.founderDependencyIndex.toFixed(1)}/10, a major migration would overwhelm the 90-day stabilization timeline.`,
+      });
+    }
+
+    if (items.length < 3 && !items.some(i => i.title.includes('Hiring'))) {
+      items.push({
+        title: 'Large-Scale Hiring Campaign',
+        rationale: `Adding headcount before processes are documented and delegation patterns are established (FDI: ${metrics.founderDependencyIndex.toFixed(1)}/10) amplifies existing operational gaps. Build the infrastructure first, then hire into it.`,
+      });
     }
   }
 
@@ -302,7 +412,7 @@ function buildPhilosophyContextNote(insights: Insight[], metrics: DerivedMetrics
   }
 
   // Check for strategic misalignment
-  if (metrics.strategicCoherence === 'misaligned') {
+  if (metrics.strategicCoherence === 'misaligned' || metrics.strategicCoherence === 'severely_misaligned') {
     return 'Strategic coherence analysis reveals misalignment between your vision and operational reality. This roadmap prioritizes alignment before expansion.';
   }
 
@@ -345,17 +455,17 @@ export function RoadmapReport() {
   const stabilizeTasks = categorized
     .filter((c) => c.phase === 'stabilize')
     .slice(0, 2)
-    .map((c) => buildPhasedItem(c.task, 'stabilize'));
+    .map((c) => buildPhasedItem(c.task, 'stabilize', metrics, workspace));
 
   const buildTasks = categorized
     .filter((c) => c.phase === 'build')
     .slice(0, 2)
-    .map((c) => buildPhasedItem(c.task, 'build'));
+    .map((c) => buildPhasedItem(c.task, 'build', metrics, workspace));
 
   const launchTasks = categorized
     .filter((c) => c.phase === 'launch')
     .slice(0, 2)
-    .map((c) => buildPhasedItem(c.task, 'launch'));
+    .map((c) => buildPhasedItem(c.task, 'launch', metrics, workspace));
 
   // If any phase has no tasks, pull overflow from other phases
   const allPhasedItems = [...stabilizeTasks, ...buildTasks, ...launchTasks];
@@ -366,24 +476,24 @@ export function RoadmapReport() {
   if (stabilizeTasks.length === 0 && remainingTasks.length > 0) {
     const overflow = remainingTasks.shift();
     if (overflow) {
-      stabilizeTasks.push(buildPhasedItem(overflow.task, 'stabilize'));
+      stabilizeTasks.push(buildPhasedItem(overflow.task, 'stabilize', metrics, workspace));
     }
   }
   if (buildTasks.length === 0 && remainingTasks.length > 0) {
     const overflow = remainingTasks.shift();
     if (overflow) {
-      buildTasks.push(buildPhasedItem(overflow.task, 'build'));
+      buildTasks.push(buildPhasedItem(overflow.task, 'build', metrics, workspace));
     }
   }
   if (launchTasks.length === 0 && remainingTasks.length > 0) {
     const overflow = remainingTasks.shift();
     if (overflow) {
-      launchTasks.push(buildPhasedItem(overflow.task, 'launch'));
+      launchTasks.push(buildPhasedItem(overflow.task, 'launch', metrics, workspace));
     }
   }
 
   // Build excluded items
-  const excludedItems = buildExcludedItems(aiReadiness, metrics, businessContext);
+  const excludedItems = buildExcludedItems(aiReadiness, metrics, workspace);
 
   // Philosophy context note
   const contextNote = buildPhilosophyContextNote(resolvedInsights, metrics);

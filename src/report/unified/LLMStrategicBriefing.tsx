@@ -211,11 +211,7 @@ function ExecutiveSnapshot({
         <div className="pt-4 border-t border-report-warm">
           <ReportBody className="font-semibold">
             Strategic Coherence:{' '}
-            {metrics.strategicCoherence === 'aligned'
-              ? 'Aligned'
-              : metrics.strategicCoherence === 'partially_aligned'
-                ? 'Partially Aligned'
-                : 'Misaligned'}
+            {({ aligned: 'Aligned', mostly_aligned: 'Mostly Aligned', partially_aligned: 'Partially Aligned', misaligned: 'Misaligned', severely_misaligned: 'Severely Misaligned' } as Record<string, string>)[metrics.strategicCoherence] ?? 'Unknown'}
           </ReportBody>
           <ReportCaption className="block mt-1">{metrics.strategicCoherenceDetails}</ReportCaption>
         </div>
@@ -280,7 +276,7 @@ function CostPage({ narrative, pageNumber }: { narrative: BriefingNarrative; pag
               borderLeft: `4px solid ${SEVERITY_COLORS.high}`,
             }}
           >
-            <div className="text-6xl font-bold leading-tight" style={{ color: SEVERITY_COLORS.high }}>
+            <div className="text-6xl font-bold leading-tight financial-nowrap" style={{ color: SEVERITY_COLORS.high, whiteSpace: 'nowrap' }}>
               {safeText(impact.amount_range)}
             </div>
             <ReportBody className="font-semibold mt-2">{safeText(impact.label)}</ReportBody>

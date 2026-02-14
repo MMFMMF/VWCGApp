@@ -7,8 +7,8 @@
 export { runSynthesis, registerRule } from './synthesis.ts';
 
 // Derived metrics
-export { computeDerivedMetrics } from './derived-metrics.ts';
-export type { DerivedMetrics, LeadershipArchetype, RevenueRiskEstimate } from './derived-metrics.ts';
+export { computeDerivedMetrics, adjustCoherenceForContradictions, computeFinancialImpactBreakdown } from './derived-metrics.ts';
+export type { DerivedMetrics, LeadershipArchetype, RevenueRiskEstimate, FinancialImpactBreakdown, CoherenceLevel } from './derived-metrics.ts';
 
 // SWOT keyword analysis
 export { scanSwotText, hasKeywordMatches, getKeywordFrequency } from './swot-keywords.ts';

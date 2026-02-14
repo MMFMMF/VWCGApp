@@ -12,7 +12,7 @@
 
 import { useMemo } from 'react';
 import { useWorkspaceStore } from '@/store/workspaceStore';
-import { computeDerivedMetrics, runSynthesis, adjustCoherenceForContradictions } from '@/engine';
+import { computeDerivedMetrics, runSynthesis, adjustCoherenceForContradictions, computeFinancialImpactBreakdown } from '@/engine';
 import type { DerivedMetrics, Insight } from '@/engine';
 import {
   createNarrativeContext,
@@ -64,21 +64,37 @@ function formatDate(iso?: string): string {
   }
 }
 
+/** Map coherence level to human-readable label */
+function coherenceLabel(level: string): string {
+  switch (level) {
+    case 'aligned': return 'Aligned';
+    case 'mostly_aligned': return 'Mostly Aligned';
+    case 'partially_aligned': return 'Partially Aligned';
+    case 'misaligned': return 'Misaligned';
+    case 'severely_misaligned': return 'Severely Misaligned';
+    default: return 'Unknown';
+  }
+}
+
 /** Three-word descriptors characterizing the business for the executive snapshot */
 function deriveDescriptors(metrics: DerivedMetrics): string[] {
   const descriptors: string[] = [];
 
-  // Descriptor 1: based on strategic coherence
-  if (metrics.strategicCoherence === 'aligned') descriptors.push('Strategically Aligned');
-  else if (metrics.strategicCoherence === 'partially_aligned') descriptors.push('Partially Coherent');
-  else descriptors.push('Strategically Fragmented');
+  // Descriptor 1: Strategic posture (based on strategic coherence)
+  switch (metrics.strategicCoherence) {
+    case 'aligned': descriptors.push('Strategically Aligned'); break;
+    case 'mostly_aligned': descriptors.push('Strategically Focused'); break;
+    case 'partially_aligned': descriptors.push('Partially Coherent'); break;
+    case 'misaligned': descriptors.push('Strategically Fragmented'); break;
+    case 'severely_misaligned': descriptors.push('Strategically Disconnected'); break;
+  }
 
-  // Descriptor 2: based on founder dependency
+  // Descriptor 2: Operational posture (based on founder dependency)
   if (metrics.founderDependencyIndex <= 3) descriptors.push('Well-Delegated');
   else if (metrics.founderDependencyIndex <= 6) descriptors.push('Moderately Dependent');
   else descriptors.push('Founder-Dependent');
 
-  // Descriptor 3: based on organizational readiness
+  // Descriptor 3: Change readiness (based on organizational readiness)
   if (metrics.organizationalReadinessScore >= 76) descriptors.push('Change-Ready');
   else if (metrics.organizationalReadinessScore >= 51) descriptors.push('Open to Change');
   else if (metrics.organizationalReadinessScore >= 26) descriptors.push('Change-Cautious');
@@ -231,7 +247,7 @@ function ExecutiveSnapshot({
         {/* Strategic coherence */}
         <div className="pt-4 border-t border-report-warm">
           <ReportBody className="font-semibold">
-            Strategic Coherence: {metrics.strategicCoherence === 'aligned' ? 'Aligned' : metrics.strategicCoherence === 'partially_aligned' ? 'Partially Aligned' : 'Misaligned'}
+            Strategic Coherence: {coherenceLabel(metrics.strategicCoherence)}
           </ReportBody>
           <ReportCaption className="block mt-1">
             {generateMetricInterpretation('strategicCoherence', metrics.strategicCoherence, ctx)}
@@ -320,50 +336,34 @@ function ContradictionsPage({
 /** USB-06: What This Is Costing You (CONDITIONAL) */
 function CostPage({
   ctx,
-  metrics,
   pageStart,
 }: {
   ctx: NarrativeContext;
-  metrics: DerivedMetrics;
   pageStart: number;
 }) {
   const businessContext = ctx.workspace.tools?.['business-context'];
   const hasRevenue = Boolean(businessContext?.revenueRange);
   if (!hasRevenue) return null;
 
-  const risk = metrics.revenueRiskEstimate;
-
-  // Compute cost blocks
-  const founderBottleneckCost = metrics.founderDependencyIndex > 4
-    ? { low: Math.round(risk.low * 0.35), high: Math.round(risk.high * 0.4) }
-    : { low: Math.round(risk.low * 0.15), high: Math.round(risk.high * 0.2) };
-
-  const operationalCost = {
-    low: Math.round(risk.low * 0.35),
-    high: Math.round(risk.high * 0.35),
-  };
-
-  const strategicRiskCost = {
-    low: Math.round(risk.low * 0.3),
-    high: Math.round(risk.high * 0.25),
-  };
+  // Use reconciled financial breakdown: subcategories sum exactly to total
+  const breakdown = computeFinancialImpactBreakdown(ctx.workspace);
 
   const costBlocks = [
     {
       title: 'Founder Bottleneck Cost',
-      range: `${formatUSD(founderBottleneckCost.low)} - ${formatUSD(founderBottleneckCost.high)}`,
+      range: `${formatUSD(breakdown.founderBottleneck.low)}\u00A0\u2013\u00A0${formatUSD(breakdown.founderBottleneck.high)}`,
       description:
         'Revenue at risk from critical decisions and operations routing through a single individual. Includes opportunity cost of the founder spending time on operational tasks instead of strategic growth.',
     },
     {
       title: 'Operational Inefficiency Cost',
-      range: `${formatUSD(operationalCost.low)} - ${formatUSD(operationalCost.high)}`,
+      range: `${formatUSD(breakdown.operationalInefficiency.low)}\u00A0\u2013\u00A0${formatUSD(breakdown.operationalInefficiency.high)}`,
       description:
         'Revenue impact of undocumented processes, inconsistent execution, and lack of operational scalability. Manifests as rework, missed deadlines, and inability to onboard talent efficiently.',
     },
     {
       title: 'Strategic Risk Exposure',
-      range: `${formatUSD(strategicRiskCost.low)} - ${formatUSD(strategicRiskCost.high)}`,
+      range: `${formatUSD(breakdown.strategicRisk.low)}\u00A0\u2013\u00A0${formatUSD(breakdown.strategicRisk.high)}`,
       description:
         'Potential revenue loss from misaligned strategy, unaddressed market threats, and failure to capitalize on identified opportunities within the competitive window.',
     },
@@ -375,8 +375,12 @@ function CostPage({
       <ReportBody className="mb-6">
         Based on your reported revenue range ({businessContext.revenueRange}) and the
         strategic gaps identified across all assessments, this briefing estimates{' '}
-        <strong>{formatUSD(risk.low)} to {formatUSD(risk.high)}</strong> in annual
-        revenue at risk.
+        <span style={{ whiteSpace: 'nowrap' }}>
+          <strong>{formatUSD(breakdown.total.low)}</strong>
+        </span>{' '}to{' '}
+        <span style={{ whiteSpace: 'nowrap' }}>
+          <strong>{formatUSD(breakdown.total.high)}</strong>
+        </span>{' '}in annual revenue at risk.
       </ReportBody>
 
       <div className="space-y-8">
@@ -390,13 +394,13 @@ function CostPage({
             }}
           >
             <ReportSubsection>{block.title}</ReportSubsection>
-            <ReportHero className="mb-3 text-3xl">{block.range}</ReportHero>
+            <ReportHero className="mb-3 text-3xl" style={{ whiteSpace: 'nowrap' }}>{block.range}</ReportHero>
             <ReportBody>{block.description}</ReportBody>
           </div>
         ))}
       </div>
 
-      <ReportCaption className="block mt-6">
+      <ReportCaption className="block mt-6 keep-with-previous">
         Methodology: Revenue risk is estimated by combining SWOT threat severity,
         Founder Dependency Index, operational maturity indicators, and financial
         health buffer scores. Ranges represent conservative (low) and aggressive
@@ -526,7 +530,7 @@ function BenchmarkingPage({
         />
       </div>
 
-      <ReportCaption className="block mt-8">
+      <ReportCaption className="block mt-8 keep-with-previous">
         Benchmarks sourced from general SMB population data. Industry-specific
         benchmarks will replace these when available for your sector.
       </ReportCaption>
@@ -741,7 +745,7 @@ function QuickWinsPage({
               ))}
             </ReportList>
 
-            <div className="mt-3 pt-3 border-t border-report-warm">
+            <div className="mt-3 pt-3 border-t border-report-warm keep-with-previous">
               <ReportCaption className="block">
                 <strong>Expected Outcome:</strong> {phase.outcome}
               </ReportCaption>
@@ -999,7 +1003,7 @@ export function UnifiedStrategicBriefing() {
 
       {/* USB-06: What This Is Costing You (CONDITIONAL) */}
       {hasRevenue && (
-        <CostPage ctx={ctx} metrics={adjustedMetrics} pageStart={costPage} />
+        <CostPage ctx={ctx} pageStart={costPage} />
       )}
 
       {/* USB-07: Benchmarking Context */}

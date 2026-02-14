@@ -15,10 +15,31 @@ export interface RevenueRiskEstimate {
     currency: 'USD';
 }
 
+export interface FinancialImpactBreakdown {
+    total: { low: number; high: number };
+    founderBottleneck: { low: number; high: number };
+    operationalInefficiency: { low: number; high: number };
+    strategicRisk: { low: number; high: number };
+}
+
+/**
+ * Round financial figures per spec:
+ * - Nearest $500 for amounts under $100K
+ * - Nearest $1,000 for amounts $100K–$999K
+ * - Nearest $5,000 for amounts $1M+
+ */
+function roundFinancial(amount: number): number {
+    if (amount < 100000) return Math.round(amount / 500) * 500;
+    if (amount < 1000000) return Math.round(amount / 1000) * 1000;
+    return Math.round(amount / 5000) * 5000;
+}
+
+export type CoherenceLevel = 'aligned' | 'mostly_aligned' | 'partially_aligned' | 'misaligned' | 'severely_misaligned';
+
 export interface DerivedMetrics {
     executionAmbitionRatio: number;
     founderDependencyIndex: number;
-    strategicCoherence: 'aligned' | 'partially_aligned' | 'misaligned';
+    strategicCoherence: CoherenceLevel;
     strategicCoherenceDetails: string;
     revenueRiskEstimate: RevenueRiskEstimate;
     organizationalReadinessScore: number;
@@ -131,12 +152,23 @@ function computeFounderDependencyIndex(workspace: any): number {
 }
 
 /**
- * Metric 3: Strategic Coherence Score
- * Checks alignment between Vision pillars vs SWOT strengths, Vision pillars vs AI Readiness,
- * Core values vs SWOT weaknesses, Roadmap priorities vs leadership gaps.
+ * Classify contradiction severity as high, medium, or low
+ */
+function classifyContradictionSeverity(issue: string): 'high' | 'medium' | 'low' {
+    const highPatterns = /severely|critical|force|override|misaligned|contradicts?.*weakness/i;
+    const mediumPatterns = /not.*reflected|not.*backed|doesn't address|gap|overextend/i;
+    if (highPatterns.test(issue)) return 'high';
+    if (mediumPatterns.test(issue)) return 'medium';
+    return 'low';
+}
+
+/**
+ * Metric 3: Strategic Coherence Score (5-level spectrum)
+ * Aligned → Mostly Aligned → Partially Aligned → Misaligned → Severely Misaligned
+ * Based on contradiction count, severity weights, and execution-ambition ratio.
  */
 function computeStrategicCoherence(workspace: any): {
-    score: 'aligned' | 'partially_aligned' | 'misaligned';
+    score: CoherenceLevel;
     details: string;
 } {
     const vision = workspace.tools?.['vision-canvas'];
@@ -270,9 +302,9 @@ function computeStrategicCoherence(workspace: any): {
             if (gap > 40 && visionScore < 5) {
                 totalChecks++;
                 issues.push(`Financial-Strategic gap of ${Math.round(gap)} points with Vision ${visionScore}/10 — severely misaligned`);
-                // Hard override: return misaligned immediately
+                // Hard override: return severely_misaligned immediately
                 return {
-                    score: 'misaligned',
+                    score: 'severely_misaligned',
                     details: issues.join('; '),
                 };
             }
@@ -283,13 +315,24 @@ function computeStrategicCoherence(workspace: any): {
 
     const alignmentRatio = alignmentPoints / totalChecks;
 
-    let score: 'aligned' | 'partially_aligned' | 'misaligned';
-    if (alignmentRatio >= 0.75) {
+    // Compute severity-weighted score for finer granularity
+    const severityWeights = { high: 3, medium: 2, low: 1 };
+    const totalSeverityWeight = issues.reduce((sum, issue) => {
+        return sum + severityWeights[classifyContradictionSeverity(issue)];
+    }, 0);
+
+    // 5-level spectrum based on alignment ratio + severity weight
+    let score: CoherenceLevel;
+    if (alignmentRatio >= 0.85 && totalSeverityWeight === 0) {
         score = 'aligned';
-    } else if (alignmentRatio >= 0.4) {
+    } else if (alignmentRatio >= 0.7 && totalSeverityWeight <= 2) {
+        score = 'mostly_aligned';
+    } else if (alignmentRatio >= 0.45 && totalSeverityWeight <= 5) {
         score = 'partially_aligned';
-    } else {
+    } else if (alignmentRatio >= 0.2 || totalSeverityWeight <= 8) {
         score = 'misaligned';
+    } else {
+        score = 'severely_misaligned';
     }
 
     const details = issues.length > 0
@@ -299,35 +342,51 @@ function computeStrategicCoherence(workspace: any): {
     return { score, details };
 }
 
+/** Ordered coherence levels from best to worst */
+const COHERENCE_ORDER: CoherenceLevel[] = [
+    'aligned', 'mostly_aligned', 'partially_aligned', 'misaligned', 'severely_misaligned'
+];
+
+/** Downgrade coherence by N steps (clamped to worst level) */
+function downgradeCoherence(current: CoherenceLevel, steps: number): CoherenceLevel {
+    const idx = COHERENCE_ORDER.indexOf(current);
+    return COHERENCE_ORDER[Math.min(idx + steps, COHERENCE_ORDER.length - 1)];
+}
+
 /**
  * Post-synthesis coherence adjustment
- * Downgrades coherence based on contradiction count from synthesis rules.
+ * Downgrades coherence based on contradiction count and severity from synthesis rules.
  * Call this AFTER running synthesis to factor in detected contradictions.
  */
 export function adjustCoherenceForContradictions(
-    currentScore: 'aligned' | 'partially_aligned' | 'misaligned',
+    currentScore: CoherenceLevel,
     currentDetails: string,
     highSeverityCount: number,
     conflictCount: number,
-): { score: 'aligned' | 'partially_aligned' | 'misaligned'; details: string } {
+): { score: CoherenceLevel; details: string } {
     let score = currentScore;
     const extraIssues: string[] = [];
 
-    // 2+ high-severity contradictions forces "misaligned"
-    if (conflictCount >= 2) {
-        score = 'misaligned';
+    // 3+ conflicts → severely misaligned
+    if (conflictCount >= 3) {
+        score = 'severely_misaligned';
         extraIssues.push(`${conflictCount} internal contradictions detected`);
-    } else if (conflictCount === 1 && score === 'aligned') {
-        score = 'partially_aligned';
+    } else if (conflictCount === 2) {
+        // 2 conflicts → downgrade by 2 steps
+        score = downgradeCoherence(score, 2);
+        extraIssues.push(`${conflictCount} internal contradictions detected`);
+    } else if (conflictCount === 1) {
+        // 1 conflict → downgrade by 1 step
+        score = downgradeCoherence(score, 1);
         extraIssues.push('1 internal contradiction detected');
     }
 
     // 3+ high-severity findings also degrades coherence
-    if (highSeverityCount >= 3 && score !== 'misaligned') {
-        score = 'misaligned';
+    if (highSeverityCount >= 3) {
+        score = downgradeCoherence(score, 1);
         extraIssues.push(`${highSeverityCount} high-severity findings`);
-    } else if (highSeverityCount >= 2 && score === 'aligned') {
-        score = 'partially_aligned';
+    } else if (highSeverityCount >= 2 && COHERENCE_ORDER.indexOf(score) < 2) {
+        score = downgradeCoherence(score, 1);
         extraIssues.push(`${highSeverityCount} high-severity findings`);
     }
 
@@ -553,6 +612,84 @@ function computeLeadershipArchetype(workspace: any): LeadershipArchetype {
         archetype: 'The Hybrid Leader',
         description: `Primary strengths in ${dominant.join(' and ')} with mixed secondary capabilities`,
         recommendation: 'Leverage your strengths while building complementary team capabilities'
+    };
+}
+
+/**
+ * Financial Impact Breakdown with Rounding Reconciliation
+ *
+ * Computes subcategory costs (Founder Bottleneck, Operational Inefficiency,
+ * Strategic Risk) with data-driven weights, applies tiered rounding, and
+ * uses Strategic Risk as the reconciliation category so subcategories
+ * always sum exactly to the displayed total.
+ */
+export function computeFinancialImpactBreakdown(workspace: any): FinancialImpactBreakdown {
+    const risk = computeRevenueRiskEstimate(workspace);
+    const fdi = computeFounderDependencyIndex(workspace);
+    const advisor = workspace.tools?.['advisor-readiness'];
+
+    // --- Data-driven weights for Founder Bottleneck ---
+    // FDI 0-3: low dependency → 15-20% of risk
+    // FDI 4-6: moderate → 25-30%
+    // FDI 7-10: critical → 35-40%
+    let founderWeightLow: number;
+    let founderWeightHigh: number;
+    if (fdi > 6) {
+        founderWeightLow = 0.35;
+        founderWeightHigh = 0.40;
+    } else if (fdi > 4) {
+        founderWeightLow = 0.25;
+        founderWeightHigh = 0.30;
+    } else {
+        founderWeightLow = 0.15;
+        founderWeightHigh = 0.20;
+    }
+
+    // --- Data-driven weights for Operational Inefficiency ---
+    // Based on operational maturity from advisor readiness (o1-o5)
+    let opsWeightLow = 0.35;
+    let opsWeightHigh = 0.35;
+    if (advisor?.answers) {
+        const opQs = ['o1', 'o2', 'o3', 'o4', 'o5'];
+        const opScores = opQs
+            .map((q: string) => advisor.answers[q])
+            .filter((v: unknown): v is number => typeof v === 'number');
+        if (opScores.length > 0) {
+            const avgOp = opScores.reduce((s: number, v: number) => s + v, 0) / opScores.length;
+            // Low operational maturity → higher ops cost weight
+            if (avgOp < 2.5) {
+                opsWeightLow = 0.40;
+                opsWeightHigh = 0.40;
+            } else if (avgOp >= 4) {
+                opsWeightLow = 0.25;
+                opsWeightHigh = 0.25;
+            }
+        }
+    }
+
+    // --- Compute raw subcategories ---
+    const rawFounderLow = risk.low * founderWeightLow;
+    const rawFounderHigh = risk.high * founderWeightHigh;
+    const rawOpsLow = risk.low * opsWeightLow;
+    const rawOpsHigh = risk.high * opsWeightHigh;
+
+    // --- Apply tiered rounding ---
+    const roundedTotalLow = roundFinancial(risk.low);
+    const roundedTotalHigh = roundFinancial(risk.high);
+    const roundedFounderLow = roundFinancial(rawFounderLow);
+    const roundedFounderHigh = roundFinancial(rawFounderHigh);
+    const roundedOpsLow = roundFinancial(rawOpsLow);
+    const roundedOpsHigh = roundFinancial(rawOpsHigh);
+
+    // --- Strategic Risk absorbs rounding remainder ---
+    const strategicLow = roundedTotalLow - roundedFounderLow - roundedOpsLow;
+    const strategicHigh = roundedTotalHigh - roundedFounderHigh - roundedOpsHigh;
+
+    return {
+        total: { low: roundedTotalLow, high: roundedTotalHigh },
+        founderBottleneck: { low: roundedFounderLow, high: roundedFounderHigh },
+        operationalInefficiency: { low: roundedOpsLow, high: roundedOpsHigh },
+        strategicRisk: { low: strategicLow, high: strategicHigh },
     };
 }
 

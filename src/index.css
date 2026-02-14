@@ -164,6 +164,23 @@
     break-inside: avoid;
     max-width: 100%;
   }
+
+  /* --- PDF-01: Prevent blank pages from empty sections --- */
+  .report-section:empty {
+    display: none;
+  }
+
+  /* --- PDF-02: Prevent sparse orphaned pages --- */
+  /* Methodology notes, disclaimers, and outcome text must stay with preceding content */
+  .keep-with-previous {
+    break-before: avoid !important;
+    page-break-before: avoid !important;
+  }
+
+  /* --- PDF-03: Prevent dollar ranges from breaking mid-number --- */
+  .financial-nowrap {
+    white-space: nowrap;
+  }
 }
 
 /* Print-specific helper classes (always available, only affect print) */

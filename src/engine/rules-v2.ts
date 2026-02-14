@@ -9,32 +9,36 @@ import { scanSwotText, hasKeywordMatches } from './swot-keywords.ts';
 
 /**
  * Rule 1: Vision-Execution Mismatch
- * Trigger: >3 pillars + Execution <7 + SWOT capacity keywords
+ * Trigger: >3 pillars + Execution <7 (SWOT capacity keywords amplify message but don't gate it)
  */
 export const visionExecutionMismatch: SynthesisRule = {
     id: 'V2_vision_execution_mismatch',
     name: 'Vision-Execution Capacity Gap',
-    description: 'Detects ambitious vision paired with low execution capability and capacity constraints',
+    description: 'Detects ambitious vision paired with low execution capability',
     execute: (workspace): Insight | null => {
         const vision = workspace.tools?.['vision-canvas'];
         const dna = workspace.tools?.['leadership-dna'];
-        const swot = workspace.tools?.swot;
 
-        if (!vision || !dna || !swot) return null;
+        if (!vision || !dna) return null;
 
         const pillarCount = Array.isArray(vision.pillars) ? vision.pillars.length : 0;
         const executionScore = dna.current_Execution ?? 5;
 
-        const swotAnalysis = scanSwotText(swot);
-        const hasCapacityIssues = hasKeywordMatches(swotAnalysis, 'capacity');
+        if (pillarCount > 3 && executionScore < 7) {
+            // Check SWOT for additional capacity evidence
+            const swot = workspace.tools?.swot;
+            const swotAnalysis = swot ? scanSwotText(swot) : null;
+            const hasCapacityIssues = swotAnalysis ? hasKeywordMatches(swotAnalysis, 'capacity') : false;
+            const capacityNote = hasCapacityIssues
+                ? `, compounded by capacity constraints (${swotAnalysis!.capacity.frequency} SWOT mentions)`
+                : '';
 
-        if (pillarCount > 3 && executionScore < 7 && hasCapacityIssues) {
             return {
                 id: 'insight_vision_exec_mismatch',
                 type: 'conflict',
                 severity: 'high',
                 title: 'Critical Vision-Execution Mismatch',
-                message: `You have ${pillarCount} strategic pillars but execution capability is only ${executionScore}/10, and SWOT analysis reveals capacity constraints (${swotAnalysis.capacity.frequency} mentions). This combination creates high risk of strategic failure.`,
+                message: `You have ${pillarCount} strategic pillars but execution capability is only ${executionScore}/10${capacityNote}. This combination creates high risk of strategic failure — ambition outpaces capacity to deliver.`,
                 recommendation: 'Reduce to 2-3 critical pillars OR hire operational leadership (COO/VP Operations) OR address capacity issues before expanding scope.',
                 relatedTools: ['vision-canvas', 'leadership-dna', 'swot']
             };
@@ -61,7 +65,7 @@ export const valuesRealityContradiction: SynthesisRule = {
 
         // Check for balance/people-first values
         const valuesText = (vision.values || [])
-            .map((v: string) => v.toLowerCase())
+            .map((v: any) => (typeof v === 'string' ? v : v.text ?? '').toLowerCase())
             .join(' ');
         const hasBalanceValues = /\b(balance|wellbeing|people|culture|work-life|wellness|family|health)\b/.test(valuesText);
 
@@ -115,7 +119,7 @@ export const technologyAmbitionGap: SynthesisRule = {
 
         // Check if vision mentions AI/technology
         const pillarText = (vision.pillars || [])
-            .map((p: any) => `${p.name} ${p.kpi || ''}`.toLowerCase())
+            .map((p: any) => `${p.text ?? p.name ?? ''} ${p.kpi || ''}`.toLowerCase())
             .join(' ');
         const northStarText = (vision.northStar || '').toLowerCase();
         const visionText = `${pillarText} ${northStarText}`;
@@ -134,12 +138,19 @@ export const technologyAmbitionGap: SynthesisRule = {
 
         const avgReadiness = scores.reduce((sum, val) => sum + val, 0) / scores.length;
 
-        if (avgReadiness < 40) {
-            // Find weakest dimension
-            const weakest = dimensions
-                .map(dim => ({ dim, score: aiReadiness[dim] || 0 }))
-                .sort((a, b) => a.score - b.score)[0];
+        // Find weakest dimension
+        const weakest = dimensions
+            .map(dim => ({ dim, score: aiReadiness[dim] || 0 }))
+            .sort((a, b) => a.score - b.score)[0];
 
+        // Find critical gaps: Governance and Data are essential for AI deployment
+        const criticalDimensions = ['Governance', 'Data', 'Infrastructure'];
+        const criticallyLow = criticalDimensions
+            .filter(dim => typeof aiReadiness[dim] === 'number' && aiReadiness[dim] < 45)
+            .map(dim => ({ dim, score: aiReadiness[dim] as number }));
+
+        // Fire if: (a) overall average is low (<40%), OR (b) any critical dimension is low (<45%) while others are strong
+        if (avgReadiness < 40) {
             return {
                 id: 'insight_tech_ambition_gap',
                 type: 'risk',
@@ -147,6 +158,19 @@ export const technologyAmbitionGap: SynthesisRule = {
                 title: 'Technology Ambition Without Foundation',
                 message: `Your vision emphasizes AI/technology transformation, but AI Readiness is only ${Math.round(avgReadiness)}%. Weakest area: ${weakest.dim} (${weakest.score}%). This gap creates execution risk.`,
                 recommendation: `Before pursuing AI initiatives, build foundation in ${weakest.dim}. Consider: hire AI talent, invest in data infrastructure, or partner with technology vendors.`,
+                relatedTools: ['vision-canvas', 'ai-readiness']
+            };
+        }
+
+        if (criticallyLow.length > 0) {
+            const gaps = criticallyLow.map(d => `${d.dim} (${d.score}%)`).join(', ');
+            return {
+                id: 'insight_tech_ambition_gap',
+                type: 'risk',
+                severity: 'high',
+                title: 'AI Governance and Readiness Gap',
+                message: `Your vision emphasizes AI/technology transformation and overall readiness is ${Math.round(avgReadiness)}%, but critical areas lag: ${gaps}. Without strong governance and infrastructure, AI initiatives carry unacceptable risk.`,
+                recommendation: `Prioritize building ${criticallyLow[0].dim} capability before scaling AI initiatives. This includes policies, oversight, and compliance frameworks.`,
                 relatedTools: ['vision-canvas', 'ai-readiness']
             };
         }
@@ -172,14 +196,17 @@ export const strategicDriftRisk: SynthesisRule = {
         const northStar = vision.northStar || '';
         const visionScore = dna.current_Vision ?? 5;
 
-        // Check for vague north star (too short, generic words)
+        // Check for vague north star (too short, generic/aspirational words without specifics)
         const wordCount = northStar.trim().split(/\s+/).length;
-        const genericWords = ['better', 'best', 'leading', 'premier', 'top', 'great', 'excellent', 'innovative'];
+        const genericWords = ['better', 'best', 'leading', 'premier', 'top', 'great', 'excellent', 'innovative',
+            'growing', 'steady', 'steadily', 'maintain', 'continue', 'keep', 'good', 'strong', 'success'];
         const hasGenericWords = genericWords.some(word =>
             new RegExp(`\\b${word}\\b`, 'i').test(northStar)
         );
+        // Lacks specificity if: no numbers/metrics AND no timeline
+        const hasMetrics = /\d+/.test(northStar) || /\$|\%|revenue|arr|mrr/i.test(northStar);
 
-        const isVague = wordCount < 10 || (hasGenericWords && wordCount < 20);
+        const isVague = wordCount < 10 || (hasGenericWords && !hasMetrics && wordCount < 25);
 
         if (isVague && visionScore < 6) {
             return {
@@ -199,12 +226,12 @@ export const strategicDriftRisk: SynthesisRule = {
 
 /**
  * Rule 5: Founder Succession Risk
- * Trigger: FDI >6 + retirement threats + Empowerment gap >2
+ * Trigger: 2 of 3 conditions: FDI >= 4 (Moderate+), Empowerment gap >= 2, retirement/succession risks in SWOT
  */
 export const founderSuccessionRisk: SynthesisRule = {
     id: 'V2_founder_succession_risk',
     name: 'Critical Succession Gap',
-    description: 'Identifies high founder dependency combined with succession risk factors',
+    description: 'Identifies founder dependency combined with succession risk factors',
     execute: (workspace): Insight | null => {
         const dna = workspace.tools?.['leadership-dna'];
         const swot = workspace.tools?.swot;
@@ -220,15 +247,37 @@ export const founderSuccessionRisk: SynthesisRule = {
 
         const swotAnalysis = scanSwotText(swot);
         const hasRetirementRisk = hasKeywordMatches(swotAnalysis, 'retirement');
+        const hasBottleneckRisk = hasKeywordMatches(swotAnalysis, 'bottleneck');
 
-        if (fdi > 6 && empowermentGap > 2 && hasRetirementRisk) {
+        // Score conditions (need 2 of 3 to fire)
+        let conditionsMet = 0;
+        const evidence: string[] = [];
+
+        if (fdi >= 4) {
+            conditionsMet++;
+            evidence.push(`Founder Dependency Index ${fdi.toFixed(1)}/10 (${fdi >= 7 ? 'Critical' : 'Moderate'})`);
+        }
+        if (empowermentGap >= 2) {
+            conditionsMet++;
+            evidence.push(`Empowerment gap of ${empowermentGap.toFixed(1)} points`);
+        }
+        if (hasRetirementRisk || hasBottleneckRisk) {
+            conditionsMet++;
+            const risks: string[] = [];
+            if (hasRetirementRisk) risks.push('succession/retirement');
+            if (hasBottleneckRisk) risks.push('bottleneck/dependency');
+            evidence.push(`SWOT flags ${risks.join(' and ')} risks`);
+        }
+
+        if (conditionsMet >= 2) {
+            const severity = fdi >= 7 || (conditionsMet === 3) ? 'high' : 'medium' as const;
             return {
                 id: 'insight_succession_crisis',
                 type: 'risk',
-                severity: 'high',
-                title: 'Critical Founder Succession Risk',
-                message: `Founder Dependency Index is ${fdi.toFixed(1)}/10 (Critical), Empowerment gap is ${empowermentGap.toFixed(1)} points, and SWOT analysis flags succession/retirement risks. The business is highly vulnerable to founder transition.`,
-                recommendation: 'URGENT: Create succession plan with these steps: 1) Document critical processes, 2) Cross-train team on founder responsibilities, 3) Hire/promote empowered leaders, 4) Build "hit by bus" continuity plan.',
+                severity,
+                title: fdi >= 7 ? 'Critical Founder Succession Risk' : 'Founder Succession Risk',
+                message: `${evidence.join('. ')}. The business is ${fdi >= 7 ? 'highly' : 'moderately'} vulnerable to founder transition.`,
+                recommendation: 'Create succession plan: 1) Document critical processes founder currently owns, 2) Cross-train team on founder responsibilities, 3) Hire/promote empowered leaders, 4) Build continuity plan for unexpected absence.',
                 relatedTools: ['leadership-dna', 'swot']
             };
         }
@@ -239,7 +288,7 @@ export const founderSuccessionRisk: SynthesisRule = {
 
 /**
  * Rule 6: Under-Leveraged Resources
- * Trigger: Financial Health >80% + Strategic Alignment <50%
+ * Trigger: Strong Financial Health (avg f1-f5 >= 4) + weak strategic alignment
  */
 export const underLeveragedResources: SynthesisRule = {
     id: 'V2_under_leveraged_resources',
@@ -248,23 +297,44 @@ export const underLeveragedResources: SynthesisRule = {
     execute: (workspace): Insight | null => {
         const advisor = workspace.tools?.['advisor-readiness'];
 
-        if (!advisor?.answers?.q10_financial_health) return null;
+        if (!advisor?.answers) return null;
 
-        const financialHealth = advisor.answers.q10_financial_health;
+        // Compute average financial health from f1-f5
+        const financialQuestions = ['f1', 'f2', 'f3', 'f4', 'f5'];
+        const fScores = financialQuestions
+            .map(q => advisor.answers[q])
+            .filter((v: unknown): v is number => typeof v === 'number');
+        if (fScores.length === 0) return null;
+
+        const avgFinancialHealth = fScores.reduce((sum: number, val: number) => sum + val, 0) / fScores.length;
+
+        // Also compute strategic alignment average from s1-s5
+        const strategicQuestions = ['s1', 's2', 's3', 's4', 's5'];
+        const sScores = strategicQuestions
+            .map(q => advisor.answers[q])
+            .filter((v: unknown): v is number => typeof v === 'number');
+        const avgStrategic = sScores.length > 0
+            ? sScores.reduce((sum: number, val: number) => sum + val, 0) / sScores.length
+            : 3;
+
         const metrics = computeDerivedMetrics(workspace);
 
-        // Financial health 4-5 = 80-100%
-        const strongFinancials = financialHealth >= 4;
-        const weakAlignment = metrics.strategicCoherence === 'misaligned' ||
+        // Strong financials (avg >= 4) + weak strategic alignment (avg <= 2.5 or coherence not aligned)
+        const strongFinancials = avgFinancialHealth >= 4;
+        const weakAlignment = avgStrategic <= 2.5 ||
+            metrics.strategicCoherence === 'severely_misaligned' ||
+            metrics.strategicCoherence === 'misaligned' ||
             metrics.strategicCoherence === 'partially_aligned';
 
         if (strongFinancials && weakAlignment) {
+            const financialPct = Math.round((avgFinancialHealth / 5) * 100);
+            const strategicPct = Math.round((avgStrategic / 5) * 100);
             return {
                 id: 'insight_underutilized_capital',
                 type: 'opportunity',
                 severity: 'medium',
                 title: 'Under-Leveraged Financial Strength',
-                message: `You have strong financial health (${financialHealth}/5) but strategic alignment is ${metrics.strategicCoherence}. This suggests resources are not being optimally deployed toward strategic priorities.`,
+                message: `Financial Health is strong (${financialPct}%) but Strategic Alignment is only ${strategicPct}%. You have the resources to invest in growth but lack clear strategic direction to deploy them effectively.`,
                 recommendation: 'Use financial strength strategically: hire for leadership gaps, invest in technology/AI readiness, or acquire complementary capabilities. Align spending with strategic pillars.',
                 relatedTools: ['advisor-readiness', 'vision-canvas', 'leadership-dna']
             };
@@ -308,7 +378,8 @@ export const willingButUnable: SynthesisRule = {
 
 /**
  * Rule 8: Execution Crisis Dominance
- * Trigger: largest gap is Execution + gap >2 + delivery SWOT keywords
+ * Trigger: Execution is largest gap + gap > 2 (SWOT delivery keywords amplify but don't gate)
+ * Also triggers when Execution or Empowerment gap > 3 even if not the single largest
  */
 export const executionCrisisDominance: SynthesisRule = {
     id: 'V2_execution_crisis_dominance',
@@ -316,9 +387,12 @@ export const executionCrisisDominance: SynthesisRule = {
     description: 'Execution is the dominant gap with evidence of delivery problems',
     execute: (workspace): Insight | null => {
         const dna = workspace.tools?.['leadership-dna'];
-        const swot = workspace.tools?.swot;
 
-        if (!dna || !swot) return null;
+        if (!dna) return null;
+
+        // Skip if Rule 1 already covers this (>3 pillars + execution gap)
+        const vision = workspace.tools?.['vision-canvas'];
+        const pillarCount = vision?.pillars && Array.isArray(vision.pillars) ? vision.pillars.length : 0;
 
         // Find largest leadership gap
         const dimensions = ['Vision', 'Execution', 'Empowerment', 'Decisiveness', 'Adaptability', 'Integrity'];
@@ -335,27 +409,86 @@ export const executionCrisisDominance: SynthesisRule = {
             }
         });
 
-        if (maxGapDimension !== 'Execution' || maxGap <= 2) return null;
+        const executionGap = (dna.target_Execution ?? 8) - (dna.current_Execution ?? 5);
+        const empowermentGap = (dna.target_Empowerment ?? 8) - (dna.current_Empowerment ?? 5);
 
-        // Check for delivery problems in SWOT
+        // Fire if execution is the biggest gap (but not when Rule 1 already covers it with >3 pillars)
+        const executionIsDominant = maxGapDimension === 'Execution' && maxGap > 2 && pillarCount <= 3;
+        // Also fire on severe empowerment+execution combo
+        const severeEmpowermentGap = empowermentGap > 3 && executionGap > 2 && pillarCount <= 3;
+
+        if (!executionIsDominant && !severeEmpowermentGap) return null;
+
+        const executionCurrent = dna.current_Execution ?? 5;
+
+        // Check SWOT for delivery evidence (amplifies message)
+        const swot = workspace.tools?.swot;
+        const swotAnalysis = swot ? scanSwotText(swot) : null;
+        const hasDeliveryIssues = swotAnalysis ? hasKeywordMatches(swotAnalysis, 'delivery') : false;
+        const deliveryNote = hasDeliveryIssues
+            ? ` SWOT analysis confirms with ${swotAnalysis!.delivery.frequency} delivery-related concerns.`
+            : '';
+
+        const gapDetails: string[] = [];
+        if (executionGap > 3) gapDetails.push(`Execution gap: ${executionGap.toFixed(1)} points (current ${executionCurrent}/10)`);
+        if (severeEmpowermentGap) gapDetails.push(`Empowerment gap: ${empowermentGap.toFixed(1)} points`);
+        if (executionIsDominant && executionGap <= 3) gapDetails.push(`Execution is largest leadership gap (${maxGap.toFixed(1)} points)`);
+
+        return {
+            id: 'insight_execution_crisis',
+            type: 'risk',
+            severity: 'high',
+            title: 'Execution Capability Crisis',
+            message: `${gapDetails.join('. ')}.${deliveryNote} This pattern indicates systemic execution and delegation problems that limit the organization's ability to deliver on its strategic vision.`,
+            recommendation: 'IMMEDIATE ACTION: 1) Audit current commitments and cut 30%, 2) Hire experienced operations leader (COO/Director of Ops), 3) Implement weekly execution reviews, 4) Document and standardize core processes.',
+            relatedTools: ['leadership-dna', 'swot']
+        };
+    }
+};
+
+/**
+ * Rule 9: Founder Trap
+ * Trigger: Reputation/experience listed as SWOT strength + founder dependency in weaknesses
+ * This catches the classic SMB pattern where the founder IS the business's competitive advantage,
+ * making the business unsaleable and unscalable.
+ */
+export const founderTrap: SynthesisRule = {
+    id: 'V2_founder_trap',
+    name: 'The Founder Trap',
+    description: 'Business competitive advantage is the founder themselves, creating a scalability ceiling',
+    execute: (workspace): Insight | null => {
+        const swot = workspace.tools?.swot;
+        const dna = workspace.tools?.['leadership-dna'];
+
+        if (!swot || !dna) return null;
+
+        // Check strengths for personal/founder-linked advantages (not team capabilities)
+        const strengths = Array.isArray(swot.strengths) ? swot.strengths : [];
+        const strengthText = strengths.map((s: any) => s.text?.toLowerCase() || '').join(' ');
+        const personalKeywords = /\b(reputation|relationships|network|personal|decades|years of|trusted|loyalty|loyal|founder|owner)\b/;
+        const hasReputationStrength = personalKeywords.test(strengthText);
+
+        if (!hasReputationStrength) return null;
+
+        // Check weaknesses for dependency/bottleneck
         const swotAnalysis = scanSwotText(swot);
-        const hasDeliveryIssues = hasKeywordMatches(swotAnalysis, 'delivery');
+        const hasBottleneck = hasKeywordMatches(swotAnalysis, 'bottleneck');
 
-        if (hasDeliveryIssues) {
-            const executionCurrent = dna.current_Execution ?? 5;
+        if (!hasBottleneck) return null;
 
-            return {
-                id: 'insight_execution_crisis',
-                type: 'risk',
-                severity: 'high',
-                title: 'Execution Capability Crisis',
-                message: `Execution is your largest leadership gap (${maxGap.toFixed(1)} points, current ${executionCurrent}/10) and SWOT analysis shows ${swotAnalysis.delivery.frequency} delivery-related concerns. This pattern indicates systemic execution problems.`,
-                recommendation: 'IMMEDIATE ACTION: 1) Audit current commitments and cut 30%, 2) Hire experienced operations leader (COO/Director of Ops), 3) Implement weekly execution reviews, 4) Document and standardize core processes.',
-                relatedTools: ['leadership-dna', 'swot']
-            };
-        }
+        // Additional severity indicator: low empowerment
+        const empowerment = dna.current_Empowerment ?? 5;
+        const isSevere = empowerment < 5;
 
-        return null;
+        return {
+            id: 'insight_founder_trap',
+            type: 'conflict',
+            severity: isSevere ? 'high' : 'medium',
+            title: 'The Founder Trap',
+            message: `Your biggest competitive advantage (reputation, experience, relationships) is inseparable from you personally, while SWOT weaknesses show dependency and bottleneck patterns. ${isSevere ? `With Empowerment at ${empowerment}/10, the business cannot operate independently.` : ''} This means the business can't scale beyond your personal capacity and has limited transferable value.`,
+            recommendation: 'Begin separating personal reputation from business brand: 1) Document and systematize your approach, 2) Build team members into client-facing roles, 3) Create IP and processes that work without you, 4) Develop the business brand independently of founder identity.',
+            relatedTools: ['swot', 'leadership-dna']
+        };
     }
 };
 
@@ -368,5 +501,6 @@ export const rulesV2: SynthesisRule[] = [
     founderSuccessionRisk,
     underLeveragedResources,
     willingButUnable,
-    executionCrisisDominance
+    executionCrisisDominance,
+    founderTrap
 ];

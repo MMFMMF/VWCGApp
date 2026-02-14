@@ -124,10 +124,16 @@ export function interpretMetric(
       if (strVal === 'aligned') {
         return 'Your vision, strengths, and operational priorities reinforce each other -- the strategy is internally consistent.';
       }
-      if (strVal === 'partially_aligned') {
-        return 'Parts of your strategy reinforce each other, but gaps exist between what you say you value and where you invest resources.';
+      if (strVal === 'mostly_aligned') {
+        return 'Your strategy is largely coherent with minor gaps. Most operational decisions support the stated vision, though one or two areas need tighter alignment.';
       }
-      return 'Your stated vision, operational strengths, and resource allocation point in different directions -- this misalignment erodes strategic effectiveness.';
+      if (strVal === 'partially_aligned') {
+        return 'Parts of your strategy reinforce each other, but meaningful gaps exist between what you say you value and where you invest resources.';
+      }
+      if (strVal === 'misaligned') {
+        return 'Your stated vision, operational strengths, and resource allocation point in different directions -- this misalignment erodes strategic effectiveness.';
+      }
+      return 'Your strategy shows severe internal contradictions. Vision, operations, and resource allocation are working against each other -- every initiative faces headwinds from conflicting priorities.';
     }
 
     case 'revenueRiskEstimate': {
@@ -350,9 +356,11 @@ function buildCostNarrative(ctx: NarrativeContext): NarrativeSection {
     );
   }
 
-  if (metrics.strategicCoherence === 'misaligned') {
+  if (metrics.strategicCoherence === 'misaligned' || metrics.strategicCoherence === 'severely_misaligned') {
     parts.push(
-      'Strategic misalignment means resources are being spent on activities that do not advance the stated vision. Every dollar invested in a misaligned initiative has reduced return.'
+      metrics.strategicCoherence === 'severely_misaligned'
+        ? 'Severe strategic misalignment means resources are actively working against each other. Every dollar invested in one initiative undermines another -- the cost of inaction compounds exponentially.'
+        : 'Strategic misalignment means resources are being spent on activities that do not advance the stated vision. Every dollar invested in a misaligned initiative has reduced return.'
     );
   }
 
