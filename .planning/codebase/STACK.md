@@ -1,126 +1,136 @@
 # Technology Stack
 
-**Analysis Date:** 2026-02-13
+**Analysis Date:** 2026-02-14
 
 ## Languages
 
 **Primary:**
-- TypeScript 5.9 - Core application code, strict mode enabled with `verbatimModuleSyntax`, `erasableSyntaxOnly`, `noUnusedLocals`, `noUnusedParameters`, `noFallthroughCasesInSwitch`, `noUncheckedSideEffectImports`
-- JSX/TSX - React component templates using `react-jsx` compiler option
+- TypeScript 5.9 - Full application codebase with strict mode enabled
+- TSX - React component files with embedded JSX
 
-**Secondary:**
-- JavaScript - Configuration files (vite.config.ts, eslint.config.js, postcss.config.js, playwright.config.ts)
+**Build Target:**
+- ES2022 - Compiled target for all TypeScript
 
 ## Runtime
 
 **Environment:**
-- Node.js 22.19.0 (project uses ^22.x, as evidenced by environment)
+- Node.js - Development and build environments
 
 **Package Manager:**
-- npm 11.6.0
-- Lockfile: `package-lock.json` present
+- npm - Listed in `package.json` and `package-lock.json`
+- Lockfile: Present and committed
 
 ## Frameworks
 
 **Core:**
-- React 19.2.0 - UI framework with Strict Mode and new concurrent rendering
-- React DOM 19.2.0 - DOM rendering
-- React Router 7.11.0 - Client-side routing with dynamic route generation
-
-**UI & Styling:**
-- TailwindCSS 3.4.17 - Utility-first CSS framework
-- PostCSS 8.5.6 - CSS preprocessing with autoprefixer plugin
-- Autoprefixer 10.4.23 - Vendor prefixing
-- tailwind-merge 3.4.0 - Class composition utility for Tailwind
+- React 19.2.0 - UI framework and component model
+- React Router 7.11.0 - Client-side routing, BrowserRouter with dynamic route generation in `src/App.tsx`
 
 **State Management:**
-- Zustand 5.0.9 - Lightweight state management with persist middleware (localStorage key: `vwcg-workspace`)
+- Zustand 5.0.9 - Global state with persist middleware for localStorage (key: `vwcg-workspace`)
+  - Configured in `src/store/workspaceStore.ts` with partialize for selective persistence
+  - Ephemeral state (isSafeMode, previewData, validationResults, insights, lastExportTime) excluded from storage
+  - Core persisted data: version, metadata, tools, provenance
 
-**Visualization:**
-- Chart.js 4.5.1 - Charting library for data visualization
+**Styling:**
+- TailwindCSS 3.4.17 - Utility-first CSS framework
+- Tailwind Merge 3.4.0 - Class composition utilities
+- PostCSS 8.5.6 - CSS processing with Autoprefixer 10.4.23
+
+**Build Tool:**
+- Vite 7.2.4 - Fast development server and production bundler
+- @vitejs/plugin-react 5.1.1 - React Fast Refresh support
+- Path alias configured: `@/` maps to `src/` (vite.config.ts and tsconfig.app.json)
+
+**Testing & E2E:**
+- Playwright 1.58.2 - Browser automation and E2E testing
+  - Config: `playwright.config.ts`
+  - Chromium only (no Firefox/WebKit)
+  - Auto-starts dev server via webServer config
+  - Base URL: http://localhost:5173
+  - Screenshots on failure, trace on first retry
+
+## Key Dependencies
+
+**Critical:**
+- Chart.js 4.5.1 - Chart visualization library
 - react-chartjs-2 5.3.1 - React wrapper for Chart.js
-- D3 7.9.0 - Advanced data manipulation and visualization
-- jsPDF 3.0.4 - PDF generation and manipulation
-- html2canvas 1.4.1 - HTML-to-canvas rendering (used for PDF generation with 3x scale for 300 DPI)
-
-**Icons:**
-- lucide-react 0.562.0 - Icon library with React components
+- D3 7.9.0 - Data visualization and charting utilities
+- html2canvas 1.4.1 - DOM-to-canvas rendering for PDF generation
+- jsPDF 3.0.4 - PDF generation and document creation (produces branded `.pdf` files)
+- lucide-react 0.562.0 - SVG icon library for UI components
 
 **Utilities:**
-- clsx 2.1.1 - Conditional className builder
+- clsx 2.1.1 - Conditional className helper
+- React Router DOM 7.11.0 - Routing and navigation
 
-**Build & Development:**
-- Vite 7.2.4 - Fast build tool and dev server
-- @vitejs/plugin-react 5.1.1 - React plugin for Vite with Fast Refresh
-- ESLint 9.39.1 - Code linting
-- @eslint/js 9.39.1 - ESLint JavaScript configuration
-- typescript-eslint 8.46.4 - TypeScript ESLint support
-- eslint-plugin-react-hooks 7.0.1 - React hooks linting rules
-- eslint-plugin-react-refresh 0.4.24 - React Fast Refresh linting
-
-**Testing:**
-- @playwright/test 1.58.2 - End-to-end testing framework (Chromium only)
-- puppeteer 24.36.0 - Browser automation (dev dependency)
-- pdf-parse 2.4.5 - PDF parsing for test verification
-
-**Type Definitions:**
-- @types/react 19.2.5 - React type definitions
-- @types/react-dom 19.2.3 - React DOM type definitions
-- @types/node 24.10.1 - Node.js type definitions
-- globals 16.5.0 - Global types for ESLint
+**Development:**
+- ESLint 9.39.1 - Linting with @eslint/js, typescript-eslint, eslint-plugin-react-hooks, eslint-plugin-react-refresh
+- TypeScript ESLint 8.46.4 - TypeScript-aware linting
+- Puppeteer 24.36.0 - Headless browser (dev dependency, used for PDF screenshot utilities)
+- pdf-parse 2.4.5 - PDF text extraction (dev dependency)
+- @types/node 24.10.1, @types/react 19.2.5, @types/react-dom 19.2.3 - TypeScript definitions
+- globals 16.5.0 - Global variable definitions for ESLint
 
 ## Configuration
 
 **Environment:**
-- Optional `VITE_GEMINI_API_KEY` environment variable enables AI Consultation features (Gemini 1.5 Flash API)
-- Configuration via `.env` file (see `.env.example` for template)
-- Vite exposes env vars with `VITE_` prefix for client-side access
+- Optional `VITE_GEMINI_API_KEY` env var - Enables Google Gemini AI Consultation
+- Optional `VITE_OPENAI_API_KEY` env var - Enables OpenAI LLM-powered Strategic Briefing generation
+- Both optional: app functions fully without them
+- `.env.example` file present with template
 
 **Build:**
-- TypeScript compilation checked before Vite build: `tsc -b && vite build`
-- Path alias configured: `@/` maps to `src/` (tsconfig.app.json and vite.config.ts)
-- Source maps generated during build
-- Production output: `dist/` directory
-
-**Vite Configuration:**
-- Plugin: `@vitejs/plugin-react` for React JSX and Fast Refresh
-- Alias: `@/` → `./src`
-- Module format: ESNext (ES2022 target)
+- `vite.config.ts` - Vite configuration with React plugin and path alias
+- `tsconfig.json` - Root TS configuration with project references
+- `tsconfig.app.json` - App compilation target ES2022, strict mode enabled
+  - noUnusedLocals, noUnusedParameters, erasableSyntaxOnly, noFallthroughCasesInSwitch, noUncheckedSideEffectImports
+  - verbatimModuleSyntax enforced (type-only imports required)
+  - src/scripts excluded from compilation
+- `tsconfig.node.json` - Build tool configuration
+- `postcss.config.js` - PostCSS plugins (tailwindcss, autoprefixer)
+- `eslint.config.js` - Flat config format with React Hooks and Refresh rules
+- `.firebaserc` - Firebase project configuration (present but content not examined)
+- `firebase.json` - Firebase Hosting config with SPA rewrite rule
 
 ## Platform Requirements
 
 **Development:**
-- Node.js 22.19.0 or compatible
-- npm 11.6.0 or compatible
-- Modern browser with ES2022 support for development server
+- Node.js (version not pinned, uses npm 10+ implicitly)
+- npm 10+ for modern package resolution
+- Modern browser with ES2022 support for development
+- Port 5173 required for Vite dev server
 
 **Production:**
-- Deployed to Firebase Hosting (project: `vwcgapp`)
-- Base URL: `vwcgapp.web.app`
-- Serves static files from `dist/` directory with SPA rewrite rule (all routes → `/index.html`)
-- Works with modern browsers (all ES2022 features)
+- Firebase Hosting - Primary deployment platform
+- Static assets served from `dist/` directory
+- SPA routing configured with rewrite rule to `/index.html`
+- Custom domain: vwcgapp.web.app
 
-## Type Checking & Linting
+## Application State Management
 
-**TypeScript:**
-- Target: ES2022
-- Module format: ESNext
-- JSX: react-jsx (new React 17+ transform)
-- Strict mode with comprehensive error checking
-- Compilation: `tsc -b` for multi-project build
+**Workspace Schema (persisted to localStorage):**
+```typescript
+version: string                    // '1.0'
+metadata: {
+  id: string                       // UUID generated on first load
+  createdAt: string                // ISO timestamp
+  lastModified: string             // ISO timestamp
+  name: string                     // Workspace name ('My Business Strategy')
+  schema_version: 'v1'             // Fixed version
+  computed_under_logic_version: string  // LOGIC_VERSION (v1.1.0)
+}
+tools: Record<toolId, any>         // Dynamic tool data storage
+provenance: Record<toolId, { timestamp, logicVersion }>  // Audit trail
+```
 
-**ESLint:**
-- Config: `eslint.config.js` (flat config format)
-- Extends: ESLint base, TypeScript ESLint recommended, React Hooks recommended, React Refresh vite preset
-- Language options: ES2020, browser globals
-- File scope: `**/*.{ts,tsx}` excluding `dist/`
-
-## Additional Tools & Libraries
-
-**Package Specification:**
-- Type: `"module"` - ES modules only
-- Private package: Not published to npm
+**Ephemeral State (in-memory only):**
+- isSafeMode: boolean - Protected import workflow state
+- previewData: Partial state preview during Safe Mode
+- validationResults: Validation errors/warnings from import
+- insights: Insight[] - Synthesis engine output, recomputed on tool updates
+- lastExportTime: number - Cooldown tracking for export operations
 
 ---
 
-*Stack analysis: 2026-02-13*
+*Stack analysis: 2026-02-14*

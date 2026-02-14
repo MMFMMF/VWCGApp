@@ -1,149 +1,147 @@
 # External Integrations
 
-**Analysis Date:** 2026-02-13
+**Analysis Date:** 2026-02-14
 
 ## APIs & External Services
 
-**AI Consultation (Google Gemini):**
-- Service: Google Generative AI - Gemini 1.5 Flash
-- What it's used for: AI-powered strategic consultation and insight generation via the Strategic Health Widget and Dashboard analysis
+**AI/LLM Services:**
+- Google Gemini 1.5 Flash API - AI consultation features
+  - SDK/Client: Browser-native fetch (`src/engine/cloud.ts`)
+  - Auth: `VITE_GEMINI_API_KEY` environment variable
   - Endpoint: `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent`
-  - SDK/Client: Native `fetch` API (no SDK, direct HTTP)
-  - Auth: API key passed as query parameter (`?key={apiKey}`)
-  - Env var: `VITE_GEMINI_API_KEY` (optional - feature works without it)
-  - Storage: API key stored in localStorage under key `VWCG_GEMINI_KEY` (user-provided at runtime)
-  - Request format: JSON with `contents`, `parts`, `generationConfig` (temperature: 0.7, maxOutputTokens: 2000, responseMimeType: "application/json")
-  - Response: Parsed JSON array of `Insight` objects
-  - Implementation: `src/engine/cloud.ts` exports `consultAi(workspace, apiKey)`
-  - Usage: `src/components/dashboard/StrategicHealthWidget.tsx` handles user input and calls `consultAi()`
+  - Payload: Workspace data + system prompt as JSON
+  - Response format: JSON with candidates[0].content.parts[0].text
+  - Config: temperature 0.7, maxOutputTokens 2000
+  - Usage: Strategic insights generation via `consultAi()` in `src/engine/cloud.ts`
+
+- OpenAI API (ChatGPT 4o) - LLM-powered Strategic Briefing narrative generation
+  - SDK/Client: Browser-native fetch (`src/engine/llm/openai-service.ts`)
+  - Auth: `VITE_OPENAI_API_KEY` environment variable
+  - Endpoint: `https://api.openai.com/v1/chat/completions`
+  - Model: `chatgpt-4o-latest`
+  - Config: temperature 0.7, max_tokens 8000
+  - Response format: JSON object
+  - Timeouts: 120s for generation, 30s for QA validation
+  - Functions:
+    - `generateBriefingNarrative()` - Creates strategic briefing narrative with structure validation
+    - `qaValidateNarrative()` - Quality assurance validation with retry loop
+  - Error handling: Throws on invalid API key or network failures
 
 ## Data Storage
 
 **Databases:**
-- None - Application uses client-side only storage
-
-**Local Storage:**
-- Browser localStorage (key: `vwcg-workspace`)
-  - Client: Zustand with `persist` middleware
-  - Persisted data: `version`, `metadata`, `tools`, `provenance`
-  - Ephemeral data (not persisted): `isSafeMode`, `previewData`, `validationResults`, `insights`, `lastExportTime`
-  - Implementation: `src/store/workspaceStore.ts`
+- None - Application is entirely client-side
 
 **File Storage:**
-- Local browser downloads via jsPDF/html2canvas
-- No cloud file storage integration
+- Local filesystem only - No cloud storage integration
+- Workspace files use `.vwcg` extension (JSON format)
+- PDFs generated locally in browser memory and triggered for download
 
 **Caching:**
-- Browser memory via Zustand state
-- No server-side caching
+- Browser localStorage - Default and only persistence mechanism
+  - Key: `vwcg-workspace`
+  - Middleware: Zustand persist with partialize for selective storage
+  - Persistence: Automatic on every `updateToolData()` and import operations
+  - Rehydration: On app startup via `onRehydrateStorage` hook
+
+**Session Storage:**
+- localStorage for API keys (security consideration)
+  - `VITE_GEMINI_API_KEY` stored in localStorage (`src/components/dashboard/StrategicHealthWidget.tsx` line 23)
+  - `VITE_OPENAI_API_KEY` - loaded from env vars, may be stored temporarily by components
+  - Note: User-provided API keys via UI modal, persisted for session convenience
 
 ## Authentication & Identity
 
 **Auth Provider:**
-- None - No user authentication system
-
-**Workspace Identity:**
-- Generated client-side: `metadata.id` (UUID) created on first workspace initialization via `resetWorkspace()`
-- Schema version: `v1`
-- Provenance tracking: Each tool update records `{ timestamp, logicVersion }` in `state.provenance[toolId]`
-- Logic version: `v1.1.0` (defined in `src/store/workspaceStore.ts` as `LOGIC_VERSION`)
+- None - Application requires no user authentication
+- Public SPA with no backend login
+- API key management: User-provided at runtime in UI modal (Strategic Health Widget)
 
 ## Monitoring & Observability
 
 **Error Tracking:**
-- None - No error tracking service integrated
+- None - No centralized error tracking service
 
 **Logs:**
-- Browser console only (`console.log`, `console.error`)
-- No log aggregation service
-- Example logs: Synthesis engine execution (`[workspaceStore] Running synthesis...`)
-
-**Debugging:**
-- Playwright test tracing: `trace: 'on-first-retry'` in test config
-- Screenshot capture: `screenshot: 'only-on-failure'` in test config
-- HTML reporter: `reporter: 'html'` generates test reports to `test-results/`
+- Browser console only
+  - `console.log()` for initialization and synthesis updates
+  - `console.error()` for API failures and validation errors
+  - Examples: '[workspaceStore] Running synthesis', 'Cloud Synthesis Failed'
 
 ## CI/CD & Deployment
 
 **Hosting:**
-- Firebase Hosting (project: `vwcgapp`)
-- Base URL: `vwcgapp.web.app`
-- Deploy command: `firebase deploy`
-- Deploy source: Static files from `dist/` directory
-- SPA rewrite rule: All routes rewritten to `/index.html` for client-side routing
+- Firebase Hosting
+  - Project configured in `.firebaserc` and `firebase.json`
+  - Static deployment from `dist/` directory
+  - SPA rewrite rule: all URLs rewrite to `/index.html`
+  - Domain: vwcgapp.web.app
+  - Deployment command: `firebase deploy`
 
-**Build Pipeline:**
-- Local only (no CI service configured)
+**CI Pipeline:**
+- None detected - Manual deployment via Firebase CLI
 - Build command: `npm run build` (TypeScript check + Vite production build)
-- Build output: `dist/` directory with optimized bundles
-
-**CI/CD Service:**
-- None configured - Manual deployment
 
 ## Environment Configuration
 
 **Required env vars:**
-- None - App works fully without environment variables
+- None - Application runs fully without environment variables
 
 **Optional env vars:**
-- `VITE_GEMINI_API_KEY` - Google Gemini API key for AI Consultation feature
-  - Get key at: https://makersuite.google.com/app/apikey
-  - If not provided: AI Consultation feature is disabled
+- `VITE_GEMINI_API_KEY` - Google Gemini API key (user must provide or generate at https://makersuite.google.com/app/apikey)
+- `VITE_OPENAI_API_KEY` - OpenAI API key (user must provide or generate at https://platform.openai.com/api-keys)
 
 **Secrets location:**
-- `.env` file (not committed, use `.env.example` as template)
-- Runtime: API key can be provided via UI input field in Strategic Health Widget (stored in localStorage)
+- `.env` file (git-ignored) for development
+- `.env.example` provided as template
+- Runtime: User inputs API keys via UI modal in Strategic Health Widget component
+- Storage: Stored in localStorage for session persistence
 
 ## Webhooks & Callbacks
 
 **Incoming:**
-- None - Application is request-only, no webhook receivers
+- None
 
 **Outgoing:**
-- Gemini API calls with workspace data payload
-  - Payload: Entire workspace state as JSON (tools data, metadata, provenance)
-  - Format: `contents[0].parts[0].text` containing system prompt + workspace JSON
-  - Response callback: Processes `candidates[0].content.parts[0].text` as JSON array of insights
+- None
 
-## Data Export & Import
+## Data Privacy & Security Considerations
 
-**Export Format:**
-- JSON (`.vwcg` files)
-- Serialization: Canonical JSON with sorted keys
-- Includes: `version`, `metadata`, `tools`, `provenance`
-- Export cooldown: 5 seconds between consecutive exports
-- Implementation: `src/store/workspaceStore.ts` `exportState()` method
+**API Data Transmission:**
+- Workspace data sent to Gemini API: Full workspace state passed as JSON in request body
+  - User must consent by providing API key
+  - Data includes tool assessment responses, metadata, provenance
+  - Note in code: "For privacy, we might strip exact timestamps or unrelated metadata, but for strategy, context is key"
 
-**Import Workflow:**
-- Safe Mode workflow: `stageWorkspace()` → validation → `commitWorkspace()`
-- Validation runs during import using L0-L3 validation profiles
-- Profiles registered in `src/validation/` (profiles_p1.ts, profiles_p2.ts, profiles_p3.ts)
-- Per-tool validation via `validationProfileId` field
+- Workspace data sent to OpenAI API: Assessment payload with optional QA feedback
+  - Structure validated before sending
+  - Retry mechanism includes previous feedback for iterative generation
 
-## Third-Party Dependencies with External Calls
+**Local Storage:**
+- All persistent data stored in browser localStorage (not encrypted)
+- API keys stored in localStorage (localStorage-abc123 pattern security consideration)
+- No server-side backup or sync
 
-**jsPDF (3.0.4):**
-- Used for: PDF document creation and page management
-- No external calls - generates documents client-side
-- Implementation: `src/tools/report/PdfService.ts`, `src/report/pdf/PdfGenerator.ts`
+**Network Security:**
+- All API calls over HTTPS (googleapis.com, openai.com)
+- No certificate pinning detected
+- Standard browser CORS and security policies apply
 
-**html2canvas (1.4.1):**
-- Used for: HTML element to canvas rendering for PDF embedding
-- No external calls - renders DOM client-side
-- Scale factor: 3x (yields ~288-312 DPI for A4 print)
-- Implementation: `src/tools/report/PdfService.ts`, `src/report/pdf/PdfGenerator.ts`
+## Optional Features Status
 
-**Chart.js (4.5.1):**
-- Used for: Data visualization and charting
-- No external calls - renders client-side
-- Registration: Charts registered at app startup via `registerCharts()` in `src/lib/charts.ts`
-- Components: `src/report/charts/` (DotPlot, Gauge, HorizontalBar, ProgressBar)
+**Gemini AI Consultation:**
+- Status: Fully optional
+- Enabled when `VITE_GEMINI_API_KEY` provided
+- UI: Modal in Strategic Health Widget (`src/components/dashboard/StrategicHealthWidget.tsx`)
+- Output: Generates additional `Insight[]` for dashboard display
 
-**D3 (7.9.0):**
-- Used for: Advanced data visualization and manipulation
-- No external calls - operates on data structures client-side
-- Not yet actively used in current implementation
+**OpenAI Strategic Briefing:**
+- Status: Fully optional
+- Enabled when `VITE_OPENAI_API_KEY` provided
+- Uses Gemini key OR OpenAI key depending on flow
+- Output: Structured narrative with headline, strengths, exposures, recommendations
+- Quality assurance loop with automatic retry on validation failure
 
 ---
 
-*Integration audit: 2026-02-13*
+*Integration audit: 2026-02-14*
