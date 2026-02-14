@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-02-13)
 Phase: 10 of 10 (Quality & Edge Cases)
 Plan: All complete
 Status: v1 implementation complete + LLM integration
-Last activity: 2026-02-13 - Completed quick task 5: Replace jsPDF with page.pdf() for all E2E tests (real text PDFs)
+Last activity: 2026-02-14 - Completed quick task 6: Strip AppShell from PDF output via @media print CSS
 
 Progress: [██████████] 100%
 
@@ -97,9 +97,10 @@ None.
 | 3 | Fix remaining bugs: cover page name, coherence threshold, footer URL | 2026-02-13 | d99c81e | — |
 | 4 | Puppeteer PDF Phase 1: print stylesheet, browser print, CLI script | 2026-02-13 | 4e67b63 | [3-puppeteer-pdf-service-phase-1-print-styl](./quick/3-puppeteer-pdf-service-phase-1-print-styl/) |
 | 5 | Replace jsPDF with page.pdf() for E2E tests — real text PDFs | 2026-02-13 | 479b67b | [4-replace-jspdf-with-puppeteer-page-pdf-fo](./quick/4-replace-jspdf-with-puppeteer-page-pdf-fo/) |
+| 6 | Strip AppShell from PDF output via @media print CSS | 2026-02-14 | 3aab405, 20392b8 | [5-strip-app-shell-from-pdf-output-print-on](./quick/5-strip-app-shell-from-pdf-output-print-on/) |
 
 ## Session Continuity
 
-Last session: 2026-02-13 (full v1 + LLM + bug fixes + print-ready PDF + page.pdf migration)
-Stopped at: Quick task 5 complete — all 27 E2E tests produce real text PDFs via page.pdf()
+Last session: 2026-02-14 (Print CSS enhancement for clean PDFs)
+Stopped at: Quick task 6 complete — PDFs contain only report content, no app shell
 Resume file: None
