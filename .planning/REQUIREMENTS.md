@@ -70,33 +70,41 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CALC-01 | — | Pending |
-| CALC-02 | — | Pending |
-| ROAD-01 | — | Pending |
-| ROAD-02 | — | Pending |
-| ROAD-03 | — | Pending |
-| ROAD-04 | — | Pending |
-| ADVR-01 | — | Pending |
-| ADVR-02 | — | Pending |
-| ADVR-03 | — | Pending |
-| ADVR-04 | — | Pending |
-| SYNTH-01 | — | Pending |
-| SYNTH-02 | — | Pending |
-| SYNTH-03 | — | Pending |
-| PDF-01 | — | Pending |
-| PDF-02 | — | Pending |
-| PDF-03 | — | Pending |
-| PDF-04 | — | Pending |
-| TEST-01 | — | Pending |
-| TEST-02 | — | Pending |
-| TEST-03 | — | Pending |
-| TEST-04 | — | Pending |
+| CALC-01 | Phase 11 | Pending |
+| CALC-02 | Phase 11 | Pending |
+| ROAD-01 | Phase 14 | Pending |
+| ROAD-02 | Phase 14 | Pending |
+| ROAD-03 | Phase 14 | Pending |
+| ROAD-04 | Phase 14 | Pending |
+| ADVR-01 | Phase 13 | Pending |
+| ADVR-02 | Phase 13 | Pending |
+| ADVR-03 | Phase 13 | Pending |
+| ADVR-04 | Phase 13 | Pending |
+| SYNTH-01 | Phase 12 | Pending |
+| SYNTH-02 | Phase 12 | Pending |
+| SYNTH-03 | Phase 12 | Pending |
+| PDF-01 | Phase 15 | Pending |
+| PDF-02 | Phase 15 | Pending |
+| PDF-03 | Phase 15 | Pending |
+| PDF-04 | Phase 15 | Pending |
+| TEST-01 | Phase 16 | Pending |
+| TEST-02 | Phase 16 | Pending |
+| TEST-03 | Phase 16 | Pending |
+| TEST-04 | Phase 16 | Pending |
 
 **Coverage:**
 - v1.1 requirements: 21 total
-- Mapped to phases: 0
-- Unmapped: 21
+- Mapped to phases: 21
+- Unmapped: 0
+
+**Phase breakdown:**
+- Phase 11 (Financial Math): 2 requirements
+- Phase 12 (Coherence Spectrum): 3 requirements
+- Phase 13 (Advisor Narratives): 4 requirements
+- Phase 14 (Roadmap Personalization): 4 requirements
+- Phase 15 (PDF Layout): 4 requirements
+- Phase 16 (Quality Verification): 4 requirements
 
 ---
 *Requirements defined: 2026-02-14*
-*Last updated: 2026-02-14 after initial definition*
+*Last updated: 2026-02-14 after roadmap creation*
