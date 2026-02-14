@@ -394,7 +394,7 @@ function CostPage({
             }}
           >
             <ReportSubsection>{block.title}</ReportSubsection>
-            <ReportHero className="mb-3 text-3xl" style={{ whiteSpace: 'nowrap' }}>{block.range}</ReportHero>
+            <ReportHero className="mb-3 text-3xl whitespace-nowrap">{block.range}</ReportHero>
             <ReportBody>{block.description}</ReportBody>
           </div>
         ))}

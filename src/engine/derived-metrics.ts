@@ -325,11 +325,11 @@ function computeStrategicCoherence(workspace: any): {
     let score: CoherenceLevel;
     if (alignmentRatio >= 0.85 && totalSeverityWeight === 0) {
         score = 'aligned';
-    } else if (alignmentRatio >= 0.7 && totalSeverityWeight <= 2) {
+    } else if (alignmentRatio >= 0.65 && totalSeverityWeight <= 3) {
         score = 'mostly_aligned';
-    } else if (alignmentRatio >= 0.45 && totalSeverityWeight <= 5) {
+    } else if (alignmentRatio >= 0.45 && totalSeverityWeight <= 6) {
         score = 'partially_aligned';
-    } else if (alignmentRatio >= 0.2 || totalSeverityWeight <= 8) {
+    } else if (alignmentRatio >= 0.25 && totalSeverityWeight <= 10) {
         score = 'misaligned';
     } else {
         score = 'severely_misaligned';
@@ -367,17 +367,23 @@ export function adjustCoherenceForContradictions(
     let score = currentScore;
     const extraIssues: string[] = [];
 
-    // 3+ conflicts → severely misaligned
-    if (conflictCount >= 3) {
+    // 4+ conflicts → severely misaligned
+    if (conflictCount >= 4) {
         score = 'severely_misaligned';
         extraIssues.push(`${conflictCount} internal contradictions detected`);
-    } else if (conflictCount === 2) {
-        // 2 conflicts → downgrade by 2 steps
+    } else if (conflictCount >= 3) {
+        // 3 conflicts → downgrade by 2 steps (not cliff-edge to worst)
         score = downgradeCoherence(score, 2);
         extraIssues.push(`${conflictCount} internal contradictions detected`);
-    } else if (conflictCount === 1) {
-        // 1 conflict → downgrade by 1 step
+    } else if (conflictCount === 2) {
+        // 2 conflicts → downgrade by 1 step
         score = downgradeCoherence(score, 1);
+        extraIssues.push(`${conflictCount} internal contradictions detected`);
+    } else if (conflictCount === 1) {
+        // 1 conflict → only downgrade if currently aligned or mostly_aligned
+        if (COHERENCE_ORDER.indexOf(score) < 2) {
+            score = downgradeCoherence(score, 1);
+        }
         extraIssues.push('1 internal contradiction detected');
     }
 

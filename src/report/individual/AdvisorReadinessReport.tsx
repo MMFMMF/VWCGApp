@@ -85,8 +85,8 @@ function getStageLabel(pct: number): string {
   return 'Foundational';
 }
 
-/** Map category percentage to interpretation with 6-level granularity + company context */
-function getCategoryInterpretation(catId: string, pct: number, context: CompanyContext): string {
+/** Map category percentage to interpretation with 6-level granularity + company context + industry */
+function getCategoryInterpretation(catId: string, pct: number, context: CompanyContext, industry?: string): string {
   // 6 score levels: 0-16, 17-33, 34-50, 51-66, 67-83, 84-100
   const level = pct <= 16 ? 0 : pct <= 33 ? 1 : pct <= 50 ? 2 : pct <= 66 ? 3 : pct <= 83 ? 4 : 5;
 
@@ -125,7 +125,29 @@ function getCategoryInterpretation(catId: string, pct: number, context: CompanyC
     ],
   };
 
-  return templates[catId]?.[level]?.[context] ?? `This category scored ${pct}%.`;
+  const base = templates[catId]?.[level]?.[context] ?? `This category scored ${pct}%.`;
+
+  // Industry-specific differentiation for cultural category
+  if (catId === 'cultural' && industry) {
+    const industryLower = industry.toLowerCase();
+    if (/consult|advisory|professional.*service|legal|account/i.test(industryLower)) {
+      return `${base} In a professional services environment, cultural readiness directly impacts client-facing quality — team engagement translates to client outcomes.`;
+    }
+    if (/industrial|manufactur|supply|warehouse|logistics|construct|mining/i.test(industryLower)) {
+      return `${base} In an industrial environment, cultural readiness is inseparable from safety outcomes and workforce retention — disengaged teams create operational risk.`;
+    }
+    if (/tech|software|saas|digital|startup/i.test(industryLower)) {
+      return `${base} In a technology environment, cultural readiness determines innovation velocity — the ability to experiment, fail fast, and iterate depends on psychological safety.`;
+    }
+    if (/health|medical|clinic|dental|pharma/i.test(industryLower)) {
+      return `${base} In healthcare, cultural readiness affects patient outcomes and regulatory compliance — team engagement directly correlates with care quality.`;
+    }
+    if (/retail|restaurant|hospitality|food|hotel/i.test(industryLower)) {
+      return `${base} In a customer-facing environment, cultural readiness directly impacts the customer experience — frontline engagement determines brand perception.`;
+    }
+  }
+
+  return base;
 }
 
 /** Generate data-driven improvement actions referencing specific assessment scores */
@@ -493,7 +515,8 @@ export function AdvisorReadinessReport() {
 
         <div className="space-y-10">
           {categoryScores.map((cat) => {
-            const interpretation = getCategoryInterpretation(cat.id, cat.percentage, companyContext);
+            const businessCtx = tools['business-context'] as { industry?: string } | undefined;
+            const interpretation = getCategoryInterpretation(cat.id, cat.percentage, companyContext, businessCtx?.industry);
             const actions = getCategoryActions(cat.id, cat.percentage, workspace, metrics);
 
             return (

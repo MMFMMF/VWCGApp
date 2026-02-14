@@ -19,10 +19,10 @@ export interface DotPlotProps {
  * Minimum percentage-point spacing between label centers before they're
  * considered overlapping. 12% of the axis ≈ 70px on a typical ~600px chart.
  */
-const MIN_LABEL_SPACING_PCT = 12;
+const MIN_LABEL_SPACING_PCT = 14;
 
 /** Extra vertical offset (px) applied to a label that would otherwise overlap. */
-const OVERLAP_OFFSET_PX = 18;
+const OVERLAP_OFFSET_PX = 20;
 
 interface PlottedLabel {
   position: number; // % along axis
@@ -33,41 +33,50 @@ interface PlottedLabel {
 /**
  * Detect overlapping labels and offset them vertically.
  *
- * The user label is moved higher when it collides with a benchmark label;
- * benchmark-to-benchmark collisions push the second label higher as well.
+ * Multi-pass resolution with alternating up/down offsets and origIdx tracking
+ * for correct mapping back to benchmark order.
  */
 function resolveOverlaps(
   clientPosition: number,
   benchmarkPositions: number[],
 ): { userOffset: number; benchmarkOffsets: number[] } {
-  // Collect all labels sorted by x-position
-  const labels: PlottedLabel[] = [
-    { position: clientPosition, type: 'user', yOffset: 0 },
-    ...benchmarkPositions.map((p) => ({
+  // Collect all labels sorted by x-position, tracking original index
+  const labels: (PlottedLabel & { origIdx: number })[] = [
+    { position: clientPosition, type: 'user', yOffset: 0, origIdx: -1 },
+    ...benchmarkPositions.map((p, i) => ({
       position: p,
       type: 'benchmark' as const,
       yOffset: 0,
+      origIdx: i,
     })),
   ];
   labels.sort((a, b) => a.position - b.position);
 
-  // Walk pairs and offset collisions
-  for (let i = 1; i < labels.length; i++) {
-    if (Math.abs(labels[i].position - labels[i - 1].position) < MIN_LABEL_SPACING_PCT) {
-      // Prefer to move the user label; otherwise move the right-most label
-      if (labels[i].type === 'user') {
-        labels[i].yOffset = -OVERLAP_OFFSET_PX;
-      } else if (labels[i - 1].type === 'user') {
-        labels[i - 1].yOffset = -OVERLAP_OFFSET_PX;
-      } else {
-        labels[i].yOffset = -OVERLAP_OFFSET_PX;
+  // Multi-pass: resolve overlaps until stable (max 5 passes)
+  for (let pass = 0; pass < 5; pass++) {
+    let changed = false;
+    for (let i = 1; i < labels.length; i++) {
+      if (Math.abs(labels[i].position - labels[i - 1].position) < MIN_LABEL_SPACING_PCT
+          && labels[i].yOffset === labels[i - 1].yOffset) {
+        // Alternate direction: even conflicts go up, odd go down
+        const direction = (i % 2 === 0) ? 1 : -1;
+        // Prefer moving benchmark labels; move user label only as fallback
+        if (labels[i].type === 'benchmark') {
+          labels[i].yOffset = direction * OVERLAP_OFFSET_PX;
+        } else if (labels[i - 1].type === 'benchmark') {
+          labels[i - 1].yOffset = direction * OVERLAP_OFFSET_PX;
+        } else {
+          labels[i].yOffset = direction * OVERLAP_OFFSET_PX;
+        }
+        changed = true;
       }
     }
+    if (!changed) break;
   }
 
   const userLabel = labels.find((l) => l.type === 'user')!;
-  const benchmarkOffsets = benchmarkPositions.map((pos) => {
-    const match = labels.find((l) => l.type === 'benchmark' && l.position === pos);
+  const benchmarkOffsets = benchmarkPositions.map((_, i) => {
+    const match = labels.find((l) => l.origIdx === i);
     return match?.yOffset ?? 0;
   });
 

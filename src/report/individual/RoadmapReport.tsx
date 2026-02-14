@@ -174,8 +174,8 @@ const TASK_CATEGORY_MAP: Array<{ pattern: RegExp; category: string }> = [
   { pattern: /marketing|rebrand|campaign|brand/i, category: 'marketing' },
   { pattern: /training|safety|certification/i, category: 'training' },
   { pattern: /office|relocation|facilities|move/i, category: 'facilities' },
-  { pattern: /platform|product|v2|release|app|dashboard|portal/i, category: 'product_launch' },
   { pattern: /event|appreciation|client.*event/i, category: 'event' },
+  { pattern: /platform|product|v2|release|\bapp\b|dashboard|portal/i, category: 'product_launch' },
   { pattern: /service line|expansion|new.*service/i, category: 'new_offering' },
   { pattern: /forklift|equipment|fleet|upgrade|replace/i, category: 'equipment' },
   { pattern: /pilot|enterprise|partnership/i, category: 'market_expansion' },
@@ -208,7 +208,13 @@ function generateWhyNow(
     case 'technology_migration':
       return `Your AI Readiness data score is ${aiReadiness?.Data ?? 'not assessed'}% and ${weaknessText.includes('data') || weaknessText.includes('crm') ? 'your SWOT analysis flagged data fragmentation as a weakness' : 'data infrastructure gaps limit downstream initiatives'}. ${task.title} creates the information foundation every Phase 2 and 3 initiative depends on.`;
     case 'hiring':
-      return `With a Founder Dependency Index of ${fdi.toFixed(1)}/10, key decisions still route through one person. ${task.title} creates the delegation capacity needed to ${phase === 'stabilize' ? 'stop the operational bottleneck your assessment flags' : 'execute the strategic initiatives in your roadmap'}.`;
+      if (fdi > 5) {
+        return `With a Founder Dependency Index of ${fdi.toFixed(1)}/10, key decisions still route through one person. ${task.title} creates the delegation capacity needed to ${phase === 'stabilize' ? 'stop the operational bottleneck your assessment flags' : 'execute the strategic initiatives in your roadmap'}.`;
+      }
+      if (fdi > 3) {
+        return `Your Founder Dependency Index of ${fdi.toFixed(1)}/10 shows moderate key-person concentration. ${task.title} adds capacity to ${phase === 'stabilize' ? 'distribute operational load and reduce single-point-of-failure risk' : 'support the execution bandwidth your strategic initiatives require'}.`;
+      }
+      return `With a Founder Dependency Index of ${fdi.toFixed(1)}/10, the organization already distributes decisions well. ${task.title} is about adding specialized capability — your Organizational Readiness score of ${metrics.organizationalReadinessScore}/100 indicates the team ${metrics.organizationalReadinessScore >= 60 ? 'can absorb new hires effectively' : 'will need structured onboarding to integrate new talent without disruption'}.`;
     case 'compliance':
       return `${task.title} is a prerequisite for the growth initiatives in later phases. ${ear < 0.7 ? `Your Execution-Ambition Ratio of ${ear.toFixed(2)} means the organization is already stretched — compliance gaps compound this risk.` : `Your operational maturity needs this foundation before scaling.`}`;
     case 'marketing':
@@ -217,8 +223,20 @@ function generateWhyNow(
       return `${task.title} builds organizational capability. ${fdi > 5 ? `With Founder Dependency at ${fdi.toFixed(1)}/10, investing in team skills reduces single-person risk.` : `Your Organizational Readiness score of ${metrics.organizationalReadinessScore}/100 indicates the team ${metrics.organizationalReadinessScore >= 60 ? 'is ready to absorb new capabilities' : 'needs structured development to execute strategic priorities'}.`}`;
     case 'facilities':
       return `${task.title} affects every employee daily. ${metrics.organizationalReadinessScore < 50 ? `With Organizational Readiness at ${metrics.organizationalReadinessScore}/100, minimizing disruption is critical — the team cannot absorb simultaneous operational and environmental change.` : 'Execute this during the stabilization window before strategic initiatives demand full organizational attention.'}`;
-    case 'product_launch':
-      return `${task.title} depends on the foundations built in earlier phases. ${ear < 0.7 ? `Your Execution-Ambition Ratio of ${ear.toFixed(2)} means launching without prior stabilization compounds execution risk.` : `With an EAR of ${ear.toFixed(2)}, the organization has capacity — but only if earlier phases are complete.`}`;
+    case 'product_launch': {
+      const avgAi = aiReadiness
+        ? Math.round(Object.values(aiReadiness as unknown as Record<string, number>)
+            .filter((v): v is number => typeof v === 'number')
+            .reduce((s, v) => s + v, 0) / 6)
+        : null;
+      if (avgAi !== null && avgAi < 50) {
+        return `Your AI Readiness averages ${avgAi}% — launching ${task.title} without addressing infrastructure and data gaps (Data: ${aiReadiness?.Data ?? 'N/A'}%, Infrastructure: ${aiReadiness?.Infrastructure ?? 'N/A'}%) risks a failed rollout. Sequence technology foundations before launch.`;
+      }
+      if (ear < 0.7) {
+        return `Your Execution-Ambition Ratio of ${ear.toFixed(2)} means the organization is stretched thinner than it can sustain. ${task.title} must wait until Phase 1 stabilization frees capacity — launching now risks both the product and existing operations.`;
+      }
+      return `${task.title} is sequenced for Phase 3 because your Organizational Readiness score of ${metrics.organizationalReadinessScore}/100 (${metrics.organizationalReadinessLabel}) ${metrics.organizationalReadinessScore >= 60 ? 'supports the change load, but only after operational stability is confirmed' : 'indicates the team cannot absorb a launch alongside active process improvements'}. ${fdi > 5 ? `Founder Dependency at ${fdi.toFixed(1)}/10 adds execution risk until delegation improves.` : ''}`;
+    }
     case 'event':
       return `${task.title} is a relationship investment. ${weaknessText.includes('client') || weaknessText.includes('retention') ? 'Your SWOT analysis flagged client relationship concerns — this addresses them directly.' : `With your revenue at risk estimated at $${Math.round(metrics.revenueRiskEstimate.low / 1000)}K-$${Math.round(metrics.revenueRiskEstimate.high / 1000)}K, strengthening client relationships protects existing revenue.`}`;
     case 'new_offering':
@@ -436,7 +454,6 @@ export function RoadmapReport() {
   // Extract tool data
   const roadmapData = tools['roadmap'] as { tasks: RoadmapTask[] } | undefined;
   const aiReadiness = tools['ai-readiness'] as AiReadinessData | undefined;
-  const businessContext = tools['business-context'] as BusinessContextData | undefined;
 
   // Compute derived metrics
   const workspace = { tools, metadata, insights };

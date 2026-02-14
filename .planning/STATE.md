@@ -72,6 +72,12 @@ src/components/print/
 └── PrintReport.tsx              # Print route component (renders reports without AppShell)
 ```
 
+### Quick Tasks Completed
+
+| # | Task | Date | Files Changed |
+|---|------|------|---------------|
+| 8 | v1.2 fixes: coherence spectrum, Why Now template, event category, FDI direction, cultural narrative, sparse page, DotPlot labels | 2026-02-14 | 5 files |
+
 ### Pending Todos
 
 None.

@@ -725,6 +725,33 @@ export function VisionCanvasReport() {
               ))}
             </div>
 
+            {values.length <= 3 && pillars.length > 0 && (
+              <div className="mt-8">
+                <ReportSubsection>Values-to-Strategy Connection</ReportSubsection>
+                <ReportBody className="mb-4">
+                  With {values.length} stated value{values.length !== 1 ? 's' : ''} supporting {pillars.length} strategic pillar{pillars.length !== 1 ? 's' : ''}, there is a risk that values serve as cultural slogans rather than strategic filters. Effective values guide every hiring decision, resource allocation, and partnership evaluation. The table below maps how each value could function as a decision-making lens.
+                </ReportBody>
+                <ReportTable>
+                  <ReportTableHeader>
+                    <ReportTableRow>
+                      <ReportTableCell header>Value</ReportTableCell>
+                      <ReportTableCell header>Strategic Question It Should Answer</ReportTableCell>
+                    </ReportTableRow>
+                  </ReportTableHeader>
+                  <tbody>
+                    {values.map((value, idx) => (
+                      <ReportTableRow key={value} variant={idx % 2 === 1 ? 'alternate' : 'default'}>
+                        <ReportTableCell className="font-medium">{value}</ReportTableCell>
+                        <ReportTableCell>
+                          Does this initiative strengthen our commitment to {value.toLowerCase()}? If not, what does pursuing it cost our culture?
+                        </ReportTableCell>
+                      </ReportTableRow>
+                    ))}
+                  </tbody>
+                </ReportTable>
+              </div>
+            )}
+
             <ReportSubsection>Summary</ReportSubsection>
             <ReportBody>{valuesSummary}</ReportBody>
           </>
