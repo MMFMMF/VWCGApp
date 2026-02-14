@@ -6,16 +6,6 @@ import { navigateToTool } from './navigation';
 const PDF_OUTPUT_DIR = path.resolve('test-outputs/pdfs');
 const AI_BRIEFING_GENERATION_TIMEOUT = 180_000; // LLM generation can take 30-120 seconds
 
-/** Map toolId to the button label text in Report Center's individual report selector */
-const INDIVIDUAL_REPORT_LABELS: Record<string, string> = {
-  'ai-readiness': 'AI Readiness Assessment',
-  'leadership-dna': 'Leadership DNA',
-  'swot': 'SWOT Analysis',
-  'vision-canvas': 'Vision Canvas',
-  'advisor-readiness': 'Advisor Readiness',
-  'roadmap': '90-Day Roadmap',
-};
-
 /** Map toolId to PDF filename suffix */
 const TOOL_FILENAME_MAP: Record<string, string> = {
   'ai-readiness': 'AI-Readiness',
@@ -25,6 +15,12 @@ const TOOL_FILENAME_MAP: Record<string, string> = {
   'advisor-readiness': 'Advisor-Readiness',
   'roadmap': '90-Day-Roadmap',
 };
+
+/** Footer template for page.pdf() — displays company name and page numbers */
+const FOOTER_TEMPLATE = '<div style="width: 100%; font-size: 9px; padding: 0 18mm; display: flex; justify-content: space-between; color: #64748b;"><span>World Consulting Group | worldconsultinggroup.com</span><span>Page <span class="pageNumber"></span> of <span class="totalPages"></span></span></div>';
+
+/** Empty header template to suppress default Chromium header */
+const HEADER_TEMPLATE = '<div></div>';
 
 /**
  * Ensure the persona output directory exists.
@@ -36,8 +32,7 @@ function ensureDir(dirPath: string) {
 }
 
 /**
- * Navigate to Report Center, switch to Individual Report mode,
- * select the specified tool, prepare DOM, and capture PDF via page.pdf().
+ * Navigate directly to print route for individual report and capture PDF via page.pdf().
  */
 export async function captureIndividualReportPdf(
   page: Page,
@@ -52,39 +47,27 @@ export async function captureIndividualReportPdf(
   ensureDir(destDir);
   const destPath = path.join(destDir, fileName);
 
-  // Navigate to Report Center
-  await navigateToTool(page, 'Report Center');
-  await page.waitForTimeout(500);
-
-  // Click "Individual Report" mode button
-  await page.getByText('Individual Report', { exact: false }).first().click();
-  await page.waitForTimeout(500);
-
-  // Click the tool selector button by its label text
-  const toolLabel = INDIVIDUAL_REPORT_LABELS[toolId];
-  if (!toolLabel) throw new Error(`Unknown toolId for label: ${toolId}`);
-  await page.getByRole('button', { name: toolLabel }).click();
-  await page.waitForTimeout(500);
-
-  // Wait for the report preview to render
-  await page.waitForSelector('#report-preview-container', { state: 'attached' });
+  // Navigate directly to print route (no AppShell)
+  await page.goto(`/report/print/${toolId}`);
+  await page.waitForSelector(`#${toolId}`, { state: 'attached' });
   await page.waitForTimeout(2000); // let charts/fonts settle
 
-  // Capture PDF
+  // Capture PDF with footer
   await page.pdf({
     path: destPath,
     format: 'A4',
     printBackground: true,
-    preferCSSPageSize: true,
-    margin: { top: '20mm', right: '18mm', bottom: '20mm', left: '18mm' },
+    displayHeaderFooter: true,
+    headerTemplate: HEADER_TEMPLATE,
+    footerTemplate: FOOTER_TEMPLATE,
+    margin: { top: '20mm', right: '18mm', bottom: '25mm', left: '18mm' },
   });
 
   return destPath;
 }
 
 /**
- * Navigate to Report Center (Strategic Briefing mode is default),
- * wait for unified report to render, prepare DOM, and capture PDF via page.pdf().
+ * Navigate directly to print route for unified report and capture PDF via page.pdf().
  */
 export async function captureUnifiedReportPdf(page: Page, personaName: string) {
   const safePersona = personaName.toLowerCase();
@@ -93,21 +76,20 @@ export async function captureUnifiedReportPdf(page: Page, personaName: string) {
   ensureDir(destDir);
   const destPath = path.join(destDir, fileName);
 
-  // Navigate to Report Center — Strategic Briefing mode is the default
-  await navigateToTool(page, 'Report Center');
-  await page.waitForTimeout(500);
-
-  // Wait for the unified strategic briefing to render
+  // Navigate directly to print route (no AppShell)
+  await page.goto('/report/print/unified');
   await page.waitForSelector('#unified-strategic-briefing', { state: 'attached' });
   await page.waitForTimeout(3000); // let all charts/data settle
 
-  // Capture PDF
+  // Capture PDF with footer
   await page.pdf({
     path: destPath,
     format: 'A4',
     printBackground: true,
-    preferCSSPageSize: true,
-    margin: { top: '20mm', right: '18mm', bottom: '20mm', left: '18mm' },
+    displayHeaderFooter: true,
+    headerTemplate: HEADER_TEMPLATE,
+    footerTemplate: FOOTER_TEMPLATE,
+    margin: { top: '20mm', right: '18mm', bottom: '25mm', left: '18mm' },
   });
 
   return destPath;
@@ -116,6 +98,9 @@ export async function captureUnifiedReportPdf(page: Page, personaName: string) {
 /**
  * Navigate to Report Center, switch to AI-Powered Briefing mode,
  * generate AI briefing, wait for render, prepare DOM, and capture PDF via page.pdf().
+ *
+ * NOTE: Uses Report Center route (not print route) because AI briefing requires
+ * interactive LLM generation via UI button click.
  */
 export async function captureAIBriefingPdf(page: Page, personaName: string) {
   const safePersona = personaName.toLowerCase();
@@ -139,13 +124,15 @@ export async function captureAIBriefingPdf(page: Page, personaName: string) {
   await page.waitForSelector('#llm-strategic-briefing', { timeout: AI_BRIEFING_GENERATION_TIMEOUT });
   await page.waitForTimeout(3000); // let the report render fully
 
-  // Capture PDF
+  // Capture PDF with footer
   await page.pdf({
     path: destPath,
     format: 'A4',
     printBackground: true,
-    preferCSSPageSize: true,
-    margin: { top: '20mm', right: '18mm', bottom: '20mm', left: '18mm' },
+    displayHeaderFooter: true,
+    headerTemplate: HEADER_TEMPLATE,
+    footerTemplate: FOOTER_TEMPLATE,
+    margin: { top: '20mm', right: '18mm', bottom: '25mm', left: '18mm' },
   });
 
   return destPath;
