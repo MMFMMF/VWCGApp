@@ -1,5 +1,4 @@
 import { cn } from '@/utils/cn';
-import { REPORT_FOOTER } from '../design';
 import type { ReactNode } from 'react';
 
 export type ReportPageVariant = 'standard' | 'data' | 'callout' | 'cover';
@@ -20,12 +19,12 @@ export interface ReportPageProps {
  * - callout: Large pull-quote area at top
  * - cover: Navy background, centered white text
  *
- * Includes subtle branded footer.
+ * Footer is handled by Puppeteer's footerTemplate during PDF generation.
  */
 export function ReportPage({
   variant = 'standard',
   children,
-  pageNumber,
+  pageNumber: _pageNumber,
   className,
 }: ReportPageProps) {
   // Cover page variant
@@ -79,20 +78,6 @@ export function ReportPage({
           </div>
         )}
       </div>
-
-      {/* Footer */}
-      <footer className="absolute bottom-4 left-0 right-0 px-16">
-        <div className="flex items-center justify-between text-xs text-report-gray border-t border-report-warm pt-2">
-          <div>
-            {REPORT_FOOTER.text}
-            {REPORT_FOOTER.separator}
-            <span className="text-report-blue" style={{ letterSpacing: '0.5px' }}>{REPORT_FOOTER.url}</span>
-          </div>
-          {pageNumber !== undefined && (
-            <div className="font-semibold">{pageNumber}</div>
-          )}
-        </div>
-      </footer>
     </div>
   );
 }
