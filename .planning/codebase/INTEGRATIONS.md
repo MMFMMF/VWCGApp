@@ -4,98 +4,102 @@
 
 ## APIs & External Services
 
-**AI/LLM Services:**
-- Google Gemini 1.5 Flash API - AI consultation features
-  - SDK/Client: Browser-native fetch (`src/engine/cloud.ts`)
-  - Auth: `VITE_GEMINI_API_KEY` environment variable
+**AI & LLM Services:**
+- Google Gemini 1.5 Flash - AI consultation for workspace analysis
+  - SDK/Client: Browser-native `fetch` (no SDK)
   - Endpoint: `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent`
-  - Payload: Workspace data + system prompt as JSON
-  - Response format: JSON with candidates[0].content.parts[0].text
-  - Config: temperature 0.7, maxOutputTokens 2000
-  - Usage: Strategic insights generation via `consultAi()` in `src/engine/cloud.ts`
+  - Auth: `VITE_GEMINI_API_KEY` env var, passed as query parameter
+  - Implementation: `src/engine/cloud.ts` - `consultAi()` function sends full workspace JSON to Gemini, expects JSON output with `Insight[]` array
+  - Usage: Optional "AI Consultation" feature invoked from dashboard/tools, available only when API key is set
 
-- OpenAI API (ChatGPT 4o) - LLM-powered Strategic Briefing narrative generation
-  - SDK/Client: Browser-native fetch (`src/engine/llm/openai-service.ts`)
-  - Auth: `VITE_OPENAI_API_KEY` environment variable
+- OpenAI (ChatGPT) - Strategic narrative generation and QA validation
+  - SDK/Client: Browser-native `fetch` (no SDK)
   - Endpoint: `https://api.openai.com/v1/chat/completions`
-  - Model: `chatgpt-4o-latest`
-  - Config: temperature 0.7, max_tokens 8000
-  - Response format: JSON object
-  - Timeouts: 120s for generation, 30s for QA validation
-  - Functions:
-    - `generateBriefingNarrative()` - Creates strategic briefing narrative with structure validation
-    - `qaValidateNarrative()` - Quality assurance validation with retry loop
-  - Error handling: Throws on invalid API key or network failures
+  - Auth: `VITE_OPENAI_API_KEY` env var, passed in `Authorization: Bearer` header
+  - Models used:
+    - `chatgpt-4o-latest` - Generation (8000 tokens max, temperature 0.7)
+    - `gpt-4o-mini` - QA validation (2000 tokens max, temperature 0.0)
+  - Implementation: `src/engine/llm/openai-service.ts` - Two-stage pipeline with `generateBriefingNarrative()` and `validateBriefingNarrative()`
+  - Error handling: Rate limit (429), auth failure (401), server errors (500+) with user-friendly messages
+  - Timeouts: Generation 120s, QA validation 30s
+  - Usage: LLM Strategic Briefing generation in Report Center (`src/tools/report/ReportCenter.tsx`), QA feedback on narrative structure, retry logic up to 2 attempts with exponential backoff
 
 ## Data Storage
 
 **Databases:**
-- None - Application is entirely client-side
+- None - Application is fully client-side
 
 **File Storage:**
-- Local filesystem only - No cloud storage integration
-- Workspace files use `.vwcg` extension (JSON format)
-- PDFs generated locally in browser memory and triggered for download
+- Local filesystem only - Browser-based export via `download` link or Firebase Hosting static delivery
+
+**Browser Storage:**
+- localStorage (via Zustand persist middleware)
+  - Storage key: `vwcg-workspace`
+  - Contents: Persisted workspace state including metadata, tool data, provenance, logic version
+  - Schema: JSON with `version`, `metadata`, `tools`, `provenance` top-level keys
+  - Rehydration: Automatic on app load with `onRehydrateStorage` callback that recomputes insights
 
 **Caching:**
-- Browser localStorage - Default and only persistence mechanism
-  - Key: `vwcg-workspace`
-  - Middleware: Zustand persist with partialize for selective storage
-  - Persistence: Automatic on every `updateToolData()` and import operations
-  - Rehydration: On app startup via `onRehydrateStorage` hook
-
-**Session Storage:**
-- localStorage for API keys (security consideration)
-  - `VITE_GEMINI_API_KEY` stored in localStorage (`src/components/dashboard/StrategicHealthWidget.tsx` line 23)
-  - `VITE_OPENAI_API_KEY` - loaded from env vars, may be stored temporarily by components
-  - Note: User-provided API keys via UI modal, persisted for session convenience
+- Browser HTTP cache via Firebase Hosting (immutable assets)
+- No explicit caching layer (static SPA)
 
 ## Authentication & Identity
 
 **Auth Provider:**
-- None - Application requires no user authentication
-- Public SPA with no backend login
-- API key management: User-provided at runtime in UI modal (Strategic Health Widget)
+- None - Application is unauthenticated
+- No user login or session management
+- Workspace identified by locally-generated UUID (`metadata.id`)
 
 ## Monitoring & Observability
 
 **Error Tracking:**
-- None - No centralized error tracking service
+- None - No external error reporting service configured
 
 **Logs:**
-- Browser console only
-  - `console.log()` for initialization and synthesis updates
-  - `console.error()` for API failures and validation errors
-  - Examples: '[workspaceStore] Running synthesis', 'Cloud Synthesis Failed'
+- Browser console only (accessed via DevTools)
+- Key debug outputs:
+  - `[workspaceStore]` - Synthesis engine execution and insights
+  - `Cloud Synthesis Failed` - Gemini API errors
+  - Attempt logs from OpenAI retry pipeline
+
+**Performance:**
+- No external APM (Application Performance Monitoring)
+- Vite dev server provides HMR feedback in browser console
 
 ## CI/CD & Deployment
 
 **Hosting:**
 - Firebase Hosting
-  - Project configured in `.firebaserc` and `firebase.json`
-  - Static deployment from `dist/` directory
-  - SPA rewrite rule: all URLs rewrite to `/index.html`
-  - Domain: vwcgapp.web.app
-  - Deployment command: `firebase deploy`
+  - Project ID: `vwcgapp`
+  - Domain: `vwcgapp.web.app`
+  - Config: `firebase.json` with SPA rewrites to `index.html`
+  - Deployment: CLI command `firebase deploy` (requires Firebase credentials)
+  - Source: Builds from `dist/` folder
 
-**CI Pipeline:**
-- None detected - Manual deployment via Firebase CLI
-- Build command: `npm run build` (TypeScript check + Vite production build)
+**Build Pipeline:**
+- Local only - No automated CI/CD configured
+- Manual workflow: `npm run build` → `firebase deploy`
+- Build checks: TypeScript type checking via `tsc -b` (runs before Vite build)
+
+**Version Control:**
+- Git repository (local, no remote origin configured)
+- Git config: User "AnotherGuy" (anotherguy@users.noreply.github.com)
 
 ## Environment Configuration
 
 **Required env vars:**
-- None - Application runs fully without environment variables
-
-**Optional env vars:**
-- `VITE_GEMINI_API_KEY` - Google Gemini API key (user must provide or generate at https://makersuite.google.com/app/apikey)
-- `VITE_OPENAI_API_KEY` - OpenAI API key (user must provide or generate at https://platform.openai.com/api-keys)
+- Optional:
+  - `VITE_GEMINI_API_KEY` - For AI Consultation (graceful fallback if missing)
+  - `VITE_OPENAI_API_KEY` - For LLM Strategic Briefing (UI disabled if missing)
 
 **Secrets location:**
-- `.env` file (git-ignored) for development
-- `.env.example` provided as template
-- Runtime: User inputs API keys via UI modal in Strategic Health Widget component
-- Storage: Stored in localStorage for session persistence
+- `.env` file at project root (not committed)
+- Template: `.env.example` (committed, shows structure and key names)
+- No secrets in code; all API keys passed via environment at runtime
+
+**Build env:**
+- Vite automatically prefixes `VITE_` variables into `import.meta.env` at build time
+- Non-Vite prefixed vars are NOT exposed to client code (security measure)
 
 ## Webhooks & Callbacks
 
@@ -105,42 +109,54 @@
 **Outgoing:**
 - None
 
-## Data Privacy & Security Considerations
+## Data Flow
 
-**API Data Transmission:**
-- Workspace data sent to Gemini API: Full workspace state passed as JSON in request body
-  - User must consent by providing API key
-  - Data includes tool assessment responses, metadata, provenance
-  - Note in code: "For privacy, we might strip exact timestamps or unrelated metadata, but for strategy, context is key"
+**Workspace Lifecycle:**
 
-- Workspace data sent to OpenAI API: Assessment payload with optional QA feedback
-  - Structure validated before sending
-  - Retry mechanism includes previous feedback for iterative generation
+1. **Initialization** - `main.tsx` → `initializeRegistry()` → `initializeValidation()` → `registerCharts()`
+2. **Startup** - `App.tsx` checks `metadata.id` in persisted store; if missing, calls `resetWorkspace()` to create fresh workspace with new UUID
+3. **User edits** - Tool UI → `updateToolData(toolId, data)` in `workspaceStore.ts`
+4. **Synthesis** - `updateToolData` triggers `runSynthesis()` synchronously, updates `state.insights`
+5. **Persistence** - Zustand `persist` middleware auto-saves `{version, metadata, tools, provenance}` to localStorage key `vwcg-workspace`
+6. **Rehydration** - On browser reload, localStorage restores persisted data, `onRehydrateStorage` recomputes insights via `queueMicrotask`
 
-**Local Storage:**
-- All persistent data stored in browser localStorage (not encrypted)
-- API keys stored in localStorage (localStorage-abc123 pattern security consideration)
-- No server-side backup or sync
+**AI Consultation Flow:**
+- User invokes AI consultation from dashboard
+- Workspace state serialized to JSON and sent to Gemini API via `consultAi()`
+- Gemini returns structured `Insight[]` JSON
+- Insights merged into `state.insights`
+- Display updated in UI
 
-**Network Security:**
-- All API calls over HTTPS (googleapis.com, openai.com)
-- No certificate pinning detected
-- Standard browser CORS and security policies apply
+**Report Generation Flow:**
+- User selects report type in Report Center
+- If LLM generation enabled (key present):
+  - Payload assembled via `assemblePayload()` from `src/engine/llm/payload-assembler.ts`
+  - `generateWithRetry()` calls OpenAI `chatgpt-4o-latest` for narrative
+  - Validates structure, then calls `gpt-4o-mini` for QA
+  - On QA fail, retries generation with feedback (max 2 attempts)
+  - Returns `GenerationResult` with narrative, QA validation, usage metrics
+- Report rendered to DOM
+- `PdfGenerator.ts` captures HTML with html2canvas at 3x scale, embeds in jsPDF with metadata
+- PDF blob downloaded with branded filename: `{clientName}-Strategic-Briefing-{date}.pdf`
 
-## Optional Features Status
+## Integration Security
 
-**Gemini AI Consultation:**
-- Status: Fully optional
-- Enabled when `VITE_GEMINI_API_KEY` provided
-- UI: Modal in Strategic Health Widget (`src/components/dashboard/StrategicHealthWidget.tsx`)
-- Output: Generates additional `Insight[]` for dashboard display
+**API Key Management:**
+- Keys loaded from environment variables only
+- Never hardcoded or committed to repository
+- Passed directly to external APIs (Gemini, OpenAI) at request time
+- Error messages sanitize details (e.g., "Invalid API key. Please check your VITE_OPENAI_API_KEY")
 
-**OpenAI Strategic Briefing:**
-- Status: Fully optional
-- Enabled when `VITE_OPENAI_API_KEY` provided
-- Uses Gemini key OR OpenAI key depending on flow
-- Output: Structured narrative with headline, strengths, exposures, recommendations
-- Quality assurance loop with automatic retry on validation failure
+**Data Privacy:**
+- OpenAI/Gemini calls send full workspace JSON; user explicitly provides API key (consent)
+- No backend intermediary; direct client → API communication
+- localStorage used only locally; not synced to cloud
+- Workspace export uses canonical JSON serialization (sorted keys) for stability
+
+**CORS:**
+- All external API calls use Vite `import.meta.env` for origin-agnostic requests
+- Firebase Hosting allows all requests (public domain)
+- External APIs (Gemini, OpenAI) handle CORS via their own headers
 
 ---
 

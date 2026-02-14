@@ -1,210 +1,187 @@
 # Coding Conventions
 
-**Analysis Date:** 2026-02-14
+**Analysis Date:** 2025-02-14
 
 ## Naming Patterns
 
 **Files:**
-- React components: PascalCase (e.g., `AiReadinessTool.tsx`, `ErrorBoundary.tsx`)
-- Utility files: camelCase (e.g., `fileSystem.ts`, `cn.ts`)
-- Tool definitions and modules: camelCase (e.g., `workspaceStore.ts`, `synthesis.ts`)
-- Test helpers: camelCase (e.g., `navigation.ts`, `forms.ts`)
+- Components: PascalCase with `.tsx` extension (e.g., `AiReadinessTool.tsx`, `AppShell.tsx`)
+- Utilities: camelCase with `.ts` extension (e.g., `cn.ts`, `fileSystem.ts`)
+- Hooks: camelCase starting with `use` (e.g., `useWorkspaceStore`)
+- Test files: Descriptive names with `.spec.ts` extension (e.g., `alex.spec.ts`, `app.spec.ts`)
+- Persona data: kebab-case in `/tests/personas/` (e.g., `alex.ts`, `sarah.ts`)
 
-**Functions:**
-- Regular functions: camelCase (e.g., `registerTool`, `runSynthesis`, `navigateToTool`)
-- Async functions: camelCase (e.g., `consultAi`, `generateBriefingNarrative`, `captureIndividualReportPdf`)
-- React components: PascalCase (e.g., `AppShell`, `ErrorBoundary`, `StrategicHealthWidget`)
+**Functions & Handlers:**
+- Regular functions: camelCase (e.g., `registerTool`, `getTools`, `runSynthesis`)
+- Event handlers: `handle` prefix + PascalCase action (e.g., `handleSave`, `handleChange`, `handleLoadClick`)
+- Helper functions in tests: descriptive camelCase (e.g., `fillAiReadiness`, `waitForSynthesis`, `collectConsoleErrors`)
+- Utility predicates: verb-first camelCase (e.g., `hasKeywordMatches`, `getKeywordFrequency`)
 
-**Variables:**
-- Constants: UPPER_SNAKE_CASE (e.g., `STORAGE_KEY`, `LOGIC_VERSION`, `GEMINI_API_URL`)
-- Regular variables: camelCase (e.g., `metadata`, `toolData`, `insights`)
-- TypeScript types/interfaces: PascalCase (e.g., `WorkspaceState`, `ToolDefinition`, `Insight`)
+**Variables & Constants:**
+- Regular variables: camelCase (e.g., `metadata`, `toolId`, `insights`)
+- Constants: UPPER_SNAKE_CASE (e.g., `DIMENSIONS`, `LOGIC_VERSION`, `STORAGE_KEY`, `EMPTY_DATA`)
+- Store selectors: descriptive camelCase (e.g., `metadata`, `updateToolData`, `validationResults`)
+- Type predicates: camelCase, returned as booleans (e.g., `isLogicOutdated`, `isRegistered`)
 
 **Types & Interfaces:**
-- Types/interfaces always use PascalCase (e.g., `WorkspaceMetadata`, `ValidationResult`, `SynthesisRule`)
-- Use `type` keyword for type-only imports (required by `verbatimModuleSyntax`): `import type { Insight } from '...'`
-- Union types: camelCase descriptors (e.g., `InsightType = 'risk' | 'opportunity' | 'conflict' | 'strength'`)
+- Interfaces: PascalCase, no `I` prefix (e.g., `ToolDefinition`, `WorkspaceState`, `Insight`)
+- Type unions: PascalCase (e.g., `InsightType = 'risk' | 'opportunity' | 'conflict' | 'strength'`)
+- Exported types: Use `export type` (required by `verbatimModuleSyntax`) for type-only exports (e.g., `export type InsightSeverity = 'high' | 'medium' | 'low'`)
 
 ## Code Style
 
 **Formatting:**
-- No explicit Prettier config; ESLint config in `eslint.config.js` with flat config format (ESLint v9)
-- Import organization handled by ESLint recommended rules
-- Indentation: 2 spaces (inferred from source code)
+- No explicit formatter configured in `package.json`; follow ESLint rules as source of truth
+- Line length: Implicit (no hard limit enforced)
+- Indentation: 4 spaces (inferred from source code)
+- Semicolons: Always required (ESLint enforces)
 
 **Linting:**
-- ESLint v9.39.1 with:
-  - `@eslint/js` recommended
-  - `typescript-eslint` recommended
-  - `eslint-plugin-react-hooks` for hooks rules
-  - `eslint-plugin-react-refresh` for Vite React refresh
-- Run via `npm run lint` (executes `eslint .`)
+- Tool: ESLint 9.39.1 with flat config (`eslint.config.js`)
+- Base configs: `@eslint/js`, `typescript-eslint`, `eslint-plugin-react-hooks`, `eslint-plugin-react-refresh`
+- Applies to: `**/*.{ts,tsx}`
+- Command: `npm run lint`
+- Key enforcement: React Hooks rules + React Refresh rules for fast refresh compatibility
 
 **TypeScript Strictness:**
-- Strict mode enabled
-- `noUnusedLocals: true` — unused variables cause build failures
-- `noUnusedParameters: true` — unused function parameters cause build failures
-- `verbatimModuleSyntax: true` — requires `import type` for type-only imports
-- `noFallthroughCasesInSwitch: true`
-- `noUncheckedSideEffectImports: true`
-- `erasableSyntaxOnly: true` — no enums, use string unions instead
-
-**JSX Settings:**
-- React 19 with automatic JSX transform (`jsx: "react-jsx"`)
-- No need for `import React` in component files
+- Strict mode enabled: `true`
+- `noUnusedLocals`: Enabled — all local variables must be used
+- `noUnusedParameters`: Enabled — all function parameters must be used
+- `noFallthroughCasesInSwitch`: Enabled — switch statements must have breaks
+- `noUncheckedSideEffectImports`: Enabled — no side effects from imported modules without explicit imports
+- `erasableSyntaxOnly`: Enabled — no enums, use string unions instead
+- `verbatimModuleSyntax`: Enabled — requires `import type` for type-only imports
+- Path aliases: `@/*` maps to `src/*` (configured in `tsconfig.app.json` and `vite.config.ts`)
 
 ## Import Organization
 
 **Order:**
-1. Third-party imports (React, lucide-react, zustand, etc.)
-2. Type imports from third-party (using `import type`)
-3. Internal path imports (using `@/` alias)
-4. Type imports from internal modules (using `import type`)
+1. React and React DOM (e.g., `import React from 'react'`, `import { useEffect } from 'react'`)
+2. Third-party libraries (e.g., `zustand`, `react-router-dom`, `lucide-react`, `chart.js`)
+3. Internal utilities and stores (e.g., `import { useWorkspaceStore }`, `import { cn }`)
+4. Internal components (e.g., `import { AppShell }`)
+5. Types (use `import type` for type-only imports, required by `verbatimModuleSyntax`)
+6. Styles (e.g., `import './index.css'`)
 
-**Path Aliases:**
-- `@/` maps to `src/` (configured in `vite.config.ts` and `tsconfig.app.json`)
-- Always use `@/` for internal imports:
-  - `import { useWorkspaceStore } from '@/store/workspaceStore'`
-  - `import type { Insight } from '@/engine/types'`
-
-**Example Pattern:**
+**Example from `src/main.tsx`:**
 ```typescript
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import type { LucideIcon } from 'lucide-react';
-
-import { validateWorkspace } from '@/validation/validator';
-import type { Insight } from '@/engine/types';
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App'
+import { initializeRegistry } from './registry/registry'
+import { initializeValidation } from './validation'
+import { registerCharts } from './lib/charts'
 ```
+
+**Path aliases:**
+- Always use `@/` prefix for internal imports instead of relative paths (e.g., `@/utils/cn`, `@/store/workspaceStore`)
 
 ## Error Handling
 
 **Patterns:**
-- Try/catch for async operations and file I/O: `src/components/layout/AppShell.tsx:25-31`, `src/engine/cloud.ts:42-73`
-- Error messages should be descriptive and actionable
-- For API errors, include status code and context: `src/engine/llm/openai-service.ts:101-114`
-- Workspace errors use alert dialogs for user-facing failures: `src/components/layout/AppShell.tsx:29, 45`
-- Synthesis rule failures log warning but don't crash the app: `src/engine/synthesis.ts:19-26`
-- Error boundary catches React rendering errors: `src/components/ErrorBoundary.tsx`
+- Try/catch for file operations and async operations (e.g., `handleFileChange` in `AppShell.tsx`)
+- Console logging for non-critical failures: `console.warn()` for degraded behavior, `console.error()` for exceptions
+- Rule execution: Try/catch with `console.warn` on rule failure, synthesis continues with other rules (see `src/engine/synthesis.ts` lines 18-26)
+- Validation failure: Return `{ status: 'error', issues: [...] }` object from validators
+- UI error feedback: Show alert() dialogs for user-facing errors (e.g., "Failed to load workspace file.")
+- Fail-safe returns: Functions return safe defaults when inputs are invalid (e.g., `runSynthesis` returns `[]` if workspace is null)
 
-**Error Recovery:**
-- File loading: reset input element after handling error
-- API calls: throw with descriptive message, let caller handle
-- Component errors: ErrorBoundary catches and displays error details
+**Example from `src/engine/synthesis.ts`:**
+```typescript
+for (const rule of rules) {
+    try {
+        const result = rule.execute(workspace);
+        if (result) {
+            insights.push(result);
+        }
+    } catch (err) {
+        console.warn(`Rule ${rule.id} failed execution:`, err);
+    }
+}
+```
 
 ## Logging
 
-**Framework:** `console` (native browser API)
+**Framework:** `console` (no structured logging library)
 
 **Patterns:**
-- `console.log()` for initialization and lifecycle events: `src/main.tsx:9`
-- `console.log()` for LLM retry attempts: `src/engine/llm/openai-service.ts:247, 289`
-- `console.warn()` for recoverable issues: `src/engine/synthesis.ts:25`, `src/registry/ToolRegistry.ts:17`
-- `console.error()` for exceptions: `src/engine/cloud.ts:71`, `src/components/ErrorBoundary.tsx:24`
-- Prefix logs with context: `[workspaceStore]`, `[PrintPdfService]` for easier debugging
+- Development logs: `console.log()` for initialization and debug info (often commented out in production code)
+- Warning logs: `console.warn()` for degraded behavior, rule failures, missing profiles
+- Error logs: `console.error()` for caught exceptions
+- Log context: Always include context prefix or rule name (e.g., `[workspaceStore]`, `Rule ${rule.id}`)
 
-**No Logging Config:** Application doesn't use structured logging or external logging service. All logs go to browser console.
+**Example from `src/store/workspaceStore.ts` (lines 95-97):**
+```typescript
+console.log('[workspaceStore] Running synthesis with tools:', Object.keys(nextTools));
+const newInsights = runSynthesis(simulation);
+console.log('[workspaceStore] Synthesis returned insights:', newInsights.length, newInsights);
+```
 
 ## Comments
 
 **When to Comment:**
-- Complex business logic (e.g., synthesis rule conditions in `src/engine/rules-v2.ts`)
-- Non-obvious DOM manipulation (e.g., PDF preparation in `tests/helpers/pdf.ts:36-72`)
-- Provenance tracking and metadata explanations (e.g., `src/store/workspaceStore.ts:20-23`)
-- Test helper purpose and UI interaction assumptions (e.g., `tests/helpers/forms.ts:7-8`)
+- Complex logic: Explain the "why" not the "what" (e.g., explaining severity sorting or maturity calculation)
+- Non-obvious intent: Clarify business rules (e.g., "burnout risk fires when maturity < 70%")
+- Initialization sequence: Document startup order (e.g., registry → validation → charts in `main.tsx`)
+- Workarounds: Note temporary solutions or hacks (e.g., "reset input" in `AppShell.tsx` line 48)
+- Edge cases: Document boundaries and assumptions (e.g., "pillarCount === 0 means no ambition, default safe")
+
+**Avoid:**
+- Commenting obvious code: `const name = 'Alex'` doesn't need a comment
+- Outdated comments: Keep comments in sync with code
+- Redundant comments: Let type annotations and clear naming speak for themselves
 
 **JSDoc/TSDoc:**
-- Used selectively for exported functions and complex types
-- Example from `tests/helpers/pdf.ts:29-35`:
+- Used minimally; only on exported functions and interfaces with complex behavior
+- Format: Standard JSDoc with `/**` ... `*/` block comments
+- Example from `src/engine/derived-metrics.ts` (lines 1-4):
 ```typescript
 /**
- * Prepare the DOM for page.pdf() capture:
- * - Hide the Report Center left panel (config panel)
- * - Expand all scroll containers (remove height/overflow constraints)
- * - Remove transform/scale on preview wrapper
- * - Expand all ancestor containers up to body
+ * Derived Metrics Module
+ * Computes 6 cross-assessment metrics from workspace data
  */
-async function prepareDomForPdf(page: Page)
 ```
+
+**Test comment style:**
+- Descriptive test names replace comments (e.g., test name "AI Readiness — set all 6 dimension sliders" is self-documenting)
+- Inline comments in test helpers explain selector logic or data structure mapping (e.g., in `fillLeadershipDna` explaining DOM order)
 
 ## Function Design
 
-**Size Guidelines:**
-- Aim for functions under 50 lines for clarity
-- Helper functions are shorter (e.g., `resetWorkspace` in `tests/helpers/navigation.ts:23-27` is 5 lines)
-- Complex logic broken into named helper functions (e.g., PDF helpers split into `prepareDomForPdf`, `captureIndividualReportPdf`, `captureUnifiedReportPdf`)
+**Size:**
+- Small, focused functions (15-40 lines typical)
+- Complex synthesis rules broken into helper functions (e.g., `computeExecutionAmbitionRatio`, `computeFounderDependencyIndex`)
+- React components: 50-150 lines (larger components like `StrategicHealthWidget` at 284 lines are exceptions and candidates for refactoring)
 
 **Parameters:**
-- Use destructuring for objects: `async function fillSwotQuadrant(page: Page, quadrant: string, items: Array<{ text: string; confidence: number }>)`
-- Type all parameters explicitly
-- For data objects, define interfaces (e.g., `PersonaData` with `meta`, `aiReadiness`, `leadershipDna`, etc.)
+- Prefer explicit parameters over destructuring for clarity (e.g., `fillAiReadiness(page: Page, data: Record<string, number>)`)
+- Use record/object for related data (e.g., `data: Record<string, number>` for dimension scores)
+- No more than 4-5 parameters; use objects for options
 
 **Return Values:**
-- Always explicitly type return values: `runSynthesis(workspace: any): Insight[]`
-- Use `void` for side-effect-only functions
-- Async functions return `Promise<T>`
-- Void functions that handle their own error logging
+- Functions return early on error conditions (e.g., `if (!dna || !vision) return 0;`)
+- Null/undefined for missing data; `0` or empty arrays `[]` for "no results"
+- Complex returns use interfaces (e.g., `DerivedMetrics`, `ValidationResult`)
+- Promises in async handlers; synchronous where possible (synthesis runs synchronously per MVP design)
 
 ## Module Design
 
 **Exports:**
-- Named exports for functions and types: `export const registerTool`, `export type ToolDefinition`
-- Default exports not used
-- Re-export barrel files for convenience (e.g., `src/engine/index.ts` re-exports synthesis, types, metrics)
+- One primary export per file (e.g., `export const AiReadinessTool` for component files)
+- Multiple named exports for utilities and constants (e.g., `export const registerTool`, `export const getTools`)
+- Type exports: Always use `export type` (required by `verbatimModuleSyntax`)
 
 **Barrel Files:**
-- Used in `src/engine/index.ts` to consolidate exports: synthesis engine, types, derived metrics, SWOT analysis
-- Used in `src/report/charts/index.ts`, `src/report/components/index.ts` for report subsystems
-- Pattern: import core functionality, then re-export with selective `export { ... }` or `export type { ... }`
+- Used selectively in `src/engine/index.ts` to re-export public API
+- Example: `export { runSynthesis, registerRule } from './synthesis.ts'`
+- Avoid circular dependencies through barrel files
 
-**Module Organization by Function:**
-- **Store:** `src/store/workspaceStore.ts` — single Zustand store, all workspace state
-- **Engine:** `src/engine/` — synthesis rules, types, LLM integration, metrics
-- **Registry:** `src/registry/` — tool registry, definitions, plugin system
-- **Validation:** `src/validation/` — per-tool validation profiles, validator logic
-- **Utils:** `src/utils/` — file I/O, utility functions like `cn()`
-- **Components:** `src/components/` — layout, UI primitives, error boundary
-- **Tools:** `src/tools/` — each tool in its own directory with `index.ts` exporting `ToolDefinition`
-- **Report:** `src/report/` — organized by function: charts, components, narrative, unified/individual reports, PDF generation
-
-## Specific Patterns Observed
-
-**Tool Registration Pattern:**
-Each tool exports a `ToolDefinition` from its `index.ts`:
-```typescript
-import type { ToolDefinition } from '../../registry/ToolRegistry';
-import { BrainCircuit } from 'lucide-react';
-
-export const aiReadinessDefinition: ToolDefinition = {
-    id: 'ai-readiness',
-    name: 'AI Readiness',
-    description: 'Assess AI maturity across 6 dimensions',
-    path: '/tools/ai-readiness',
-    icon: BrainCircuit,
-    component: AiReadinessTool,
-    validationProfileId: 'aireadiness_v1'
-};
-```
-
-**Zustand Store Pattern:**
-- Single store instance with `persist` middleware
-- Partialize function for selective persistence
-- `onRehydrateStorage` callback for post-load logic
-- All state updates through named action methods
-
-**React Component Pattern:**
-- Functional components with TypeScript interfaces for props
-- Forward refs for UI primitives (e.g., `Button`)
-- Hook-based state management with `useWorkspaceStore`
-- Error boundary wraps error-prone subtrees
-
-**Enum Alternative:**
-No enums used. String unions replace them:
-```typescript
-export type InsightType = 'risk' | 'opportunity' | 'conflict' | 'strength';
-export type InsightSeverity = 'high' | 'medium' | 'low';
-```
+**File organization:**
+- One component per file (except helpers which can have multiple related functions)
+- Co-locate related types with their implementation (e.g., `Insight` interface in `types.ts` alongside `SynthesisRule`)
+- Utilities grouped by domain (e.g., all file system utilities in `src/utils/fileSystem.ts`)
 
 ---
 
-*Convention analysis: 2026-02-14*
+*Convention analysis: 2025-02-14*
