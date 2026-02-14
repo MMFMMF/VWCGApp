@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-02-13)
 Phase: 10 of 10 (Quality & Edge Cases)
 Plan: All complete
 Status: v1 implementation complete + LLM integration
-Last activity: 2026-02-14 - Completed quick task 6: Dedicated print route for PDF generation
+Last activity: 2026-02-14 - Completed quick task 8: Fix AI briefing routing, remove dual footer, fix [object Object]
 
 Progress: [██████████] 100%
 
@@ -53,6 +53,8 @@ Progress: [██████████] 100%
 - Two-model pipeline: ChatGPT generator + ChatGPT Mini QA validator
 - Three report modes in UI: template Strategic Briefing, AI-Powered Briefing, Individual Reports
 - Dedicated print route outside AppShell for clean PDF generation (no UI chrome artifacts)
+- localStorage bridge for AI Briefing: ReportCenter persists narrative, PrintReport reads it
+- Single-source footer: Puppeteer footerTemplate only, no internal footer in ReportPage
 
 ### Architecture Summary
 
@@ -103,9 +105,10 @@ None.
 | 5 | Replace jsPDF with page.pdf() for E2E tests — real text PDFs | 2026-02-13 | 479b67b | [4-replace-jspdf-with-puppeteer-page-pdf-fo](./quick/4-replace-jspdf-with-puppeteer-page-pdf-fo/) |
 | 6 | Strip AppShell from PDF output via @media print CSS | 2026-02-14 | 3aab405, 20392b8 | [5-strip-app-shell-from-pdf-output-print-on](./quick/5-strip-app-shell-from-pdf-output-print-on/) |
 | 7 | Dedicated print route for PDF generation | 2026-02-14 | 4e93ef2, 8bd98f8, 9febb03 | [6-dedicated-print-route-for-pdf-generation](./quick/6-dedicated-print-route-for-pdf-generation/) |
+| 8 | Fix AI briefing routing, remove dual footer, fix [object Object] | 2026-02-14 | debb18d, f582298, 551fae5 | [7-fix-ai-briefing-routing-remove-internal-](./quick/7-fix-ai-briefing-routing-remove-internal-/) |
 
 ## Session Continuity
 
-Last session: 2026-02-14 (Dedicated print route for PDF generation)
-Stopped at: Quick task 7 complete — Print route renders reports without AppShell, E2E tests use direct navigation
+Last session: 2026-02-14 (Fix AI briefing routing, remove dual footer, fix [object Object])
+Stopped at: Quick task 8 complete — AI Briefing uses print route, single footer source, Vision Canvas values render correctly
 Resume file: None
