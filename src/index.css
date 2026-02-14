@@ -181,6 +181,52 @@
   .financial-nowrap {
     white-space: nowrap;
   }
+
+  /* --- PDF-04: Prevent orphaned cards on new pages --- */
+  /* Cards with border-left accent (cost blocks, roadmap phases, callouts) */
+  .border-l-4,
+  [class*="border-l-4"] {
+    break-before: avoid !important;
+    page-break-before: avoid !important;
+  }
+
+  /* White bordered cards (AI readiness phases, leadership recommendations) */
+  .bg-white.border.rounded-lg,
+  .rounded-lg.border.bg-white {
+    break-before: avoid !important;
+    page-break-before: avoid !important;
+  }
+
+  /* Simple bordered cards (roadmap tasks, vision canvas values) */
+  .border.rounded-md,
+  [class*="border"][class*="rounded-md"] {
+    break-before: avoid !important;
+    page-break-before: avoid !important;
+  }
+
+  /* Background callout boxes */
+  .bg-report-warm.rounded-md,
+  .rounded-md.bg-report-warm {
+    break-before: avoid !important;
+    page-break-before: avoid !important;
+  }
+
+  /* Tighten vertical spacing to pack more content per page */
+  .space-y-8 > * + * {
+    margin-top: 1.25rem !important; /* was 2rem (32px) → 1.25rem (20px) */
+  }
+
+  .space-y-6 > * + * {
+    margin-top: 1rem !important; /* was 1.5rem (24px) → 1rem (16px) */
+  }
+
+  .mb-8 {
+    margin-bottom: 1.25rem !important; /* was 2rem → 1.25rem */
+  }
+
+  .mb-6 {
+    margin-bottom: 1rem !important; /* was 1.5rem → 1rem */
+  }
 }
 
 /* Print-specific helper classes (always available, only affect print) */
