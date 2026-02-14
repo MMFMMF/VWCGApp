@@ -27,51 +27,6 @@ const TOOL_FILENAME_MAP: Record<string, string> = {
 };
 
 /**
- * Prepare the DOM for page.pdf() capture:
- * - Hide the Report Center left panel (config panel)
- * - Expand all scroll containers (remove height/overflow constraints)
- * - Remove transform/scale on preview wrapper
- * - Expand all ancestor containers up to body
- */
-async function prepareDomForPdf(page: Page) {
-  await page.evaluate(() => {
-    // Hide the left panel (config panel)
-    const leftPanel = document.querySelector('.lg\\:col-span-1');
-    if (leftPanel) (leftPanel as HTMLElement).style.display = 'none';
-
-    // Expand scroll containers
-    const scrollContainers = document.querySelectorAll('.overflow-y-auto, .custom-scrollbar');
-    scrollContainers.forEach((el) => {
-      (el as HTMLElement).style.height = 'auto';
-      (el as HTMLElement).style.maxHeight = 'none';
-      (el as HTMLElement).style.overflow = 'visible';
-    });
-
-    // Remove transforms from the preview wrapper
-    const transformEls = document.querySelectorAll('[class*="transform"], [class*="scale-"]');
-    transformEls.forEach((el) => {
-      (el as HTMLElement).style.transform = 'none';
-      (el as HTMLElement).style.width = '100%';
-      (el as HTMLElement).style.maxWidth = 'none';
-    });
-
-    // Expand all ancestor containers of the report element
-    const report = document.querySelector('#report-preview-container')
-      || document.querySelector('#unified-strategic-briefing')
-      || document.querySelector('#llm-strategic-briefing');
-    if (report) {
-      let ancestor = report.parentElement;
-      while (ancestor && ancestor !== document.body) {
-        (ancestor as HTMLElement).style.height = 'auto';
-        (ancestor as HTMLElement).style.maxHeight = 'none';
-        (ancestor as HTMLElement).style.overflow = 'visible';
-        ancestor = ancestor.parentElement;
-      }
-    }
-  });
-}
-
-/**
  * Ensure the persona output directory exists.
  */
 function ensureDir(dirPath: string) {
@@ -115,10 +70,6 @@ export async function captureIndividualReportPdf(
   await page.waitForSelector('#report-preview-container', { state: 'attached' });
   await page.waitForTimeout(2000); // let charts/fonts settle
 
-  // Prepare DOM for PDF capture
-  await prepareDomForPdf(page);
-  await page.waitForTimeout(500);
-
   // Capture PDF
   await page.pdf({
     path: destPath,
@@ -149,10 +100,6 @@ export async function captureUnifiedReportPdf(page: Page, personaName: string) {
   // Wait for the unified strategic briefing to render
   await page.waitForSelector('#unified-strategic-briefing', { state: 'attached' });
   await page.waitForTimeout(3000); // let all charts/data settle
-
-  // Prepare DOM for PDF capture
-  await prepareDomForPdf(page);
-  await page.waitForTimeout(500);
 
   // Capture PDF
   await page.pdf({
@@ -191,10 +138,6 @@ export async function captureAIBriefingPdf(page: Page, personaName: string) {
   // Wait for the LLM generation to complete — spinner disappears and narrative renders
   await page.waitForSelector('#llm-strategic-briefing', { timeout: AI_BRIEFING_GENERATION_TIMEOUT });
   await page.waitForTimeout(3000); // let the report render fully
-
-  // Prepare DOM for PDF capture
-  await prepareDomForPdf(page);
-  await page.waitForTimeout(500);
 
   // Capture PDF
   await page.pdf({
