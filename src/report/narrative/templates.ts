@@ -121,19 +121,24 @@ export function interpretMetric(
 
     case 'strategicCoherence': {
       const strVal = String(value);
+      const details = ctx.metrics.strategicCoherenceDetails;
+      // Build a persona-specific suffix from the contradiction details
+      const detailSuffix = details && details !== 'Strategy shows strong internal alignment'
+        ? ` Specific findings: ${details}.`
+        : '';
       if (strVal === 'aligned') {
         return 'Your vision, strengths, and operational priorities reinforce each other -- the strategy is internally consistent.';
       }
       if (strVal === 'mostly_aligned') {
-        return 'Your strategy is largely coherent with minor gaps. Most operational decisions support the stated vision, though one or two areas need tighter alignment.';
+        return `Your strategy is largely coherent with minor gaps. Most operational decisions support the stated vision, though one or two areas need tighter alignment.${detailSuffix}`;
       }
       if (strVal === 'partially_aligned') {
-        return 'Parts of your strategy reinforce each other, but meaningful gaps exist between what you say you value and where you invest resources.';
+        return `Parts of your strategy reinforce each other, but meaningful gaps exist between what you say you value and where you invest resources.${detailSuffix}`;
       }
       if (strVal === 'misaligned') {
-        return 'Your stated vision, operational strengths, and resource allocation point in different directions -- this misalignment erodes strategic effectiveness.';
+        return `Your stated vision, operational strengths, and resource allocation point in different directions -- this misalignment erodes strategic effectiveness.${detailSuffix}`;
       }
-      return 'Your strategy shows severe internal contradictions. Vision, operations, and resource allocation are working against each other -- every initiative faces headwinds from conflicting priorities.';
+      return `Your strategy shows severe internal contradictions. Vision, operations, and resource allocation are working against each other -- every initiative faces headwinds from conflicting priorities.${detailSuffix}`;
     }
 
     case 'revenueRiskEstimate': {

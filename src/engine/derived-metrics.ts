@@ -367,23 +367,19 @@ export function adjustCoherenceForContradictions(
     let score = currentScore;
     const extraIssues: string[] = [];
 
-    // 4+ conflicts → severely misaligned
+    // 4+ conflicts → downgrade by 2 steps
     if (conflictCount >= 4) {
-        score = 'severely_misaligned';
-        extraIssues.push(`${conflictCount} internal contradictions detected`);
-    } else if (conflictCount >= 3) {
-        // 3 conflicts → downgrade by 2 steps (not cliff-edge to worst)
         score = downgradeCoherence(score, 2);
         extraIssues.push(`${conflictCount} internal contradictions detected`);
-    } else if (conflictCount === 2) {
-        // 2 conflicts → downgrade by 1 step
+    } else if (conflictCount >= 3) {
+        // 3 conflicts → downgrade by 1 step
         score = downgradeCoherence(score, 1);
         extraIssues.push(`${conflictCount} internal contradictions detected`);
+    } else if (conflictCount === 2) {
+        // 2 conflicts → note but don't downgrade (base coherence already accounts for issues)
+        extraIssues.push(`${conflictCount} internal contradictions detected`);
     } else if (conflictCount === 1) {
-        // 1 conflict → only downgrade if currently aligned or mostly_aligned
-        if (COHERENCE_ORDER.indexOf(score) < 2) {
-            score = downgradeCoherence(score, 1);
-        }
+        // 1 conflict → note only
         extraIssues.push('1 internal contradiction detected');
     }
 

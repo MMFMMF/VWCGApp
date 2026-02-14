@@ -30,8 +30,12 @@ import {
   ReportCaption,
   ReportCallout,
   ReportList,
+  ReportTable,
+  ReportTableHeader,
+  ReportTableRow,
+  ReportTableCell,
 } from '@/report/components';
-import { DotPlot, Gauge } from '@/report/charts';
+import { Gauge } from '@/report/charts';
 import { REPORT_COLORS, SEVERITY_COLORS } from '@/report/design';
 
 // ---------------------------------------------------------------------------
@@ -463,26 +467,6 @@ function BenchmarkingPage({
     swotRiskRatio = total > 0 ? ((wCount + tCount) / total) * 100 : 50;
   }
 
-  // General SMB benchmarks
-  const smBenchmarks = {
-    advisorReadiness: [
-      { value: 2.5, label: 'Avg SMB' },
-      { value: 4.0, label: 'Top 25%' },
-    ],
-    aiReadiness: [
-      { value: 30, label: 'Avg SMB' },
-      { value: 65, label: 'Top 25%' },
-    ],
-    leadershipDna: [
-      { value: 5.0, label: 'Avg SMB' },
-      { value: 7.5, label: 'Top 25%' },
-    ],
-    swotRisk: [
-      { value: 45, label: 'Balanced' },
-      { value: 65, label: 'High-Risk' },
-    ],
-  };
-
   return (
     <ReportPage variant="standard" pageNumber={pageStart}>
       <ReportSectionTitle>Benchmarking Context</ReportSectionTitle>
@@ -492,43 +476,54 @@ function BenchmarkingPage({
         indicators, not absolute standards.
       </ReportBody>
 
-      <div className="space-y-10">
-        {/* Advisor Readiness */}
-        <DotPlot
-          value={advisorAvg}
-          min={0}
-          max={5}
-          benchmarks={smBenchmarks.advisorReadiness}
-          label="Advisor Readiness (avg score)"
-        />
-
-        {/* AI Readiness */}
-        <DotPlot
-          value={aiAvg}
-          min={0}
-          max={100}
-          benchmarks={smBenchmarks.aiReadiness}
-          label="AI Readiness (%)"
-        />
-
-        {/* Leadership DNA */}
-        <DotPlot
-          value={leadershipAvg}
-          min={0}
-          max={10}
-          benchmarks={smBenchmarks.leadershipDna}
-          label="Leadership DNA (avg current score)"
-        />
-
-        {/* SWOT Risk Profile */}
-        <DotPlot
-          value={swotRiskRatio}
-          min={0}
-          max={100}
-          benchmarks={smBenchmarks.swotRisk}
-          label="SWOT Risk Profile (% risk items)"
-        />
-      </div>
+      {(() => {
+        const rows = [
+          { dimension: 'Advisor Readiness', you: advisorAvg, avgSmb: 2.5, top25: 4.0, decimals: 1 },
+          { dimension: 'AI Readiness (%)', you: aiAvg, avgSmb: 30, top25: 65, decimals: 1 },
+          { dimension: 'Leadership DNA', you: leadershipAvg, avgSmb: 5.0, top25: 7.5, decimals: 1 },
+          { dimension: 'SWOT Risk Profile (%)', you: swotRiskRatio, avgSmb: 45, top25: 30, decimals: 1 },
+        ];
+        return (
+          <ReportTable>
+            <ReportTableHeader>
+              <ReportTableRow>
+                <ReportTableCell header>Dimension</ReportTableCell>
+                <ReportTableCell header>You</ReportTableCell>
+                <ReportTableCell header>Avg SMB</ReportTableCell>
+                <ReportTableCell header>Top 25%</ReportTableCell>
+                <ReportTableCell header>vs Avg</ReportTableCell>
+              </ReportTableRow>
+            </ReportTableHeader>
+            <tbody>
+              {rows.map((row, idx) => {
+                const delta = row.you - row.avgSmb;
+                const isRisk = row.dimension.includes('Risk');
+                const positive = isRisk ? delta <= 0 : delta >= 0;
+                return (
+                  <ReportTableRow key={row.dimension} variant={idx % 2 === 1 ? 'alternate' : 'default'}>
+                    <ReportTableCell className="font-medium">{row.dimension}</ReportTableCell>
+                    <ReportTableCell>
+                      <span className="font-semibold" style={{ color: REPORT_COLORS.blue }}>
+                        {row.you.toFixed(row.decimals)}
+                      </span>
+                    </ReportTableCell>
+                    <ReportTableCell>{row.avgSmb.toFixed(row.decimals)}</ReportTableCell>
+                    <ReportTableCell>{row.top25.toFixed(row.decimals)}</ReportTableCell>
+                    <ReportTableCell>
+                      <span
+                        className="font-semibold"
+                        style={{ color: positive ? REPORT_COLORS.green : REPORT_COLORS.red }}
+                      >
+                        {delta >= 0 ? '+' : ''}{delta.toFixed(row.decimals)} {positive ? '\u25B2' : '\u25BC'}
+                      </span>
+                    </ReportTableCell>
+                  </ReportTableRow>
+                );
+              })}
+            </tbody>
+          </ReportTable>
+        );
+      })()}
 
       <ReportCaption className="block mt-8 keep-with-previous">
         Benchmarks sourced from general SMB population data. Industry-specific
