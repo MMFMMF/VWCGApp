@@ -163,6 +163,7 @@ export const ReportCenter: React.FC = () => {
 
       // Success
       setLlmNarrative(result.narrative);
+      localStorage.setItem('vwcg-llm-narrative', JSON.stringify(result.narrative));
       setLlmQaResult(result.qa);
       setLlmNeedsReview(result.needs_human_review);
 

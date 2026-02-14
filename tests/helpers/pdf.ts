@@ -97,10 +97,12 @@ export async function captureUnifiedReportPdf(page: Page, personaName: string) {
 
 /**
  * Navigate to Report Center, switch to AI-Powered Briefing mode,
- * generate AI briefing, wait for render, prepare DOM, and capture PDF via page.pdf().
+ * generate AI briefing, then navigate to the clean print route and capture PDF via page.pdf().
  *
- * NOTE: Uses Report Center route (not print route) because AI briefing requires
- * interactive LLM generation via UI button click.
+ * The generation step still uses Report Center UI (button click triggers LLM call).
+ * ReportCenter persists the narrative to localStorage, so after generation we
+ * navigate to /report/print/ai-briefing which reads it back — producing a clean
+ * PDF without Report Center UI chrome (mode selector, QA banners, sidebar).
  */
 export async function captureAIBriefingPdf(page: Page, personaName: string) {
   const safePersona = personaName.toLowerCase();
@@ -123,6 +125,11 @@ export async function captureAIBriefingPdf(page: Page, personaName: string) {
   // Wait for the LLM generation to complete — spinner disappears and narrative renders
   await page.waitForSelector('#llm-strategic-briefing', { timeout: AI_BRIEFING_GENERATION_TIMEOUT });
   await page.waitForTimeout(3000); // let the report render fully
+
+  // Navigate to clean print route for capture (no Report Center chrome)
+  await page.goto('/report/print/ai-briefing');
+  await page.waitForSelector('#llm-strategic-briefing', { state: 'attached' });
+  await page.waitForTimeout(3000); // let charts/fonts settle
 
   // Capture PDF with footer
   await page.pdf({

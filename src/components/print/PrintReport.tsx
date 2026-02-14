@@ -8,6 +8,7 @@
  *
  * Supported report types:
  *   - unified             → UnifiedStrategicBriefing
+ *   - ai-briefing         → AIBriefingPrintWrapper (reads LLM narrative from localStorage)
  *   - ai-readiness        → AIReadinessReport
  *   - leadership-dna      → LeadershipDNAReport
  *   - swot                → SwotReport
@@ -21,6 +22,8 @@ import type { FC } from 'react';
 
 // Report components
 import { UnifiedStrategicBriefing } from '@/report/unified/UnifiedStrategicBriefing';
+import { LLMStrategicBriefing } from '@/report/unified';
+import type { BriefingNarrative } from '@/engine/llm/types';
 import {
   AIReadinessReport,
   LeadershipDNAReport,
@@ -29,6 +32,29 @@ import {
   AdvisorReadinessReport,
   RoadmapReport,
 } from '@/report/individual';
+
+/**
+ * Wrapper that reads the LLM narrative from localStorage.
+ * ReportCenter persists narrative via localStorage.setItem('vwcg-llm-narrative', ...)
+ * after generation, and this wrapper reads it back for clean print-route rendering.
+ */
+const AIBriefingPrintWrapper: FC = () => {
+  const raw = localStorage.getItem('vwcg-llm-narrative');
+  if (!raw) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center p-8">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-red-600 mb-2">No AI Briefing Data</h1>
+          <p className="text-slate-600">
+            Generate an AI briefing from Report Center first.
+          </p>
+        </div>
+      </div>
+    );
+  }
+  const narrative: BriefingNarrative = JSON.parse(raw);
+  return <LLMStrategicBriefing narrative={narrative} />;
+};
 
 /**
  * Map reportType param to report component and container ID
@@ -43,6 +69,10 @@ const REPORT_MAP: Record<
   unified: {
     Component: UnifiedStrategicBriefing,
     containerId: 'unified-strategic-briefing',
+  },
+  'ai-briefing': {
+    Component: AIBriefingPrintWrapper,
+    containerId: 'llm-strategic-briefing',
   },
   'ai-readiness': {
     Component: AIReadinessReport,
