@@ -1,150 +1,68 @@
-# Requirements: VWCG Assessment Suite — Report Redesign
+# Requirements: VWCG Report Quality Overhaul (v1.1)
 
-**Defined:** 2026-02-13
+**Defined:** 2026-02-14
 **Core Value:** Every deliverable passes the "Holy Cow" Standard — a founder reads it and feels like a senior consultant analyzed their business.
 
-## v1 Requirements
+## v1.1 Requirements
 
-Requirements for initial release. Each maps to roadmap phases.
+Requirements for the report quality overhaul milestone. Each maps to roadmap phases.
 
-### Design System
+### Financial Calculations
 
-- [ ] **DSGN-01**: Color system implemented: Deep Navy #1B2A4A, Charcoal #2D3436, White #FFFFFF, Warm White #F8F7F4, Strategic Blue #2E6EA6, Alert Amber #D4930D, Risk Red #C0392B, Growth Green #27864A
-- [ ] **DSGN-02**: Typography system: Inter or DM Sans with defined type scale (hero 48-64pt, section 24pt, subsection 18pt, body 11-12pt, caption 9-10pt, callout 16pt)
-- [ ] **DSGN-03**: Page layout templates: standard content page (1in margins, 6.5in max text width), data page (two-column, charts max 50% height), callout/insight page
-- [ ] **DSGN-04**: Chart component library: horizontal bar charts, progress bars with gap visualization, simple gauges, dot plots, small multiples
-- [ ] **DSGN-05**: Chart rules enforced: narrative titles stating insight (not metric name), max 3 colors, data labels on elements (not legends), 2-3 sentence interpretation after each chart
-- [ ] **DSGN-06**: Anti-patterns eliminated: no radar/spider charts, no pie charts, no 3D, no gradient backgrounds, no rounded-corner cards with drop shadows, no decorative icons
+- [ ] **CALC-01**: Financial impact subcategories (Founder Bottleneck, Operational Inefficiency, Strategic Risk) must sum exactly to the displayed total — bottom-up calculation with rounding reconciliation
+- [ ] **CALC-02**: Rounding rule: nearest $500 under $100K, nearest $1K for $100K-$999K, nearest $5K for $1M+. Strategic Risk absorbs rounding remainder.
 
-### Data Collection
+### Roadmap Personalization
 
-- [ ] **DATA-01**: User can input annual revenue range (<$1M, $1-3M, $3-8M, $8-15M, $15-30M, $30-50M, $50M+)
-- [ ] **DATA-02**: User can select industry from dropdown (Professional Services, Manufacturing, Technology/SaaS, Healthcare, Distribution, Construction, Financial Services, Retail, Other)
-- [ ] **DATA-03**: User can input number of employees range (1-5, 6-15, 16-50, 51-100, 101-250, 250+)
-- [ ] **DATA-04**: User can input founder's weekly hours range (<40, 40-50, 50-60, 60-70, 70+)
-- [ ] **DATA-05**: User can input years in business range (<2, 2-5, 5-10, 10-20, 20+)
-- [ ] **DATA-06**: User can select primary growth goal (Revenue growth, Profitability improvement, Market expansion, Operational efficiency, Preparing for exit/succession, Stabilization)
+- [ ] **ROAD-01**: Each roadmap task "Why Now?" must be LLM-generated referencing specific assessment scores, with rule-based fallback if API unavailable
+- [ ] **ROAD-02**: Each roadmap task success criterion must be LLM-generated with measurable outcomes specific to the task category, with rule-based fallback
+- [ ] **ROAD-03**: Why Now + Success Criteria combined in single LLM call per task (parallel across all tasks via Promise.all)
+- [ ] **ROAD-04**: "Not Now" list items must be persona-specific, derived from assessment data, each rationale containing at least one assessment-derived number
+
+### Advisor Readiness Narratives
+
+- [ ] **ADVR-01**: Cultural Readiness narrative must vary by company context (startup vs established vs mid-market), not just score range
+- [ ] **ADVR-02**: All dimension narratives must use 6-level granularity (not 4) with company-context variants within each level
+- [ ] **ADVR-03**: Improvement actions must reference specific assessment data (scores, SWOT items, leadership gaps)
+- [ ] **ADVR-04**: Overall readiness narrative and label must match score: >=80 Mature, 65-79 Advancing, 50-64 Developing, 35-49 Growing, <35 Foundational
 
 ### Synthesis Engine
 
-- [ ] **SYNTH-01**: Execution-Ambition Ratio computed from Leadership Execution + Operational Maturity / (Vision Pillars x 2)
-- [ ] **SYNTH-02**: Founder Dependency Index (0-10) computed from Empowerment gap (40%), SWOT bottleneck keywords (30%), Vision score (15%), Roadmap delegation indicators (15%)
-- [ ] **SYNTH-03**: Strategic Coherence Score (Aligned / Partially Aligned / Misaligned) from cross-assessment alignment checks
-- [ ] **SYNTH-04**: Revenue Risk Estimate (range) from SWOT threats, Founder Dependency Index, workforce risk, Financial Health buffer
-- [ ] **SYNTH-05**: Organizational Readiness-for-Change Score (0-100, labeled Resistant/Cautious/Open/Eager) from Cultural Readiness + AI Culture + Adaptability + Empowerment
-- [ ] **SYNTH-06**: Leadership Archetype assignment based on DNA score patterns (Visionary Builder, Trusted Operator, Stretched Strategist, Collaborative Explorer, Command Driver, Generalist Leader)
-- [ ] **SYNTH-07**: Rule 1 — Vision-Execution Mismatch (>3 pillars + Execution <7 + SWOT capacity keywords)
-- [ ] **SYNTH-08**: Rule 2 — Values-Reality Contradiction (balance values + burnout SWOT/70+ hours)
-- [ ] **SYNTH-09**: Rule 3 — Technology Ambition Without Readiness (AI vision pillars + AI Readiness <40%)
-- [ ] **SYNTH-10**: Rule 4 — Growth Vision Without Strategic Clarity (vague north star + Vision <6)
-- [ ] **SYNTH-11**: Rule 5 — Founder Dependency + Succession Risk (FDI >6 + retirement threats + Empowerment gap >2)
-- [ ] **SYNTH-12**: Rule 6 — Strong Finances + Weak Strategy (Financial Health >80% + Strategic Alignment <50%)
-- [ ] **SYNTH-13**: Rule 7 — High AI Culture + Low Infrastructure (Culture >60% + Infrastructure <30%)
-- [ ] **SYNTH-14**: Rule 8 — Execution Gap Dominance (largest gap is Execution + gap >2 + delivery SWOT keywords)
-- [ ] **SYNTH-15**: SWOT text analysis with keyword dictionaries for bottleneck, capacity, burnout, retirement, technology terms
+- [ ] **SYNTH-01**: Strategic coherence uses 5-level spectrum: Aligned, Mostly Aligned, Partially Aligned, Misaligned, Severely Misaligned — based on contradiction count, severity, and execution-ambition ratio
+- [ ] **SYNTH-02**: Contradiction severity classification added (high/medium/low) used by coherence calculation
+- [ ] **SYNTH-03**: Executive Snapshot badges must differentiate across personas (strategic posture, operational posture, change readiness)
 
-### Unified Strategic Briefing
+### PDF Layout & Polish
 
-- [ ] **USB-01**: Cover page: VWCG logo, "Strategic Business Assessment", client name, date, tagline, navy background
-- [ ] **USB-02**: Executive Snapshot: headline finding (strategic observation, not a score), vital signs dashboard (4-5 metrics with one-line interpretation), three-word descriptors
-- [ ] **USB-03**: "Where You're Strong" narrative (~1 page) synthesizing strengths across all assessments with strategic value explanation
-- [ ] **USB-04**: "Where You're Exposed" narrative (~1-1.5 pages) connecting weaknesses across assessments, identifying compounding risks, naming business consequences
-- [ ] **USB-05**: "The Contradictions" section (~0.5-1 page) identifying cross-assessment contradictions with specific evidence and strategic implications
-- [ ] **USB-06**: "What This Is Costing You" financial impact page: 3 impact blocks (Founder Bottleneck Cost, Operational Inefficiency Cost, Strategic Risk Exposure) with dollar estimates and methodology
-- [ ] **USB-07**: Benchmarking Context page: dot-plot visualizations for Advisor Readiness, AI Readiness, Leadership DNA, SWOT Risk Profile with stage labels and narrative interpretation
-- [ ] **USB-08**: Top 3 Prioritized Recommendations (~2 pages): each with Why This First, What It Looks Like, Estimated Impact, First Step
-- [ ] **USB-09**: 90-Day Quick Wins page: 3 time-boxed actions (Week 1-2, Week 3-4, Week 5-8) with specific actions and expected outcomes
-- [ ] **USB-10**: "How to Use This Briefing" guidance page with soft advisory engagement bridge
-- [ ] **USB-11**: Individual Report Downloads back page with report list and sharing guidance
-- [ ] **USB-12**: Conditional content: cost section only when data supports estimates, contradictions section only when >=2 flagged, benchmarking with industry-specific or general SMB data
+- [ ] **PDF-01**: No blank pages in any PDF — CSS break-before: auto on sections, display: none on empty sections
+- [ ] **PDF-02**: No sparse orphaned pages (<100 chars excluding footer) — CSS orphans/widows rules, break-before: avoid on methodology notes and disclaimers
+- [ ] **PDF-03**: Financial dollar ranges use white-space: nowrap; long ranges use shortened notation ($120K-$180K)
+- [ ] **PDF-04**: Benchmark chart labels offset vertically when within 70px of each other to prevent overlap
 
-### Individual Report: Advisor Readiness
+### Test Coverage
 
-- [ ] **ADV-01**: Cover page with report type, client name, date, one-sentence description
-- [ ] **ADV-02**: Overall Readiness page: large headline score with stage label (Emerging/Growing/Advancing/Mature), interpretation paragraph, horizontal bar chart with benchmark overlays
-- [ ] **ADV-03**: Category Deep Dive: for each of 4 categories — score, stage label, interpretation (2-3 sentences), improvement actions (1-2 specific)
-- [ ] **ADV-04**: Readiness Implications table: readiness assessment for common strategic moves (Hiring COO, Pursuing acquisition, New service line, Growth capital, Geographic expansion)
+- [ ] **TEST-01**: E2E tests verify financial math (subtotals = total) for all 3 personas
+- [ ] **TEST-02**: E2E tests verify no duplicate "Why Now?" text across any persona, each contains assessment data
+- [ ] **TEST-03**: E2E tests verify coherence labels differentiate across personas
+- [ ] **TEST-04**: E2E tests verify no blank/sparse pages across all PDFs
 
-### Individual Report: AI Readiness
+## v1.0 Requirements (Validated)
 
-- [ ] **AIR-01**: Cover page
-- [ ] **AIR-02**: AI Readiness Overview: headline stage (Pre-Digital/Foundational/Developing/Advanced/Leading), adoption curve narrative, horizontal bar chart of 6 dimensions
-- [ ] **AIR-03**: Dimension Analysis: for each of 6 dimensions — score, one-line label, business-context interpretation (2-3 sentences), priority level (Critical/Important/Monitor)
-- [ ] **AIR-04**: AI Readiness Roadmap: 3-stage path (Months 1-3 Foundation, 4-6 Build, 7-12 Scale) with 2-3 actions per stage based on scores
+All v1.0 requirements shipped. See git history for full v1.0 REQUIREMENTS.md.
 
-### Individual Report: Leadership DNA
+## Future Requirements
 
-- [ ] **LDR-01**: Cover page
-- [ ] **LDR-02**: Leadership Profile: horizontal gap visualization (current bar + target outline + gap highlight), headline callout for biggest gap, narrative paragraph characterizing profile
-- [ ] **LDR-03**: Gap Analysis: for each dimension with gap >1 — current/target/gap values, "What's behind this gap" (2-3 sentences), "What closing this gap unlocks" (1-2 sentences), "One thing this week" micro-step
-- [ ] **LDR-04**: Leadership Archetype page: archetype assignment based on score patterns, 2-paragraph description, famous leaders comparison, #1 breakthrough action
-
-### Individual Report: SWOT Analysis
-
-- [ ] **SWOT-01**: Cover page
-- [ ] **SWOT-02**: SWOT Summary: 2x2 priority matrix (impact vs. urgency), one-paragraph strategic position summary
-- [ ] **SWOT-03**: Strategic Connections: Leverage (S+O), Defend (S+T), Watch (W+T), Invest (W+O) with narrative explanations
-- [ ] **SWOT-04**: SWOT Action Items: 3 prioritized actions — highest-leverage S+O, most urgent W+T, one thing to stop doing
-
-### Individual Report: Vision Canvas
-
-- [ ] **VIS-01**: Cover page
-- [ ] **VIS-02**: Vision Assessment: north star quoted with Vision Clarity Rating (Clear/Directional/Vague), explanation paragraph, per-pillar feasibility check and alignment check
-- [ ] **VIS-03**: Vision Reality Gap: requirements vs. current state table, gap synthesis paragraph
-- [ ] **VIS-04**: Core Values Audit: per-value assessment of whether operationalized or aspirational, with evidence from assessment data
-
-### Individual Report: 90-Day Roadmap
-
-- [ ] **RDM-01**: Cover page
-- [ ] **RDM-02**: Roadmap Philosophy: paragraph explaining sequencing rationale (fix foundation → build capabilities → launch initiatives)
-- [ ] **RDM-03**: Simplified Roadmap: 3-phase layout (Stabilize Weeks 1-4, Build Weeks 5-8, Launch Weeks 9-12), max 6 items total, each with action/why now/owner role/success outcome
-- [ ] **RDM-04**: "What's Not on This Roadmap (And Why)": 2-3 deliberately excluded items with strategic rationale
-
-### Narrative Engine
-
-- [ ] **NARR-01**: Narrative generation uses consultant voice: direct, specific, quantified, never generic
-- [ ] **NARR-02**: Narratives reference client's own words (SWOT items, vision statements, values) for personalization
-- [ ] **NARR-03**: Banned words/phrases enforced: no "leverage" (verb), "synergy", "best practices", "low-hanging fruit", "move the needle", "world-class", "stakeholders", "going forward"
-- [ ] **NARR-04**: Active voice throughout; lead with insight, not data; one idea per paragraph
-- [ ] **NARR-05**: Every metric shown has at least 1 sentence of interpretation; no raw percentages without context
-
-### PDF Generation
-
-- [ ] **PDF-01**: PDF renders at 300 DPI for embedded graphics
-- [ ] **PDF-02**: Charts rendered as SVG vectors where possible (not raster screenshots)
-- [ ] **PDF-03**: PDF includes document metadata (title, author: "World Consulting Group", subject)
-- [ ] **PDF-04**: File naming: [ClientName]-Strategic-Briefing-[Date].pdf for unified, [ClientName]-[ReportType]-[Date].pdf for individual
-- [ ] **PDF-05**: Minimum body text size 11pt in generated PDFs
-- [ ] **PDF-06**: Edge case handling: all-high scores (optimization framing), all-low (triage framing), vague SWOT entries (note and suggest specificity), missing modules (generate with note)
-
-## v2 Requirements
-
-Deferred to future release. Tracked but not in current roadmap.
-
-### Nice-to-Have Data Inputs
-
-- **DATA-07**: User can input percentage of revenue from top 3 clients
-- **DATA-08**: User can input current profit margin range
-- **DATA-09**: User can input biggest operational frustration (open text for narrative personalization)
-
-### Enhanced Features
-
-- **ENH-01**: AI-powered narrative generation via LLM for deeper personalization
-- **ENH-02**: Historical comparison (re-assessment over time showing improvement)
-- **ENH-03**: Multi-language support for reports
-- **ENH-04**: White-label branding customization
+None — all 11 fixes are in scope for this milestone.
 
 ## Out of Scope
 
 | Feature | Reason |
 |---------|--------|
-| Backend services / server-side rendering | App remains client-side SPA; no infrastructure change |
-| User authentication | Not part of assessment tool scope |
-| Real-time collaboration | Single-user assessment tool |
-| Payment/subscription | Business model concern, not product scope |
-| Mobile native app | Web-first, PDF deliverable focus |
-| BEI (Business Emotional Intelligence) report redesign | Not one of the 6 reports in the spec |
-| SOP tool report redesigns | Not included in the 6 report types in the spec |
+| New report types | Quality fixes only, no new deliverables |
+| Tool UI changes | Report output only, not input tools |
+| Workspace format changes | Must maintain backwards compatibility |
+| New LLM provider integration | Reuse existing ChatGPT pipeline |
+| Mobile PDF optimization | Desktop/print-first, same as v1.0 |
 
 ## Traceability
 
@@ -152,86 +70,33 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DSGN-01 | Phase 1 | Pending |
-| DSGN-02 | Phase 1 | Pending |
-| DSGN-03 | Phase 1 | Pending |
-| DSGN-04 | Phase 1 | Pending |
-| DSGN-05 | Phase 1 | Pending |
-| DSGN-06 | Phase 1 | Pending |
-| DATA-01 | Phase 2 | Pending |
-| DATA-02 | Phase 2 | Pending |
-| DATA-03 | Phase 2 | Pending |
-| DATA-04 | Phase 2 | Pending |
-| DATA-05 | Phase 2 | Pending |
-| DATA-06 | Phase 2 | Pending |
-| SYNTH-01 | Phase 3 | Pending |
-| SYNTH-02 | Phase 3 | Pending |
-| SYNTH-03 | Phase 3 | Pending |
-| SYNTH-04 | Phase 3 | Pending |
-| SYNTH-05 | Phase 3 | Pending |
-| SYNTH-06 | Phase 3 | Pending |
-| SYNTH-07 | Phase 3 | Pending |
-| SYNTH-08 | Phase 3 | Pending |
-| SYNTH-09 | Phase 3 | Pending |
-| SYNTH-10 | Phase 3 | Pending |
-| SYNTH-11 | Phase 3 | Pending |
-| SYNTH-12 | Phase 3 | Pending |
-| SYNTH-13 | Phase 3 | Pending |
-| SYNTH-14 | Phase 3 | Pending |
-| SYNTH-15 | Phase 3 | Pending |
-| NARR-01 | Phase 4 | Pending |
-| NARR-02 | Phase 4 | Pending |
-| NARR-03 | Phase 4 | Pending |
-| NARR-04 | Phase 4 | Pending |
-| NARR-05 | Phase 4 | Pending |
-| USB-01 | Phase 5 | Pending |
-| USB-02 | Phase 5 | Pending |
-| USB-03 | Phase 5 | Pending |
-| USB-04 | Phase 5 | Pending |
-| USB-05 | Phase 5 | Pending |
-| USB-06 | Phase 5 | Pending |
-| USB-07 | Phase 5 | Pending |
-| USB-08 | Phase 5 | Pending |
-| USB-09 | Phase 5 | Pending |
-| USB-10 | Phase 5 | Pending |
-| USB-11 | Phase 5 | Pending |
-| USB-12 | Phase 5 | Pending |
-| ADV-01 | Phase 6 | Pending |
-| ADV-02 | Phase 6 | Pending |
-| ADV-03 | Phase 6 | Pending |
-| ADV-04 | Phase 6 | Pending |
-| AIR-01 | Phase 6 | Pending |
-| AIR-02 | Phase 6 | Pending |
-| AIR-03 | Phase 6 | Pending |
-| AIR-04 | Phase 6 | Pending |
-| LDR-01 | Phase 7 | Pending |
-| LDR-02 | Phase 7 | Pending |
-| LDR-03 | Phase 7 | Pending |
-| LDR-04 | Phase 7 | Pending |
-| SWOT-01 | Phase 7 | Pending |
-| SWOT-02 | Phase 7 | Pending |
-| SWOT-03 | Phase 7 | Pending |
-| SWOT-04 | Phase 7 | Pending |
-| VIS-01 | Phase 8 | Pending |
-| VIS-02 | Phase 8 | Pending |
-| VIS-03 | Phase 8 | Pending |
-| VIS-04 | Phase 8 | Pending |
-| RDM-01 | Phase 8 | Pending |
-| RDM-02 | Phase 8 | Pending |
-| RDM-03 | Phase 8 | Pending |
-| RDM-04 | Phase 8 | Pending |
-| PDF-01 | Phase 9 | Pending |
-| PDF-02 | Phase 9 | Pending |
-| PDF-03 | Phase 9 | Pending |
-| PDF-04 | Phase 9 | Pending |
-| PDF-05 | Phase 9 | Pending |
-| PDF-06 | Phase 10 | Pending |
+| CALC-01 | — | Pending |
+| CALC-02 | — | Pending |
+| ROAD-01 | — | Pending |
+| ROAD-02 | — | Pending |
+| ROAD-03 | — | Pending |
+| ROAD-04 | — | Pending |
+| ADVR-01 | — | Pending |
+| ADVR-02 | — | Pending |
+| ADVR-03 | — | Pending |
+| ADVR-04 | — | Pending |
+| SYNTH-01 | — | Pending |
+| SYNTH-02 | — | Pending |
+| SYNTH-03 | — | Pending |
+| PDF-01 | — | Pending |
+| PDF-02 | — | Pending |
+| PDF-03 | — | Pending |
+| PDF-04 | — | Pending |
+| TEST-01 | — | Pending |
+| TEST-02 | — | Pending |
+| TEST-03 | — | Pending |
+| TEST-04 | — | Pending |
 
 **Coverage:**
-- v1 requirements: 64 total
-- Mapped to phases: 64
-- Unmapped: 0
+- v1.1 requirements: 21 total
+- Mapped to phases: 0
+- Unmapped: 21
 
 ---
-*Requirements defined: 2026-02-13*
-*Last updated: 2026-02-13 after roadmap creation*
+*Requirements defined: 2026-02-14*
+*Last updated: 2026-02-14 after initial definition*
