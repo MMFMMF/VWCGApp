@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-02-13)
 Phase: 10 of 10 (Quality & Edge Cases)
 Plan: All complete
 Status: v1 implementation complete + LLM integration
-Last activity: 2026-02-14 - Completed quick task 6: Strip AppShell from PDF output via @media print CSS
+Last activity: 2026-02-14 - Completed quick task 6: Dedicated print route for PDF generation
 
 Progress: [██████████] 100%
 
@@ -52,6 +52,7 @@ Progress: [██████████] 100%
 - LLM integration uses native fetch (not openai SDK) for client-side SPA context
 - Two-model pipeline: ChatGPT generator + ChatGPT Mini QA validator
 - Three report modes in UI: template Strategic Briefing, AI-Powered Briefing, Individual Reports
+- Dedicated print route outside AppShell for clean PDF generation (no UI chrome artifacts)
 
 ### Architecture Summary
 
@@ -78,6 +79,9 @@ src/report/
 │   └── RoadmapReport
 ├── pdf/                         # PdfGenerator (300 DPI, metadata, branded naming)
 └── quality/                     # EdgeCaseDetector, VagueEntryDetector
+
+src/components/print/
+└── PrintReport.tsx              # Print route component (renders reports without AppShell)
 ```
 
 ### Pending Todos
@@ -98,9 +102,10 @@ None.
 | 4 | Puppeteer PDF Phase 1: print stylesheet, browser print, CLI script | 2026-02-13 | 4e67b63 | [3-puppeteer-pdf-service-phase-1-print-styl](./quick/3-puppeteer-pdf-service-phase-1-print-styl/) |
 | 5 | Replace jsPDF with page.pdf() for E2E tests — real text PDFs | 2026-02-13 | 479b67b | [4-replace-jspdf-with-puppeteer-page-pdf-fo](./quick/4-replace-jspdf-with-puppeteer-page-pdf-fo/) |
 | 6 | Strip AppShell from PDF output via @media print CSS | 2026-02-14 | 3aab405, 20392b8 | [5-strip-app-shell-from-pdf-output-print-on](./quick/5-strip-app-shell-from-pdf-output-print-on/) |
+| 7 | Dedicated print route for PDF generation | 2026-02-14 | 4e93ef2, 8bd98f8, 9febb03 | [6-dedicated-print-route-for-pdf-generation](./quick/6-dedicated-print-route-for-pdf-generation/) |
 
 ## Session Continuity
 
-Last session: 2026-02-14 (Print CSS enhancement for clean PDFs)
-Stopped at: Quick task 6 complete — PDFs contain only report content, no app shell
+Last session: 2026-02-14 (Dedicated print route for PDF generation)
+Stopped at: Quick task 7 complete — Print route renders reports without AppShell, E2E tests use direct navigation
 Resume file: None
