@@ -1,99 +1,99 @@
-# VWCG Assessment Suite — Report Redesign
+# VWCG Assessment Suite
 
 ## What This Is
 
-A complete redesign of the VWCG Assessment Suite's report output system. The existing React SPA collects data across 6 assessment tools (Advisor Readiness, AI Readiness, Leadership DNA, SWOT, Vision Canvas, 90-Day Roadmap) and currently generates basic PDF reports that read like quiz results. This project transforms that output into two deliverable types: a flagship Unified Strategic Briefing that synthesizes all assessments into a narrative-driven consulting document, and 6 redesigned individual reports with interpretation, benchmarking, and actionable recommendations. The target audience is founders/executives at $5M-$50M revenue companies.
+A React SPA for strategic business assessment. Executives use 12 integrated tools to evaluate organizational readiness and create actionable plans. The report system generates two deliverable types: a Unified Strategic Briefing (narrative-driven cross-tool synthesis) and 6 individual tool reports. Reports are generated as PDFs via Puppeteer print routes. An optional AI Briefing mode uses ChatGPT to generate narrative content. Deployed to Firebase Hosting at vwcgapp.web.app.
 
 ## Core Value
 
 Every deliverable must pass the "Holy Cow" Standard: a founder reads it and feels like a senior consultant spent a day analyzing their business — not like a quiz engine spit out charts.
 
+## Current Milestone: v1.1 Report Quality Overhaul
+
+**Goal:** Fix all 11 defects identified by adversarial QA audit across 24 PDFs (8 report types x 3 personas). Every report should be so good that a CEO asks "why is this free?"
+
+**Target fixes:**
+- FIX 1: Financial math reconciliation (subtotals must sum to total)
+- FIX 2: Roadmap "Why Now?" must be task-specific (LLM-generated with rule-based fallback)
+- FIX 3: Roadmap success criteria must be measurable (LLM-generated with rule-based fallback)
+- FIX 4: Eliminate blank pages in AI Briefings
+- FIX 5: Advisor Readiness narratives must vary by score AND company context
+- FIX 6: Strategic coherence must have a real 5-level spectrum
+- FIX 7: Advisor Readiness overall narrative must match score
+- FIX 8: Benchmark chart label overlap
+- FIX 9: Sparse orphaned pages
+- FIX 10: AI Briefing financial figure line breaks
+- FIX 11: "Not Now" list differentiation across personas
+
 ## Requirements
 
 ### Validated
 
-<!-- Shipped and confirmed valuable — existing capabilities in the codebase. -->
-
-- ✓ 6 assessment tools collecting structured data (AI Readiness, Leadership DNA, BEI, Vision Canvas, SWOT, 90-Day Roadmap, Advisor Readiness, SOP tools) — existing
-- ✓ Zustand workspace store persisting all tool data to localStorage — existing
-- ✓ Synthesis Engine with 5 cross-tool rules (E1-E5) generating insights — existing
-- ✓ L0-L3 validation system with per-tool profiles — existing
-- ✓ Safe Mode import workflow (stage → validate → commit) — existing
-- ✓ Basic PDF generation via jsPDF + html2canvas in Report Center — existing
-- ✓ Optional AI consultation via Gemini 1.5 Flash API — existing
-- ✓ Workspace save/load with .vwcg file format — existing
-- ✓ Dynamic tool registry with auto-routing and sidebar navigation — existing
-- ✓ Dashboard with strategic health widget and insights display — existing
-- ✓ Playwright E2E test infrastructure with journey tests — existing
+- ✓ 12 assessment tools collecting structured data — v1.0
+- ✓ Zustand workspace store persisting all tool data to localStorage — v1.0
+- ✓ Synthesis Engine v2 with 8 cross-tool rules generating insights — v1.0
+- ✓ 6 derived metrics (Execution-Ambition Ratio, Founder Dependency Index, Strategic Coherence, Revenue Risk, Readiness-for-Change, Leadership Archetype) — v1.0
+- ✓ L0-L3 validation system with per-tool profiles — v1.0
+- ✓ Safe Mode import workflow (stage → validate → commit) — v1.0
+- ✓ Dark navy design system with Inter/DM Sans typography — v1.0
+- ✓ Unified Strategic Briefing (12-16 page narrative PDF) — v1.0
+- ✓ AI-powered Strategic Briefing via ChatGPT (LLMStrategicBriefing) — v1.0
+- ✓ 6 redesigned individual reports (Advisor, AI, Leadership, SWOT, Vision, Roadmap) — v1.0
+- ✓ Chart system (horizontal bars, progress bars, dot plots, gauges) — v1.0
+- ✓ Narrative generation engine with consultant voice — v1.0
+- ✓ PDF generation via Puppeteer print route (dedicated /report/print/:reportType) — v1.0
+- ✓ Business Context data collection (revenue, industry, employee count, etc.) — v1.0
+- ✓ Edge case and vague entry detection — v1.0
+- ✓ Playwright E2E test infrastructure with journey tests — v1.0
 
 ### Active
 
-<!-- Current scope. Building toward these. -->
-
-- [ ] Unified Strategic Briefing — 12-16 page narrative PDF synthesizing all 6 assessments
-- [ ] New design system: dark navy palette (#1B2A4A), Inter/DM Sans typography, authority aesthetic
-- [ ] Executive Snapshot page with headline finding, vital signs dashboard, three-word descriptors
-- [ ] "What Your Assessment Reveals" narrative synthesis (strengths, exposures, contradictions)
-- [ ] "What This Is Costing You" financial impact page with revenue-at-risk estimates
-- [ ] Benchmarking context page with dot-plot/range-bar visualizations
-- [ ] Top 3 prioritized recommendations with rationale, impact, and first steps
-- [ ] 90-Day Quick Wins section (3 concrete actions by timeframe)
-- [ ] 6 redesigned individual reports with Score → Interpretation → Action structure
-- [ ] Advisor Readiness report: stage labels, benchmark overlays, readiness implications table
-- [ ] AI Readiness report: adoption curve placement, dimension analysis, 3-stage AI roadmap
-- [ ] Leadership DNA report: horizontal gap visualization, gap analysis, leadership archetypes
-- [ ] SWOT report: 2x2 priority matrix, strategic connections (Leverage/Defend/Watch/Invest)
-- [ ] Vision Canvas report: vision evaluation (not restatement), feasibility checks, values audit
-- [ ] 90-Day Roadmap report: 3-phase layout (Stabilize/Build/Launch), "What's Not Here" section
-- [ ] 8 new cross-assessment synthesis rules replacing current E1-E5
-- [ ] 6 new derived metrics: Execution-Ambition Ratio, Founder Dependency Index, Strategic Coherence Score, Revenue Risk Estimate, Readiness-for-Change Score, Leadership Archetype
-- [ ] New data collection: revenue range, industry, employee count, founder hours, years in business, growth goal
-- [ ] Contradiction detection engine scanning cross-assessment data
-- [ ] Chart system overhaul: horizontal bars, progress bars, dot plots (ban radar/pie/3D)
-- [ ] Narrative generation engine with consultant voice (direct, specific, quantified)
-- [ ] Dynamic content rules (conditional sections based on data availability)
-- [ ] Edge case handling (all-high, all-low, vague inputs, missing modules)
-- [ ] PDF improvements: vector charts (SVG), 300 DPI, document metadata, branded naming convention
+- [ ] Financial impact subcategories must sum exactly to total (bottom-up calculation with rounding reconciliation)
+- [ ] Roadmap "Why Now?" must be LLM-generated per task with assessment data references, rule-based fallback
+- [ ] Roadmap success criteria must be LLM-generated per task with measurable outcomes, rule-based fallback
+- [ ] No blank pages in any PDF output (CSS prevention + post-processing safety net)
+- [ ] Advisor Readiness dimension narratives must vary by score AND company context (startup vs established)
+- [ ] Strategic coherence must use 5-level spectrum (Aligned → Severely Misaligned) not binary
+- [ ] Advisor Readiness overall narrative/label must match actual score ranges
+- [ ] Benchmark chart labels must not overlap when scores are close to reference markers
+- [ ] No sparse orphaned pages (<100 chars of content excluding footer)
+- [ ] Financial dollar ranges must not break across lines in AI Briefings
+- [ ] "Not Now" list must be persona-specific with assessment data references
 
 ### Out of Scope
 
 - Backend/server-side infrastructure — app remains a client-side SPA
 - User authentication or multi-user access
-- Real-time collaboration features
-- Payment processing or subscription management
+- New tool development or tool UI changes
+- Changes to workspace save/load format
+- New report types beyond existing 8
 - Mobile-native app development
-- AI-generated narrative via LLM at runtime (narratives are template-driven with data interpolation, not live AI calls) — the existing Gemini consultation remains optional/separate
 
 ## Context
 
-The existing VWCG app is a React 19 + TypeScript 5.9 + Vite 7.2 SPA deployed to Firebase Hosting. It has 11 registered tools, a Zustand store with localStorage persistence, a synthesis engine with 5 rules, and basic PDF export via jsPDF + html2canvas. The Report Center currently captures HTML elements as raster images — this needs to evolve to support the new design system's vector charts and precise typography.
+v1.0 (Report Redesign) shipped 10 phases with ~11,000 lines across the report system, synthesis engine v2, narrative framework, and PDF infrastructure. An adversarial QA audit then tested 24 PDFs (8 report types x 3 test personas: Alex/Meridian Consulting, Mike/Patterson Industrial, Sarah/TechFlow Analytics) and found 11 defects ranging from financial math errors to generic templated content that doesn't differentiate between personas.
 
-The spec document provides 3 complete sample client profiles (Alex, Mike, Sarah) with full narrative content for every section of the Unified Strategic Briefing and individual reports. These serve as the reference implementation for narrative tone, data interpretation patterns, and content structure.
+The existing LLM pipeline (`src/engine/llm/`) uses ChatGPT via native fetch with a generator + QA validator pattern. This pipeline will be extended for roadmap "Why Now?" and success criteria generation (Fixes 2-3), with rule-based fallbacks for when the API is unavailable.
 
-The current synthesis rules (E1-E5) will be replaced/expanded to 8 rules covering: Vision-Execution Mismatch, Values-Reality Contradiction, Technology Ambition Without Readiness, Growth Vision Without Strategic Clarity, Founder Dependency + Succession Risk, Strong Finances + Weak Strategy, High AI Culture + Low Infrastructure, Execution Gap Dominance.
-
-Key design reference: dark navy (#1B2A4A) authority palette, Inter/DM Sans typography, horizontal bar charts replacing radar charts, generous whitespace, narrative-first layout with charts supporting story (never standalone).
+The full spec document with all 11 fixes, pseudocode, expected outputs per persona, test criteria, and dependency chain is at: `C:\Users\Kamyar\Downloads\VWCG-Report-Quality-Fix-Spec_1.md`
 
 ## Constraints
 
-- **Tech stack**: Must build within existing React 19 + Vite + Zustand + jsPDF stack — no backend services
-- **PDF quality**: 300 DPI graphics, vector SVG charts where possible, minimum 11pt body text
-- **Design system**: Strict adherence to color palette, typography scale, and chart guidelines from spec
-- **Narrative voice**: Senior consultant tone — direct, specific, quantified, never generic or sycophantic
-- **Data availability**: Financial estimates must degrade gracefully when revenue/industry data is missing
-- **Compatibility**: Must maintain existing workspace save/load (.vwcg) backwards compatibility
-- **Performance**: PDF generation must complete in reasonable time for 12-16 page documents
+- **Tech stack**: Existing React 19 + Vite + Zustand + Puppeteer stack — no new major dependencies
+- **LLM strategy**: ChatGPT for Fixes 2-3 with rule-based fallback; existing openai-service.ts pattern
+- **Test coverage**: Every fix must be verifiable across all 3 personas (Sarah, Mike, Alex)
+- **No regressions**: Existing report functionality must not break
+- **Backwards compatibility**: Workspace .vwcg format unchanged
 
 ## Key Decisions
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Template-driven narratives, not runtime LLM | Predictability, no API dependency, consistent quality, offline capability | — Pending |
-| Replace radar charts with horizontal bars | Radar charts "look cool, impossible to read, don't convey insight" per spec | — Pending |
-| Dark navy authority palette over current light/airy | Convey seniority and gravitas — "Think McKinsey, not Canva" | — Pending |
-| 8 synthesis rules replacing 5 | Broader cross-assessment coverage including financial impact and contradiction detection | — Pending |
-| New data inputs (revenue, industry, etc.) | Required for financial impact calculations and benchmarking context | — Pending |
-| Leadership archetypes based on DNA patterns | Adds relatability and actionable self-identification for founders | — Pending |
+| LLM with rule-based fallback for Fixes 2-3 | Highest quality personalized text, graceful degradation when API unavailable | — Pending |
+| Bottom-up financial calculation (Fix 1 Option A) | Total = sum of parts, never independent. Rounding reconciliation on last category. | — Pending |
+| 5-level coherence spectrum (Fix 6) | Binary "Misaligned" gives every company the same diagnosis — defeats the purpose | — Pending |
+| CSS-first for PDF layout fixes (4, 9, 10) | Prevent at source rather than post-process; post-processing as safety net only | — Pending |
+| Combine Why Now + Success Criteria in single LLM call | Halves API calls — one prompt per task returns both fields as JSON | — Pending |
 
 ---
-*Last updated: 2026-02-13 after initialization*
+*Last updated: 2026-02-14 after milestone v1.1 initialization*
