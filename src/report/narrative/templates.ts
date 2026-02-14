@@ -309,7 +309,8 @@ function buildContradictionsNarrative(ctx: NarrativeContext): NarrativeSection {
   }
 
   const vision = ctx.workspace.tools?.['vision-canvas'];
-  const values = vision?.values as string[] | undefined;
+  const rawValues = vision?.values as Array<string | { text: string }> | undefined;
+  const values = rawValues?.map(v => typeof v === 'string' ? v : v.text);
   if (values && values.length > 0) {
     const valuesList = joinWithAnd(values.slice(0, 4));
     parts.push(
@@ -599,7 +600,8 @@ function buildVisionCanvasNarrative(ctx: NarrativeContext): NarrativeSection {
 
   const northStar = vision.northStar ?? '';
   const pillars = (vision.pillars ?? []) as Array<{ name?: string; kpi?: string }>;
-  const values = (vision.values ?? []) as string[];
+  const rawValues = (vision.values ?? []) as Array<string | { text: string }>;
+  const values = rawValues.map(v => typeof v === 'string' ? v : v.text);
 
   if (northStar) {
     parts.push(
