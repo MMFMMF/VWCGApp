@@ -79,6 +79,7 @@ src/components/print/
 | 8 | v1.2 fixes: coherence spectrum, Why Now template, event category, FDI direction, cultural narrative, sparse page, DotPlot labels | 2026-02-14 | 5 files |
 | 9 | v1.3 final polish: data refs in 6 Why Nows, DotPlot→table benchmarks, coherence tuning + narrative differentiation | 2026-02-14 | 4 files |
 | 10 | v1.3 hotfix: fix orphaned cards in print layout with break-before avoid and tighter margins | 2026-02-14 | 1 file |
+| 11 | E2E test suite: add 7 new personas and generate 80 PDFs (10 personas × 8 reports) | 2026-02-14 | 9 files |
 
 ### Pending Todos
 
