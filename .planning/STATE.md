@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-02-14)
 Phase: 11 of 16 (Financial Math Reconciliation)
 Plan: 0 of TBD in current phase
 Status: Ready to plan
-Last activity: 2026-02-14 - Completed quick task 10: v1.3 hotfix orphaned cards in print layout
+Last activity: 2026-02-14 - Completed quick task 12: critical fixes (FDI override, revenue range, cultural narrative)
 
 Progress: [██████████░░░░░░░░░░] 62.5% (10/16 phases complete)
 
@@ -80,6 +80,7 @@ src/components/print/
 | 9 | v1.3 final polish: data refs in 6 Why Nows, DotPlot→table benchmarks, coherence tuning + narrative differentiation | 2026-02-14 | 4 files |
 | 10 | v1.3 hotfix: fix orphaned cards in print layout with break-before avoid and tighter margins | 2026-02-14 | 1 file |
 | 11 | E2E test suite: add 7 new personas and generate 80 PDFs (10 personas × 8 reports) | 2026-02-14 | 9 files |
+| 12 | Critical fixes: FDI override from businessContext, revenueRange key correction, cultural narrative differentiation | 2026-02-14 | 9 files |
 
 ### Pending Todos
 
