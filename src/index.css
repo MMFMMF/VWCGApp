@@ -17,12 +17,15 @@
   }
 
   /* Hide app chrome — sidebar, topbar, buttons, scrollbars */
+  aside,              /* Sidebar in AppShell */
   nav,
   header,
   [data-sidebar],
   .sidebar,
   button,
+  input[type="file"],
   [role="navigation"],
+  [class*="banner"],  /* Logic upgrade banner, safe mode banner, etc. */
   .no-print {
     display: none !important;
   }
@@ -41,6 +44,46 @@
   #root {
     padding: 0 !important;
     margin: 0 !important;
+    max-width: none !important;
+  }
+
+  /* Make main full-width */
+  main {
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+  }
+
+  /* Expand report containers to full width */
+  #report-preview-container,
+  #unified-strategic-briefing,
+  #llm-strategic-briefing {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    scale: 1 !important;
+  }
+
+  /* Remove scroll/height constraints */
+  .overflow-y-auto,
+  .overflow-auto,
+  .custom-scrollbar {
+    overflow: visible !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+
+  /* Remove grid/flex constraints on report ancestors */
+  .lg\:col-span-1,
+  .lg\:col-span-3,
+  .grid {
+    display: block !important;
+    width: 100% !important;
     max-width: none !important;
   }
 
