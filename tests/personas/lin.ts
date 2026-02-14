@@ -100,12 +100,13 @@ export const lin = {
   // Business Context: company demographics for reports
   businessContext: {
     companyName: 'ZhangTech Precision Manufacturing',
-    revenueRange: '15-50M',
+    revenueRange: '30-50M',
     industry: 'Advanced Manufacturing',
     employeeCount: '201-500',
     founderHours: '50-60',
     yearsInBusiness: '10-20',
     growthGoal: 'Revenue growth',
+    founderDependencyIndex: 4.5,
   },
 
   // Expected synthesis rules that should fire

@@ -99,12 +99,13 @@ export const raj = {
   // Business Context: company demographics for reports
   businessContext: {
     companyName: 'Mehta Digital Agency',
-    revenueRange: '5-8M',
+    revenueRange: '3-8M',
     industry: 'Marketing/Creative',
     employeeCount: '51-100',
     founderHours: '70+',
     yearsInBusiness: '5-10',
     growthGoal: 'Revenue growth',
+    founderDependencyIndex: 9.2,
   },
 
   // Expected synthesis rules

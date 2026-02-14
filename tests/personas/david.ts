@@ -104,6 +104,7 @@ export const david = {
     founderHours: '50-60',
     yearsInBusiness: '10-20',
     growthGoal: 'Client retention',
+    founderDependencyIndex: 6.0,
   },
 
   // Expected synthesis rules

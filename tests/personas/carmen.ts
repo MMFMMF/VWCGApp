@@ -99,12 +99,13 @@ export const carmen = {
   // Business Context: established mid-market construction firm
   businessContext: {
     companyName: 'Villarreal Construction Group',
-    revenueRange: '15-50M',
+    revenueRange: '30-50M',
     industry: 'Construction',
     employeeCount: '201-500',
     founderHours: '50-60',
     yearsInBusiness: '20+',
     growthGoal: 'Revenue growth',
+    founderDependencyIndex: 5.5,
   },
 
   // Expected synthesis rules

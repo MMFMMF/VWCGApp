@@ -98,12 +98,13 @@ export const diana = {
   // Business Context: company demographics for reports
   businessContext: {
     companyName: 'Okafor Health Partners',
-    revenueRange: '15-50M',
+    revenueRange: '30-50M',
     industry: 'Healthcare',
     employeeCount: '201-500',
     founderHours: '40-50',
     yearsInBusiness: '10-20',
     growthGoal: 'Market expansion',
+    founderDependencyIndex: 3.5,
   },
 
   // Expected synthesis rules that should fire

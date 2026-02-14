@@ -106,6 +106,7 @@ export const keisha = {
     founderHours: '70+',
     yearsInBusiness: '5-10',
     growthGoal: 'Market expansion',
+    founderDependencyIndex: 8.5,
   },
 
   // Expected synthesis rules

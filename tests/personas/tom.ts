@@ -99,12 +99,13 @@ export const tom = {
   // Business Context: company demographics for reports
   businessContext: {
     companyName: "Brennan's BBQ & Catering Co.",
-    revenueRange: '15-50M',
+    revenueRange: '15-30M',
     industry: 'Restaurant/Food Service',
     employeeCount: '201-500',
     founderHours: '60-70',
     yearsInBusiness: '10-20',
     growthGoal: 'Revenue growth',
+    founderDependencyIndex: 7.0,
   },
 
   // Expected synthesis rules that should fire

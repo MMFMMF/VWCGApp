@@ -86,7 +86,7 @@ function getStageLabel(pct: number): string {
 }
 
 /** Map category percentage to interpretation with 6-level granularity + company context + industry */
-function getCategoryInterpretation(catId: string, pct: number, context: CompanyContext, industry?: string): string {
+function getCategoryInterpretation(catId: string, pct: number, context: CompanyContext, industry?: string, workspace?: { tools: Record<string, any> }): string {
   // 6 score levels: 0-16, 17-33, 34-50, 51-66, 67-83, 84-100
   const level = pct <= 16 ? 0 : pct <= 33 ? 1 : pct <= 50 ? 2 : pct <= 66 ? 3 : pct <= 83 ? 4 : 5;
 
@@ -128,26 +128,66 @@ function getCategoryInterpretation(catId: string, pct: number, context: CompanyC
   const base = templates[catId]?.[level]?.[context] ?? `This category scored ${pct}%.`;
 
   // Industry-specific differentiation for cultural category
+  let result = base;
   if (catId === 'cultural' && industry) {
     const industryLower = industry.toLowerCase();
     if (/consult|advisory|professional.*service|legal|account/i.test(industryLower)) {
-      return `${base} In a professional services environment, cultural readiness directly impacts client-facing quality — team engagement translates to client outcomes.`;
-    }
-    if (/industrial|manufactur|supply|warehouse|logistics|construct|mining/i.test(industryLower)) {
-      return `${base} In an industrial environment, cultural readiness is inseparable from safety outcomes and workforce retention — disengaged teams create operational risk.`;
-    }
-    if (/tech|software|saas|digital|startup/i.test(industryLower)) {
-      return `${base} In a technology environment, cultural readiness determines innovation velocity — the ability to experiment, fail fast, and iterate depends on psychological safety.`;
-    }
-    if (/health|medical|clinic|dental|pharma/i.test(industryLower)) {
-      return `${base} In healthcare, cultural readiness affects patient outcomes and regulatory compliance — team engagement directly correlates with care quality.`;
-    }
-    if (/retail|restaurant|hospitality|food|hotel/i.test(industryLower)) {
-      return `${base} In a customer-facing environment, cultural readiness directly impacts the customer experience — frontline engagement determines brand perception.`;
+      result = `${base} In a professional services environment, cultural readiness directly impacts client-facing quality — team engagement translates to client outcomes.`;
+    } else if (/industrial|manufactur|supply|warehouse|logistics|construct|mining/i.test(industryLower)) {
+      result = `${base} In an industrial environment, cultural readiness is inseparable from safety outcomes and workforce retention — disengaged teams create operational risk.`;
+    } else if (/tech|software|saas|digital|startup/i.test(industryLower)) {
+      result = `${base} In a technology environment, cultural readiness determines innovation velocity — the ability to experiment, fail fast, and iterate depends on psychological safety.`;
+    } else if (/health|medical|clinic|dental|pharma/i.test(industryLower)) {
+      result = `${base} In healthcare, cultural readiness affects patient outcomes and regulatory compliance — team engagement directly correlates with care quality.`;
+    } else if (/retail|restaurant|hospitality|food|hotel/i.test(industryLower)) {
+      result = `${base} In a customer-facing environment, cultural readiness directly impacts the customer experience — frontline engagement determines brand perception.`;
     }
   }
 
-  return base;
+  // Persona-specific data injection for cultural category differentiation
+  if (catId === 'cultural' && workspace) {
+    const bc = workspace.tools?.['business-context'];
+    const dna = workspace.tools?.['leadership-dna'];
+    const swot = workspace.tools?.swot;
+
+    const dataPoints: string[] = [];
+
+    // SWOT weakness signals related to culture
+    const weaknesses = swot?.weaknesses as Array<{ text?: string }> | undefined;
+    if (weaknesses) {
+      const cultureSignals = weaknesses.filter((w: { text?: string }) =>
+        /turnover|retention|burnout|morale|engagement|culture|communication.*gap|management.*style|approves.*every|direct report/i.test(w.text ?? '')
+      );
+      if (cultureSignals.length > 0) {
+        dataPoints.push(`The SWOT assessment flagged "${cultureSignals[0].text}" as a contributing factor`);
+      }
+    }
+
+    // Leadership empowerment + adaptability
+    const empowerment = dna?.current_Empowerment;
+    const adaptability = dna?.current_Adaptability;
+    if (empowerment != null && adaptability != null) {
+      dataPoints.push(`Leadership empowerment (${empowerment}/10) and adaptability (${adaptability}/10) shape how quickly cultural initiatives take hold`);
+    }
+
+    // Employee count + years in business
+    const empCount = bc?.employeeCount;
+    const years = bc?.yearsInBusiness;
+    if (empCount && years) {
+      dataPoints.push(`As a ${empCount}-employee organization with ${years} years of history, cultural patterns are ${years === '20+' || years === '10-20' ? 'deeply embedded and require sustained effort to shift' : 'still forming and can be shaped with deliberate action'}`);
+    } else if (empCount) {
+      dataPoints.push(`Managing cultural dynamics across ${empCount} employees requires structured communication and engagement practices`);
+    }
+
+    // Append up to 2 data points
+    if (dataPoints.length >= 2) {
+      result += ` ${dataPoints[0]}. ${dataPoints[1]}.`;
+    } else if (dataPoints.length === 1) {
+      result += ` ${dataPoints[0]}.`;
+    }
+  }
+
+  return result;
 }
 
 /** Generate data-driven improvement actions referencing specific assessment scores */
@@ -516,7 +556,7 @@ export function AdvisorReadinessReport() {
         <div className="space-y-10">
           {categoryScores.map((cat) => {
             const businessCtx = tools['business-context'] as { industry?: string } | undefined;
-            const interpretation = getCategoryInterpretation(cat.id, cat.percentage, companyContext, businessCtx?.industry);
+            const interpretation = getCategoryInterpretation(cat.id, cat.percentage, companyContext, businessCtx?.industry, workspace);
             const actions = getCategoryActions(cat.id, cat.percentage, workspace, metrics);
 
             return (

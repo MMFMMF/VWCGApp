@@ -96,6 +96,12 @@ function computeExecutionAmbitionRatio(workspace: any): number {
  * Interpretation: 0-3 Low, 4-6 Moderate, 7-10 Critical
  */
 function computeFounderDependencyIndex(workspace: any): number {
+    // Check for explicit override in business-context (e.g. from assessment intake)
+    const bc = workspace.tools?.['business-context'];
+    if (bc?.founderDependencyIndex != null && typeof bc.founderDependencyIndex === 'number') {
+        return Math.min(10, Math.max(0, bc.founderDependencyIndex));
+    }
+
     const dna = workspace.tools?.['leadership-dna'];
     const swot = workspace.tools?.swot;
     const roadmap = workspace.tools?.roadmap;
