@@ -1,0 +1,39 @@
+---
+interface Props {
+  ctaHref?: string;
+}
+
+const { ctaHref = '/app' } = Astro.props;
+---
+
+<section class="py-20 sm:py-28 bg-gradient-to-b from-white to-indigo-50 relative">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <!-- Social proof number -->
+    <div class="inline-flex items-center gap-2 bg-indigo-100 rounded-full px-4 py-1.5 mb-8">
+      <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+      <span class="text-sm font-medium text-indigo-700">Join 1,200+ business owners who've already assessed</span>
+    </div>
+
+    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
+      Your blind spots don't wait.<br class="hidden sm:inline" />
+      <span class="text-indigo-600">Neither should you.</span>
+    </h2>
+    <p class="mt-5 text-lg text-gray-600 max-w-xl mx-auto">
+      Most founders finish all 10 assessments in one sitting. Start with one — see what you've been missing.
+    </p>
+
+    <div class="mt-10">
+      <a
+        href={ctaHref}
+        class="group inline-flex items-center justify-center px-10 py-5 text-xl font-bold rounded-xl bg-slate-900 text-white hover:bg-slate-800 shadow-xl shadow-slate-900/20 hover:shadow-2xl transition-all duration-300"
+      >
+        Start Free Assessment
+        <svg class="ml-3 w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+      </a>
+    </div>
+
+    <p class="mt-5 text-sm text-gray-500">
+      No email. No signup. No credit card. Ever.
+    </p>
+  </div>
+</section>

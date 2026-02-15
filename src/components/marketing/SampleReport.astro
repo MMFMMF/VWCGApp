@@ -1,0 +1,183 @@
+---
+import GaugeIsland from '../islands/GaugeIsland';
+import ExpandableInsightCard from '../islands/ExpandableInsightCard';
+
+// Static gauge data — used for both SSR fallback and React hydration
+const gauges = [
+  { value: 72, label: 'AI Readiness', description: 'AI Readiness score: 72 out of 100', duration: 2.0, color: '#4F46E5' },
+  { value: 85, label: 'Leadership DNA', description: 'Leadership DNA score: 85 out of 100', duration: 2.5, color: '#7C3AED' },
+  { value: 68, label: 'Advisor Ready', description: 'Advisor Readiness score: 68 out of 100', duration: 1.8, color: '#2563EB' },
+];
+---
+
+<section id="sample-report" class="py-20 sm:py-28 bg-gradient-to-b from-slate-100 to-slate-50 relative overflow-hidden">
+  <!-- Decorative -->
+  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-indigo-100/50 rounded-full blur-[120px] -translate-y-1/2"></div>
+
+  <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-14">
+      <span class="text-sm font-semibold text-indigo-600 uppercase tracking-wider">Preview</span>
+      <h2 class="mt-3 text-3xl sm:text-4xl font-bold text-gray-900">
+        Here's what your report looks like
+      </h2>
+      <p class="mt-3 text-gray-600 max-w-lg mx-auto">
+        Real scores. Real insights. Prioritized actions — not vague advice.
+        <span class="block text-sm text-gray-400 mt-1">Sample data below — your scores replace these.</span>
+      </p>
+    </div>
+
+    <!-- Report Card -->
+    <div class="max-w-3xl mx-auto">
+      <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <!-- Report Header -->
+        <div class="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-6 py-5">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-lg font-bold">Business Assessment Report</h3>
+              <p class="text-indigo-200 text-sm">Sample Company Inc.</p>
+            </div>
+            <span class="text-xs bg-white/15 backdrop-blur px-3 py-1.5 rounded-full font-medium">
+              Sample Report
+            </span>
+          </div>
+        </div>
+
+        <!-- Scores -->
+        <div class="px-6 py-8 border-b border-gray-100">
+          <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-6 text-center">
+            Assessment Scores
+          </h4>
+          <div class="grid grid-cols-3 gap-6 max-w-md mx-auto">
+            {gauges.map((g) => (
+              <div class="gauge-wrapper">
+                {/* SSR fallback: static CSS gauge visible before JS hydrates */}
+                <div class="gauge-fallback flex flex-col items-center" role="img" aria-label={g.description}>
+                  <div class="relative w-28 h-28">
+                    <svg viewBox="0 0 100 100" class="w-full h-full">
+                      {/* Background track */}
+                      <circle cx="50" cy="50" r="42" fill="none" stroke="#E5E7EB" stroke-width="8" />
+                      {/* Filled arc — stroke-dasharray = circumference, dashoffset = unfilled portion */}
+                      <circle
+                        cx="50" cy="50" r="42"
+                        fill="none"
+                        stroke={g.color}
+                        stroke-width="8"
+                        stroke-linecap="round"
+                        stroke-dasharray={`${2 * Math.PI * 42}`}
+                        stroke-dashoffset={`${2 * Math.PI * 42 * (1 - g.value / 100)}`}
+                        transform="rotate(-90 50 50)"
+                      />
+                      {/* Value text */}
+                      <text x="50" y="50" text-anchor="middle" dominant-baseline="central"
+                        fill={g.color} font-size="22" font-weight="bold">{g.value}%</text>
+                    </svg>
+                  </div>
+                  <p class="mt-3 text-sm font-medium text-gray-600 text-center">{g.label}</p>
+                </div>
+
+                {/* React island: replaces fallback after hydration */}
+                <div class="gauge-interactive hidden">
+                  <GaugeIsland
+                    value={g.value}
+                    label={g.label}
+                    description={g.description}
+                    duration={g.duration}
+                    color={g.color}
+                    client:visible
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Insights -->
+        <div class="px-6 py-6">
+          <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">
+            Key Findings
+          </h4>
+          <div class="grid sm:grid-cols-2 gap-3">
+            <ExpandableInsightCard
+              severity="high"
+              title="Execution Capability Gap"
+              summary="Leadership execution score limits strategic pillars to 3."
+              details="Your current execution capacity can safely support 3 strategic pillars based on your leadership DNA score. Adding more initiatives would dilute focus and reduce success probability. Consider consolidating similar initiatives or deferring lower-priority items."
+              client:visible
+            />
+            <ExpandableInsightCard
+              severity="medium"
+              title="Burnout Risk Detected"
+              summary="Tasks exceed safe capacity by 27%. Reduce scope or extend timeline."
+              details="Current roadmap tasks require 127% of available team capacity. High-risk areas: Week 4 (185% capacity) and Week 8 (142% capacity). Recommend reducing scope by 25% or extending timeline by 3 weeks."
+              client:visible
+            />
+            <ExpandableInsightCard
+              severity="info"
+              title="Strength: Vision-Data Alignment"
+              summary="Strong alignment between leadership vision and data readiness."
+              details="Your Vision Canvas pillars align exceptionally well with your AI Readiness data capabilities (89% alignment score). This creates a force multiplier—you can execute data-driven strategies faster than competitors."
+              client:visible
+            />
+            <ExpandableInsightCard
+              severity="opportunity"
+              title="Opportunity: Predictive Analytics"
+              summary="High-confidence market opportunity matches your AI capabilities."
+              details="Market opportunity 'Predictive Customer Analytics' has 87% confidence rating and matches your AI Readiness strengths. Early mover advantage window: 6-9 months. Recommend allocating 30% of Q2 engineering capacity to proof-of-concept."
+              client:visible
+            />
+          </div>
+        </div>
+
+        <!-- Fade overlay -->
+        <div class="h-16 bg-gradient-to-t from-white to-transparent -mt-16 relative z-10 pointer-events-none"></div>
+      </div>
+
+      <!-- CTA below report -->
+      <div class="mt-8 text-center">
+        <a
+          href="/app"
+          class="group inline-flex items-center justify-center px-8 py-4 text-lg font-semibold rounded-xl bg-indigo-600 text-white hover:bg-indigo-500 shadow-lg transition-all duration-200"
+        >
+          Get Your Own Report
+          <svg class="ml-2 w-5 h-5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+        </a>
+        <p class="mt-3 text-sm text-gray-500">Free. No account needed. Download as PDF.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Swap static SVG fallbacks for interactive React gauges once hydrated
+  function swapGauges() {
+    document.querySelectorAll('.gauge-wrapper').forEach((wrapper) => {
+      const interactive = wrapper.querySelector('.gauge-interactive');
+      const fallback = wrapper.querySelector('.gauge-fallback');
+      if (!interactive || !fallback) return;
+
+      // Check if React has rendered content inside the interactive container
+      const observer = new MutationObserver(() => {
+        if (interactive.querySelector('[role="img"]')) {
+          fallback.classList.add('hidden');
+          interactive.classList.remove('hidden');
+          observer.disconnect();
+        }
+      });
+
+      observer.observe(interactive, { childList: true, subtree: true });
+
+      // Also check immediately in case React already hydrated
+      if (interactive.querySelector('[role="img"]')) {
+        fallback.classList.add('hidden');
+        interactive.classList.remove('hidden');
+      }
+    });
+  }
+
+  // Run on DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', swapGauges);
+  } else {
+    swapGauges();
+  }
+</script>

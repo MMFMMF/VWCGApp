@@ -1,0 +1,144 @@
+---
+import '@/styles/global.css';
+
+// Self-hosted fonts via @fontsource
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/inter/700.css';
+import '@fontsource/lexend/400.css';
+import '@fontsource/lexend/500.css';
+import '@fontsource/lexend/600.css';
+import '@fontsource/lexend/700.css';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  ogType?: string;
+  canonical?: string;
+  article?: {
+    author?: string;
+    publishedTime?: string;
+    modifiedTime?: string;
+    tags?: string[];
+  };
+  structuredData?: Record<string, unknown>;
+}
+
+const {
+  title,
+  description,
+  ogImage = '/og-image.svg',
+  ogType = 'website',
+  canonical,
+  article,
+  structuredData,
+} = Astro.props;
+
+const siteUrl = 'https://vwcgapp.com';
+const siteName = 'VWCG';
+const canonicalUrl = canonical || `${siteUrl}${Astro.url.pathname}`;
+
+// Default structured data: Organization + WebSite (homepage gets both)
+const defaultStructuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "World Consulting Group",
+    "url": siteUrl,
+    "logo": `${siteUrl}/favicon.svg`,
+    "description": "Free strategic assessment tools for business leaders."
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": siteName,
+    "url": siteUrl,
+    "description": description,
+    "publisher": {
+      "@type": "Organization",
+      "name": "World Consulting Group"
+    }
+  }
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <meta name="robots" content="index, follow" />
+
+  <title>{title}</title>
+  <link rel="canonical" href={canonicalUrl} />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={`${siteUrl}${ogImage}`} />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:type" content={ogType} />
+  <meta property="og:site_name" content={siteName} />
+
+  {article && (
+    <>
+      {article.author && <meta property="article:author" content={article.author} />}
+      {article.publishedTime && <meta property="article:published_time" content={article.publishedTime} />}
+      {article.modifiedTime && <meta property="article:modified_time" content={article.modifiedTime} />}
+      {article.tags?.map(tag => <meta property="article:tag" content={tag} />)}
+    </>
+  )}
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={`${siteUrl}${ogImage}`} />
+
+  <!-- Structured Data -->
+  {structuredData ? (
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  ) : (
+    defaultStructuredData.map(data => (
+      <script type="application/ld+json" set:html={JSON.stringify(data)} />
+    ))
+  )}
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
+</head>
+<body class="bg-white text-gray-900 antialiased font-sans">
+  <!-- Sticky navigation -->
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="/" class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center">
+            <span class="text-sm font-black text-white">V</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-sm font-bold text-gray-900 leading-none">VWCG</span>
+            <span class="hidden sm:inline text-[10px] text-gray-400 leading-none mt-0.5">World Consulting Group</span>
+          </div>
+        </a>
+        <div class="flex items-center gap-4 sm:gap-6">
+          <a href="/blog" class="hidden sm:inline text-sm text-gray-600 hover:text-gray-900 transition-colors">Blog</a>
+          <a
+            href="/app"
+            class="inline-flex items-center px-5 py-2.5 text-sm font-semibold rounded-lg bg-slate-900 text-white hover:bg-slate-800 transition-all shadow-sm"
+          >
+            Start Assessment
+            <svg class="ml-1.5 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <slot />
+</body>
+</html>

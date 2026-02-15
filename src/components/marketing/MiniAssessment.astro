@@ -1,0 +1,22 @@
+---
+import MiniAssessmentIsland from '../islands/MiniAssessmentIsland';
+---
+
+<section id="mini-assessment" class="py-16 sm:py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section header -->
+    <div class="text-center mb-12">
+      <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">
+        Try It Now: Quick AI Readiness Check
+      </h2>
+      <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+        Answer 3 quick questions to get instant insights — no email required, takes 60 seconds.
+      </p>
+    </div>
+
+    <!-- React island with client:visible -->
+    <div class="max-w-2xl mx-auto">
+      <MiniAssessmentIsland client:visible />
+    </div>
+  </div>
+</section>

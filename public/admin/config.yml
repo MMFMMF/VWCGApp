@@ -1,0 +1,25 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# For local development
+local_backend: true
+
+media_folder: "public/images/blog"
+public_folder: "/images/blog"
+
+collections:
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "src/content/blog"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Publish Date", name: "pubDate", widget: "datetime" }
+      - { label: "Hero Image", name: "heroImage", widget: "image", required: false }
+      - { label: "Author", name: "author", widget: "string", default: "VWCGApp Team" }
+      - { label: "Tags", name: "tags", widget: "list", default: ["business"] }
+      - { label: "Draft", name: "draft", widget: "boolean", default: false }
+      - { label: "Body", name: "body", widget: "markdown" }
