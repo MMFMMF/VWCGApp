@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-02-14)
 Phase: 11 of 16 (Financial Math Reconciliation)
 Plan: 0 of TBD in current phase
 Status: Ready to plan
-Last activity: 2026-02-14 - Completed quick task 12: critical fixes (FDI override, revenue range, cultural narrative)
+Last activity: 2026-02-15 - Completed quick task 13: hotfix Carmen/Lin cultural narrative differentiation
 
 Progress: [██████████░░░░░░░░░░] 62.5% (10/16 phases complete)
 
@@ -81,6 +81,7 @@ src/components/print/
 | 10 | v1.3 hotfix: fix orphaned cards in print layout with break-before avoid and tighter margins | 2026-02-14 | 1 file |
 | 11 | E2E test suite: add 7 new personas and generate 80 PDFs (10 personas × 8 reports) | 2026-02-14 | 9 files |
 | 12 | Critical fixes: FDI override from businessContext, revenueRange key correction, cultural narrative differentiation | 2026-02-14 | 9 files |
+| 13 | Hotfix: split industrial regex for Carmen/Lin, enrich cultural narrative with SWOT strengths + company name | 2026-02-15 | 1 file |
 
 ### Pending Todos
 
