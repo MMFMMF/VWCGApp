@@ -1,310 +1,175 @@
 # Codebase Concerns
 
-**Analysis Date:** 2026-02-14
+**Analysis Date:** 2025-02-15
 
 ## Tech Debt
 
-**Unused Old Rules Engine (v1 Rules):**
-- Issue: `src/engine/rules.ts` contains 5 legacy synthesis rules (E1-E5) that have been completely replaced by v2 rules but remain in the codebase.
-- Files: `src/engine/rules.ts` (230 lines)
-- Current status: Not imported by `src/engine/synthesis.ts` (which exclusively uses `rules-v2.ts`), but legacy scripts still reference it (`src/scripts/verify_joe.ts`, `src/scripts/e2e_test_audit_fixes.ts`)
-- Impact: Increases codebase maintenance burden, creates confusion about which rules are active, and makes rule audits harder since the legacy rules are not executed but still present.
-- Fix approach: Remove `rules.ts` and update the two legacy scripts (`verify_joe.ts`, `e2e_test_audit_fixes.ts`) to import from `rules-v2.ts` or be refactored if they're only for testing.
+**Dead Code: Old Synthesis Rules (v1)**
+- Issue: `src/engine/rules.ts` contains 5 deprecated rules (E1-E5) that are no longer imported or executed
+- Files: `src/engine/rules.ts` (still exists but unreferenced), `src/engine/synthesis.ts` only imports `rulesV2`
+- Impact: Code bloat, maintenance confusion, unused complexity
+- Fix approach: Remove `src/engine/rules.ts` entirely. Verify no other files import from it. These rules were replaced by the v2 architecture in `src/engine/rules-v2.ts`
 
-**Inconsistent Type Safety with `any` Types:**
-- Issue: 141 instances of `any` type across the codebase, particularly in critical paths like workspace store, payload assembly, and LLM integration.
-- Files:
-  - `src/store/workspaceStore.ts` - 5 instances (workspace data, canonicalize function)
-  - `src/engine/rules-v2.ts` - 4 instances (SWOT text analysis)
-  - `src/engine/derived-metrics.ts` - 17 instances (workspace manipulation)
-  - `src/engine/llm/payload-assembler.ts` - 17 instances (cross-tool data access)
-  - `src/report/narrative/templates.ts` - 2 instances
-  - Multiple report files with `any` types for tool data
-- Impact: Loss of TypeScript type checking in critical areas, potential runtime crashes when tool data shapes are unexpected, harder to refactor or add new tools.
-- Fix approach: Create a proper `ToolData` discriminated union type or base interface, export specific interfaces for each tool (AIReadinessData, VisionCanvasData, etc.), and gradually replace `any` with typed equivalents. Prioritize files that access multiple tools' data.
+**Type Safety Holes: Excessive `any` Types**
+- Issue: 21 files use `any` type annotations, circumventing TypeScript strict mode
+- Files: `src/store/workspaceStore.ts`, `src/engine/synthesis.ts`, `src/engine/cloud.ts`, `src/validation/validator.ts`, `src/components/layout/AppShell.tsx`, `src/tools/report/ReportCenter.tsx`, and 15 others
+- Impact: Loss of compile-time type checking, increased runtime errors, harder refactoring
+- Fix approach: Gradually replace `any` with proper types. Start with high-impact files: `src/store/workspaceStore.ts` (workspace simulation), `src/engine/synthesis.ts` (rule execution), and `src/engine/cloud.ts` (API integration). Create union types for workspace structure
 
-**Debouncing Not Implemented for Synthesis:**
-- Issue: `src/store/workspaceStore.ts` (line 92-96) acknowledges this via comment: "Debouncing recommended for prod, direct for MVP". Every tool data update runs the entire synthesis engine (8 v2 rules + derivation of 6 metrics) synchronously.
-- Files: `src/store/workspaceStore.ts:updateToolData` (lines 86-111)
-- Current data: workspace is small (12 tools max), but as workspace grows or rules become more complex, this could cause observable UI lag.
-- Impact: Performance degradation on rapid edits (e.g., fast typing in SWOT item text fields). Potential jank in dashboard updates.
-- Fix approach: Implement debounced synthesis in the store using `setTimeout` with a 300-500ms delay, or use a library like `debounce-promise`. Store pending synthesis state to prevent stale insights.
-
-**Direct `localStorage` Dependency:**
-- Issue: Zustand persist middleware writes directly to `localStorage` with key `'vwcg-workspace'`. No encryption or compression of stored data.
-- Files: `src/store/workspaceStore.ts` (line 248, middleware config)
-- Impact: Full workspace data (including sensitive business context like founder hours, revenue, growth goals) persists unencrypted in browser storage. Vulnerable if user's device is compromised or if a malicious actor gains file-system access.
-- Fix approach: Optional encryption layer for sensitive fields using `TweetNaCl.js` or `libsodium.js` before persist middleware, or migrate to IndexedDB with encryption. Make encryption opt-in via environment flag.
-
-## Known Issues
-
-**JSON Parsing Without Error Boundaries:**
-- Symptom: Crashes if corrupt JSON is imported or if API responses are malformed
-- Files:
-  - `src/engine/cloud.ts` (line 66) - Parses Gemini response directly without try-catch
-  - `src/engine/llm/openai-service.ts` (lines 117-126) - Manual JSON.parse on narrative structure
-  - Multiple tool import handlers parse JSON without validation wrappers
-- Trigger: User attempts to load a corrupted `.vwcg` file, or API response is truncated/malformed
-- Workaround: None currently; user must reload the page to recover
-- Fix approach: Add JSON parsing wrapper with `try-catch`, return `ValidationResult` with specific parse errors, and display user-friendly error message in Safe Mode.
-
-**Rule Execution Swallows Errors Silently:**
-- Symptom: If a synthesis rule throws an exception, it logs a warning but doesn't surface the issue to users
-- Files: `src/engine/synthesis.ts` (lines 19-26)
-- Current behavior: `console.warn` on rule failure, but insights still generated from remaining rules (partial synthesis)
-- Impact: Silent data quality degradation (missing insights) without user awareness
-- Fix approach: Collect failed rules into synthesis result metadata, display a banner in Dashboard if any rules failed, and log error details with rule ID for debugging.
-
-**Console Logging in Production:**
-- Symptom: 90+ console.log statements across codebase (including sensitive debug info in workspaceStore and LLM services)
-- Files: `src/store/workspaceStore.ts` (95-97), `src/engine/cloud.ts` (71), `src/engine/llm/openai-service.ts` (3 instances), and 15 other files
-- Impact: Workspace data and API request/response bodies logged to dev console, potentially visible in production error monitoring if console output is captured
-- Fix approach: Replace console.log with conditional debug logging (use debug module or environment-gated logging), keep console.error/warn only for actual errors.
+**Missing Null Checks in Data Pipelines**
+- Issue: Synthesis rules access nested workspace properties without defensive checks
+- Files: `src/engine/rules-v2.ts` (lines 19-33, 67-89, 459-491), `src/engine/derived-metrics.ts` (lines 62-80)
+- Impact: Runtime errors if tools are missing or incompletely filled
+- Fix approach: Add guards at rule entry: `if (!vision?.pillars) return null;` instead of relying on falsy checks. Create a validation layer that runs before synthesis
 
 ## Security Considerations
 
-**API Key Exposure in Client-Side Calls:**
-- Risk: VITE_OPENAI_API_KEY and VITE_GEMINI_API_KEY are embedded in client-side code and sent directly from the browser to third-party APIs
-- Files:
-  - `src/tools/report/ReportCenter.tsx` (line 85) - reads VITE_OPENAI_API_KEY
-  - `src/engine/cloud.ts` (line 43) - constructs Gemini API URL with key in query param
-  - `src/engine/llm/openai-service.ts` (line 73) - Authorization header with raw key
-- Current mitigation: Env vars are prefixed with VITE_ (public), users must provide their own keys
+**API Keys Stored in localStorage**
+- Risk: Gemini and OpenAI API keys persisted in browser localStorage (`VWCG_GEMINI_KEY`, derived from `import.meta.env.VITE_OPENAI_API_KEY`)
+- Files: `src/components/dashboard/StrategicHealthWidget.tsx` (lines 23, 42, 65), `src/tools/report/ReportCenter.tsx`, `src/engine/llm/openai-service.ts`
+- Current mitigation: Keys are user-provided at runtime; VITE_OPENAI_API_KEY is never committed (env var only)
 - Recommendations:
-  1. Migrate to backend proxy: create a `/api/openai-proxy` endpoint that accepts sanitized requests and forwards to OpenAI/Gemini with server-side keys
-  2. Implement request signing and rate limiting at the proxy layer
-  3. Add telemetry to detect key abuse or unusual patterns
-  4. Document in onboarding that keys should be treated as secrets and rotated if exposed
+  1. Move API key handling to a backend service (serverless function) that acts as a proxy; never expose keys in client
+  2. For interim: Use sessionStorage instead of localStorage (cleared on browser close)
+  3. Add a "Forget Key" button in UI that clears the stored key
+  4. Warn users that refreshing the browser exposes keys in Network tab of DevTools
 
-**Workspace Data Contains Sensitive Business Information:**
-- Risk: Founder hours, revenue range, employee count, growth goals, advisor relationships, and strategic intent are all stored in localStorage without encryption
-- Files: `src/store/workspaceStore.ts`, all tool data structures
-- Current mitigation: Private browser storage only (same-origin policy applies)
-- Recommendations:
-  1. Add explicit data classification in tool definitions (e.g., `isSensitive: true` flag)
-  2. Implement workspace export encryption (user-provided passphrase)
-  3. Add data deletion warnings when exporting or sharing workspaces
-  4. Consider server-side backup option with enterprise encryption (future phase)
+**JSON Parsing Without Validation**
+- Risk: `src/engine/cloud.ts` (line 66) and `src/engine/llm/openai-service.ts` (lines 118, 202) call `JSON.parse()` on API responses without schema validation
+- Files: `src/engine/cloud.ts:66`, `src/engine/llm/openai-service.ts:118,202`, `src/utils/fileSystem.ts:21`
+- Impact: Malicious or malformed API responses could inject arbitrary objects into the store; file upload could fail silently
+- Fix approach: Add schema validation using a library like `zod` or `io-ts` before parsing. Create `parseGeminiResponse()` and `parseOpenAiResponse()` helpers with explicit schema checks
 
-**Validation Profiles Missing Error Handling:**
-- Risk: Profile validation failures in `src/validation/validator.ts` (line 50) are only warned, not enforced
-- Files: `src/validation/validator.ts:validateWorkspace` (lines 40-52)
-- Current behavior: Missing profile is logged but workspace is still imported
-- Impact: Invalid data can slip through Safe Mode if a profile is missing from registry
-- Fix approach: Throw validation error if a tool's profile is missing, or provide sensible defaults per tool
-
-**No Rate Limiting on LLM Calls:**
-- Risk: User can spam "Generate with AI" button, incurring unexpected API costs and potentially hitting rate limits
-- Files: `src/tools/report/ReportCenter.tsx` (LLM generation handlers), `src/engine/llm/openai-service.ts`
-- Current mitigation: Retry logic with exponential backoff (lines 115-130 in openai-service.ts)
-- Recommendations: Add client-side debounce/cooldown (e.g., 30-second minimum between generation requests), display remaining tokens or cost estimates, add event logging for AI generation usage.
+**Workspace File Format Not Validated Strictly**
+- Risk: `src/utils/fileSystem.ts:21-25` only checks for `version` and `tools` fields; any malformed file with those keys passes
+- Impact: Corrupted .vwcg files could damage workspace state
+- Fix approach: Use the existing `validateWorkspace()` function in `src/validation/validator.ts` when loading files. Return validation errors to user instead of silently accepting bad data
 
 ## Performance Bottlenecks
 
-**Large Report Components (1000+ lines):**
-- Problem: Three report components exceed 1000 lines, making them slow to render and hard to maintain
-- Files:
-  - `src/report/unified/UnifiedStrategicBriefing.tsx` (1021 lines)
-  - `src/report/narrative/templates.ts` (799 lines)
-  - `src/report/individual/VisionCanvasReport.tsx` (740 lines)
-- Cause: Monolithic template rendering with conditional sections and narrative generation inlined
-- Impact: Slow initial report render, high memory usage during PDF generation, hard to optimize specific sections
+**Synthesis Engine Runs Synchronously on Every Tool Update**
+- Problem: `src/store/workspaceStore.ts:96` calls `runSynthesis()` in the reducer on every `updateToolData()` call
+- Files: `src/store/workspaceStore.ts` (lines 86-111)
+- Impact: If a user rapidly edits fields (e.g., typing in a textarea), synthesis runs 8+ times per second, blocking React renders. Visible lag with large workspaces
+- Scaling limit: Synthesis is currently O(n) where n = number of rules (9) + number of tools (11); acceptable at current scale but degrades with more rules or larger datasets
 - Improvement path:
-  1. Break UnifiedStrategicBriefing into sub-components (CoverPage, ExecutiveSnapshot, StrengthsSection, etc.) — each as a separate file
-  2. Move template logic to `src/report/narrative/` as pure functions returning JSX
-  3. Implement lazy rendering for below-the-fold sections in preview mode
-  4. Add React.memo on report section components to prevent unnecessary re-renders
+  1. Add debouncing with 500ms delay before running synthesis (use lodash.debounce or custom hook)
+  2. Or use `queueMicrotask` to defer synthesis to next event loop tick
+  3. Cache synthesis results and only recompute for affected tools (currently recomputes all 9 rules)
 
-**Synchronous PDF Generation with html2canvas:**
-- Problem: PDF generation on large reports (12+ pages) blocks the main thread during html2canvas capture and jsPDF writing
-- Files: `src/report/pdf/PdfGenerator.ts` (lines 190-230), `src/report/pdf/PrintPdfService.ts`
-- Scale factor: 3x (300 DPI) captures high-quality but memory-intensive canvases
-- Impact: UI freezes for 2-5 seconds on report generation, poor UX on slower devices
+**PDF Generation Memory Spike**
+- Problem: `src/report/pdf/PdfGenerator.ts` uses 3x scale (CAPTURE_SCALE = 3) for 300 DPI, which loads full report into canvas memory at 288 DPI before converting to PNG
+- Files: `src/report/pdf/PdfGenerator.ts` (lines 68, 199-207)
+- Impact: Large reports (12+ pages, many charts) can spike RAM usage to 500MB+; may crash on low-memory devices
 - Improvement path:
-  1. Move PDF generation to a Web Worker to avoid main thread blocking
-  2. Implement chunked rendering (render page-by-page, reduce memory footprint)
-  3. Add progress indicator + estimated time remaining
-  4. Consider server-side PDF generation for unified briefing (defer to backend if performance is critical)
+  1. Add page-by-page rendering: Render each page to canvas, convert to image, then discard canvas
+  2. Reduce CAPTURE_SCALE to 2 for non-flagship reports (acceptable quality at 192 DPI for screen viewing)
+  3. Add a memory warning for unified strategic briefing if report exceeds 8 pages
 
-**No Memoization on Derived Metrics:**
-- Problem: `computeDerivedMetrics()` recomputes all 6 metrics on every synthesis run, even if input data hasn't changed
-- Files: `src/engine/derived-metrics.ts`, called from `src/engine/synthesis.ts` indirectly via `assemblePayload`
-- Current trigger: Every `updateToolData()` call
-- Impact: Wasteful recomputation, especially for metrics that scan SWOT text or iterate over roadmap tasks
-- Improvement path: Add result caching with input hash (tool data fingerprint), or use `useMemo` in components that call `computeDerivedMetrics()`.
-
-**Random Array Shuffling in Narrative Templates:**
-- Problem: `sample()` function in `src/report/narrative/templates.ts` (line 30) uses `Math.random()` for Fisher-Yates shuffle, called during every narrative generation
-- Impact: O(n log n) re-sort on every template evaluation, unnecessary for deterministic narrative generation
-- Improvement path: Replace with `crypto.getRandomValues()` for cryptographic-grade randomness if seeding is required, or use a fixed seed based on workspace ID for reproducible narratives (better for QA and audits).
+**Large Component Files (1000+ LOC)**
+- Problem: `src/report/unified/UnifiedStrategicBriefing.tsx` (1020 lines), `src/report/individual/RoadmapReport.tsx` (768 lines), others
+- Files: See `src/report/` directory
+- Impact: Hard to test, debug, and refactor; single component failure breaks entire section
+- Improvement path: Split each report component into smaller sections (e.g., USB-01 through USB-12 as separate components), each 50-100 LOC, composed together
 
 ## Fragile Areas
 
-**Synthesis Engine Rules with Hard-coded Field Assumptions:**
-- Files: `src/engine/rules-v2.ts` (all 9 rules), `src/engine/derived-metrics.ts`
-- Why fragile: Rules assume specific field names (e.g., `dna.current_Execution`, `vision.pillars`, `swot.weaknesses`) without defensive checks. If a tool schema changes, rules break silently.
-- Example fragility: Line 19-25 in visionExecutionMismatch assumes `vision.pillars` is an array; if it's undefined or null, the rule returns null instead of warning
-- Safe modification:
-  1. Add field existence guards with explicit fallback defaults
-  2. Create tool schema types and validate before rule execution
-  3. Add integration tests for each rule with missing/malformed data
-  4. Document the exact field contracts each rule depends on
+**Synthesis Rule Error Handling Too Forgiving**
+- Files: `src/engine/synthesis.ts` (lines 18-27)
+- Why fragile: Rules that throw errors log a warning and continue; a rule that returns `undefined` instead of `null` would be silently ignored, hiding bugs
+- Safe modification: Add explicit error tracking: `const ruleErrors = []` and return both `insights` and `ruleErrors` from `runSynthesis()`. Log all errors at end instead of per-rule
+- Test coverage: No unit tests for synthesis rule execution; add Jest tests for each rule with edge case workspaces
 
-**SWOT Text Analysis with Regex Patterns:**
-- Files: `src/engine/rules-v2.ts`, `src/engine/swot-keywords.ts` (keyword scanning)
-- Why fragile: Keyword matching uses case-insensitive regex (e.g., line 70: `/\b(balance|wellbeing|people|...)\b/`). User typos, abbreviations, or domain-specific terminology (e.g., "work-balance" vs "balance") can cause false negatives.
-- Example: Founder enters "staff burn-out" vs "burnout" — keyword scanner might miss it depending on regex
-- Safe modification:
-  1. Build a proper keyword taxonomy with synonyms (use a JSON lookup table or trie)
-  2. Implement phonetic matching (Soundex) for typo tolerance
-  3. Add logging to SWOT scanning so users can see what keywords were matched
-  4. Make keyword lists configurable (allow domain experts to tune patterns)
-  5. Add integration tests with edge cases (contractions, misspellings, domain jargon)
+**Workspace State Rehydration on Page Load**
+- Files: `src/store/workspaceStore.ts` (persist middleware), `src/main.tsx` (initializeRegistry sequence)
+- Why fragile: Three async initializers run before first render (`initializeRegistry`, `initializeValidation`, `registerCharts`); if any fails silently, app loads with broken state
+- Safe modification: Add explicit error handling in `main.tsx`; if initialization fails, show error screen instead of blank app
+- Test coverage: No tests for cold start or rehydration from corrupted localStorage
 
-**Validation Profile Registry Without Fallbacks:**
-- Files: `src/validation/validator.ts` (lines 40-52), `src/validation/types.ts` (ValidationProfiles)
-- Why fragile: If a tool is added to the registry but no validation profile is defined, the validator logs a warning and continues. Data can import without validation.
-- Example: New tool added to `src/registry/registry.ts` but developer forgets to add a profile in `src/validation/` → unsafe data passes Safe Mode
-- Safe modification:
-  1. Make validation profile required at tool registration time (enforce in `registerTool()`)
-  2. Create a "default" profile that at minimum checks for empty data structures
-  3. Add pre-deployment checks (jest test) that verify every registered tool has a profile
-  4. Add type-safety: update `ToolDefinition` to require `validationProfileId` (no `?` optional)
+**Rule Dependencies Not Documented**
+- Files: `src/engine/rules-v2.ts` (all 9 rules)
+- Why fragile: Rules assume certain tools exist (e.g., visionExecutionMismatch needs both vision-canvas and leadership-dna); no validation at rule level
+- Safe modification: Add `requiredTools: string[]` field to SynthesisRule interface; check all required tools exist before executing rule
+- Example: visionExecutionMismatch currently returns `null` if vision missing, but silently proceeds if dna missing
 
-**ReportCenter State Machine (Multiple Async Operations):**
-- Files: `src/tools/report/ReportCenter.tsx` (lines 71-200)
-- Why fragile:
-  - Multiple boolean flags (`llmGenerating`, `isGenerating`, `llmNeedsReview`) manage complex state
-  - Race conditions: user can click "Generate" multiple times before async LLM call completes
-  - No cleanup if user navigates away during generation
-- Example failure: User clicks "Generate with AI", then immediately clicks "Save" → old request may overwrite newer data
-- Safe modification:
-  1. Consolidate state into single enum (`status: 'idle' | 'generating' | 'reviewing' | 'error'`)
-  2. Use AbortController to cancel in-flight requests on unmount or state reset
-  3. Add request deduplication (track request ID, ignore duplicate results)
-  4. Add timeout handling (show timeout error if generation exceeds 2 minutes)
+**Report Narrative Generation Without Fallback**
+- Files: `src/report/unified/LLMStrategicBriefing.tsx` (line 50), `src/report/narrative/templates.ts`
+- Why fragile: If Gemini/OpenAI API fails, no fallback narrative is shown; component catches error (line 50) but renders nothing
+- Safe modification: Use `src/report/narrative/templates.ts` as fallback; generate basic narrative from workspace data if API unavailable
+- Example: If `generateBriefingNarrative()` fails, use template-driven approach instead of blank section
 
-## Scaling Limits
+## Validation & Testing Gaps
 
-**Workspace Store Persists Entire State to localStorage:**
-- Current capacity: Typical business context (10-50 SWOT items, 3-10 vision pillars, 20-50 roadmap tasks) = 50-100 KB JSON
-- Limit: Most browsers limit localStorage to 5-10 MB per origin. At 50 KB per workspace, this allows ~100-200 workspaces before hitting quota.
-- Problem: No archival, no cleanup, no quota monitoring
-- Scaling path:
-  1. Implement archive mechanism (move old workspaces to IndexedDB with compressed storage)
-  2. Add quota monitoring with user warnings at 80% capacity
-  3. Move large blobs (PDF previews, exported reports) to separate storage (IndexedDB or server)
-  4. Implement workspace versioning (keep only last 3 versions by default)
+**Validation Profiles Not Exhaustive**
+- What's not tested: Business-Context tool has no validation profile
+- Files: `src/validation/index.ts` registers profiles for 10 tools, but business-context validation missing
+- Risk: Corrupted business-context data passes validation and breaks rules (e.g., founderHours parsing in rules-v2.ts:80)
+- Priority: High (rules depend on this data)
 
-**PDF Generation Memory Usage:**
-- Current: html2canvas at 3x scale on 12-16 page report creates canvas ~7200×19000 pixels at 24-bit color = ~400-500 MB in-memory canvas
-- Limit: Devices with <2 GB RAM will struggle; mobile devices especially affected
-- Scaling path:
-  1. Implement page-by-page PDF generation (render, capture, add to PDF, release memory, repeat)
-  2. Add quality tier selector (draft: 2x scale, final: 3x scale)
-  3. Offer server-side PDF generation option for enterprise deployments
-  4. Add progress tracking + estimated time on large reports
+**No Unit Tests for Synthesis Rules**
+- What's not tested: Each of the 9 rules in `src/engine/rules-v2.ts` lacks individual test coverage
+- Files: `tests/` directory has only E2E tests (journeys, smoke tests); no Jest/Vitest tests for `src/engine/`
+- Risk: Rule logic regressions go undetected; new rules might have edge cases
+- Priority: High (rules are core business logic)
 
-**Number of Active Synthesis Rules:**
-- Current: 9 v2 rules execute on every tool update
-- Limit: Execution time is negligible now, but at 20-30 rules, this becomes observable
-- Scaling path: Implement rule pre-filtering (certain rules only run if specific tools are modified), or move to lazy evaluation (compute insights on-demand in dashboard).
+**No Tests for PDF Generation Edge Cases**
+- What's not tested: Multi-page reports, SVG rendering at scale, timeout scenarios
+- Files: `src/report/pdf/PdfGenerator.ts` has no unit tests; only E2E test at `tests/journeys/pdf-generation.spec.ts`
+- Risk: PDF generation silently fails for large reports; timeout errors not caught
+- Priority: Medium (user-facing but doesn't break other features)
+
+**Validation Profiles Incomplete for Advisor-Readiness**
+- What's not tested: Advisor-readiness answer structure (o1-o5, s1-s5, etc.) not validated against expected answer types
+- Files: `src/validation/profiles_p3.ts` (if it exists)
+- Risk: Bad data in advisor tool breaks derived metrics calculation
+- Priority: Medium
+
+## Missing Critical Features
+
+**No Offline Support**
+- Problem: All synthesis and PDF generation depends on network (Gemini, OpenAI APIs)
+- Impact: If Gemini/OpenAI down, users can't run insights or generate reports
+- Blocks: Reliable report generation in unstable network conditions
+
+**No Data Backup/Recovery**
+- Problem: If localStorage is cleared (cache flush, cookie deletion), all workspace data is lost
+- Impact: Users lose hours of work with no recovery option
+- Blocks: Enterprise adoption; users need audit trail
+
+**No Role-Based Access Control**
+- Problem: All users see all tools; no admin/viewer/editor roles
+- Impact: Can't share workspaces safely with read-only stakeholders
+- Blocks: Team collaboration scenarios
 
 ## Dependencies at Risk
 
-**html2canvas for PDF Generation:**
-- Risk: html2canvas is a complex browser-to-canvas rendering library with known issues around SVG rendering, CSS transforms, and web fonts. Project has lower maintenance frequency.
-- Impact: PDF quality degrades with complex layouts or unsupported CSS. If library stops accepting fixes, custom solutions are expensive.
-- Migration plan: Evaluate alternatives:
-  1. Puppeteer (headless Chromium) — more reliable but requires server-side rendering
-  2. TCPDF (PHP-based server backend) — if moving to backend
-  3. ReportLab (Python) — for server-side generation
-  Recommend Puppeteer for phase upgrade if PDF reliability becomes critical.
+**html2canvas + jsPDF Upgrade Risk**
+- Risk: html2canvas (used in PDF generation) has known limitations with modern CSS (e.g., grid, flex positioning). Upgrading could break PDF layout
+- Impact: PDF rendering could regress
+- Migration plan: Consider replacing with native browser Print API (src/report/pdf/PrintPdfService.ts exists as alternative) for printing; add feature flag to test
 
-**Zustand Persist Middleware:**
-- Risk: Zustand is maintained but smaller community than Redux. Persist middleware is an optional plugin, less battle-tested than core store.
-- Impact: Browser storage behavior edge cases (quota exceeded, private browsing mode, iOS Safari limitations) may cause unexpected issues.
-- Mitigation: Already implemented — store has explicit recovery logic in `commitWorkspace()` (line 154-169 in workspaceStore.ts) and `onRehydrateStorage` callback.
-- Action: No change needed currently, but document localStorage edge cases in troubleshooting guide.
+**Zustand Store Scaling**
+- Risk: Single store holds all 11 tools' data + insights + ephemeral state; no modular store structure
+- Impact: Store becomes harder to test and refactor as app grows
+- Migration plan: Split into feature stores (one per tool) using Zustand context; keep workspace store as orchestrator
 
-**OpenAI API Dependency for LLM Narrative:**
-- Risk: OpenAI API costs, rate limits, and potential service degradation
-- Impact: AI Briefing generation may fail or incur unexpected costs if user does repeated generations
-- Mitigation: No current rate limiting or cost controls
-- Recommendations:
-  1. Add OpenAI token counter before generation (warn user of estimated cost)
-  2. Implement per-session generation limit (e.g., 3 generations max per workspace)
-  3. Add cost tracking in metadata (`totalTokensUsed`, `estimatedCost`)
-  4. Document in UI that AI features incur costs
+## Known Issues & Quirks
 
-**TypeScript `verbatimModuleSyntax` Strictness:**
-- Risk: This newer TS setting prevents type-only imports without explicit `type` keyword. Not all third-party packages expose proper type-only exports, causing build failures on upgrades.
-- Impact: Version bumps for dependencies may fail type checking if they don't export types correctly.
-- Mitigation: Already in use (see tsconfig.app.json), but fragile across ecosystem
-- Action: Monitor for build failures after dependency upgrades, be prepared to loosen strictness if needed.
+**Logic Version Upgrade Path Unclear**
+- Files: `src/store/workspaceStore.ts:13` (LOGIC_VERSION = 'v1.1.0'), logic version banner in `AppShell.tsx`
+- Issue: When LOGIC_VERSION bumps, old workspaces show upgrade banner; clicking "recompute" calls `recomputeLogic()` which only updates timestamps, doesn't re-run synthesis with new rules
+- Workaround: User must edit a tool to trigger synthesis
 
-## Test Coverage Gaps
+**Export Cooldown Could Fail Silently**
+- Files: `src/store/workspaceStore.ts:214-216` (5-second cooldown)
+- Issue: If user clicks Export twice within 5 seconds, second click throws error; UI doesn't show feedback
+- Workaround: Button is disabled during export, but error message could be clearer
 
-**Synthesis Rules Have No Unit Tests:**
-- What's not tested: Each of the 9 v2 rules in `src/engine/rules-v2.ts` executes live in app, but no isolated unit tests verify correct behavior with edge cases.
-- Files: `src/engine/rules-v2.ts`, no test file found
-- Risk:
-  - Rules silently fail to fire if assumptions are violated
-  - Regex patterns for keyword matching are untested (e.g., typo sensitivity, edge cases)
-  - Rule conflicts or overlaps go unnoticed
-- Test plan: Create `src/engine/rules-v2.test.ts` with:
-  - One test per rule with minimal passing data
-  - One test per rule with missing/malformed data (defensive testing)
-  - Cross-rule conflict tests (e.g., do two rules fire on the same data?)
-  - Keyword matching tests for SWOT analysis (typos, abbreviations, synonyms)
-  - Priority: High — rules are the core business logic
-
-**Validation Profiles Have No Unit Tests:**
-- What's not tested: Tool-specific validation profiles in `src/validation/profiles_p1.ts`, `profiles_p2.ts`, `profiles_p3.ts`
-- Files: 3 profile files, no test file found
-- Risk: Invalid data can import in Safe Mode if profile logic is broken
-- Test plan: Create `src/validation/profiles.test.ts` with:
-  - One test per profile with valid data (should pass)
-  - One test per profile with minimal data (required fields only)
-  - One test per profile with invalid data (should fail with specific error code)
-  - Cross-profile consistency (are severity codes consistent across profiles?)
-  - Priority: High — validation is the safety gate for imports
-
-**LLM Integration Has No Tests:**
-- What's not tested: `src/engine/llm/openai-service.ts` and related payload assembly
-- Files: No test file found
-- Risk:
-  - API response parsing failures go unnoticed
-  - Retry logic and timeout handling are untested
-  - Payload assembly may include invalid field references if tool data changes
-- Test plan: Create `src/engine/llm/openai-service.test.ts` with:
-  - Mock OpenAI API responses (success, rate-limit, timeout, malformed response)
-  - Narrative structure validation (isValidNarrativeStructure tests)
-  - QA validation tests with edge-case narratives
-  - Retry logic tests (verify exponential backoff, max retries)
-  - Priority: Medium — LLM is optional feature, but errors should be graceful
-
-**Report Components Have No Snapshot Tests:**
-- What's not tested: Large report components like UnifiedStrategicBriefing and individual report components
-- Files: `src/report/unified/`, `src/report/individual/`
-- Risk:
-  - Rendering errors go unnoticed in report generation
-  - Layout changes break PDF output visually
-  - Narrative text generation regressions are hard to catch
-- Test plan: Create snapshot tests for each report component with mock workspace data, use Playwright visual regression tests for PDF output, test with diverse workspace states (empty data, max data, edge cases).
-  - Priority: Medium-High — reports are user-facing output
-
-**Safe Mode Workflow Has No E2E Tests:**
-- What's not tested: Import workflows in Safe Mode (`stageWorkspace` → `commitWorkspace`)
-- Files: E2E test for import flow not found
-- Risk: Workspace import can silently corrupt data if validation is bypassed
-- Test plan: Create Playwright test in `tests/journeys/` that:
-  1. Exports a complete workspace
-  2. Intentionally corrupts JSON (remove required fields, inject invalid data)
-  3. Attempts to import → verify Safe Mode warning
-  4. Selectively reimports tools → verify data integrity
-  - Priority: High — data integrity is critical
+**AI Consultation Response Type Mismatch**
+- Files: `src/engine/cloud.ts:66` (parses response as Insight[])
+- Issue: Gemini response format not validated; if API returns different structure, JSON.parse fails silently (caught line 70)
+- Impact: User sees "Cloud Synthesis Failed" with no details
 
 ---
 
-*Concerns audit: 2026-02-14*
+*Concerns audit: 2025-02-15*

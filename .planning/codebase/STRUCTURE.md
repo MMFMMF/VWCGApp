@@ -1,355 +1,355 @@
 # Codebase Structure
 
-**Analysis Date:** 2026-02-14
+**Analysis Date:** 2025-02-15
 
 ## Directory Layout
 
 ```
-src/
-├── assets/                    # Static images and media files
-├── components/                # Shared UI components
-│   ├── dashboard/            # Dashboard-specific widgets
-│   ├── layout/               # AppShell, SafeModeBanner (page layout)
-│   ├── print/                # PrintReport router for PDF routes
-│   ├── ui/                   # Reusable UI primitives (Button, etc.)
-│   └── ErrorBoundary.tsx     # React error boundary wrapper
-├── engine/                    # Cross-tool synthesis and insights
-│   ├── llm/                  # Gemini AI integration (optional)
-│   ├── cloud.ts              # Gemini API client
-│   ├── derived-metrics.ts    # 6 cross-assessment metrics
-│   ├── index.ts              # Public API export
-│   ├── prompts.ts            # LLM prompt templates
-│   ├── rules.ts              # Legacy v1 rules (no longer imported)
-│   ├── rules-v2.ts           # 8 active synthesis rules
-│   ├── swot-keywords.ts      # SWOT keyword analysis
-│   ├── synthesis.ts          # Rule execution engine
-│   └── types.ts              # Insight, SynthesisRule interfaces
-├── lib/                       # Library exports and configurations
-│   └── charts.ts             # Chart.js plugin registration
-├── registry/                  # Tool and validation registration
-│   ├── ToolRegistry.ts       # registerTool(), getTools(), getTool()
-│   └── registry.ts           # initializeRegistry() — registers all 12 tools
-├── report/                    # Comprehensive report generation
-│   ├── charts/               # Reusable chart components
-│   ├── components/           # Report typography and layout (ReportPage, ReportHero, etc.)
-│   ├── individual/           # Per-tool report components
-│   ├── narrative/            # Template-driven narrative generation
-│   ├── pdf/                  # PDF generation and print service
-│   ├── quality/              # Content quality assurance (VagueEntryDetector)
-│   ├── unified/              # UnifiedStrategicBriefing and LLMStrategicBriefing
-│   └── design.ts             # Color palettes and design constants
-├── scripts/                   # Standalone verification scripts (excluded from TypeScript)
-├── store/                     # Zustand workspace store
-│   └── workspaceStore.ts     # Single source of truth (localStorage-backed)
-├── tools/                     # 12+ Tool implementations
-│   ├── advisor-readiness/    # Advisor readiness assessment
-│   ├── ai-readiness/         # AI maturity across 6 dimensions
-│   ├── authority/            # Authority tracker (not in registry)
-│   ├── business-context/     # Business context and founder info
-│   ├── dashboard/            # Dashboard landing page (not in registry)
-│   ├── emotional-intelligence/ # BEI (Behavioral Event Interview)
-│   ├── leadership-dna/       # Leadership archetype assessment
-│   ├── report/               # ReportCenter (report generation UI)
-│   ├── roadmap/              # 90-Day roadmap with timeline
-│   ├── sop/                  # SOP Taxonomy, Creation, Management (3 tools)
-│   ├── swot/                 # SWOT analysis matrix
-│   └── vision-canvas/        # Vision canvas (pillars, values, metrics)
-├── utils/                     # Shared utility functions
-│   ├── cn.ts                 # Tailwind className composition
-│   └── fileSystem.ts         # Workspace import/export
-├── validation/                # Data quality validation system
-│   ├── profiles_p1.ts        # Validation profiles (part 1)
-│   ├── profiles_p2.ts        # Validation profiles (part 2)
-│   ├── profiles_p3.ts        # Validation profiles (part 3)
-│   ├── index.ts              # initializeValidation()
-│   ├── types.ts              # ValidationProfile, ValidationResult interfaces
-│   └── validator.ts          # validateWorkspace() — L0/L1/L2/L3 checks
-├── App.tsx                    # Router setup and main app component
-├── App.css                    # App-wide styles
-├── index.css                  # Global CSS (Tailwind)
-└── main.tsx                   # React DOM mount point
+VWCGApp/
+├── .agent/                      # GSD agent workflow definitions (local, not committed)
+├── .firebase/                   # Firebase deployment config (local)
+├── .git/                        # Git repository metadata
+├── .planning/                   # GSD planning artifacts
+│   ├── codebase/               # Codebase analysis docs (ARCHITECTURE.md, STRUCTURE.md, etc.)
+│   ├── quick/                  # Quick fix planning documents by phase
+│   └── config.json             # GSD configuration
+├── dist/                        # Production build output (generated, not committed)
+│   └── assets/                 # Bundled JS, CSS, images
+├── docs/                        # Project documentation
+├── node_modules/               # Dependencies (local, not committed)
+├── playwright-report/          # E2E test reports (generated)
+├── public/                      # Static assets served as-is
+├── scripts/                     # Build/utility scripts (Node.js)
+│   ├── generate-pdf.cjs        # PDF generation for testing
+│   ├── screenshot-pdf.cjs      # Screenshot-based PDF creation
+│   └── audit-pdf.cjs           # PDF audit utilities
+├── src/                         # Source code (TypeScript + React)
+│   ├── App.tsx                 # Root router and layout
+│   ├── App.css                 # Global styles
+│   ├── main.tsx                # Entry point with initialization
+│   ├── index.css               # Tailwind imports
+│   ├── assets/                 # Images, icons, media
+│   ├── components/             # Reusable React components
+│   │   ├── ErrorBoundary.tsx   # Error boundary wrapper
+│   │   ├── dashboard/          # Dashboard-specific components
+│   │   │   └── StrategicHealthWidget.tsx  # Health status display
+│   │   ├── layout/             # Layout components
+│   │   │   ├── AppShell.tsx    # Main shell: sidebar + topbar + outlet
+│   │   │   └── SafeModeBanner.tsx         # Safe mode overlay
+│   │   ├── print/              # Print-only components
+│   │   │   └── PrintReport.tsx # Report printer (no AppShell)
+│   │   └── ui/                 # UI primitives
+│   │       ├── Button.tsx      # Styled button component
+│   │       └── ExportButton.tsx # Export functionality
+│   ├── engine/                 # Synthesis engine and rules
+│   │   ├── index.ts            # Public API barrel export
+│   │   ├── types.ts            # Insight, SynthesisRule interfaces
+│   │   ├── synthesis.ts        # Rule executor, registerRule()
+│   │   ├── rules-v2.ts         # 8 cross-tool v2 rules (active)
+│   │   ├── rules.ts            # Old v1 rules E1-E5 (legacy, not imported)
+│   │   ├── derived-metrics.ts  # 6 derived metrics (archetype, risk, coherence)
+│   │   ├── swot-keywords.ts    # SWOT text scanning and keyword analysis
+│   │   ├── cloud.ts            # Optional Gemini API integration
+│   │   ├── prompts.ts          # LLM prompt templates
+│   │   └── llm/                # LLM-related utilities
+│   ├── lib/                    # Utilities and initialization
+│   │   └── charts.ts           # Chart.js plugin registration
+│   ├── registry/               # Tool registry system
+│   │   ├── ToolRegistry.ts     # Registry interface and functions
+│   │   └── registry.ts         # Tool registration (all 12 tools)
+│   ├── report/                 # Report generation system
+│   │   ├── design.ts           # Design constants (colors, spacing)
+│   │   ├── charts/             # Reusable chart components
+│   │   │   ├── HorizontalBar.tsx
+│   │   │   ├── DotPlot.tsx
+│   │   │   ├── Gauge.tsx
+│   │   │   └── ProgressBar.tsx
+│   │   ├── components/         # Report typography and layout
+│   │   ├── individual/         # Per-tool report components
+│   │   │   ├── AIReadinessReport.tsx
+│   │   │   ├── LeadershipDNAReport.tsx
+│   │   │   ├── SwotReport.tsx
+│   │   │   ├── VisionCanvasReport.tsx
+│   │   │   ├── RoadmapReport.tsx
+│   │   │   ├── AdvisorReadinessReport.tsx
+│   │   │   └── index.ts
+│   │   ├── narrative/          # Text generation system
+│   │   │   ├── types.ts        # Voice and template types
+│   │   │   ├── voice.ts        # Voice profiles (professional, conversational, strategic)
+│   │   │   ├── templates.ts    # Section text templates
+│   │   │   ├── generator.ts    # Template renderer with voice interpolation
+│   │   │   └── index.ts
+│   │   ├── unified/            # Cross-tool briefings
+│   │   │   ├── UnifiedStrategicBriefing.tsx
+│   │   │   ├── LLMStrategicBriefing.tsx
+│   │   │   └── index.ts
+│   │   ├── quality/            # Content quality checks
+│   │   │   └── {Detectors}.ts  # VagueEntryDetector, EdgeCaseDetector
+│   │   ├── pdf/                # PDF generation
+│   │   │   ├── PdfGenerator.ts # html2canvas + jsPDF (300 DPI, 3x scale)
+│   │   │   ├── PrintPdfService.ts # Browser print dialog wrapper
+│   │   │   └── index.ts
+│   ├── scripts/                # Standalone scripts (excluded from TypeScript)
+│   │   └── {verification-scripts}.ts  # Run outside normal build
+│   ├── store/                  # State management
+│   │   └── workspaceStore.ts   # Zustand store with persist middleware
+│   ├── tools/                  # Tool implementations (12 registered tools)
+│   │   ├── ai-readiness/       # AI Readiness Assessment
+│   │   │   ├── index.ts        # ToolDefinition export
+│   │   │   └── AiReadinessTool.tsx
+│   │   ├── leadership-dna/     # Leadership DNA Assessment
+│   │   ├── emotional-intelligence/  # Behavioral/EI Assessment (BEI)
+│   │   ├── vision-canvas/      # Strategic Vision Canvas
+│   │   ├── swot/               # SWOT Analysis
+│   │   │   ├── index.tsx       # ToolDefinition export
+│   │   │   ├── SwotTool.tsx    # Main component
+│   │   │   └── SwotMatrix.tsx  # Matrix visualization
+│   │   ├── sop/                # Standard Operating Procedures (3 sub-tools)
+│   │   │   ├── sop-taxonomy/   # SOP Taxonomy
+│   │   │   ├── sop-create/     # SOP Creation
+│   │   │   └── sop-management/ # SOP Management
+│   │   ├── roadmap/            # 90-Day Roadmap
+│   │   ├── advisor-readiness/  # Advisor Readiness Assessment
+│   │   ├── report/             # Report Center / Report Tool
+│   │   ├── business-context/   # Business Context Tool
+│   │   ├── dashboard/          # Dashboard (not in registry, home page)
+│   │   └── authority/          # Authority Tracker (not in registry)
+│   ├── utils/                  # Utility functions
+│   │   ├── cn.ts              # Classname composition (clsx + tailwind-merge)
+│   │   └── fileSystem.ts      # Save/load workspace to .vwcg files
+│   └── validation/             # Validation system
+│       ├── index.ts            # Initialization and profile registration
+│       ├── types.ts            # ValidationResult, ValidationRule types
+│       ├── validator.ts        # Workspace validator orchestrator
+│       ├── profiles_p1.ts      # Validation profiles (part 1)
+│       ├── profiles_p2.ts      # Validation profiles (part 2)
+│       └── profiles_p3.ts      # Validation profiles (part 3)
+├── tests/                      # E2E and integration tests (Playwright)
+│   ├── helpers/                # Test utilities
+│   │   ├── forms.ts            # Form filling helpers
+│   │   ├── navigation.ts       # Navigation helpers
+│   │   ├── workspace.ts        # Workspace manipulation
+│   │   └── pdf.ts              # PDF generation helpers
+│   ├── journeys/               # User journey E2E tests
+│   │   ├── alex.spec.ts        # Alex persona journey
+│   │   ├── sarah.spec.ts       # Sarah persona journey
+│   │   ├── mike.spec.ts        # Mike persona journey
+│   │   ├── pdf-generation.spec.ts      # PDF export tests
+│   │   ├── pdf-generation-extended.spec.ts
+│   │   └── quality-audit.spec.ts       # Content quality checks
+│   ├── personas/               # Test data / personas
+│   │   ├── alex.ts
+│   │   ├── sarah.ts
+│   │   ├── mike.ts
+│   │   ├── carmen.ts
+│   │   ├── david.ts
+│   │   ├── diana.ts
+│   │   ├── keisha.ts
+│   │   ├── lin.ts
+│   │   ├── raj.ts
+│   │   └── tom.ts
+│   └── smoke/                  # Smoke tests (if present)
+├── test-results/               # Test output directory (generated)
+├── test-outputs/               # Playwright report outputs (generated)
+│
+├── package.json                # Dependencies and scripts
+├── package-lock.json           # Locked dependency versions
+├── tsconfig.json               # TypeScript references config
+├── tsconfig.app.json           # App TypeScript config (strict mode, path aliases)
+├── tsconfig.node.json          # Node scripts TypeScript config
+├── vite.config.ts              # Vite build and dev server config
+├── playwright.config.ts        # E2E test runner configuration
+├── eslint.config.js            # ESLint rules and plugins
+├── postcss.config.js           # PostCSS config (Tailwind processor)
+├── firebase.json               # Firebase Hosting config
+├── .firebaserc                  # Firebase project config (local)
+├── .nvmrc                       # Node version hint
+│
+├── CLAUDE.md                   # Project-specific Claude Code instructions
+├── CONTRIBUTING.md             # Contribution guidelines
+├── LICENSE                     # Project license
+├── README.md                   # Project overview
+└── CHANGELOG.md                # Version and change history
 ```
 
 ## Directory Purposes
 
-**src/assets/:**
-- Purpose: Static images, icons, media (not yet populated)
-- Committed: Yes
-- Generated: No
+**src/components:**
+- Purpose: Reusable and layout React components
+- Contains: Error boundary, layout shell, print routes, UI primitives (Button, etc.), dashboard widgets
+- Key files: `AppShell.tsx` (main layout), `ErrorBoundary.tsx` (error handling), `PrintReport.tsx` (PDF-ready rendering)
 
-**src/components/:**
-- Purpose: Shared UI components used across multiple tools/pages
+**src/engine:**
+- Purpose: Cross-tool synthesis logic, rule execution, and derived metrics
+- Contains: Active v2 rules (8 rules), derived metrics (6 metrics), SWOT keyword analysis, rule registry
+- Key files: `synthesis.ts` (executor), `rules-v2.ts` (active rules), `derived-metrics.ts` (computed values)
+- **Note:** Old `rules.ts` (v1 rules E1-E5) exists but is **not imported** by synthesis.ts — kept for reference only
+
+**src/registry:**
+- Purpose: Tool definition interface and dynamic registration system
+- Contains: `ToolRegistry.ts` (interface, functions), `registry.ts` (registration of all 12 tools)
+- Key files: `ToolRegistry.ts` defines contract; `registry.ts` registers each tool via `registerTool()`
+
+**src/report:**
+- Purpose: Comprehensive report generation system with per-tool + unified reports, narrative templates, and PDF export
+- Contains: 6 subdirectories for charts, narrative, individual reports, unified briefings, PDF generation, quality checks
 - Key subdirectories:
-  - `layout/` — AppShell (main page wrapper), SafeModeBanner (import validation UI)
-  - `dashboard/` — Dashboard home page widgets
-  - `ui/` — Primitive components (Button, etc.)
-  - `print/` — PrintReport router for PDF routes (no AppShell wrapper)
-- Committed: Yes
+  - `charts/`: HorizontalBar, DotPlot, Gauge, ProgressBar components
+  - `individual/`: Per-tool reports (AIReadiness, LeadershipDNA, SWOT, VisionCanvas, Roadmap, AdvisorReadiness)
+  - `narrative/`: Text generation with voice/tone (professional, conversational, strategic)
+  - `unified/`: UnifiedStrategicBriefing, LLMStrategicBriefing
+  - `pdf/`: PdfGenerator (html2canvas + jsPDF), PrintPdfService (browser print)
+  - `quality/`: Detectors for vague entries and edge cases
 
-**src/engine/:**
-- Purpose: Synthesis logic for cross-tool insights
-- Key files:
-  - `synthesis.ts` (35 lines) — Rule execution and sorting
-  - `rules-v2.ts` (650+ lines) — 8 active insight rules
-  - `derived-metrics.ts` (550+ lines) — 6 aggregated metrics
-  - `swot-keywords.ts` (200+ lines) — Keyword analysis for SWOT text
-  - `types.ts` — Insight, SynthesisRule interfaces
-  - `rules.ts` — Legacy v1 rules (E1-E5, no longer used)
-  - `cloud.ts` — Optional Gemini AI integration
-- Committed: Yes
-- How synthesis runs: Every `updateToolData()` call triggers `runSynthesis()` synchronously; results stored in `state.insights`
+**src/store:**
+- Purpose: Single global state container with persistence
+- Contains: Zustand store with `persist` middleware to localStorage
+- Key file: `workspaceStore.ts` (state, actions, selectors, LOGIC_VERSION constant)
 
-**src/lib/:**
-- Purpose: Library configuration and exports
-- Contains: `charts.ts` for Chart.js plugin registration
-- Committed: Yes
+**src/tools:**
+- Purpose: Individual tool implementations (12 registered + 2 non-registered)
+- Contains: One subdirectory per tool, each with `index.ts` exporting `ToolDefinition`
+- Registered tools (12): ai-readiness, leadership-dna, emotional-intelligence, vision-canvas, swot, sop-taxonomy, sop-create, sop-management, roadmap, advisor-readiness, report, business-context
+- Non-registered: dashboard (home page), authority (tracker)
 
-**src/registry/:**
-- Purpose: Tool and validation profile registration
-- Files:
-  - `ToolRegistry.ts` (26 lines) — Registry interface and access functions
-  - `registry.ts` (28 lines) — Calls registerTool() for each of 12 tools
-- Initialization: Called in `main.tsx` via `initializeRegistry()`
-- Access: Components use `getTools()` for list, `getTool(id)` for lookup
-- Committed: Yes
+**src/utils:**
+- Purpose: Reusable utility functions
+- Contains: ClassNames composition (`cn.ts`), file I/O for workspace save/load (`fileSystem.ts`)
 
-**src/report/:**
-- Purpose: Multi-page report generation for PDF export
-- 6 subdirectories:
-  - `charts/` — Reusable chart components (HorizontalBar, DotPlot, Gauge, ProgressBar)
-  - `components/` — Report layout primitives (ReportPage, ReportHero, ReportSectionTitle, ReportBody, ReportCaption, ReportCallout, ReportList) and typography (ReportTypography)
-  - `individual/` — 6 per-tool reports (AIReadinessReport, LeadershipDNAReport, SwotReport, VisionCanvasReport, AdvisorReadinessReport, RoadmapReport)
-  - `narrative/` — Template system for consultant-voice narrative generation (templates.ts, generator.ts, voice.ts, types.ts)
-  - `pdf/` — PdfGenerator (html2canvas + jsPDF at 300 DPI), PrintPdfService (browser print)
-  - `unified/` — UnifiedStrategicBriefing (flagship 12-16 page report), LLMStrategicBriefing (AI-generated variant)
-  - `quality/` — VagueEntryDetector, EdgeCaseDetector for content quality assurance
-- Key design: ReportPage wrapper provides consistent layout; all reports render inside for PDF capture
-- Committed: Yes
+**src/validation:**
+- Purpose: Multi-level workspace validation (L0-L3)
+- Contains: Validator orchestrator, per-tool validation profiles split across 3 files
+- Key files: `validator.ts` (runner), `profiles_p*.ts` (per-tool rules)
 
-**src/scripts/:**
-- Purpose: Standalone verification/debug scripts (excluded from TypeScript compilation)
-- Committed: Yes
-- Note: These run outside the normal build and are not type-checked
-
-**src/store/:**
-- Purpose: Workspace state management
-- Single file: `workspaceStore.ts` (250+ lines)
-- Pattern: Zustand with persist middleware (localStorage key: `vwcg-workspace`)
-- State shape:
-  - Persisted: version, metadata, tools, provenance
-  - Ephemeral: isSafeMode, previewData, validationResults, insights, lastExportTime
-- Access: All components use `useWorkspaceStore(state => ...)` hooks
-- Committed: Yes
-
-**src/tools/:**
-- Purpose: 12 registered assessment tools + Dashboard (not registered)
-- Each tool has:
-  - Main component file (e.g., AiReadinessTool.tsx)
-  - `index.ts` or `index.tsx` exporting ToolDefinition
-  - Optional: type definitions, sub-components, data helpers
-- Registered tools (in registry.ts):
-  1. `ai-readiness/` — AI maturity across 6 dimensions
-  2. `leadership-dna/` — Leadership archetype (4 archetypes: Builder, Connector, Optimizer, Visionary)
-  3. `emotional-intelligence/` — BEI trend data
-  4. `vision-canvas/` — Pillars, values, 3-year metrics
-  5. `swot/` — Strengths, weaknesses, opportunities, threats
-  6. `sop/` — SOP Taxonomy, Creation, Management (3 separate tools)
-  7. `roadmap/` — 90-day initiatives with timeline
-  8. `advisor-readiness/` — Operational readiness questions
-  9. `report/` — ReportCenter (generates and downloads reports)
-  10. `business-context/` — Founder, revenue, industry context
-- Non-registered tools:
-  - `dashboard/` — Landing page (special route at /)
-  - `authority/` — Authority tracker (legacy, not in registry)
-- Committed: Yes
-
-**src/utils/:**
-- Purpose: Shared helper functions
-- Files:
-  - `cn.ts` (7 lines) — Wrapper for clsx + tailwind-merge
-  - `fileSystem.ts` (30+ lines) — saveWorkspaceToFile(), loadWorkspaceFromFile()
-- Committed: Yes
-
-**src/validation/:**
-- Purpose: Data quality validation system
-- Files:
-  - `types.ts` — ValidationProfile, ValidationResult, ValidationIssue interfaces
-  - `validator.ts` — validateWorkspace() — L0/L1/L2 checks
-  - `profiles_p1.ts` — Validation profiles for AI Readiness, Leadership DNA, BEI, Vision Canvas
-  - `profiles_p2.ts` — Validation profiles for SWOT, SOP
-  - `profiles_p3.ts` — Validation profiles for Roadmap, Advisor, Business Context
-  - `index.ts` — initializeValidation() — registers all profiles
-- Validation tiers:
-  - L0: Structural (JSON shape, required sections)
-  - L1/L2: Per-tool (field presence, type checks, business rules)
-  - L3: Import safety (logic version compatibility, data migration)
-- Registration: Happens in `main.tsx` during startup; profiles keyed by id (e.g., 'aireadiness_v1')
-- Access: validator.ts looks up profiles via tool's `validationProfileId`
-- Committed: Yes
-
-**src/App.tsx:**
-- Purpose: Main application router
-- Responsibilities:
-  1. Check if workspace exists; call resetWorkspace() if not
-  2. Set up BrowserRouter with two route groups:
-     - Print routes (/report/print/:reportType) — no AppShell
-     - App routes (/ and /tools/*) — wrapped in AppShell
-  3. Dynamically generate tool routes via getTools().map()
-- Committed: Yes
-
-**src/index.css:**
-- Purpose: Global CSS (Tailwind imports, custom utilities)
-- Committed: Yes
-
-**src/main.tsx:**
-- Purpose: React DOM entry point
-- Responsibilities:
-  1. initializeRegistry()
-  2. initializeValidation()
-  3. registerCharts()
-  4. createRoot().render(<App />)
-- Committed: Yes
+**tests/:**
+- Purpose: E2E and journey tests (Playwright)
+- Contains: User journey tests, persona data, helper utilities
+- Key files: `tests/journeys/*.spec.ts` (test cases), `tests/personas/*.ts` (test data)
 
 ## Key File Locations
 
 **Entry Points:**
-- `src/main.tsx` — React DOM mount (npm run dev starts here)
-- `src/App.tsx` — Router and app initialization
-- `src/components/layout/AppShell.tsx` — Main page layout for tool routes
+- `src/main.tsx`: App initialization with registry/validation/charts setup
+- `src/App.tsx`: Router configuration and workspace initialization
+- `src/components/print/PrintReport.tsx`: Clean report rendering for PDF (route `/report/print/:reportType`)
 
 **Configuration:**
-- `tsconfig.app.json` — TypeScript compiler config (target ES2022, strict mode)
-- `vite.config.ts` — Vite bundler config (path alias @/ → src/)
-- `src/index.css` — Global CSS (Tailwind)
+- `vite.config.ts`: Build config with `@` alias to `src/`
+- `tsconfig.app.json`: TypeScript strict mode, path alias, compiler options
+- `playwright.config.ts`: E2E test runner (Chromium, base URL `http://localhost:5173`)
+- `eslint.config.js`: Linting rules
+- `firebase.json`: Firebase Hosting config (serves from `dist/`)
 
 **Core Logic:**
-- `src/store/workspaceStore.ts` — Single state store (localStorage-backed)
-- `src/engine/synthesis.ts` — Insight generation
-- `src/engine/rules-v2.ts` — 8 synthesis rules
-- `src/engine/derived-metrics.ts` — 6 cross-assessment metrics
-- `src/validation/validator.ts` — Data quality checks
-
-**Tool Definitions:**
-- `src/registry/ToolRegistry.ts` — Tool registration system
-- `src/registry/registry.ts` — Register all 12 tools
-
-**Report Generation:**
-- `src/report/unified/UnifiedStrategicBriefing.tsx` — Flagship 12-16 page report
-- `src/report/pdf/PdfGenerator.ts` — HTML to PDF conversion (300 DPI)
-- `src/components/print/PrintReport.tsx` — Print route router
-
-**Validation:**
-- `src/validation/types.ts` — Validation interfaces
-- `src/validation/profiles_p*.ts` — Per-tool validation rules
-- `src/validation/validator.ts` — Master validation function
+- `src/store/workspaceStore.ts`: All workspace state, LOGIC_VERSION, actions (updateToolData, stageWorkspace, commitWorkspace, exportState)
+- `src/engine/synthesis.ts`: Rule executor and registry
+- `src/engine/rules-v2.ts`: 8 active synthesis rules (vision-execution, values-reality, priorities-alignment, etc.)
+- `src/registry/registry.ts`: Tool registration (all 12 tool definitions imported here)
 
 **Testing:**
-- `tests/` — Playwright E2E tests
-  - `smoke/` — Quick smoke tests
-  - `journeys/` — Multi-tool user journeys (alex.spec.ts, mike.spec.ts, sarah.spec.ts)
-  - `helpers/` — Test utilities (forms.ts, navigation.ts, workspace.ts)
+- `tests/journeys/`: User journey E2E tests (alex, sarah, mike personas)
+- `tests/personas/`: Test data (10 personas with pre-filled assessments)
+- `tests/helpers/`: Reusable test utilities (forms, navigation, workspace, pdf)
 
 ## Naming Conventions
 
 **Files:**
-- React components: PascalCase (e.g., AiReadinessTool.tsx, AppShell.tsx)
-- Utility/logic modules: camelCase (e.g., workspaceStore.ts, synthesis.ts)
-- Types/interfaces: Exported from .ts files with `export type`
-- Index files: `index.ts` for logic modules, `index.tsx` for tool definitions
+- **React Components**: PascalCase with `.tsx` extension (e.g., `AppShell.tsx`, `SwotTool.tsx`, `AIReadinessReport.tsx`)
+- **Types/Interfaces**: `.ts` files, exported as types (e.g., `types.ts`)
+- **Utilities**: camelCase with `.ts` extension (e.g., `fileSystem.ts`, `cn.ts`)
+- **Configuration**: kebab-case (e.g., `vite.config.ts`, `playwright.config.ts`)
+- **Test Files**: `.spec.ts` or `.test.ts` suffix (e.g., `alex.spec.ts`)
 
 **Directories:**
-- Tool directories: kebab-case (e.g., `ai-readiness`, `vision-canvas`)
-- Feature directories: kebab-case (e.g., `error-boundary` would be, but currently `ErrorBoundary.tsx` is in components/)
-- Subdomain directories: descriptive names (e.g., `narrative`, `charts`, `quality`)
+- **Tools**: kebab-case matching tool ID (e.g., `ai-readiness`, `leadership-dna`, `sop-taxonomy`)
+- **Report subdirectories**: lowercase (e.g., `charts/`, `narrative/`, `individual/`, `unified/`)
+- **Components**: Feature-based grouping (e.g., `components/layout/`, `components/ui/`, `components/dashboard/`)
 
-**Functions:**
-- camelCase for all functions and methods
-- Prefix with verb for clarity: `get*`, `compute*`, `generate*`, `validate*`, `scan*`
-- Examples: getTools(), computeDerivedMetrics(), generateNarrative(), validateWorkspace()
-
-**Variables:**
-- camelCase for local variables and state
-- UPPERCASE_SNAKE_CASE for constants (e.g., LOGIC_VERSION, STORAGE_KEY, A4_WIDTH_MM)
-- Type-prefixed for descriptive clarity (e.g., insights[], scores[], tools{})
+**Functions/Variables:**
+- camelCase for functions, variables, and store selectors
+- UPPERCASE_SNAKE_CASE for constants (e.g., `LOGIC_VERSION`, `STORAGE_KEY`, `CAPTURE_SCALE`)
 
 **Types/Interfaces:**
-- PascalCase for interface names (e.g., ToolDefinition, WorkspaceState, Insight)
-- Descriptive names matching domain concepts (e.g., DerivedMetrics, ValidationProfile, ReportType)
-- Type keyword for type-only imports (e.g., `import type { Insight } from '...'`) — required by verbatimModuleSyntax
+- PascalCase (e.g., `ToolDefinition`, `WorkspaceState`, `Insight`, `SynthesisRule`)
+- Type imports use `import type` (required by `verbatimModuleSyntax`)
 
 ## Where to Add New Code
 
-**New Feature (e.g., new synthesis rule):**
-- Primary code: Add rule to `src/engine/rules-v2.ts` (implement SynthesisRule interface)
-- Tests: Add test case to `tests/` (Playwright journey or unit)
-- Export: Update `src/engine/index.ts` to export if public
-
 **New Tool:**
-1. Create `src/tools/<tool-id>/` directory
-2. Implement main component (e.g., MyTool.tsx)
-3. Create `src/tools/<tool-id>/index.ts` exporting ToolDefinition with:
-   - Unique id (kebab-case)
-   - Path: `/tools/<tool-id>`
-   - Icon from lucide-react
-   - Validation profile id (optional)
-4. Import and register in `src/registry/registry.ts` via registerTool()
-5. (Optional) Create validation profile in `src/validation/profiles_p*.ts` and register in `src/validation/index.ts`
-6. Add route to AppShell sidebar automatically via getTools()
+1. Create `src/tools/{tool-id}/` directory
+2. Create `src/tools/{tool-id}/index.ts` exporting `ToolDefinition` with all required fields
+3. Create `src/tools/{tool-id}/{ToolName}Tool.tsx` (main component)
+4. Import and register in `src/registry/registry.ts` via `registerTool(toolDefinition)`
+5. Optionally create validation profile in `src/validation/profiles_p*.ts` and reference via `validationProfileId`
 
-**New Report:**
-1. Create component in `src/report/individual/` or `src/report/unified/`
-2. Wrap content in ReportPage component
-3. Use ReportSectionTitle, ReportBody, etc. from `src/report/components/` for consistent styling
-4. Use narrative system: createNarrativeContext(), generateNarrative(), buildSectionTemplate()
-5. Add mapping in `src/components/print/PrintReport.tsx` REPORT_MAP if new report type
-6. Add route parameter support in ReportCenter if needed
+**New Report Component (Per-Tool):**
+1. Create `src/report/individual/{Tool}Report.tsx`
+2. Export from `src/report/individual/index.ts`
+3. Import in report layout/container (usually `UnifiedStrategicBriefing.tsx` or report tool)
 
-**New Validation Profile:**
-1. Create profile in `src/validation/profiles_p1.ts`, `profiles_p2.ts`, or `profiles_p3.ts`
-2. Implement ToolValidationProfile interface: id, validate(data) → ValidationIssue[]
-3. Register in `src/validation/index.ts` via registerProfile()
-4. Link tool to profile via ToolDefinition.validationProfileId
+**New Synthesis Rule:**
+1. Add to `rulesV2` array in `src/engine/rules-v2.ts`
+2. Export from barrel export `src/engine/index.ts` if public
+3. Bump `LOGIC_VERSION` in `src/store/workspaceStore.ts`
 
-**New Utility:**
-- Place in `src/utils/` if reused across multiple components
-- Place in `src/lib/` if a library configuration export
-- Follow existing import patterns and use path alias @/ where applicable
+**New Chart Type:**
+1. Create `src/report/charts/{ChartType}.tsx` as React component
+2. Use Chart.js or D3 for rendering
+3. Export from chart components and import in report components
 
-**Shared Component:**
-- Place in `src/components/` if reused across tools or pages
-- Create subdirectory if component has sub-files or variations
-- Follow naming: PascalCase files for React components
+**Shared Utility:**
+1. Functions: `src/utils/{utilityName}.ts` (e.g., `dateFormat.ts`)
+2. Constants: Define in relevant layer or in `src/lib/constants.ts` (if created)
+3. Types: Define in `src/engine/types.ts` or domain-specific `types.ts`
+
+**Validation Profile:**
+1. Add to appropriate `src/validation/profiles_p*.ts` file (split evenly)
+2. Register in `src/validation/index.ts` via `registerValidationProfile()`
+3. Reference tool's `validationProfileId` field
+
+**Test Helper:**
+1. Create in `tests/helpers/{utilityName}.ts`
+2. Import and use in test files (`tests/journeys/*.spec.ts`)
+
+**Standalone Script:**
+1. Create in `src/scripts/{scriptName}.ts`
+2. Must be **excluded from TypeScript compilation** (already in `tsconfig.app.json`)
+3. Run via `npx ts-node src/scripts/{scriptName}.ts` or custom npm script
 
 ## Special Directories
 
-**src/scripts/:**
-- Purpose: Standalone scripts excluded from TypeScript compilation (set in tsconfig.app.json)
-- Generated: No
-- Committed: Yes
-- Note: These run outside normal build and are not type-checked by TS compiler
-
-**src/engine/llm/:**
-- Purpose: Gemini LLM integration (optional, requires VITE_GEMINI_API_KEY env var)
-- Generated: No
-- Committed: Yes
-- Currently: Types defined; cloud.ts provides API client
-
-**test-results/, test-outputs/:**
-- Purpose: E2E test output and Playwright screenshots
-- Generated: Yes (on test runs)
-- Committed: No (in .gitignore)
+**node_modules/:**
+- Purpose: npm dependencies
+- Generated: Yes (via `npm install`)
+- Committed: No (listed in `.gitignore`)
 
 **dist/:**
 - Purpose: Production build output
-- Generated: Yes (npm run build)
-- Committed: No (in .gitignore)
-- Deployed to Firebase Hosting from dist/
+- Generated: Yes (via `npm run build`)
+- Committed: No
+- Contents: Bundled JS, CSS, images optimized for deployment
 
-**node_modules/:**
-- Purpose: npm dependencies
-- Generated: Yes (npm install)
-- Committed: No (in .gitignore)
+**src/scripts/:**
+- Purpose: Standalone verification/utility scripts excluded from main TypeScript build
+- Excluded from: TypeScript compilation (via `tsconfig.app.json` exclude list)
+- Run separately: Via Node.js or ts-node
+
+**.planning/:**
+- Purpose: GSD orchestrator artifacts and planning documents
+- Committed: Yes (except `.agent/` and `.firebase/`)
+- Subdirectories: `codebase/` (ARCHITECTURE.md, STRUCTURE.md, etc.), `quick/` (phase plans), `config.json`
+
+**public/:**
+- Purpose: Static assets served as-is by Vite dev server and Firebase Hosting
+- Committed: Yes
+- Contents: Favicons, fonts, static images
+
+**tests/:**
+- Purpose: E2E tests via Playwright
+- Test config: `playwright.config.ts` (base URL, browser, reporter)
+- Auto-start: Dev server started automatically when tests run
+- Reports: Generated to `test-results/`, `test-outputs/`, or `playwright-report/`
 
 ---
 
-*Structure analysis: 2026-02-14*
+*Structure analysis: 2025-02-15*
