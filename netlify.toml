@@ -49,3 +49,16 @@
   from = "/guide/what-happens-when-a-business-is-not-ready-for-ai"
   to = "/blog/business-not-ready-for-ai"
   status = 301
+
+# Domain redirect: businessadvisors.app → vwcg.app
+[[redirects]]
+  from = "https://businessadvisors.app/*"
+  to = "https://vwcg.app/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://*.businessadvisors.app/*"
+  to = "https://vwcg.app/:splat"
+  status = 301
+  force = true
