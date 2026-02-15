@@ -4,7 +4,7 @@ description: "Tool vendors sell software. AI agencies build projects. AI consult
 pubDate: 2026-02-15
 author: "Kamyar Shah"
 tags: ["ai consulting", "ai agency", "ai vendor", "ai strategy"]
-heroImage: "/blog/images/ai-consulting-vs-agency.webp"
+heroImage: "/blog/images/ai-consulting-vs-agency-vs-vendor.png"
 draft: false
 ---
 

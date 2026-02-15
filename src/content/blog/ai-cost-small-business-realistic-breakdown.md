@@ -4,7 +4,7 @@ description: "Forget the enterprise pricing. Here's what SMBs in the $2M-$25M ra
 pubDate: 2026-02-15
 author: "Kamyar Shah"
 tags: ["ai costs", "ai for small business", "ai budget", "ai implementation"]
-heroImage: "/blog/images/ai-cost-small-business.webp"
+heroImage: "/blog/images/ai-cost-small-business.png"
 draft: false
 ---
 

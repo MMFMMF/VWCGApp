@@ -4,7 +4,7 @@ description: "You don't need data scientists or ML engineers to deploy AI. Here'
 pubDate: 2026-02-15
 author: "Kamyar Shah"
 tags: ["ai implementation", "ai for small business", "ai automation", "workflow automation"]
-heroImage: "/blog/images/ai-implementation-small-business.webp"
+heroImage: "/blog/images/ai-implementation-no-tech-team.png"
 draft: false
 ---
 

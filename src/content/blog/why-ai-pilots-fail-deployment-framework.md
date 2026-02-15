@@ -4,7 +4,7 @@ description: "80% of AI pilots never become production systems. The problem isn'
 pubDate: 2026-02-15
 author: "Kamyar Shah"
 tags: ["ai pilot", "ai deployment", "ai failure", "ai governance", "ai implementation"]
-heroImage: "/blog/images/ai-pilots-fail.webp"
+heroImage: "/blog/images/ai-pilots-fail.png"
 draft: false
 ---
 

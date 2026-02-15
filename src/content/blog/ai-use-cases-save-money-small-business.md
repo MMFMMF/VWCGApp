@@ -4,7 +4,7 @@ description: "Not theoretical. Not enterprise-only. Five specific AI use cases t
 pubDate: 2026-02-15
 author: "Kamyar Shah"
 tags: ["ai use cases", "ai roi", "practical ai", "ai automation", "small business ai"]
-heroImage: "/blog/images/ai-use-cases-smb.webp"
+heroImage: "/blog/images/ai-use-cases-save-money.png"
 draft: false
 ---
 

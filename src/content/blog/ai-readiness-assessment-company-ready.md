@@ -4,7 +4,7 @@ description: "Most companies jumping into AI aren't ready for it. Use this pract
 pubDate: 2026-02-15
 author: "Kamyar Shah"
 tags: ["ai readiness", "ai assessment", "ai strategy", "small business ai"]
-heroImage: "/blog/images/ai-readiness-assessment.webp"
+heroImage: "/blog/images/ai-readiness-assessment.png"
 draft: false
 ---
 
