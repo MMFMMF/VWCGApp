@@ -133,14 +133,20 @@ function getCategoryInterpretation(catId: string, pct: number, context: CompanyC
     const industryLower = industry.toLowerCase();
     if (/consult|advisory|professional.*service|legal|account/i.test(industryLower)) {
       result = `${base} In a professional services environment, cultural readiness directly impacts client-facing quality — team engagement translates to client outcomes.`;
-    } else if (/industrial|manufactur|supply|warehouse|logistics|construct|mining/i.test(industryLower)) {
-      result = `${base} In an industrial environment, cultural readiness is inseparable from safety outcomes and workforce retention — disengaged teams create operational risk.`;
+    } else if (/construct|mining/i.test(industryLower)) {
+      result = `${base} In construction, cultural readiness is inseparable from safety outcomes, field-to-office alignment, and workforce retention — disengaged crews create both operational and safety risk.`;
+    } else if (/manufactur|supply|warehouse|logistics|industrial/i.test(industryLower)) {
+      result = `${base} In a manufacturing environment, cultural readiness drives cross-functional collaboration, quality consistency, and knowledge transfer — siloed teams degrade both output and innovation.`;
     } else if (/tech|software|saas|digital|startup/i.test(industryLower)) {
       result = `${base} In a technology environment, cultural readiness determines innovation velocity — the ability to experiment, fail fast, and iterate depends on psychological safety.`;
     } else if (/health|medical|clinic|dental|pharma/i.test(industryLower)) {
       result = `${base} In healthcare, cultural readiness affects patient outcomes and regulatory compliance — team engagement directly correlates with care quality.`;
     } else if (/retail|restaurant|hospitality|food|hotel/i.test(industryLower)) {
       result = `${base} In a customer-facing environment, cultural readiness directly impacts the customer experience — frontline engagement determines brand perception.`;
+    } else if (/nonprofit|ngo|foundation|social/i.test(industryLower)) {
+      result = `${base} In a mission-driven organization, cultural readiness amplifies program delivery and donor confidence — team burnout directly erodes the mission.`;
+    } else if (/financ|banking|insurance|wealth|advisory/i.test(industryLower)) {
+      result = `${base} In financial services, cultural readiness underpins client trust and regulatory discipline — compliance culture and advisor engagement are inseparable.`;
     }
   }
 
@@ -149,34 +155,40 @@ function getCategoryInterpretation(catId: string, pct: number, context: CompanyC
     const bc = workspace.tools?.['business-context'];
     const dna = workspace.tools?.['leadership-dna'];
     const swot = workspace.tools?.swot;
+    const companyName = bc?.companyName;
 
     const dataPoints: string[] = [];
 
-    // SWOT weakness signals related to culture
-    const weaknesses = swot?.weaknesses as Array<{ text?: string }> | undefined;
-    if (weaknesses) {
-      const cultureSignals = weaknesses.filter((w: { text?: string }) =>
-        /turnover|retention|burnout|morale|engagement|culture|communication.*gap|management.*style|approves.*every|direct report/i.test(w.text ?? '')
+    // SWOT strength — unique cultural capability
+    const strengths = swot?.strengths as Array<{ text?: string }> | undefined;
+    if (strengths) {
+      const cultureStrengths = strengths.filter((s: { text?: string }) =>
+        /team|culture|workforce|bilingual|safety|retention|loyalty|engaged|PhD|patent|reputation|brand/i.test(s.text ?? '')
       );
-      if (cultureSignals.length > 0) {
-        dataPoints.push(`The SWOT assessment flagged "${cultureSignals[0].text}" as a contributing factor`);
+      if (cultureStrengths.length > 0) {
+        const prefix = companyName ? `For ${companyName}, a` : 'A';
+        dataPoints.push(`${prefix} key cultural asset is "${cultureStrengths[0].text}"`);
       }
     }
 
-    // Leadership empowerment + adaptability
+    // SWOT weakness — specific cultural risk
+    const weaknesses = swot?.weaknesses as Array<{ text?: string }> | undefined;
+    if (weaknesses) {
+      const cultureWeaknesses = weaknesses.filter((w: { text?: string }) =>
+        /turnover|retention|burnout|morale|engagement|culture|communication|management.*style|approves.*every|direct report|speak.*language|gap|aging|age/i.test(w.text ?? '')
+      );
+      if (cultureWeaknesses.length > 0) {
+        dataPoints.push(`However, the assessment identified "${cultureWeaknesses[0].text}" as a cultural constraint requiring attention`);
+      }
+    }
+
+    // Leadership empowerment + adaptability with interpretation
     const empowerment = dna?.current_Empowerment;
     const adaptability = dna?.current_Adaptability;
     if (empowerment != null && adaptability != null) {
-      dataPoints.push(`Leadership empowerment (${empowerment}/10) and adaptability (${adaptability}/10) shape how quickly cultural initiatives take hold`);
-    }
-
-    // Employee count + years in business
-    const empCount = bc?.employeeCount;
-    const years = bc?.yearsInBusiness;
-    if (empCount && years) {
-      dataPoints.push(`As a ${empCount}-employee organization with ${years} years of history, cultural patterns are ${years === '20+' || years === '10-20' ? 'deeply embedded and require sustained effort to shift' : 'still forming and can be shaped with deliberate action'}`);
-    } else if (empCount) {
-      dataPoints.push(`Managing cultural dynamics across ${empCount} employees requires structured communication and engagement practices`);
+      const empLabel = empowerment >= 7 ? 'strong' : empowerment >= 5 ? 'moderate' : 'limited';
+      const adaptLabel = adaptability >= 7 ? 'high' : adaptability >= 5 ? 'moderate' : 'low';
+      dataPoints.push(`With ${empLabel} empowerment (${empowerment}/10) and ${adaptLabel} adaptability (${adaptability}/10), the leadership profile ${adaptability >= 7 ? 'supports rapid cultural evolution' : adaptability >= 5 ? 'can sustain gradual cultural improvement' : 'may slow cultural transformation efforts'}`);
     }
 
     // Append up to 2 data points
