@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-02-14)
 Phase: 11 of 16 (Financial Math Reconciliation)
 Plan: 0 of TBD in current phase
 Status: Ready to plan
-Last activity: 2026-02-15 - Completed quick task 18: add Netlify redirects from businessadvisors.app to vwcg.app
+Last activity: 2026-02-15 - Completed quick task 19: rename routes — /invite for gate, /assessment for tool
 
 Progress: [██████████░░░░░░░░░░] 62.5% (10/16 phases complete)
 
@@ -87,6 +87,7 @@ src/components/print/
 | 16 | Generate 30 invite codes for general access, PPC campaigns, and outreach | 2026-02-15 | 1 file |
 | 17 | Emergency fix: restore assessment app from a6152c7 with invite gate, preserve blog posts, re-add 30 codes | 2026-02-15 | 5 files |
 | 18 | Add Netlify 301 redirects from businessadvisors.app to vwcg.app | 2026-02-15 | 1 file |
+| 19 | Rename routes: /invite for gate, /assessment for tool, update all links, add domain redirects | 2026-02-15 | 17 files |
 
 ### Pending Todos
 
@@ -99,7 +100,7 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-15
-Stopped at: Completed quick task 18 (domain redirects), ready to plan Phase 11
+Stopped at: Completed quick task 19 (route renaming), ready to plan Phase 11
 Resume file: None
 
 ---
