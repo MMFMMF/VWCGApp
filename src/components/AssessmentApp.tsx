@@ -85,43 +85,45 @@ function ToolView({ toolId }: { toolId: string }) {
  * Main AssessmentApp component with dynamic routing
  */
 const AssessmentApp: React.FC = () => {
-  const [isHydrated, setIsHydrated] = useState(false);
+  const [isStoreReady, setIsStoreReady] = useState(false);
   const tools = toolRegistry.getSorted();
   const loadTeaserAnswers = useWorkspaceStore((state) => state.loadTeaserAnswers);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const checkSession = useAuthStore((state) => state.checkSession);
 
-  // Wait for Zustand store hydration
+  // Wait for auth store to rehydrate from sessionStorage before checking auth
   useEffect(() => {
-    // Small delay to ensure localStorage has been read
-    const timer = setTimeout(() => {
-      setIsHydrated(true);
-    }, 100);
-
-    return () => clearTimeout(timer);
+    if (useAuthStore.persist.hasHydrated()) {
+      setIsStoreReady(true);
+    } else {
+      const unsub = useAuthStore.persist.onFinishHydration(() => {
+        setIsStoreReady(true);
+      });
+      return unsub;
+    }
   }, []);
 
   // Load teaser answers from landing page mini-assessment (if any)
   useEffect(() => {
-    if (isHydrated) {
+    if (isStoreReady) {
       const loaded = loadTeaserAnswers();
       if (loaded) {
         console.log('[AssessmentApp] Teaser answers loaded into AI Readiness');
       }
     }
-  }, [isHydrated, loadTeaserAnswers]);
+  }, [isStoreReady, loadTeaserAnswers]);
 
-  // Validate 24-hour auth session on mount; redirect to /invite if invalid
+  // Validate 24-hour auth session after store rehydration; redirect to /invite if invalid
   useEffect(() => {
-    if (isHydrated) {
+    if (isStoreReady) {
       const valid = checkSession();
       if (!valid) {
         window.location.href = '/invite';
       }
     }
-  }, [isHydrated, checkSession]);
+  }, [isStoreReady, checkSession]);
 
-  if (!isHydrated || !isAuthenticated) {
+  if (!isStoreReady || !isAuthenticated) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
