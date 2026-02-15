@@ -4,15 +4,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Is
 
-VWCGApp (Value-Weighted Capability Gap Application) is a React SPA for strategic business assessment. Executives use 12 integrated tools (AI Readiness, Leadership DNA, BEI, Vision Canvas, SWOT, SOP Taxonomy/Creation/Management, 90-Day Roadmap, Advisor Readiness, Report Center, Business Context) to evaluate organizational readiness and create actionable plans. Deployed to Netlify at https://sparkly-speculoos-87b564.netlify.app/.
+VWCGApp (Value-Weighted Capability Gap Application) is an Astro SSG site with a React SPA island for strategic business assessment. The marketing landing page (`/`), blog (`/blog/*`), and invite page (`/invite`) are static Astro pages. The React SPA mounts at `/app/*` via `client:only="react"` and provides 12 integrated tools (AI Readiness, Leadership DNA, BEI, Vision Canvas, SWOT, SOP Taxonomy/Creation/Management, 90-Day Roadmap, Advisor Readiness, Report Center, Business Context). Deployed to Netlify at https://sparkly-speculoos-87b564.netlify.app/.
 
 ## Commands
 
 ```bash
-npm run dev                  # Vite dev server at localhost:5173
-npm run build                # TypeScript check + Vite production build
+npm run dev                  # Astro dev server at localhost:4321
+npm run build                # TypeScript check + Astro production build (tsc -b && astro build)
 npm run lint                 # ESLint across all .ts/.tsx files
-npm run preview              # Preview production build locally
+npm run preview              # Preview production build locally (Astro preview)
 npm run test:e2e             # Playwright E2E tests (auto-starts dev server)
 npm run test:e2e:ui          # Playwright with interactive UI mode
 npm run test:e2e:headed      # Playwright in headed browser
@@ -30,7 +30,7 @@ npx playwright test -g "pattern"
 
 ## Architecture
 
-**Stack:** React 19 + TypeScript 5.9 + Vite 7.2 + TailwindCSS 3.4 + Zustand 5.0 + Chart.js/D3 + React Router 7 + lucide-react icons
+**Stack:** Astro 5 + React 19 + TypeScript 5.9 + TailwindCSS 3.4 (PostCSS) + Zustand 5.0 + Chart.js/D3 + React Router 7 + lucide-react icons
 
 **Path alias:** `@/` maps to `src/` (configured in both vite.config.ts and tsconfig.app.json)
 
@@ -86,9 +86,20 @@ Add a `SynthesisRule` to the `rulesV2` array in `src/engine/rules-v2.ts`. Each r
 
 ### Routing
 
-`App.tsx` uses `BrowserRouter` with two route groups:
-- **Print routes** (`/report/print/:reportType`) — rendered WITHOUT `AppShell` for clean PDF generation via `PrintReport` component
-- **App routes** — wrapped in `AppShell`. Root `/` renders `DashboardTool` (not in the registry). All registered tools get dynamic routes via `getTools().map()`. Catch-all `*` redirects to `/`
+**Astro routes** (static pages):
+- `/` — Marketing homepage (`src/pages/index.astro`)
+- `/blog` — Blog listing (`src/pages/blog/index.astro`)
+- `/blog/{slug}` — Individual blog posts (`src/pages/blog/[...slug].astro`)
+- `/invite` — Invite page (`src/pages/invite.astro`)
+- `/app` — React SPA mount point (`src/pages/app/[...tool].astro`)
+
+**React SPA routes** (inside `AssessmentApp.tsx` with `basename="/app"`):
+- `/app/` — `DashboardTool` (not in registry)
+- `/app/tools/{tool-id}` — Dynamic routes from `getTools().map()`
+- `/app/report/print/:reportType` — Print routes (no AppShell)
+- `/app/*` — Catch-all redirects to `/app/`
+
+**Blog system:** Astro content collections in `src/content/blog/` (Markdown). Schema in `src/content/config.ts` — required fields: `title`, `description`, `pubDate` (date); optional: `updatedDate`, `heroImage`, `author` (default "World Consulting Group"), `tags` (string[]), `draft` (boolean). Slug is inferred from filename. Blog post template includes JSON-LD, Open Graph, Twitter Cards, reading time.
 
 The Dashboard and the `authority-tracker` tool exist in `src/tools/` but are not part of the 12-tool registry.
 
