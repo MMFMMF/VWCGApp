@@ -36,9 +36,21 @@
     "noUncheckedSideEffectImports": true
   },
   "include": [
-    "src"
-  ],
-  "exclude": [
-    "src/scripts"
+    "src/App.tsx",
+    "src/main.tsx",
+    "src/vite-env.d.ts",
+    "src/components/AssessmentApp.tsx",
+    "src/components/dashboard",
+    "src/components/layout",
+    "src/components/print",
+    "src/components/ui",
+    "src/engine",
+    "src/lib/charts.ts",
+    "src/registry",
+    "src/report",
+    "src/store",
+    "src/tools",
+    "src/utils",
+    "src/validation"
   ]
 }

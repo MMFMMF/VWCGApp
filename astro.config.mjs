@@ -6,7 +6,6 @@ import { fileURLToPath } from 'url';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 
-import tailwindcss from '@tailwindcss/vite';
 import { visualizer } from 'rollup-plugin-visualizer';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -26,7 +25,6 @@ export default defineConfig({
 
   vite: {
     plugins: [
-      tailwindcss(),
       visualizer({
         open: false,
         filename: './dist/stats.html',
@@ -52,12 +50,6 @@ export default defineConfig({
           manualChunks: (id) => {
             if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/')) {
               return 'react-vendor';
-            }
-            if (id.includes('recharts') || id.includes('react-circular-progressbar')) {
-              return 'charts';
-            }
-            if (id.includes('@radix-ui')) {
-              return 'radix-ui';
             }
           },
         },
