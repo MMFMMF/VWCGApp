@@ -83,4 +83,4 @@ VWCGApp provides specialized assessment tools to help you identify gaps across m
 
 The best time to conduct a gap analysis is now. Even if you can only start with one area, identifying and addressing gaps systematically will compound over time.
 
-Ready to identify your business gaps? [Try our free assessment tools →](/app)
+Ready to identify your business gaps? [Try our free assessment tools →](/invite)

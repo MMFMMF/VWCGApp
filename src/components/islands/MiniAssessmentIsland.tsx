@@ -205,7 +205,7 @@ export default function MiniAssessmentIsland() {
           {/* CTA */}
           <div className="mt-8 text-center">
             <a
-              href="/app?tool=ai-readiness"
+              href="/invite"
               className="inline-block px-8 py-4 bg-indigo-600 text-white text-lg font-semibold rounded-lg hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
               Get Your Full Assessment

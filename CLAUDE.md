@@ -90,14 +90,15 @@ Add a `SynthesisRule` to the `rulesV2` array in `src/engine/rules-v2.ts`. Each r
 - `/` — Marketing homepage (`src/pages/index.astro`)
 - `/blog` — Blog listing (`src/pages/blog/index.astro`)
 - `/blog/{slug}` — Individual blog posts (`src/pages/blog/[...slug].astro`)
-- `/invite` — Invite page (`src/pages/invite.astro`)
-- `/app` — React SPA mount point (`src/pages/app/[...tool].astro`)
+- `/invite` — Invite gate page (`src/pages/invite.astro`) — redirects to `/assessment` after auth
+- `/assessment` — React SPA mount point (`src/pages/assessment/[...tool].astro`)
 
-**React SPA routes** (inside `AssessmentApp.tsx` with `basename="/app"`):
-- `/app/` — `DashboardTool` (not in registry)
-- `/app/tools/{tool-id}` — Dynamic routes from `getTools().map()`
-- `/app/report/print/:reportType` — Print routes (no AppShell)
-- `/app/*` — Catch-all redirects to `/app/`
+**React SPA routes** (inside `AssessmentApp.tsx` with `basename="/assessment"`):
+- `/assessment/` — Dashboard
+- `/assessment/tools/{tool-id}` — Dynamic routes from registry
+- `/assessment/*` — Catch-all redirects to `/assessment/`
+
+**Netlify redirects:** `/app/*` → `/assessment/` (301), domain redirects for businessadvisors.app and *.vwcg.app
 
 **Blog system:** Astro content collections in `src/content/blog/` (Markdown). Schema in `src/content/config.ts` — required fields: `title`, `description`, `pubDate` (date); optional: `updatedDate`, `heroImage`, `author` (default "World Consulting Group"), `tags` (string[]), `draft` (boolean). Slug is inferred from filename. Blog post template includes JSON-LD, Open Graph, Twitter Cards, reading time.
 

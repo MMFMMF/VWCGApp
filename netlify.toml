@@ -5,11 +5,18 @@
 [build.environment]
   NODE_VERSION = "22"
 
-# Redirects for SPA-like behavior on /app routes
+# SPA-like behavior on /assessment routes
+[[redirects]]
+  from = "/assessment/*"
+  to = "/assessment/index.html"
+  status = 200
+
+# 301 redirect: old /app/* URLs → /assessment/
 [[redirects]]
   from = "/app/*"
-  to = "/app/index.html"
-  status = 200
+  to = "/assessment/:splat"
+  status = 301
+  force = true
 
 # Headers for security and caching
 [[headers]]
@@ -58,7 +65,14 @@
   force = true
 
 [[redirects]]
-  from = "https://*.businessadvisors.app/*"
+  from = "https://www.businessadvisors.app/*"
+  to = "https://vwcg.app/:splat"
+  status = 301
+  force = true
+
+# Domain redirect: *.vwcg.app → vwcg.app
+[[redirects]]
+  from = "https://*.vwcg.app/*"
   to = "https://vwcg.app/:splat"
   status = 301
   force = true

@@ -48,4 +48,4 @@ The most valuable business assessments cover:
 
 Ready to see where your business really stands? Try our free assessment tools and get instant insights—no email required.
 
-[Start Your Assessment →](/app)
+[Start Your Assessment →](/invite)

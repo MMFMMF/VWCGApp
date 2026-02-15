@@ -1,5 +1,5 @@
 /**
- * AssessmentApp - Main React component for the /app route
+ * AssessmentApp - Main React component for the /assessment route
  *
  * Dynamically generates routes from the tool registry.
  * Provides dashboard for tool selection and individual tool views.
@@ -128,7 +128,7 @@ const AssessmentApp: React.FC = () => {
 
   return (
     <InviteGate>
-      <BrowserRouter basename="/app">
+      <BrowserRouter basename="/assessment">
         <div className="min-h-screen bg-gray-50">
           <Routes>
             {/* Dashboard route */}
