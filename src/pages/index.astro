@@ -7,8 +7,8 @@ import ComparisonTable from '../components/marketing/ComparisonTable.astro';
 import CTA from '../components/marketing/CTA.astro';
 import Footer from '../components/marketing/Footer.astro';
 
-const pageTitle = 'Free Business Gap Assessment — 10 Strategic Tools | VWCG';
-const pageDescription = 'Free diagnostic tools that score your leadership, operations, AI readiness, and execution in 10 minutes. No signup. Instant results. PDF export. Used by 1,200+ business owners.';
+const pageTitle = 'Free Strategic Business Assessment — Score Your Operations in 10 Minutes | VWCG';
+const pageDescription = 'Free diagnostic tools that score your leadership, operations, AI readiness, and execution in 10 minutes. Invite code required. Instant results. PDF export.';
 ---
 
 <MarketingLayout title={pageTitle} description={pageDescription}>
@@ -18,6 +18,30 @@ const pageDescription = 'Free diagnostic tools that score your leadership, opera
     <SampleReport />
     <ComparisonTable />
     <CTA ctaHref="/invite" />
+
+    <!-- Blog section -->
+    <section class="py-20 sm:py-28 bg-white">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl sm:text-4xl font-bold text-gray-900">Learn before you assess</h2>
+          <p class="mt-3 text-lg text-gray-600">Strategic guides for founders and ops leaders navigating AI, operations, and growth.</p>
+        </div>
+        <div class="space-y-6">
+          <a href="/blog/ai-readiness-assessment-company-ready" class="block p-6 bg-gray-50 rounded-xl hover:bg-indigo-50 transition-colors group">
+            <h3 class="text-lg font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">AI Readiness Assessment: Is Your Company Actually Ready for AI?</h3>
+          </a>
+          <a href="/blog/ai-cost-small-business-realistic-breakdown" class="block p-6 bg-gray-50 rounded-xl hover:bg-indigo-50 transition-colors group">
+            <h3 class="text-lg font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">What Does AI Actually Cost for a Small Business?</h3>
+          </a>
+          <a href="/blog/why-ai-pilots-fail-deployment-framework" class="block p-6 bg-gray-50 rounded-xl hover:bg-indigo-50 transition-colors group">
+            <h3 class="text-lg font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">Why Most AI Pilots Fail (And How to Deploy AI That Actually Ships)</h3>
+          </a>
+        </div>
+        <div class="mt-8 text-center">
+          <a href="/blog" class="text-indigo-600 hover:text-indigo-700 font-semibold transition-colors">Read all posts &rarr;</a>
+        </div>
+      </div>
+    </section>
   </main>
   <Footer />
 </MarketingLayout>

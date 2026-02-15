@@ -8,12 +8,6 @@ const { ctaHref = '/invite' } = Astro.props;
 
 <section class="py-20 sm:py-28 bg-gradient-to-b from-white to-indigo-50 relative">
   <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    <!-- Social proof number -->
-    <div class="inline-flex items-center gap-2 bg-indigo-100 rounded-full px-4 py-1.5 mb-8">
-      <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
-      <span class="text-sm font-medium text-indigo-700">Join 1,200+ business owners who've already assessed</span>
-    </div>
-
     <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
       Your blind spots don't wait.<br class="hidden sm:inline" />
       <span class="text-indigo-600">Neither should you.</span>
@@ -33,7 +27,10 @@ const { ctaHref = '/invite' } = Astro.props;
     </div>
 
     <p class="mt-5 text-sm text-gray-500">
-      No email. No signup. No credit card. Ever.
+      No signup. No credit card. Just an invite code.
+    </p>
+    <p class="mt-3 text-sm text-gray-500">
+      Don't have a code? <a href="#contact" class="text-indigo-600 hover:text-indigo-700 font-medium">Request access</a> or find one in our <a href="/blog" class="text-indigo-600 hover:text-indigo-700 font-medium">blog posts</a>.
     </p>
   </div>
 </section>

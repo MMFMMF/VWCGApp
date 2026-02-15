@@ -6,7 +6,7 @@
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <div class="grid md:grid-cols-12 gap-8">
       <!-- Brand -->
-      <div class="md:col-span-5">
+      <div class="md:col-span-4">
         <div class="flex items-center gap-3 mb-4">
           <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
             <span class="text-sm font-black text-white">V</span>
@@ -22,7 +22,7 @@
       </div>
 
       <!-- Links -->
-      <div class="md:col-span-3 md:col-start-7">
+      <div class="md:col-span-2 md:col-start-6">
         <h4 class="text-white text-sm font-semibold mb-4">Quick Links</h4>
         <ul class="space-y-2.5 text-sm">
           <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
@@ -31,16 +31,62 @@
         </ul>
       </div>
 
-      <!-- Contact -->
-      <div class="md:col-span-4">
+      <!-- Get in Touch -->
+      <div class="md:col-span-5 md:col-start-8" id="contact">
         <h4 class="text-white text-sm font-semibold mb-4">Get in Touch</h4>
-        <p class="text-sm text-slate-500 mb-3">
-          Want help executing your assessment recommendations?
+        <p class="text-sm text-slate-500 mb-4">
+          Request an invite code, ask about consulting, or just say hi.
         </p>
-        <a href="mailto:contact@vwcgapp.com" class="inline-flex items-center gap-2 text-sm text-indigo-400 hover:text-indigo-300 transition-colors">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-          contact@vwcgapp.com
+        <a href="https://kamyarshah.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-sm text-indigo-400 hover:text-indigo-300 transition-colors mb-6">
+          Strategic consulting &rarr;
         </a>
+
+        <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="space-y-3" id="contact-form">
+          <input type="hidden" name="form-name" value="contact" />
+          <p style="display:none"><label>Don't fill this out: <input name="bot-field" /></label></p>
+          <div class="grid sm:grid-cols-2 gap-3">
+            <input
+              type="text"
+              name="name"
+              placeholder="Your name"
+              required
+              class="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Your email"
+              required
+              class="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            />
+          </div>
+          <select
+            name="reason"
+            required
+            class="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent appearance-none"
+          >
+            <option value="" disabled selected>What do you need?</option>
+            <option value="invite-code">Request an invite code</option>
+            <option value="consulting">Strategic consulting inquiry</option>
+            <option value="other">Other</option>
+          </select>
+          <textarea
+            name="message"
+            placeholder="Tell us more..."
+            required
+            rows="3"
+            class="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
+          ></textarea>
+          <button
+            type="submit"
+            class="w-full sm:w-auto px-6 py-2.5 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-500 transition-colors"
+          >
+            Send
+          </button>
+        </form>
+        <div id="contact-success" class="hidden mt-4 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
+          <p class="text-sm text-emerald-400 font-medium">Thanks! We'll be in touch.</p>
+        </div>
       </div>
     </div>
 
@@ -49,3 +95,28 @@
     </div>
   </div>
 </footer>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const successMsg = document.getElementById('contact-success');
+
+  if (form && successMsg) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+
+      try {
+        await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(formData as unknown as Record<string, string>).toString(),
+        });
+        form.classList.add('hidden');
+        successMsg.classList.remove('hidden');
+      } catch {
+        // Fallback: submit normally
+        form.submit();
+      }
+    });
+  }
+</script>
