@@ -19,9 +19,12 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"],
+      "@components/*": ["src/components/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@lib/*": ["src/lib/*"],
+      "@stores/*": ["src/stores/*"],
+      "@types/*": ["src/types/*"]
     },
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
@@ -36,21 +39,9 @@
     "noUncheckedSideEffectImports": true
   },
   "include": [
-    "src/App.tsx",
-    "src/main.tsx",
     "src/vite-env.d.ts",
-    "src/components/AssessmentApp.tsx",
-    "src/components/dashboard",
-    "src/components/layout",
-    "src/components/print",
-    "src/components/ui",
-    "src/engine",
-    "src/lib/charts.ts",
-    "src/registry",
-    "src/report",
-    "src/store",
-    "src/tools",
-    "src/utils",
-    "src/validation"
+    "src/lib/auth",
+    "src/stores/authStore.ts",
+    "src/components/auth"
   ]
 }

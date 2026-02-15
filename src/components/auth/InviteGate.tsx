@@ -7,7 +7,7 @@ interface InviteGateProps {
   fallbackUrl?: string;
 }
 
-export default function InviteGate({ children, fallbackUrl = '/invite' }: InviteGateProps) {
+export default function InviteGate({ children, fallbackUrl: _fallbackUrl = '/invite' }: InviteGateProps) {
   const { isAuthenticated, checkSession, authenticate } = useAuthStore();
   const [code, setCode] = useState('');
   const [error, setError] = useState<string | null>(null);
