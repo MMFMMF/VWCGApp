@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-02-14)
 Phase: 11 of 16 (Financial Math Reconciliation)
 Plan: 0 of TBD in current phase
 Status: Ready to plan
-Last activity: 2026-02-15 - Completed quick task 16: generate 30 invite codes for general/PPC/outreach distribution
+Last activity: 2026-02-15 - Completed quick task 18: add Netlify redirects from businessadvisors.app to vwcg.app
 
 Progress: [██████████░░░░░░░░░░] 62.5% (10/16 phases complete)
 
@@ -85,6 +85,8 @@ src/components/print/
 | 14 | Removed tsc gate from build — REVERTED (broke production) | 2026-02-15 | 1 file |
 | 15 | Restore Astro build, fix 211 TS errors, resolve Tailwind v3/v4 conflict, deploy 6 AI blog posts with cross-links | 2026-02-15 | 15 files |
 | 16 | Generate 30 invite codes for general access, PPC campaigns, and outreach | 2026-02-15 | 1 file |
+| 17 | Emergency fix: restore assessment app from a6152c7 with invite gate, preserve blog posts, re-add 30 codes | 2026-02-15 | 5 files |
+| 18 | Add Netlify 301 redirects from businessadvisors.app to vwcg.app | 2026-02-15 | 1 file |
 
 ### Pending Todos
 
@@ -97,7 +99,7 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-15
-Stopped at: Completed quick task 16, ready to plan Phase 11
+Stopped at: Completed quick task 18 (domain redirects), ready to plan Phase 11
 Resume file: None
 
 ---
