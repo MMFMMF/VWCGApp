@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-02-14)
 Phase: 11 of 16 (Financial Math Reconciliation)
 Plan: 0 of TBD in current phase
 Status: Ready to plan
-Last activity: 2026-02-15 - Completed quick task 20: fix landing page content, add contact form, remove email exposure
+Last activity: 2026-02-15 - Completed quick task 21: rewrite 6 AI cluster blog posts with KS voice
 
 Progress: [██████████░░░░░░░░░░] 62.5% (10/16 phases complete)
 
@@ -89,6 +89,7 @@ src/components/print/
 | 18 | Add Netlify 301 redirects from businessadvisors.app to vwcg.app | 2026-02-15 | 1 file |
 | 19 | Rename routes: /invite for gate, /assessment for tool, update all links, add domain redirects | 2026-02-15 | 17 files |
 | 20 | Fix landing page content, add Netlify contact form, remove email exposure | 2026-02-15 | 5 files |
+| 21 | Rewrite 6 AI cluster blog posts with KS voice, updated byline, encoding fix | 2026-02-15 | 6 files |
 
 ### Pending Todos
 
@@ -101,7 +102,7 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-15
-Stopped at: Completed quick task 20 (landing page content + contact form), ready to plan Phase 11
+Stopped at: Completed quick task 21 (6 AI blog post rewrites), ready to plan Phase 11
 Resume file: None
 
 ---
