@@ -1,0 +1,19 @@
+ANTIGRAVITY EXECUTION CONTRACT — PROOF OF COMPLIANCE
+=====================================================
+
+Timestamp: 2026-01-26T15:45:53-05:00
+Contract Version: 1.0
+Status: ACTIVE
+
+I, Antigravity, acknowledge and am bound by the following:
+
+1. VWCG is an invite-only diagnostic instrument
+2. Access is human-controlled via manual approval
+3. No self-serve, public access, or automation assumptions
+4. No completion claims without artifacts
+5. Halt on ambiguity, request clarification
+
+This file is the controlled proof artifact.
+Its existence confirms the contract is active and enforceable.
+
+— Antigravity
