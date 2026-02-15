@@ -3,11 +3,12 @@ import { useAuthStore } from '@stores/authStore';
 import { validateInviteCode } from '@lib/auth/inviteCode';
 
 interface InviteGateProps {
-  children: ReactNode;
+  children?: ReactNode;
   fallbackUrl?: string;
+  redirectUrl?: string;
 }
 
-export default function InviteGate({ children, fallbackUrl: _fallbackUrl = '/invite' }: InviteGateProps) {
+export default function InviteGate({ children, redirectUrl }: InviteGateProps) {
   const { isAuthenticated, checkSession, authenticate } = useAuthStore();
   const [code, setCode] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -51,8 +52,22 @@ export default function InviteGate({ children, fallbackUrl: _fallbackUrl = '/inv
     );
   }
 
-  // ACC-02: If authenticated, show protected content
+  // If authenticated and redirectUrl is set, navigate there
+  useEffect(() => {
+    if (!isLoading && isAuthenticated && redirectUrl) {
+      window.location.href = redirectUrl;
+    }
+  }, [isLoading, isAuthenticated, redirectUrl]);
+
+  // ACC-02: If authenticated, redirect or show protected content
   if (isAuthenticated) {
+    if (redirectUrl) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+          <div className="animate-pulse text-gray-400">Redirecting...</div>
+        </div>
+      );
+    }
     return <>{children}</>;
   }
 

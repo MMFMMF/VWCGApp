@@ -7,13 +7,5 @@ import InviteGate from '../components/auth/InviteGate';
   title="Enter Invite Code"
   description="Enter your invite code to access VWCGApp assessment tools."
 >
-  <InviteGate client:load fallbackUrl="/invite">
-    <script>
-      // If authenticated, redirect to assessment
-      window.location.href = '/assessment';
-    </script>
-    <div class="min-h-screen flex items-center justify-center">
-      <p>Redirecting to app...</p>
-    </div>
-  </InviteGate>
+  <InviteGate client:load redirectUrl="/assessment" />
 </MarketingLayout>
