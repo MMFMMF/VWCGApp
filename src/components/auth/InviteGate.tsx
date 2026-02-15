@@ -27,6 +27,13 @@ export default function InviteGate({ children, redirectUrl }: InviteGateProps) {
     }
   }, []);
 
+  // If authenticated and redirectUrl is set, navigate there
+  useEffect(() => {
+    if (!isLoading && isAuthenticated && redirectUrl) {
+      window.location.href = redirectUrl;
+    }
+  }, [isLoading, isAuthenticated, redirectUrl]);
+
   const handleSubmit = async (submitCode?: string) => {
     const codeToValidate = submitCode || code;
     setError(null);
@@ -51,13 +58,6 @@ export default function InviteGate({ children, redirectUrl }: InviteGateProps) {
       </div>
     );
   }
-
-  // If authenticated and redirectUrl is set, navigate there
-  useEffect(() => {
-    if (!isLoading && isAuthenticated && redirectUrl) {
-      window.location.href = redirectUrl;
-    }
-  }, [isLoading, isAuthenticated, redirectUrl]);
 
   // ACC-02: If authenticated, redirect or show protected content
   if (isAuthenticated) {
