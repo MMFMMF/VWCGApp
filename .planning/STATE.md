@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-02-14)
 Phase: 11 of 16 (Financial Math Reconciliation)
 Plan: 0 of TBD in current phase
 Status: Ready to plan
-Last activity: 2026-02-15 - Completed quick task 22: add OG images and meta tags for 6 AI blog posts
+Last activity: 2026-02-16 - Completed quick task 23: fix siteUrl domain from vwcgapp.com to vwcg.app
 
 Progress: [██████████░░░░░░░░░░] 62.5% (10/16 phases complete)
 
@@ -91,6 +91,7 @@ src/components/print/
 | 20 | Fix landing page content, add Netlify contact form, remove email exposure | 2026-02-15 | 5 files |
 | 21 | Rewrite 6 AI cluster blog posts with KS voice, updated byline, encoding fix | 2026-02-15 | 6 files |
 | 22 | Add OG images and meta tags for 6 AI blog posts | 2026-02-15 | 13 files |
+| 23 | Fix siteUrl domain from vwcgapp.com to vwcg.app for OG tags, sitemap, robots.txt | 2026-02-16 | 7 files |
 
 ### Pending Todos
 
@@ -102,7 +103,7 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-15
+Last session: 2026-02-16
 Stopped at: Completed quick task 22 (OG images + meta tags for AI blog posts), ready to plan Phase 11
 Resume file: None
 
