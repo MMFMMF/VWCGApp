@@ -6,7 +6,7 @@ import Footer from '../../components/marketing/Footer.astro';
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-const siteUrl = 'https://vwcgapp.com';
+const siteUrl = 'https://vwcg.app';
 
 const blogSchema = {
   "@context": "https://schema.org",

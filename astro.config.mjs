@@ -13,7 +13,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // https://astro.build/config
 export default defineConfig({
   // Add site URL for SEO (MKT-03)
-  site: 'https://vwcgapp.com',
+  site: 'https://vwcg.app',
 
   integrations: [react(), sitemap()],
 

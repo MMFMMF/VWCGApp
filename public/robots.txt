@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://vwcgapp.com/sitemap-index.xml
+Sitemap: https://vwcg.app/sitemap-index.xml
