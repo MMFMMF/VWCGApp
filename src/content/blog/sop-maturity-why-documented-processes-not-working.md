@@ -8,10 +8,6 @@ heroImage: "/blog/images/sop-maturity-why-documented-processes-not-working.png"
 draft: false
 ---
 
-*Kamyar Shah has led 650+ consulting engagements, including [fractional COO](https://kamyarshah.com/fractional-coo/), [fractional CMO](https://kamyarshah.com/fractional-cmo/), [executive coaching](https://kamyarshah.com/coaching/), and [strategic advisory](https://kamyarshah.com/strategy/), producing over $300M in client impact across companies in the $1M-$50M range. He built the [VWCG Strategic Assessment](https://vwcg.app/invite) from the same diagnostic frameworks he uses in paid engagements.*
-
----
-
 Your SOPs exist. They are in a shared drive somewhere. Your team was trained on them at some point. And your operations still produce inconsistent results depending on who is working, what day it is, and whether the person with the most experience happens to be available. The documentation is not the problem. The SOP maturity level is.
 
 ## The Gap Between Having SOPs and Using Them
@@ -19,6 +15,8 @@ Your SOPs exist. They are in a shared drive somewhere. Your team was trained on 
 Most companies in the $2M to $25M range treat SOP creation as the finish line. The operations lead or the [founder](/blog/founder-dependency-business-cant-run-without-you) documents a process, files it in a shared folder, trains the team once, and considers the problem solved. Within 90 days, the document is outdated. Within six months, half the team has developed their own variation of the process. Within a year, the SOP is a historical artifact that nobody references.
 
 This is not a discipline problem. It is a maturity problem. Having a documented process is the first level of SOP maturity. It is necessary but insufficient. There are three more levels above it, and the gap between Level 1 and Level 3 is where most operational breakdowns live.
+
+---
 
 ## The SOP Maturity Spectrum
 
@@ -34,6 +32,8 @@ I use a four-level framework to assess SOP maturity across every operational fun
 
 The leap from Level 1 to Level 2 is behavioral. Train people to follow the document. The leap from Level 2 to Level 3 is structural. Build measurement into the process itself. That second leap is where most companies stall.
 
+---
+
 ## Why Level 1 Fails
 
 A Level 1 SOP has four consistent failure modes.
@@ -47,6 +47,8 @@ A Level 1 SOP has four consistent failure modes.
 **Never audited.** Nobody checks whether the written process matches the executed process. The gap widens invisibly. By the time someone discovers the drift, the SOP is fiction.
 
 Systems protect people from chaos. A system nobody follows protects nobody.
+
+---
 
 ## The Metrics Gap
 
@@ -64,6 +66,8 @@ Metrics make the invisible visible. Here is what measurement looks like at three
 
 You cannot [automate a process you have not measured](/blog/ai-implementation-small-business-no-tech-team). Automation applied to an unmeasured process scales the errors along with the efficiency.
 
+---
+
 ## What Level 3 Looks Like in Practice
 
 A Level 3 SOP for client onboarding at a $10M professional services firm includes: documented steps (Level 1), training and compliance verification (Level 2), and three embedded metrics. First, time from contract signature to kickoff meeting, target under five business days. Second, client satisfaction score at 30 days, target above 8 out of 10. Third, handoff completeness rate from sales to delivery, measured by a checklist with binary scoring.
@@ -71,6 +75,8 @@ A Level 3 SOP for client onboarding at a $10M professional services firm include
 Each metric has an owner. Each metric has a threshold that triggers review. When kickoff time exceeds seven days for three consecutive clients, the operations lead audits the process and identifies the bottleneck. That is a system. That is maturity.
 
 Building processes this way requires discipline and initial investment. A company moving from Level 1 to Level 3 across its five core processes should budget 40 to 60 hours of focused work over 90 days. That is the real cost. The return is operational reliability that does not depend on which employee is working that day.
+
+---
 
 ## Assess Your Current Maturity
 
@@ -83,5 +89,7 @@ A [fractional COO](https://kamyarshah.com/fractional-coo/) engagement often begi
 If your SOPs exist but your operations still depend on individuals, the gap is maturity, not documentation. Measure it.
 
 [Take the assessment ->](https://vwcg.app/invite)
+
+---
 
 *Kamyar Shah has led 650+ consulting engagements, including [fractional COO](https://kamyarshah.com/fractional-coo/), [fractional CMO](https://kamyarshah.com/fractional-cmo/), [executive coaching](https://kamyarshah.com/coaching/), and [strategic advisory](https://kamyarshah.com/strategy/), producing over $300M in client impact across companies in the $1M-$50M range. He built the [VWCG Strategic Assessment](https://vwcg.app/invite) from the same diagnostic frameworks he uses in paid engagements.*

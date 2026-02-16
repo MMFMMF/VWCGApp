@@ -8,10 +8,6 @@ heroImage: "/blog/images/financial-readiness-can-your-business-afford-to-grow.pn
 draft: false
 ---
 
-*Kamyar Shah has led 650+ consulting engagements, including [fractional COO](https://kamyarshah.com/fractional-coo/), [fractional CMO](https://kamyarshah.com/fractional-cmo/), [executive coaching](https://kamyarshah.com/coaching/), and [strategic advisory](https://kamyarshah.com/strategy/), producing over $300M in client impact across companies in the $1M-$50M range. He built the [VWCG Strategic Assessment](https://vwcg.app/invite) from the same diagnostic frameworks he uses in paid engagements.*
-
----
-
 The most dangerous sentence in a growing company is "we can figure out the money later." Growth requires capital, and not just for the initiative itself. Every growth investment carries a 6 to 12 month lag between increased burn and realized return. Companies that grow without financial readiness do not stall gracefully. They collapse under the weight of their own momentum. Financial readiness for growth is a measurable condition, not a feeling, and most companies between $2M and $25M have never formally assessed it.
 
 ## The Difference Between Profitable and Growth-Ready
@@ -21,6 +17,8 @@ Profitable companies generate positive net income. Growth-ready companies have s
 I have worked with companies generating $8M in revenue with healthy 15% net margins that had zero capacity to fund a $200K growth initiative. Every dollar went back into operations: payroll, rent, cost of goods, vendor payments. The P&L looked strong. The balance sheet told a different story. They were profitable in the accounting sense and broke in the operational sense.
 
 Financial readiness is not about profitability. It is about surplus: what is left after you fund everything the business needs to run at its current level. If the answer is "nothing," you are stable. You are not ready to grow.
+
+---
 
 ## Eight Indicators for CEO-Level Financial Readiness
 
@@ -44,6 +42,8 @@ This is not a comprehensive financial audit. It is an operational finance check 
 
 The same logic applies to [AI investment decisions](/blog/ai-cost-small-business-realistic-breakdown): the cost of the tool is rarely the real expense. It is the operational commitment to integrate, maintain, and measure the return on that tool over 12 months. Understanding [what business assessments cost](/blog/strategic-business-assessment-cost) and whether they fit within your current investment capacity follows this same logic. Match the investment to the financial reality.
 
+---
+
 ## When "We Are Growing" Is a Warning Sign
 
 Revenue growth without financial readiness produces four patterns that I see repeatedly in companies between $5M and $20M.
@@ -57,6 +57,8 @@ Revenue growth without financial readiness produces four patterns that I see rep
 **Capital expenditure funded from operating budget.** Growth investments, new equipment, new hires, new markets, are funded by cutting operational spending rather than from surplus. The existing business degrades to fund the new business. Both suffer.
 
 Each of these patterns is a system producing a predictable outcome. Diagnose the pattern before it reaches the balance sheet.
+
+---
 
 ## What to Do If You Score Low
 
@@ -72,6 +74,8 @@ Then assess growth capacity. Once the fundamentals are solid, the [90-day roadma
 
 Financial discipline is how you protect the people and the business from the consequences of ambition that outpaces capacity.
 
+---
+
 ## Measure Your Financial Readiness
 
 The [VWCG Strategic Assessment](https://vwcg.app/invite) includes a Financial Readiness module that evaluates your business across cash position, margin trends, revenue concentration, and investment capacity. It takes about 10 minutes and produces a financial readiness score that reflects your actual growth capacity, not your revenue level.
@@ -81,5 +85,7 @@ Companies that score below a 3 on this module share a consistent profile: strong
 If you are planning a growth initiative, a [strategic advisory](https://kamyarshah.com/strategy/) or [business consulting](https://kamyarshah.com/business-consulting/) engagement can build the financial readiness plan. But the diagnostic comes first. Measure the foundation before you build on it.
 
 [Take the assessment ->](https://vwcg.app/invite)
+
+---
 
 *Kamyar Shah has led 650+ consulting engagements, including [fractional COO](https://kamyarshah.com/fractional-coo/), [fractional CMO](https://kamyarshah.com/fractional-cmo/), [executive coaching](https://kamyarshah.com/coaching/), and [strategic advisory](https://kamyarshah.com/strategy/), producing over $300M in client impact across companies in the $1M-$50M range. He built the [VWCG Strategic Assessment](https://vwcg.app/invite) from the same diagnostic frameworks he uses in paid engagements.*

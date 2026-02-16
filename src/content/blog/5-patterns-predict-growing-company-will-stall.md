@@ -8,10 +8,6 @@ heroImage: "/blog/images/5-patterns-predict-growing-company-will-stall.png"
 draft: false
 ---
 
-*Kamyar Shah has led 650+ consulting engagements, including [fractional COO](https://kamyarshah.com/fractional-coo/), [fractional CMO](https://kamyarshah.com/fractional-cmo/), [executive coaching](https://kamyarshah.com/coaching/), and [strategic advisory](https://kamyarshah.com/strategy/), producing over $300M in client impact across companies in the $1M-$50M range. He built the [VWCG Strategic Assessment](https://vwcg.app/invite) from the same diagnostic frameworks he uses in paid engagements.*
-
----
-
 After 650 consulting engagements with companies in the $1M to $50M range, the companies that stall share the same five patterns. Not the same industry. Not the same size. Not the same market. The same structural patterns. These are signs a business will stall that appear months or years before the revenue impact becomes visible. If you recognize two or more of these in your business, the stall is approaching whether you see it yet or not.
 
 ## Why Patterns Matter More Than Symptoms
@@ -21,6 +17,8 @@ Revenue decline is a symptom. Employee turnover is a symptom. Client churn is a 
 The five patterns below each involve at least two dimensions of business performance. That is why they are difficult to see from any single vantage point. A leadership assessment alone will not reveal Pattern 1. A financial review alone will not reveal Pattern 2. The patterns emerge only when you examine how multiple dimensions interact.
 
 Process is how you build systems that reveal problems before they become crises. These patterns are the problems that multi-dimensional systems reveal.
+
+---
 
 ## Pattern 1: The Execution Capability Gap
 
@@ -33,6 +31,8 @@ The gap compounds. Each unfunded priority consumes some attention even when it i
 I have measured this pattern quantitatively. Companies with an Execution Capability Gap typically complete 25% to 35% of their stated priorities per quarter. After closing the gap by reducing the priority count to match team capacity, completion rates rise to 70% to 85% within two cycles. The team is not the constraint. The planning is.
 
 The fix is not to hire more people. The fix is to reduce the priority count until it matches the team you have. Then expand capacity deliberately as results justify it.
+
+---
 
 ## Pattern 2: The Burnout Risk Signal
 
@@ -48,6 +48,8 @@ The correction requires structural change, not a vacation. Documenting decision 
 
 Discipline is empathy in disguise. Building systems that reduce founder dependency protects the founder, the team, and the business simultaneously.
 
+---
+
 ## Pattern 3: The Unmitigated Threat
 
 The [SWOT analysis](/blog/swot-analysis-small-business-changes-decisions) identified a credible, high-confidence threat. The roadmap contains zero items addressing it. This is the pattern that produces preventable crises.
@@ -59,6 +61,8 @@ The diagnostic is straightforward. List your known threats. Assign a confidence 
 Common unmitigated threats in the $2M to $25M range: key employee departure risk with no succession plan, technology platform obsolescence with no migration timeline, regulatory changes with no compliance preparation, and competitive market shifts with no product or service evolution underway.
 
 The fix is allocation, not elimination. You cannot eliminate threats. You can allocate roadmap capacity to mitigate them. That means threat mitigation items compete with growth items for quarterly bandwidth. In most cases, one threat mitigation item per quarter is sufficient to move from unmitigated to managed.
+
+---
 
 ## Pattern 4: The SOP-Metric Missing Link
 
@@ -72,6 +76,8 @@ Companies with this pattern share a recognizable symptom: periodic quality crise
 
 The fix is adding metrics to existing processes, not rewriting the processes themselves. Three metrics per core process: output quality, cycle time, and compliance rate. That measurement layer converts a Level 1 SOP into a Level 3 SOP. The processes themselves may not change. The visibility into their performance changes everything.
 
+---
+
 ## Pattern 5: The Strength Multiplication Effect
 
 This is the positive pattern, the one that predicts successful scaling rather than stalling. Two strengths compound each other to produce capability that neither could generate alone.
@@ -84,11 +90,15 @@ I track this pattern across every engagement because it is the clearest predicto
 
 The lesson is structural. Strengths do not exist in isolation. They interact. Building strength in one area creates conditions for strength in adjacent areas. That compounding effect is the snowball principle applied to organizational capability.
 
+---
+
 ## Why Single Assessments Miss These
 
 Each of these five patterns involves at least two dimensions of business performance. Pattern 1 requires looking at vision and execution capacity simultaneously. Pattern 2 requires looking at leadership behavior and operational delegation simultaneously. Pattern 3 requires looking at strategic analysis and roadmap content simultaneously. Pattern 4 requires looking at process documentation and measurement systems simultaneously. Pattern 5 requires looking at multiple strengths and their interaction simultaneously.
 
 No single-dimension assessment reveals these patterns. A leadership assessment alone will not show you the Execution Capability Gap. A financial review alone will not show you the Strength Multiplication Effect. The patterns are cross-dimensional. The diagnostic must be cross-dimensional too.
+
+---
 
 ## Measure All Five Patterns
 
@@ -101,5 +111,7 @@ These patterns are structural. They are measurable. And they compound over time.
 Every system reveals its patterns when you measure it from enough angles. Measure yours.
 
 [Take the assessment ->](https://vwcg.app/invite)
+
+---
 
 *Kamyar Shah has led 650+ consulting engagements, including [fractional COO](https://kamyarshah.com/fractional-coo/), [fractional CMO](https://kamyarshah.com/fractional-cmo/), [executive coaching](https://kamyarshah.com/coaching/), and [strategic advisory](https://kamyarshah.com/strategy/), producing over $300M in client impact across companies in the $1M-$50M range. He built the [VWCG Strategic Assessment](https://vwcg.app/invite) from the same diagnostic frameworks he uses in paid engagements.*

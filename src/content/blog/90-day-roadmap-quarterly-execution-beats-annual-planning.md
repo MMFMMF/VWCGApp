@@ -8,10 +8,6 @@ heroImage: "/blog/images/90-day-roadmap-quarterly-execution-beats-annual-plannin
 draft: false
 ---
 
-*Kamyar Shah has led 650+ consulting engagements, including [fractional COO](https://kamyarshah.com/fractional-coo/), [fractional CMO](https://kamyarshah.com/fractional-cmo/), [executive coaching](https://kamyarshah.com/coaching/), and [strategic advisory](https://kamyarshah.com/strategy/), producing over $300M in client impact across companies in the $1M-$50M range. He built the [VWCG Strategic Assessment](https://vwcg.app/invite) from the same diagnostic frameworks he uses in paid engagements.*
-
----
-
 Your annual plan looked great in January. By March, half the priorities have shifted, two key people have changed roles, and the market did something nobody predicted. By June, the plan sits in a slide deck that nobody opens. This is not a failure of discipline. It is a failure of planning horizon. For companies between $2M and $25M, the 90-day roadmap is the operating unit that produces results. Annual planning is aspirational. Quarterly execution is operational.
 
 ## Why Annual Plans Fail at This Stage
@@ -23,6 +19,8 @@ I have reviewed annual plans from over 200 companies in the $3M to $20M range. T
 Annual plans also create a dangerous illusion. The team believes they have direction because a plan exists. The plan gives them permission to stop reassessing, to stop questioning whether last quarter's priority is still this quarter's priority. The document substitutes for the discipline of ongoing strategic evaluation.
 
 Consistency is what separates a process from an event. A plan you revisit every 90 days is a process. A plan you write once per year is an event.
+
+---
 
 ## The Anatomy of a 90-Day Roadmap
 
@@ -38,6 +36,8 @@ A functional 90-day roadmap has five structural components. Miss any one of them
 
 **Weekly check-in cadence.** Fifteen minutes. Status, blockers, help needed. Not a presentation. Not a status meeting with slides. A pulse check. Does each priority still have an active owner? Is it on track? Does something need to change? The cadence creates accountability. Without it, the roadmap is a document. With it, the roadmap is a management system.
 
+---
+
 ## The Capacity Problem Nobody Talks About
 
 In my experience, this is the most common cause of roadmap failure, and it has nothing to do with strategy or execution quality.
@@ -47,6 +47,8 @@ Most roadmaps are overloaded from day one. The leadership team sits in a plannin
 I worked with a $12M company that put 24 items on their Q3 roadmap. They completed 7. The next quarter, they put 22 items on the list and completed 6. The problem was not the team. The problem was the planning. They were building roadmaps that were dead on arrival.
 
 The fix is simple math. Total available team hours per quarter, minus operational maintenance (usually 50% to 65% of capacity), minus unplanned demands (10% to 15%), equals actual project hours. Divide by estimated hours per priority. That number is your maximum item count. It will be smaller than you want. That is the point.
+
+---
 
 ## What "Done" Looks Like at Day 90
 
@@ -58,6 +60,8 @@ This discipline forces honest scoping. When you have to define the outcome, prio
 
 Every system improves when the definition of success is measurable, not aspirational.
 
+---
+
 ## The Quarterly Reset
 
 Day 90 arrives. The quarter is complete. Most companies make one of two mistakes: they either start fresh as if the previous quarter did not happen, or they carry forward everything unfinished and add new items on top.
@@ -67,6 +71,8 @@ The quarterly reset is an audit, not a fresh start. Three questions structure it
 Answering these honestly takes two to three hours. That investment produces a roadmap for the next 90 days that is informed by the last 90 days. This is the improvement loop that annual plans cannot provide. Each quarter builds on the lessons of the previous quarter. Execution capability compounds over time.
 
 A company that runs this cycle for four consecutive quarters develops something more valuable than any single plan: the organizational muscle of consistent execution. [Mature SOPs](/blog/sop-maturity-why-documented-processes-not-working) feed this muscle by ensuring the team can execute reliably while pursuing roadmap priorities. A [clear strategic vision](/blog/strategic-vision-team-actually-executes) provides the direction. The 90-day roadmap is the bridge between vision and daily work.
+
+---
 
 ## Build Your First Roadmap
 
@@ -79,5 +85,7 @@ Companies that shift from annual planning to quarterly execution typically see a
 Build the roadmap. Run the math. Execute for 90 days. Then build a better one.
 
 [Take the assessment ->](https://vwcg.app/invite)
+
+---
 
 *Kamyar Shah has led 650+ consulting engagements, including [fractional COO](https://kamyarshah.com/fractional-coo/), [fractional CMO](https://kamyarshah.com/fractional-cmo/), [executive coaching](https://kamyarshah.com/coaching/), and [strategic advisory](https://kamyarshah.com/strategy/), producing over $300M in client impact across companies in the $1M-$50M range. He built the [VWCG Strategic Assessment](https://vwcg.app/invite) from the same diagnostic frameworks he uses in paid engagements.*

@@ -8,10 +8,6 @@ heroImage: "/blog/images/swot-analysis-small-business-changes-decisions.png"
 draft: false
 ---
 
-*Kamyar Shah has led 650+ consulting engagements, including [fractional COO](https://kamyarshah.com/fractional-coo/), [fractional CMO](https://kamyarshah.com/fractional-cmo/), [executive coaching](https://kamyarshah.com/coaching/), and [strategic advisory](https://kamyarshah.com/strategy/), producing over $300M in client impact across companies in the $1M-$50M range. He built the [VWCG Strategic Assessment](https://vwcg.app/invite) from the same diagnostic frameworks he uses in paid engagements.*
-
----
-
 You have done a SWOT analysis. Probably more than once. Strengths in one quadrant, weaknesses in another, opportunities and threats completing the grid. The team felt productive. The output went into a presentation. Nothing changed. The problem is not the SWOT framework. The SWOT analysis for small business fails because the standard approach produces a list, not a decision. A confidence-weighted, action-connected approach fixes this.
 
 ## Why Standard SWOT Produces Lists Instead of Decisions
@@ -28,6 +24,8 @@ The standard SWOT exercise has four structural flaws that prevent it from influe
 
 A framework without measurement produces insight without action. That is waste.
 
+---
+
 ## The Confidence-Weighted Approach
 
 One addition transforms the SWOT from a list into a prioritized action framework: confidence scoring.
@@ -42,6 +40,8 @@ Every item in every quadrant gets a confidence score from 1 to 5. A score of 1 m
 
 **Low-confidence opportunities (1-2) need validation before investment.** An opportunity scored at 2 should not receive budget. It should receive research. Assign someone to bring the confidence level up to 4 or kill it within 30 to 60 days. The cost of pursuing an unvalidated opportunity is not just the direct investment. It is the bandwidth consumed from validated opportunities.
 
+---
+
 ## Connecting SWOT to Your Roadmap
 
 A SWOT analysis that does not connect to the [90-day roadmap](/blog/90-day-roadmap-quarterly-execution-beats-annual-planning) is academic. The connection mechanism is explicit: for every high-confidence threat, there must be a corresponding roadmap item. For every high-confidence opportunity paired with a high-confidence strength, there should be an evaluation or pursuit item on the roadmap.
@@ -51,6 +51,8 @@ The gap audit is simple. List your high-confidence threats. Cross-reference agai
 The unmitigated threat does not wait for your bandwidth to free up. It does not schedule itself around your quarterly priorities. It materializes on its own timeline. The roadmap must account for threat mitigation alongside growth initiatives, or the growth is built on an unmanaged risk.
 
 Similarly, strengths without leverage are wasted. If your team identifies five strengths and none of them connect to an opportunity the company is pursuing, the strengths section of the SWOT is accurate but useless. The question is not "what are we good at?" The question is "what are we good at that enables something we are trying to do?" The second question produces strategy. The first produces self-congratulation.
+
+---
 
 ## How to Run a SWOT That Produces Decisions
 
@@ -66,6 +68,8 @@ Assign owners to each decision. Put the decisions on the roadmap with deadlines.
 
 A [strategic vision](/blog/strategic-vision-team-actually-executes) that does not account for high-confidence threats is incomplete. The SWOT provides the reality check. The roadmap provides the response. Together, they produce informed strategy rather than optimistic planning.
 
+---
+
 ## Score Your Strategic Analysis
 
 The [VWCG Strategic Assessment](https://vwcg.app/invite) includes a SWOT Analysis module that evaluates the quality of your current strategic analysis: whether threats are prioritized, whether strengths connect to opportunities, and whether the analysis connects to your operating cadence. It takes about 10 minutes and requires no signup.
@@ -75,5 +79,7 @@ A [strategic advisory](https://kamyarshah.com/strategy/) engagement can facilita
 Every SWOT that sits in a presentation is a missed opportunity to make a better decision. Measure whether yours is producing decisions or slides.
 
 [Take the assessment ->](https://vwcg.app/invite)
+
+---
 
 *Kamyar Shah has led 650+ consulting engagements, including [fractional COO](https://kamyarshah.com/fractional-coo/), [fractional CMO](https://kamyarshah.com/fractional-cmo/), [executive coaching](https://kamyarshah.com/coaching/), and [strategic advisory](https://kamyarshah.com/strategy/), producing over $300M in client impact across companies in the $1M-$50M range. He built the [VWCG Strategic Assessment](https://vwcg.app/invite) from the same diagnostic frameworks he uses in paid engagements.*
