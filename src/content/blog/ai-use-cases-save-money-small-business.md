@@ -34,7 +34,7 @@ Here are five use cases I am seeing companies your size deploy right now, with r
 
 **Realistic ROI:** This varies widely depending on volume. A company processing 200 orders per week at 15 minutes each is spending roughly 50 hours of labor weekly -- $130,000 per year at $50/hour. Even a 60% automation rate (120 orders handled automatically, 80 still manual) saves $78,000 annually. Tooling and setup typically runs $500-$2,000/month plus $5K-$15K in initial configuration.
 
-**Implementation timeline:** 4-8 weeks. The longest phase is documenting the current process thoroughly enough for automation -- every decision point, every exception, every "well, it depends" needs to be codified. Companies that already have SOPs for these workflows can cut this in half.
+**Implementation timeline:** 4-8 weeks. The longest phase is documenting the current process thoroughly enough for automation -- every decision point, every exception, every "well, it depends" needs to be codified. Companies that already have [documented and measured SOPs](/blog/sop-maturity-why-documented-processes-not-working) for these workflows can cut this in half.
 
 **The catch:** Exception handling. Every workflow has edge cases. AI handles the 80% that follow the pattern beautifully. The 20% of exceptions still need human judgment. The design needs to route exceptions cleanly rather than trying to force them through automation. The mistake is trying to automate 100% -- aim for 70-80% automation with clean escalation paths for the rest.
 

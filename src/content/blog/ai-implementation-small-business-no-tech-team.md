@@ -64,7 +64,7 @@ Some categories of AI tools are specifically designed for non-technical users. T
 
 **Going enterprise.** Enterprise AI platforms are designed for companies with technical teams to configure and maintain them. If a tool's setup guide assumes you have a developer, it is not built for you. Look for tools where setup involves clicking, not coding.
 
-**Automating chaos.** If your process is inconsistent -- different people do it differently, exceptions are the norm, nobody agrees on the right way -- AI will automate the inconsistency. Fix the process first. A documented, standardized SOP can be automated. A mess can only be automated into a faster mess.
+**Automating chaos.** If your process is inconsistent -- different people do it differently, exceptions are the norm, nobody agrees on the right way -- AI will automate the inconsistency. Fix the process first. A documented, standardized SOP can be automated -- but even documented SOPs vary in quality, and understanding your [SOP maturity](/blog/sop-maturity-why-documented-processes-not-working) level matters before you try to automate on top of them. A mess can only be automated into a faster mess.
 
 **Skipping the pilot.** Company-wide rollouts of AI tools [fail at dramatically higher rates](/blog/why-ai-pilots-fail-deployment-framework) than controlled pilots. The pilot is not a delay -- it is how you find the problems while they are small and cheap to fix.
 

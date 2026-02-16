@@ -23,7 +23,7 @@ interface Props {
     modifiedTime?: string;
     tags?: string[];
   };
-  structuredData?: Record<string, unknown>;
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {
@@ -46,9 +46,18 @@ const defaultStructuredData = [
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "World Consulting Group",
-    "url": siteUrl,
-    "logo": `${siteUrl}/favicon.svg`,
-    "description": "Free strategic assessment tools for business leaders."
+    "alternateName": "VWCG",
+    "url": "https://worldconsultinggroup.com",
+    "logo": `${siteUrl}/logo.png`,
+    "sameAs": [
+      "https://kamyarshah.com",
+      "https://worldconsultinggroup.com"
+    ],
+    "founder": {
+      "@type": "Person",
+      "name": "Kamyar Shah"
+    },
+    "description": "Strategic business assessment and fractional COO/CMO services for companies in the $1M-$50M range."
   },
   {
     "@context": "https://schema.org",
@@ -83,7 +92,7 @@ const defaultStructuredData = [
   <meta property="og:image:height" content="630" />
   <meta property="og:url" content={canonicalUrl} />
   <meta property="og:type" content={ogType} />
-  <meta property="og:site_name" content={siteName} />
+  <meta property="og:site_name" content="VWCG by World Consulting Group" />
 
   {article && (
     <>
@@ -102,7 +111,13 @@ const defaultStructuredData = [
 
   <!-- Structured Data -->
   {structuredData ? (
-    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    Array.isArray(structuredData) ? (
+      structuredData.map(data => (
+        <script type="application/ld+json" set:html={JSON.stringify(data)} />
+      ))
+    ) : (
+      <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    )
   ) : (
     defaultStructuredData.map(data => (
       <script type="application/ld+json" set:html={JSON.stringify(data)} />

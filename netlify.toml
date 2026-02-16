@@ -31,30 +31,67 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# 301 redirects: replaced blog posts → new slugs
+[[redirects]]
+  from = "/blog/sop-creation-guide"
+  to = "/blog/sop-maturity-why-documented-processes-not-working"
+  status = 301
+
+[[redirects]]
+  from = "/blog/90-day-business-roadmap"
+  to = "/blog/90-day-roadmap-quarterly-execution-beats-annual-planning"
+  status = 301
+
+[[redirects]]
+  from = "/blog/swot-analysis-tool"
+  to = "/blog/swot-analysis-small-business-changes-decisions"
+  status = 301
+
+# 301 redirects: deleted blog posts → best replacement
+[[redirects]]
+  from = "/blog/business-not-ready-for-ai"
+  to = "/blog/ai-readiness-assessment-company-ready"
+  status = 301
+
+[[redirects]]
+  from = "/blog/best-sop-management-tools-2025"
+  to = "/blog/sop-maturity-why-documented-processes-not-working"
+  status = 301
+
+[[redirects]]
+  from = "/blog/why-assess-business"
+  to = "/blog/strategic-business-assessment-cost"
+  status = 301
+
+[[redirects]]
+  from = "/blog/sample-post"
+  to = "/blog"
+  status = 301
+
 # 301 redirects from old vwcg.app /guide/* URLs to new /blog/* slugs
 [[redirects]]
   from = "/guide/sop-creation-guide-templates-tools-best-practices"
-  to = "/blog/sop-creation-guide"
+  to = "/blog/sop-maturity-why-documented-processes-not-working"
   status = 301
 
 [[redirects]]
   from = "/guide/what-is-swot-analysis-tool"
-  to = "/blog/swot-analysis-tool"
+  to = "/blog/swot-analysis-small-business-changes-decisions"
   status = 301
 
 [[redirects]]
   from = "/guide/business-roadmap-guide-90-day-template"
-  to = "/blog/90-day-business-roadmap"
+  to = "/blog/90-day-roadmap-quarterly-execution-beats-annual-planning"
   status = 301
 
 [[redirects]]
   from = "/guide/5-best-sop-management-tools-2025"
-  to = "/blog/best-sop-management-tools-2025"
+  to = "/blog/sop-maturity-why-documented-processes-not-working"
   status = 301
 
 [[redirects]]
   from = "/guide/what-happens-when-a-business-is-not-ready-for-ai"
-  to = "/blog/business-not-ready-for-ai"
+  to = "/blog/ai-readiness-assessment-company-ready"
   status = 301
 
 # Domain redirect: businessadvisors.app → vwcg.app

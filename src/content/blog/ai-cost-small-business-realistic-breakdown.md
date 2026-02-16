@@ -68,7 +68,7 @@ You cannot name the specific problem. If the AI initiative is "explore how AI ca
 
 ## Figure Out Your Starting Point
 
-The gap between "AI sounds valuable" and "here is exactly what AI should do for us" is where most of the wasted money lives. Closing that gap requires an honest assessment of where your business actually stands -- your data quality, process maturity, team capacity, and operational bottlenecks.
+The gap between "AI sounds valuable" and "here is exactly what AI should do for us" is where most of the wasted money lives. Closing that gap requires an honest assessment of where your business actually stands -- your data quality, process maturity, team capacity, and operational bottlenecks. Understanding [strategic business assessment costs](/blog/strategic-business-assessment-cost) can help you benchmark what that diagnostic investment should look like.
 
 I built the [VWCG Strategic Assessment](https://vwcg.app/invite) to help you close that gap in about 10 minutes. It evaluates your business across seven dimensions -- operations, strategy, financials, team, technology, and growth systems -- and produces a detailed report showing exactly where you are strong, where you are constrained, and what to prioritize next.
 

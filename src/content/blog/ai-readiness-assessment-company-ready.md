@@ -92,7 +92,7 @@ The sequence matters: pick your strongest pillar, deploy AI there first, learn f
 
 Self-assessment is useful, but it has an obvious limitation: you are grading your own homework. CEOs consistently overrate their data quality, underrate their governance gaps, and misjudge their team's change capacity -- not because they are dishonest, but because they are too close to it.
 
-I built the [VWCG Strategic Assessment](https://vwcg.app/invite) for exactly this problem. It is a guided, 10-minute diagnostic that evaluates your business across seven operational dimensions -- not just AI readiness, but the strategic, financial, and operational foundations that determine whether any major initiative will succeed or stall.
+I built the [VWCG Strategic Assessment](https://vwcg.app/invite) for exactly this problem. It is a guided, 10-minute diagnostic that evaluates your business across seven operational dimensions -- not just AI readiness, but the strategic, financial, and operational foundations that determine whether any major initiative will succeed or stall. It also helps you evaluate [financial readiness for growth](/blog/financial-readiness-can-your-business-afford-to-grow), which is one of the most overlooked factors in AI adoption planning.
 
 You will get a detailed report with specific scores, identified bottlenecks, and prioritized recommendations. No signup required. No sales pitch at the end. Just a clear picture of where your business actually stands -- including whether you are ready for AI or whether there is higher-leverage work to do first.
 

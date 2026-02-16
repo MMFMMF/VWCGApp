@@ -64,7 +64,7 @@ Regardless of which type you are evaluating, these questions separate the operat
 
 ## Match the Partner to the Problem
 
-The worst outcome is not picking the wrong partner -- it is picking the right type of partner for the wrong stage of your journey. A vendor when you need strategy. An agency when you do not have a clear scope. A consultant when you already know exactly what to build.
+The worst outcome is not picking the wrong partner -- it is picking the right type of partner for the wrong stage of your journey. Choosing who to work with is one of the [five decisions growing companies should not make alone](/blog/5-decisions-growing-companies-should-not-make-alone). A vendor when you need strategy. An agency when you do not have a clear scope. A consultant when you already know exactly what to build.
 
 Start by assessing where you actually are. Not where you want to be. Not where you think you should be. Where you are right now -- your operational maturity, your data quality, your team's capacity, your strategic clarity.
 

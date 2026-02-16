@@ -52,7 +52,7 @@ What does production deployment actually require? This is the transition plan. T
 
 **Stage 4: Release.** If the audit confirms viability and the transition plan is realistic, you move to production deployment. This is not a flip-the-switch moment -- it is a planned rollout with its own timeline. Typically: train the team (week 1-2), run parallel operations (week 3-4) where both the old and new process operate simultaneously, cutover to the new process with monitoring (week 5-6), and stabilize (week 7-8).
 
-Production deployment includes a 90-day performance review. At 30, 60, and 90 days, measure performance against the success criteria. Is the tool still delivering? Has adoption held steady? Have new issues surfaced? The 90-day mark is your final gate -- if the tool is performing at that point, it is part of your operations. If it is degrading, you have a decision to make.
+Production deployment includes a 90-day performance review -- structuring this as a [90-day execution roadmap](/blog/90-day-roadmap-quarterly-execution-beats-annual-planning) keeps the team focused on quarterly milestones rather than vague annual targets. At 30, 60, and 90 days, measure performance against the success criteria. Is the tool still delivering? Has adoption held steady? Have new issues surfaced? The 90-day mark is your final gate -- if the tool is performing at that point, it is part of your operations. If it is degrading, you have a decision to make.
 
 ## KPI Gating: The Kill Switch That Protects Your Investment
 
