@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-02-14)
 Phase: 11 of 16 (Financial Math Reconciliation)
 Plan: 0 of TBD in current phase
 Status: Ready to plan
-Last activity: 2026-02-16 - Completed quick task 24: deploy 9 new blog posts with OG images, schema markup, redirects, and cross-links
+Last activity: 2026-02-16 - Completed quick task 25: fix blog post layout on 9 new posts
 
 Progress: [██████████░░░░░░░░░░] 62.5% (10/16 phases complete)
 
@@ -93,6 +93,7 @@ src/components/print/
 | 22 | Add OG images and meta tags for 6 AI blog posts | 2026-02-15 | 13 files |
 | 23 | Fix siteUrl domain from vwcgapp.com to vwcg.app for OG tags, sitemap, robots.txt | 2026-02-16 | 7 files |
 | 24 | Deploy 9 new blog posts with OG images, schema markup, 7 redirects, 6 cross-links | 2026-02-16 | 36 files |
+| 25 | Fix blog post layout: move author bio below CTA, add section separators on 9 posts | 2026-02-16 | 9 files |
 
 ### Pending Todos
 
@@ -105,7 +106,7 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-16
-Stopped at: Completed quick task 24 (9 new blog posts deployed), ready to plan Phase 11
+Stopped at: Completed quick task 25 (blog layout fixes), ready to plan Phase 11
 Resume file: None
 
 ---
