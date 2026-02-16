@@ -22,7 +22,6 @@ The standard vision statement fails for three predictable reasons.
 
 When [the founder holds all strategic context](/blog/founder-dependency-business-cant-run-without-you) and has not translated it into an operational framework, the team makes reasonable local decisions that do not add up to a coherent strategic direction. They are not failing. The system is failing them.
 
----
 
 ## The Vision-to-Execution Chain
 
@@ -36,7 +35,6 @@ A strategic vision that reaches the ground has four connected layers. Each one t
 
 **Layer 4: Weekly Cadence.** What each person does this week that connects to a pillar. This is the execution layer. The weekly check-in, whether it is a standup, a team meeting, or a brief written update, ties daily work to quarterly priorities to strategic pillars to the North Star. The chain is complete. A team member can trace their Tuesday deliverable to a strategic pillar. If they cannot, either their work does not align with strategy or the strategy has not been translated far enough down.
 
----
 
 ## Building Each Layer
 
@@ -48,7 +46,6 @@ The roadmap requires capacity math. Add up the team hours available for project 
 
 The weekly cadence requires discipline, not complexity. One question per team member per week: "What did you work on this week that connects to a roadmap item?" If the answer is "nothing," that is a signal. Either the person's role is entirely operational and does not connect to strategic priorities, or the roadmap is not relevant to how work is actually done. Both are useful discoveries.
 
----
 
 ## The Traceability Test
 
@@ -62,7 +59,6 @@ Problem two: the strategy is too abstract to be traceable. The pillars are too v
 
 Vision is a system. When each layer connects to the next, the system produces aligned execution. When the layers are disconnected, the system produces busy work that feels productive and goes nowhere.
 
----
 
 ## Map Your Vision
 
@@ -76,6 +72,5 @@ A clear vision that reaches every person on the team is not a luxury. It is the 
 
 [Take the assessment ->](https://vwcg.app/invite)
 
----
 
 *Kamyar Shah has led 650+ consulting engagements, including [fractional COO](https://kamyarshah.com/fractional-coo/), [fractional CMO](https://kamyarshah.com/fractional-cmo/), [executive coaching](https://kamyarshah.com/coaching/), and [strategic advisory](https://kamyarshah.com/strategy/), producing over $300M in client impact across companies in the $1M-$50M range. He built the [VWCG Strategic Assessment](https://vwcg.app/invite) from the same diagnostic frameworks he uses in paid engagements.*

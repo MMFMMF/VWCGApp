@@ -18,7 +18,6 @@ The instinct is to blame the team. They are not stepping up. They are not ready.
 
 Process is how you protect people from chaos. When the process depends on a single human brain, you have not built a system. You have built a dependency.
 
----
 
 ## Five Signs Your Business Depends on You
 
@@ -34,7 +33,6 @@ I have seen these indicators across hundreds of engagements. Score yourself hone
 
 **You have tried to delegate and it "always comes back."** You hand something off. Quality drops. You take it back. The conclusion feels obvious: "nobody can do it like I can." The accurate diagnosis is different. You delegated the task without transferring the decision framework, the quality criteria, or the escalation path. You gave away the work but kept the judgment.
 
----
 
 ## Why Smart Founders Get Stuck Here
 
@@ -44,7 +42,6 @@ At $5M with 15 to 25 employees, you cannot be involved in every decision and sti
 
 Discipline here means building systems that replace your involvement, not systems that require it.
 
----
 
 ## The Blind Spot Problem
 
@@ -56,7 +53,6 @@ Your metrics will not show it until something breaks. Revenue can grow while fou
 
 The solution is measurement from outside the system. An [executive coach](https://kamyarshah.com/coaching/) or a structured diagnostic can surface what daily operations obscure.
 
----
 
 ## What Unwinding Actually Looks Like
 
@@ -72,7 +68,6 @@ A founder who owns everything cannot execute a [quarterly roadmap](/blog/90-day-
 
 Every system you build to replace your involvement teaches someone else how to think. That is leadership.
 
----
 
 ## Diagnose It Before It Costs You
 
@@ -84,6 +79,5 @@ If your business stalls every time you step away, you do not have a team problem
 
 [Take the assessment ->](https://vwcg.app/invite)
 
----
 
 *Kamyar Shah has led 650+ consulting engagements, including [fractional COO](https://kamyarshah.com/fractional-coo/), [fractional CMO](https://kamyarshah.com/fractional-cmo/), [executive coaching](https://kamyarshah.com/coaching/), and [strategic advisory](https://kamyarshah.com/strategy/), producing over $300M in client impact across companies in the $1M-$50M range. He built the [VWCG Strategic Assessment](https://vwcg.app/invite) from the same diagnostic frameworks he uses in paid engagements.*

@@ -24,7 +24,6 @@ The standard SWOT exercise has four structural flaws that prevent it from influe
 
 A framework without measurement produces insight without action. That is waste.
 
----
 
 ## The Confidence-Weighted Approach
 
@@ -40,7 +39,6 @@ Every item in every quadrant gets a confidence score from 1 to 5. A score of 1 m
 
 **Low-confidence opportunities (1-2) need validation before investment.** An opportunity scored at 2 should not receive budget. It should receive research. Assign someone to bring the confidence level up to 4 or kill it within 30 to 60 days. The cost of pursuing an unvalidated opportunity is not just the direct investment. It is the bandwidth consumed from validated opportunities.
 
----
 
 ## Connecting SWOT to Your Roadmap
 
@@ -52,7 +50,6 @@ The unmitigated threat does not wait for your bandwidth to free up. It does not 
 
 Similarly, strengths without leverage are wasted. If your team identifies five strengths and none of them connect to an opportunity the company is pursuing, the strengths section of the SWOT is accurate but useless. The question is not "what are we good at?" The question is "what are we good at that enables something we are trying to do?" The second question produces strategy. The first produces self-congratulation.
 
----
 
 ## How to Run a SWOT That Produces Decisions
 
@@ -68,7 +65,6 @@ Assign owners to each decision. Put the decisions on the roadmap with deadlines.
 
 A [strategic vision](/blog/strategic-vision-team-actually-executes) that does not account for high-confidence threats is incomplete. The SWOT provides the reality check. The roadmap provides the response. Together, they produce informed strategy rather than optimistic planning.
 
----
 
 ## Score Your Strategic Analysis
 
@@ -80,6 +76,5 @@ Every SWOT that sits in a presentation is a missed opportunity to make a better 
 
 [Take the assessment ->](https://vwcg.app/invite)
 
----
 
 *Kamyar Shah has led 650+ consulting engagements, including [fractional COO](https://kamyarshah.com/fractional-coo/), [fractional CMO](https://kamyarshah.com/fractional-cmo/), [executive coaching](https://kamyarshah.com/coaching/), and [strategic advisory](https://kamyarshah.com/strategy/), producing over $300M in client impact across companies in the $1M-$50M range. He built the [VWCG Strategic Assessment](https://vwcg.app/invite) from the same diagnostic frameworks he uses in paid engagements.*

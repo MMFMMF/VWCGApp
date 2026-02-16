@@ -18,7 +18,6 @@ I have worked with companies generating $8M in revenue with healthy 15% net marg
 
 Financial readiness is not about profitability. It is about surplus: what is left after you fund everything the business needs to run at its current level. If the answer is "nothing," you are stable. You are not ready to grow.
 
----
 
 ## Eight Indicators for CEO-Level Financial Readiness
 
@@ -42,7 +41,6 @@ This is not a comprehensive financial audit. It is an operational finance check 
 
 The same logic applies to [AI investment decisions](/blog/ai-cost-small-business-realistic-breakdown): the cost of the tool is rarely the real expense. It is the operational commitment to integrate, maintain, and measure the return on that tool over 12 months. Understanding [what business assessments cost](/blog/strategic-business-assessment-cost) and whether they fit within your current investment capacity follows this same logic. Match the investment to the financial reality.
 
----
 
 ## When "We Are Growing" Is a Warning Sign
 
@@ -58,7 +56,6 @@ Revenue growth without financial readiness produces four patterns that I see rep
 
 Each of these patterns is a system producing a predictable outcome. Diagnose the pattern before it reaches the balance sheet.
 
----
 
 ## What to Do If You Score Low
 
@@ -74,7 +71,6 @@ Then assess growth capacity. Once the fundamentals are solid, the [90-day roadma
 
 Financial discipline is how you protect the people and the business from the consequences of ambition that outpaces capacity.
 
----
 
 ## Measure Your Financial Readiness
 
@@ -86,6 +82,5 @@ If you are planning a growth initiative, a [strategic advisory](https://kamyarsh
 
 [Take the assessment ->](https://vwcg.app/invite)
 
----
 
 *Kamyar Shah has led 650+ consulting engagements, including [fractional COO](https://kamyarshah.com/fractional-coo/), [fractional CMO](https://kamyarshah.com/fractional-cmo/), [executive coaching](https://kamyarshah.com/coaching/), and [strategic advisory](https://kamyarshah.com/strategy/), producing over $300M in client impact across companies in the $1M-$50M range. He built the [VWCG Strategic Assessment](https://vwcg.app/invite) from the same diagnostic frameworks he uses in paid engagements.*

@@ -20,7 +20,6 @@ Annual plans also create a dangerous illusion. The team believes they have direc
 
 Consistency is what separates a process from an event. A plan you revisit every 90 days is a process. A plan you write once per year is an event.
 
----
 
 ## The Anatomy of a 90-Day Roadmap
 
@@ -36,7 +35,6 @@ A functional 90-day roadmap has five structural components. Miss any one of them
 
 **Weekly check-in cadence.** Fifteen minutes. Status, blockers, help needed. Not a presentation. Not a status meeting with slides. A pulse check. Does each priority still have an active owner? Is it on track? Does something need to change? The cadence creates accountability. Without it, the roadmap is a document. With it, the roadmap is a management system.
 
----
 
 ## The Capacity Problem Nobody Talks About
 
@@ -48,7 +46,6 @@ I worked with a $12M company that put 24 items on their Q3 roadmap. They complet
 
 The fix is simple math. Total available team hours per quarter, minus operational maintenance (usually 50% to 65% of capacity), minus unplanned demands (10% to 15%), equals actual project hours. Divide by estimated hours per priority. That number is your maximum item count. It will be smaller than you want. That is the point.
 
----
 
 ## What "Done" Looks Like at Day 90
 
@@ -60,7 +57,6 @@ This discipline forces honest scoping. When you have to define the outcome, prio
 
 Every system improves when the definition of success is measurable, not aspirational.
 
----
 
 ## The Quarterly Reset
 
@@ -72,7 +68,6 @@ Answering these honestly takes two to three hours. That investment produces a ro
 
 A company that runs this cycle for four consecutive quarters develops something more valuable than any single plan: the organizational muscle of consistent execution. [Mature SOPs](/blog/sop-maturity-why-documented-processes-not-working) feed this muscle by ensuring the team can execute reliably while pursuing roadmap priorities. A [clear strategic vision](/blog/strategic-vision-team-actually-executes) provides the direction. The 90-day roadmap is the bridge between vision and daily work.
 
----
 
 ## Build Your First Roadmap
 
@@ -86,6 +81,5 @@ Build the roadmap. Run the math. Execute for 90 days. Then build a better one.
 
 [Take the assessment ->](https://vwcg.app/invite)
 
----
 
 *Kamyar Shah has led 650+ consulting engagements, including [fractional COO](https://kamyarshah.com/fractional-coo/), [fractional CMO](https://kamyarshah.com/fractional-cmo/), [executive coaching](https://kamyarshah.com/coaching/), and [strategic advisory](https://kamyarshah.com/strategy/), producing over $300M in client impact across companies in the $1M-$50M range. He built the [VWCG Strategic Assessment](https://vwcg.app/invite) from the same diagnostic frameworks he uses in paid engagements.*

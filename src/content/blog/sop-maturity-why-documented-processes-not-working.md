@@ -16,7 +16,6 @@ Most companies in the $2M to $25M range treat SOP creation as the finish line. T
 
 This is not a discipline problem. It is a maturity problem. Having a documented process is the first level of SOP maturity. It is necessary but insufficient. There are three more levels above it, and the gap between Level 1 and Level 3 is where most operational breakdowns live.
 
----
 
 ## The SOP Maturity Spectrum
 
@@ -32,7 +31,6 @@ I use a four-level framework to assess SOP maturity across every operational fun
 
 The leap from Level 1 to Level 2 is behavioral. Train people to follow the document. The leap from Level 2 to Level 3 is structural. Build measurement into the process itself. That second leap is where most companies stall.
 
----
 
 ## Why Level 1 Fails
 
@@ -48,7 +46,6 @@ A Level 1 SOP has four consistent failure modes.
 
 Systems protect people from chaos. A system nobody follows protects nobody.
 
----
 
 ## The Metrics Gap
 
@@ -66,7 +63,6 @@ Metrics make the invisible visible. Here is what measurement looks like at three
 
 You cannot [automate a process you have not measured](/blog/ai-implementation-small-business-no-tech-team). Automation applied to an unmeasured process scales the errors along with the efficiency.
 
----
 
 ## What Level 3 Looks Like in Practice
 
@@ -76,7 +72,6 @@ Each metric has an owner. Each metric has a threshold that triggers review. When
 
 Building processes this way requires discipline and initial investment. A company moving from Level 1 to Level 3 across its five core processes should budget 40 to 60 hours of focused work over 90 days. That is the real cost. The return is operational reliability that does not depend on which employee is working that day.
 
----
 
 ## Assess Your Current Maturity
 
@@ -90,6 +85,5 @@ If your SOPs exist but your operations still depend on individuals, the gap is m
 
 [Take the assessment ->](https://vwcg.app/invite)
 
----
 
 *Kamyar Shah has led 650+ consulting engagements, including [fractional COO](https://kamyarshah.com/fractional-coo/), [fractional CMO](https://kamyarshah.com/fractional-cmo/), [executive coaching](https://kamyarshah.com/coaching/), and [strategic advisory](https://kamyarshah.com/strategy/), producing over $300M in client impact across companies in the $1M-$50M range. He built the [VWCG Strategic Assessment](https://vwcg.app/invite) from the same diagnostic frameworks he uses in paid engagements.*

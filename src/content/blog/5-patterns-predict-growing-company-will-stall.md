@@ -18,7 +18,6 @@ The five patterns below each involve at least two dimensions of business perform
 
 Process is how you build systems that reveal problems before they become crises. These patterns are the problems that multi-dimensional systems reveal.
 
----
 
 ## Pattern 1: The Execution Capability Gap
 
@@ -32,7 +31,6 @@ I have measured this pattern quantitatively. Companies with an Execution Capabil
 
 The fix is not to hire more people. The fix is to reduce the priority count until it matches the team you have. Then expand capacity deliberately as results justify it.
 
----
 
 ## Pattern 2: The Burnout Risk Signal
 
@@ -48,7 +46,6 @@ The correction requires structural change, not a vacation. Documenting decision 
 
 Discipline is empathy in disguise. Building systems that reduce founder dependency protects the founder, the team, and the business simultaneously.
 
----
 
 ## Pattern 3: The Unmitigated Threat
 
@@ -62,7 +59,6 @@ Common unmitigated threats in the $2M to $25M range: key employee departure risk
 
 The fix is allocation, not elimination. You cannot eliminate threats. You can allocate roadmap capacity to mitigate them. That means threat mitigation items compete with growth items for quarterly bandwidth. In most cases, one threat mitigation item per quarter is sufficient to move from unmitigated to managed.
 
----
 
 ## Pattern 4: The SOP-Metric Missing Link
 
@@ -76,7 +72,6 @@ Companies with this pattern share a recognizable symptom: periodic quality crise
 
 The fix is adding metrics to existing processes, not rewriting the processes themselves. Three metrics per core process: output quality, cycle time, and compliance rate. That measurement layer converts a Level 1 SOP into a Level 3 SOP. The processes themselves may not change. The visibility into their performance changes everything.
 
----
 
 ## Pattern 5: The Strength Multiplication Effect
 
@@ -90,7 +85,6 @@ I track this pattern across every engagement because it is the clearest predicto
 
 The lesson is structural. Strengths do not exist in isolation. They interact. Building strength in one area creates conditions for strength in adjacent areas. That compounding effect is the snowball principle applied to organizational capability.
 
----
 
 ## Why Single Assessments Miss These
 
@@ -98,7 +92,6 @@ Each of these five patterns involves at least two dimensions of business perform
 
 No single-dimension assessment reveals these patterns. A leadership assessment alone will not show you the Execution Capability Gap. A financial review alone will not show you the Strength Multiplication Effect. The patterns are cross-dimensional. The diagnostic must be cross-dimensional too.
 
----
 
 ## Measure All Five Patterns
 
@@ -112,6 +105,5 @@ Every system reveals its patterns when you measure it from enough angles. Measur
 
 [Take the assessment ->](https://vwcg.app/invite)
 
----
 
 *Kamyar Shah has led 650+ consulting engagements, including [fractional COO](https://kamyarshah.com/fractional-coo/), [fractional CMO](https://kamyarshah.com/fractional-cmo/), [executive coaching](https://kamyarshah.com/coaching/), and [strategic advisory](https://kamyarshah.com/strategy/), producing over $300M in client impact across companies in the $1M-$50M range. He built the [VWCG Strategic Assessment](https://vwcg.app/invite) from the same diagnostic frameworks he uses in paid engagements.*

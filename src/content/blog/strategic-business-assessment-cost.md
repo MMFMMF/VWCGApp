@@ -16,7 +16,6 @@ The term "strategic business assessment" covers everything from a five-minute on
 
 A free tool gives you structured self-reflection. A $25,000 engagement gives you a custom diagnosis with implementation guidance. Both are called "assessments." They are not the same product. Understanding the tiers prevents two common mistakes: paying $15,000 for answers you could have gotten for free, or relying on a free tool when your situation demands a custom analysis.
 
----
 
 ## Tier 1: Free Self-Assessment Tools ($0)
 
@@ -28,7 +27,6 @@ What they miss: the interpretation layer. A free tool can tell you that your SOP
 
 When free is enough: when you need direction, not a detailed action plan. When you want to identify which areas deserve attention before committing budget. When you are in the early diagnostic phase and the question is "where should I focus?" rather than "how should I fix this?"
 
----
 
 ## Tier 2: Templated Assessments and Workshops ($1,500 to $5,000)
 
@@ -38,7 +36,6 @@ These work well for companies that fit the template. If your challenges align wi
 
 These break down when your situation is non-standard. Template frameworks assume certain conditions: a leadership team that is aligned, a business model that fits the framework's typical client, and challenges that fall within the model's scope. A $15M company with a complex multi-channel business model, a founder who also serves as the primary client relationship manager, and an operations team that has never been formally assessed may find that the template does not flex enough to address their specific configuration.
 
----
 
 ## Tier 3: Custom Strategic Assessments ($5,000 to $25,000)
 
@@ -50,7 +47,6 @@ The value proposition at this tier is pattern recognition. A consultant who has 
 
 When to invest here: when you have identified that something is wrong but cannot pinpoint the root cause. When you need a prioritized action plan, not a general direction. When the cost of inaction, measured in revenue lost, margins compressed, or growth stalled, exceeds the assessment cost within one to two quarters.
 
----
 
 ## Tier 4: Full Diagnostic Engagements ($25,000+)
 
@@ -60,7 +56,6 @@ Enterprise scope, enterprise price. Most companies in the $2M to $25M range do n
 
 If a Tier 3 assessment identified the issues and a Tier 4 engagement would primarily add detail, the incremental detail is rarely worth three to five times the cost.
 
----
 
 ## How to Decide Which Tier You Need
 
@@ -70,7 +65,6 @@ The expensive mistakes go in both directions. A CEO who pays $15,000 for a custo
 
 Understanding the cost of [what AI assessments deliver versus human consulting](/blog/ai-cost-small-business-realistic-breakdown) follows the same tiered logic. The principle is consistent: match the investment to the complexity of the question.
 
----
 
 ## Why We Made the VWCG Assessment Free
 
@@ -82,6 +76,5 @@ The assessment takes about 10 minutes. No signup required. No sales pitch at the
 
 [Take the assessment ->](https://vwcg.app/invite)
 
----
 
 *Kamyar Shah has led 650+ consulting engagements, including [fractional COO](https://kamyarshah.com/fractional-coo/), [fractional CMO](https://kamyarshah.com/fractional-cmo/), [executive coaching](https://kamyarshah.com/coaching/), and [strategic advisory](https://kamyarshah.com/strategy/), producing over $300M in client impact across companies in the $1M-$50M range. He built the [VWCG Strategic Assessment](https://vwcg.app/invite) from the same diagnostic frameworks he uses in paid engagements.*

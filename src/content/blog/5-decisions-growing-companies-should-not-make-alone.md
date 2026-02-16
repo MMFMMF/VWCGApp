@@ -18,7 +18,6 @@ The failure is rarely in the analysis. It is in the frame. Internal teams analyz
 
 Not every decision needs this. Routine operations, standard vendor selection, day-to-day management decisions are all fine to handle internally. The five categories below are not. These are the decisions where going it alone has a predictable, measurable cost.
 
----
 
 ## Decision 1: Pricing Model Changes
 
@@ -28,7 +27,6 @@ Pricing changes require external data: market positioning, willingness-to-pay re
 
 The cost of getting pricing wrong in both directions is substantial. Underprice and you leave margin on the table indefinitely. Overprice without segmentation and you lose volume you cannot recover. Both require perspective beyond what the sales team reports.
 
----
 
 ## Decision 2: Organizational Structure Redesign
 
@@ -38,7 +36,6 @@ The symptom is familiar: unclear reporting lines, duplicated responsibilities, m
 
 Restructuring requires someone who can see the gap between the current structure and the required structure. Internal leaders cannot do this objectively because they are embedded in the current design. Their roles, their status, their teams are all products of the existing structure. Asking them to redesign it is asking them to evaluate their own positions.
 
----
 
 ## Decision 3: Market Expansion
 
@@ -48,7 +45,6 @@ I have watched $10M companies chase a $2M adjacent market opportunity, spend $50
 
 Market expansion decisions require [financial readiness analysis](/blog/financial-readiness-can-your-business-afford-to-grow), competitive validation, and an honest assessment of whether the opportunity justifies the distraction. Internal teams tend to overvalue the opportunity because they built the case for it.
 
----
 
 ## Decision 4: Leadership Hires
 
@@ -58,7 +54,6 @@ The pattern: the founder hires for the problems they have today, not the role th
 
 Outside perspective shifts the frame from "who can fix this current pain" to "what does this role need to look like at $15M, and who can grow into that." The current pain is a symptom. The role design is the system. Hire for the system.
 
----
 
 ## Decision 5: Technology Bets
 
@@ -68,7 +63,6 @@ This applies to AI investments, CRM migrations, ERP implementations, and every o
 
 Technology decisions require a diagnostic layer before the evaluation layer. Solve the problem definition first. Then evaluate solutions.
 
----
 
 ## The Pattern Across All Five
 
@@ -78,7 +72,6 @@ The fix is not to outsource the decision. The fix is to introduce a different va
 
 Every system improves when you measure it from outside. Decisions are systems too.
 
----
 
 ## Assess Your Advisory Readiness
 
@@ -88,6 +81,5 @@ The assessment takes about 10 minutes and requires no signup. It will not tell y
 
 [Take the assessment ->](https://vwcg.app/invite)
 
----
 
 *Kamyar Shah has led 650+ consulting engagements, including [fractional COO](https://kamyarshah.com/fractional-coo/), [fractional CMO](https://kamyarshah.com/fractional-cmo/), [executive coaching](https://kamyarshah.com/coaching/), and [strategic advisory](https://kamyarshah.com/strategy/), producing over $300M in client impact across companies in the $1M-$50M range. He built the [VWCG Strategic Assessment](https://vwcg.app/invite) from the same diagnostic frameworks he uses in paid engagements.*
