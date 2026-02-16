@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-02-14)
 Phase: 11 of 16 (Financial Math Reconciliation)
 Plan: 0 of TBD in current phase
 Status: Ready to plan
-Last activity: 2026-02-16 - Completed quick task 26: remove horizontal rule lines from 9 blog posts
+Last activity: 2026-02-16 - Completed quick task 27: remove em dashes from 9 blog posts
 
 Progress: [██████████░░░░░░░░░░] 62.5% (10/16 phases complete)
 
@@ -95,6 +95,7 @@ src/components/print/
 | 24 | Deploy 9 new blog posts with OG images, schema markup, 7 redirects, 6 cross-links | 2026-02-16 | 36 files |
 | 25 | Fix blog post layout: move author bio below CTA, add section separators on 9 posts | 2026-02-16 | 9 files |
 | 26 | Remove horizontal rule lines from all 9 new blog posts | 2026-02-16 | 9 files |
+| 27 | Remove em dashes from blog post pages (Footer + blog index title) | 2026-02-16 | 2 files |
 
 ### Pending Todos
 
@@ -107,7 +108,7 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-16
-Stopped at: Completed quick task 26 (removed hr lines from blog posts), ready to plan Phase 11
+Stopped at: Completed quick task 27 (removed em dashes from blog pages), ready to plan Phase 11
 Resume file: None
 
 ---
