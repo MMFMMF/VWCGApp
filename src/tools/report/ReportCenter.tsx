@@ -82,7 +82,7 @@ export const ReportCenter: React.FC = () => {
   const [llmNeedsReview, setLlmNeedsReview] = useState(false);
 
   // Check for API key
-  const apiKey = import.meta.env.VITE_OPENAI_API_KEY as string | undefined;
+  const apiKey = import.meta.env.VITE_ANTHROPIC_API_KEY as string | undefined;
 
   // Detect quality warnings whenever tools data changes
   const qualityWarnings = useMemo(() => {
@@ -144,7 +144,7 @@ export const ReportCenter: React.FC = () => {
   // Generate AI briefing
   const handleGenerateAIBriefing = useCallback(async () => {
     if (!apiKey) {
-      setLlmError('OpenAI API key not set. Add VITE_OPENAI_API_KEY to .env');
+      setLlmError('Anthropic API key not set. Add VITE_ANTHROPIC_API_KEY to .env');
       return;
     }
 
@@ -449,7 +449,7 @@ export const ReportCenter: React.FC = () => {
                     : 'bg-white border-slate-200 hover:border-purple-300',
                   !apiKey && 'opacity-50 cursor-not-allowed'
                 )}
-                title={!apiKey ? 'Set VITE_OPENAI_API_KEY to enable' : ''}
+                title={!apiKey ? 'Set VITE_ANTHROPIC_API_KEY to enable' : ''}
               >
                 <div className="flex items-start gap-3">
                   <Sparkles
@@ -468,7 +468,7 @@ export const ReportCenter: React.FC = () => {
                       AI-Powered Briefing
                     </div>
                     <div className="text-sm text-slate-500 mt-1">
-                      AI-generated narrative with QA validation (~$3-6)
+                      AI-generated narrative with QA validation (~$1-2)
                     </div>
                     {!apiKey && (
                       <div className="text-xs text-red-600 mt-1">
@@ -519,7 +519,7 @@ export const ReportCenter: React.FC = () => {
             <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
               <h3 className="font-bold text-slate-800 mb-4">Generate AI Narrative</h3>
               <p className="text-sm text-slate-600 mb-4">
-                Creates a custom strategic briefing using ChatGPT, with quality validation by ChatGPT Mini.
+                Creates a custom strategic briefing using Claude Sonnet, with quality validation by Claude Haiku.
               </p>
               <Button
                 onClick={handleGenerateAIBriefing}
