@@ -7,7 +7,7 @@
 
 > **Strategic Assessment Platform for Executives and Advisors**
 
-VWCGApp (Value-Weighted Capability Gap Application) is a React-based platform for evaluating organizational readiness, identifying strategic risks, and creating actionable roadmaps.
+VWCGApp (Value-Weighted Capability Gap Application) is a React-based platform for evaluating organizational readiness, identifying strategic risks, and creating actionable roadmaps. Live at **https://vwcg.app**.
 
 ---
 
@@ -34,7 +34,7 @@ npm install
 npm run dev
 
 # Open in browser
-http://localhost:5173
+http://localhost:4321
 ```
 
 ## Prerequisites
@@ -51,12 +51,15 @@ http://localhost:5173
    cp .env.example .env
    ```
 
-2. Add your API keys (optional, for AI features):
+2. Add your API keys:
    ```
-   VITE_GEMINI_API_KEY=your_api_key_here
+   VITE_ANTHROPIC_API_KEY=sk-ant-api03-...   # Required for AI Strategic Briefing
+   VITE_GEMINI_API_KEY=your_key_here          # Optional: enables AI Consultation tab
    ```
 
-> **Note**: The app works without an API key, but AI Consultation features will be disabled.
+3. **Production (Netlify):** Set both keys in Netlify → Project configuration → Environment variables for site `sparkly-speculoos-87b564`. Keys are never committed to the repo.
+
+> **Note**: The app runs without API keys but AI Strategic Briefing (Report Center) and AI Consultation will be disabled.
 
 ---
 
@@ -72,7 +75,7 @@ http://localhost:5173
 | **SOP Suite** | Taxonomy, creation, and management of SOPs |
 | **90-Day Roadmap** | Task planning with dependencies (weeks 1-12) |
 | **Advisor Readiness** | 4-tab diagnostic with ROI projections |
-| **Report Center** | PDF export of all tools |
+| **Report Center** | PDF export + Claude-powered AI Strategic Briefing |
 
 ---
 
@@ -80,39 +83,41 @@ http://localhost:5173
 
 | Layer | Technology |
 |-------|------------|
-| **Framework** | React 19 + TypeScript 5.9 |
+| **Framework** | Astro 5 + React 19 + TypeScript 5.9 |
 | **Build** | Vite 7.2 |
 | **Styling** | TailwindCSS 3.4 |
 | **State** | Zustand 5.0 (global store with provenance) |
 | **Charts** | Chart.js + D3.js |
 | **PDF** | jsPDF + html2canvas |
+| **AI Briefing** | Anthropic Claude (`claude-sonnet-4-20250514`) |
+| **AI Consultation** | Google Gemini 1.5 Flash (optional) |
 
 ### Key Systems
-- **Synthesis Engine** – 5 cross-tool rules generate real-time insights
-- **Validation** – L0-L3 validation with 20+ error codes
-- **Safe Mode** – Protected import workflow for workspace files
+- **Synthesis Engine** — 8 cross-tool v2 rules generate real-time insights on every data change
+- **LLM Service** — Anthropic Claude generates executive-level strategic briefings in Report Center
+- **Validation** — L0-L3 validation with 20+ error codes
+- **Safe Mode** — Protected import workflow for workspace files (`.vwcg` format)
 
 ---
 
 ## Documentation
 
-📚 **[Full Technical Documentation](./docs/documentation.md)** – Architecture, tool reference, API contracts, and schemas.
+📚 **[Full Technical Documentation](./docs/documentation.md)** — Architecture, tool reference, API contracts, and schemas.
+
+📋 **[CLAUDE.md](./CLAUDE.md)** — Guidance for Claude Code: commands, architecture deep-dive, conventions.
 
 ---
 
 ## Contributing
 
-We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for details on:
-- Development setup
-- Code style guidelines
-- Pull request process
+Please see our [Contributing Guide](./CONTRIBUTING.md) for development setup, code style, and PR process.
 
 ---
 
 ## License
 
-This project is licensed under the MIT License – see the [LICENSE](./LICENSE) file for details.
+MIT License — see [LICENSE](./LICENSE) for details.
 
 ---
 
-Built with ❤️ using React + TypeScript + Vite
+Built with React + TypeScript + Astro + Anthropic Claude

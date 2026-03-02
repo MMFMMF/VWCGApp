@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Is
 
-VWCGApp (Value-Weighted Capability Gap Application) is an Astro SSG site with a React SPA island for strategic business assessment. The marketing landing page (`/`), blog (`/blog/*`), and invite page (`/invite`) are static Astro pages. The React SPA mounts at `/app/*` via `client:only="react"` and provides 12 integrated tools (AI Readiness, Leadership DNA, BEI, Vision Canvas, SWOT, SOP Taxonomy/Creation/Management, 90-Day Roadmap, Advisor Readiness, Report Center, Business Context). Deployed to Netlify at https://sparkly-speculoos-87b564.netlify.app/.
+VWCGApp (Value-Weighted Capability Gap Application) is an Astro SSG site with a React SPA island for strategic business assessment. The marketing landing page (`/`), blog (`/blog/*`), and invite page (`/invite`) are static Astro pages. The React SPA mounts at `/assessment/*` via `client:only="react"` and provides 11 integrated tools (AI Readiness, Leadership DNA, BEI, Vision Canvas, SWOT, SOP Taxonomy/Creation/Management, 90-Day Roadmap, Advisor Readiness, Report Center, Business Context). Deployed to Netlify at https://vwcg.app (site ID: sparkly-speculoos-87b564).
 
 ## Commands
 
@@ -40,7 +40,7 @@ npx playwright test -g "pattern"
 
 ### Core Systems
 
-**Tool Registry** (`src/registry/`): Two files — `ToolRegistry.ts` defines the `ToolDefinition` interface and the `registerTool`/`getTools`/`getTool` functions; `registry.ts` imports all 12 tool definitions and calls `registerTool()` for each. Routes are generated dynamically in `App.tsx` by mapping over `getTools()`.
+**Tool Registry** (`src/registry/`): Two files — `ToolRegistry.ts` defines the `ToolDefinition` interface and the `registerTool`/`getTools`/`getTool` functions; `registry.ts` imports all 11 tool definitions and calls `registerTool()` for each. Routes are generated dynamically in `App.tsx` by mapping over `getTools()`.
 
 **Workspace Store** (`src/store/workspaceStore.ts`): Single Zustand store with `persist` middleware (localStorage key: `vwcg-workspace`). All tool data lives under `state.tools[toolId]`. The store has two state categories:
 - **Persisted:** `version`, `metadata`, `tools`, `provenance` (via `partialize`)
@@ -48,14 +48,16 @@ npx playwright test -g "pattern"
 
 Every call to `updateToolData()` triggers the Synthesis Engine synchronously and updates provenance with `LOGIC_VERSION`. On rehydration from localStorage, insights are recomputed via `queueMicrotask` in `onRehydrateStorage`.
 
-**Synthesis Engine** (`src/engine/`): 8 cross-tool v2 rules in `rules-v2.ts` that generate `Insight[]` on every tool data update. The engine also provides `computeDerivedMetrics()` (6 derived metrics including leadership archetype and revenue risk), `scanSwotText()` for SWOT keyword analysis, and optional AI consultation via Gemini 1.5 Flash (`cloud.ts`). `runSynthesis()` executes all registered rules and sorts results by severity (high → low). The barrel export `src/engine/index.ts` is the public API — import from `@/engine` rather than individual files. The old v1 rules (`rules.ts`, E1-E5) still exist in the codebase but are no longer imported by `synthesis.ts`.
+**Synthesis Engine** (`src/engine/`): 8 cross-tool v2 rules in `rules-v2.ts` that generate `Insight[]` on every tool data update. The engine also provides `computeDerivedMetrics()` (6 derived metrics including leadership archetype and revenue risk), `scanSwotText()` for SWOT keyword analysis, and optional AI Strategic Briefing via Anthropic Claude (`llm/openai-service.ts`). `runSynthesis()` executes all registered rules and sorts results by severity (high → low). The barrel export `src/engine/index.ts` is the public API — import from `@/engine` rather than individual files. The old v1 rules (`rules.ts`, E1-E5) still exist in the codebase but are no longer imported by `synthesis.ts`.
+
+**LLM Service** (`src/engine/llm/openai-service.ts`): Calls the Anthropic Claude API (`claude-sonnet-4-20250514`) to generate AI-powered strategic briefings in the Report Center. Requires `VITE_ANTHROPIC_API_KEY` env var. Note: the filename retains the legacy `openai-service.ts` name but the implementation is fully Anthropic SDK. Do not rename without updating all imports.
 
 **Report System** (`src/report/`): Comprehensive reporting layer with 6 subdirectories:
 - `charts/` — Reusable chart components (HorizontalBar, DotPlot, Gauge, ProgressBar)
 - `components/` — Report typography and page layout primitives
 - `narrative/` — Template-driven narrative text generation with voice/tone system
 - `individual/` — Per-tool report components (AIReadiness, LeadershipDNA, SWOT, VisionCanvas, Roadmap, AdvisorReadiness)
-- `unified/` — UnifiedStrategicBriefing and LLMStrategicBriefing (cross-tool executive summary)
+- `unified/` — UnifiedStrategicBriefing and LLMStrategicBriefing (cross-tool executive summary, Claude-powered)
 - `pdf/` — PdfGenerator (jsPDF + html2canvas at 300 DPI/3x scale) and PrintPdfService (browser print dialog)
 - `quality/` — VagueEntryDetector and EdgeCaseDetector for report content quality
 
@@ -102,7 +104,7 @@ Add a `SynthesisRule` to the `rulesV2` array in `src/engine/rules-v2.ts`. Each r
 
 **Blog system:** Astro content collections in `src/content/blog/` (Markdown). Schema in `src/content/config.ts` — required fields: `title`, `description`, `pubDate` (date); optional: `updatedDate`, `heroImage`, `author` (default "World Consulting Group"), `tags` (string[]), `draft` (boolean). Slug is inferred from filename. Blog post template includes JSON-LD, Open Graph, Twitter Cards, reading time.
 
-The Dashboard and the `authority-tracker` tool exist in `src/tools/` but are not part of the 12-tool registry.
+The Dashboard and the `authority-tracker` tool exist in `src/tools/` but are not part of the 11-tool registry.
 
 ### Layout
 
@@ -123,6 +125,11 @@ The Dashboard and the `authority-tracker` tool exist in `src/tools/` but are not
 
 Strict mode enabled with `noUnusedLocals`, `noUnusedParameters`, `noFallthroughCasesInSwitch`, `noUncheckedSideEffectImports`, `erasableSyntaxOnly`, `verbatimModuleSyntax`. Target ES2022. The `src/scripts/` directory is excluded from TypeScript compilation. Uses `type` keyword for type-only imports (required by `verbatimModuleSyntax`). No enums allowed — use string unions instead (`erasableSyntaxOnly`).
 
-### Environment
+### Environment Variables
 
-Optional `VITE_GEMINI_API_KEY` env var enables AI Consultation features (Gemini 1.5 Flash). App works fully without it.
+| Variable | Required | Purpose |
+|----------|----------|---------|
+| `VITE_ANTHROPIC_API_KEY` | Yes (for AI briefing) | Powers Claude-generated strategic briefings in Report Center. Set in Netlify dashboard for production. |
+| `VITE_GEMINI_API_KEY` | No | Enables AI Consultation features (Gemini 1.5 Flash). App works without it. |
+
+**Production:** Both keys must be set in Netlify > Project configuration > Environment variables for sparkly-speculoos-87b564. They are never committed to the repo (`.gitignore` covers `.env`).
