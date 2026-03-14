@@ -16,9 +16,9 @@ The standard SWOT exercise has four structural flaws that prevent it from influe
 
 **No prioritization.** Every item receives equal visual weight. A critical competitive threat sits next to a minor market annoyance. A core strength sits next to a nice-to-have advantage. Without prioritization, the team leaves the session with 20 to 30 items that all seem equally relevant. No human can act on 30 items simultaneously. So they act on none.
 
-**No confidence weighting.** A well-researched, data-backed insight occupies the same space as a hunch. "Our competitor is launching a competing product next quarter" (confirmed by their SEC filing) carries the same weight as "we might face regulatory changes" (based on an article someone read). A guess and a certainty look identical on the grid. The team cannot distinguish between facts to act on and hypotheses to investigate.
+**No confidence weighting.** A well-researched, data-backed insight occupies the same space as a hunch. "A competitor is launching a competing product next quarter" (confirmed by their SEC filing) carries the same weight as "the company faces regulatory changes" (based on an article someone read). A guess and a certainty look identical on the grid. The team cannot distinguish between facts to act on and hypotheses to investigate.
 
-**No connection to action.** Threats are identified but nobody is assigned to mitigate them. Opportunities are listed but nobody owns the evaluation. The SWOT is a snapshot, not a management tool. It captures a moment in time and then becomes irrelevant because nothing in the organization's operating cadence references it.
+**No connection to action.** Threats are identified but nobody is assigned to mitigate them. Opportunities are listed but nobody owns the evaluation. The SWOT is a snapshot, not a management tool. It captures a moment in time. Then it becomes irrelevant because nothing in the operating cadence references it.
 
 **No follow-up mechanism.** The SWOT sits in a slide deck. It is not revisited next quarter. Nobody checks whether the threats materialized, whether the opportunities were pursued, or whether the strengths identified six months ago are still strengths. Without a feedback loop, the analysis cannot improve.
 
@@ -29,26 +29,26 @@ A framework without measurement produces insight without action. That is waste.
 
 One addition transforms the SWOT from a list into a prioritized action framework: confidence scoring.
 
-Every item in every quadrant gets a confidence score from 1 to 5. A score of 1 means "this is a guess based on limited information." A score of 5 means "this is confirmed by data, direct observation, or third-party validation." The scoring takes five minutes during the session. The effect on decision-making is fundamental.
+Every item gets a confidence score from 1 to 5. A score of 1 means "this is a guess based on limited information." A score of 5 means "this is confirmed by data or observation." The scoring takes five minutes. The effect on decision-making is fundamental.
 
-**High-confidence threats (4-5) with no mitigation plan are emergencies.** These are not line items to monitor. These are risks the team has confirmed and is doing nothing about. I call this the unmitigated threat pattern, and it appears in [over 60% of the companies I assess](/blog/5-patterns-predict-growing-company-will-stall). A credible threat with zero roadmap items addressing it is the most dangerous gap in any strategic assessment.
+**High-confidence threats (4-5) with no mitigation plan are emergencies.** These are not line items to monitor. These are risks the team has confirmed and is doing nothing about. This pattern, called the unmitigated threat pattern, appears in [over 60% of the companies assessed](/blog/5-patterns-predict-growing-company-will-stall). A credible threat with zero roadmap items addressing it is the most dangerous gap in any strategic assessment.
 
 **Low-confidence threats (1-2) are research items.** They deserve investigation, not immediate action. Assign someone to validate or invalidate them within 30 days. Many low-confidence threats disappear when you gather actual data.
 
-**High-confidence strengths (4-5) need leverage questions.** A confirmed strength that is not connected to a specific opportunity is a nice fact about your company, nothing more. For each high-confidence strength, ask: which specific opportunity does this enable us to pursue? If the answer is none, the strength is strategically inert.
+**High-confidence strengths (4-5) need activation questions.** A confirmed strength that is not connected to a specific opportunity is a nice fact about a company, nothing more. For each high-confidence strength, ask: which specific opportunity does this strength enable the company to pursue? If the answer is none, the strength is strategically inert.
 
-**Low-confidence opportunities (1-2) need validation before investment.** An opportunity scored at 2 should not receive budget. It should receive research. Assign someone to bring the confidence level up to 4 or kill it within 30 to 60 days. The cost of pursuing an unvalidated opportunity is not just the direct investment. It is the bandwidth consumed from validated opportunities.
+**Low-confidence opportunities (1-2) need validation before investment.** An opportunity scored at 2 should not receive budget. It should receive research. Assign someone to bring the confidence level up to 4 or eliminate it within 30 to 60 days. The cost of pursuing an unvalidated opportunity is not just the direct investment. It is the bandwidth consumed from validated opportunities.
 
 
 ## Connecting SWOT to Your Roadmap
 
 A SWOT analysis that does not connect to the [90-day roadmap](/blog/90-day-roadmap-quarterly-execution-beats-annual-planning) is academic. The connection mechanism is explicit: for every high-confidence threat, there must be a corresponding roadmap item. For every high-confidence opportunity paired with a high-confidence strength, there should be an evaluation or pursuit item on the roadmap.
 
-The gap audit is simple. List your high-confidence threats. Cross-reference against the current quarter's roadmap. Any threat with a confidence score of 4 or 5 that has zero corresponding roadmap items is an unmitigated threat. This gap is visible within five minutes. And yet, in my experience, 60% to 70% of companies in the $2M to $25M range have at least one.
+The gap audit is simple. List high-confidence threats. Cross-reference against the current quarter's roadmap. Any threat with a confidence score of 4 or 5 that has zero corresponding roadmap items is an unmitigated threat. This gap is visible within five minutes. And yet, 60% to 70% of companies in the $2M to $25M range have at least one.
 
 The unmitigated threat does not wait for your bandwidth to free up. It does not schedule itself around your quarterly priorities. It materializes on its own timeline. The roadmap must account for threat mitigation alongside growth initiatives, or the growth is built on an unmanaged risk.
 
-Similarly, strengths without leverage are wasted. If your team identifies five strengths and none of them connect to an opportunity the company is pursuing, the strengths section of the SWOT is accurate but useless. The question is not "what are we good at?" The question is "what are we good at that enables something we are trying to do?" The second question produces strategy. The first produces self-congratulation.
+Strengths without application are wasted. If strengths do not connect to opportunities, they are useless. The question is not "what are we good at?" The question is "what are we good at that enables company goals?" That question produces strategy.
 
 
 ## How to Run a SWOT That Produces Decisions
@@ -57,7 +57,7 @@ The facilitation matters as much as the framework. Here is the process that prod
 
 **Time-box each quadrant at 15 minutes.** This prevents the session from expanding to fill the available time. Strengths and weaknesses get 15 minutes each. Opportunities and threats get 15 minutes each. Total session time: 90 minutes including scoring and action planning. If the team cannot identify the critical items in 15 minutes, more time will not help. It will just produce more items of lower relevance.
 
-**Score confidence in real-time.** Do not wait until the end. As each item is added, ask the room: "How confident are we? Score it 1 to 5." This forces the team to distinguish between facts and feelings during the brainstorm rather than after. It changes the quality of what gets added.
+**Score confidence in real-time.** Do not wait until the end. As each item is added, ask the room: "How confident is this assessment? Score it 1 to 5." This forces the team to distinguish between facts and feelings during the brainstorm rather than after. It changes the quality of what gets added.
 
 **End the session with three decisions, not a completed grid.** The output is not the grid. The output is three specific decisions. One threat to mitigate. One opportunity to pursue or investigate. One strength-opportunity pairing to activate. If the session does not produce three decisions, the exercise failed regardless of how thorough the grid looks.
 
@@ -68,9 +68,9 @@ A [strategic vision](/blog/strategic-vision-team-actually-executes) that does no
 
 ## Score Your Strategic Analysis
 
-The [VWCG Strategic Assessment](https://vwcg.app/invite) includes a SWOT Analysis module that evaluates the quality of your current strategic analysis: whether threats are prioritized, whether strengths connect to opportunities, and whether the analysis connects to your operating cadence. It takes about 10 minutes and requires no signup.
+The [VWCG Strategic Assessment](https://vwcg.app/invite) includes a SWOT Analysis module. It evaluates whether threats are prioritized. It evaluates whether strengths connect to opportunities. It evaluates whether the analysis connects to your operating cadence. It takes about 10 minutes and requires no signup.
 
-A [strategic advisory](https://kamyarshah.com/strategy/) engagement can facilitate the full confidence-weighted SWOT process with your leadership team, producing a prioritized output with roadmap integration in a single working session. But the diagnostic comes first. Understand where your strategic analysis stands before you invest in refining it.
+A [strategic advisory](https://kamyarshah.com/strategy/) engagement can facilitate the full confidence-weighted SWOT process with your leadership team. It produces prioritized output with roadmap integration in a single working session. But the diagnostic comes first. Understand where your strategic analysis stands before you invest in refining it.
 
 Every SWOT that sits in a presentation is a missed opportunity to make a better decision. Measure whether yours is producing decisions or slides.
 

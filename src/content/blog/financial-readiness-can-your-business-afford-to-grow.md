@@ -14,14 +14,14 @@ The most dangerous sentence in a growing company is "we can figure out the money
 
 Profitable companies generate positive net income. Growth-ready companies have surplus capacity to fund new initiatives while maintaining current operations. These are different financial states, and confusing them is how $5M to $15M companies end up in cash crises during their strongest revenue periods.
 
-I have worked with companies generating $8M in revenue with healthy 15% net margins that had zero capacity to fund a $200K growth initiative. Every dollar went back into operations: payroll, rent, cost of goods, vendor payments. The P&L looked strong. The balance sheet told a different story. They were profitable in the accounting sense and broke in the operational sense.
+Profitable companies generating $8M in revenue with healthy 15% net margins can have zero capacity to fund a $200K growth initiative. Every dollar went back into operations: payroll, rent, cost of goods, vendor payments. The P&L looked strong. The balance sheet told a different story. They were profitable in the accounting sense and broke in the operational sense.
 
 Financial readiness is not about profitability. It is about surplus: what is left after you fund everything the business needs to run at its current level. If the answer is "nothing," you are stable. You are not ready to grow.
 
 
 ## Eight Indicators for CEO-Level Financial Readiness
 
-This is not a comprehensive financial audit. It is an operational finance check designed for CEOs and founders who need to know whether their next move is financially sustainable. Score each indicator honestly.
+This is not a comprehensive financial audit. It is an operational finance check designed for CEOs and founders who need to know whether their next move is financially sustainable. Score each indicator with accuracy.
 
 **Cash runway.** How many months can you operate at current burn without any new revenue? For a growth-ready company, the minimum is six months. Below three months, you are operating without a safety margin, and any growth initiative that delays revenue by even one quarter puts the entire business at risk. Calculate this with current cash and receivables minus current payables, divided by monthly operating expenses.
 
@@ -42,9 +42,9 @@ This is not a comprehensive financial audit. It is an operational finance check 
 The same logic applies to [AI investment decisions](/blog/ai-cost-small-business-realistic-breakdown): the cost of the tool is rarely the real expense. It is the operational commitment to integrate, maintain, and measure the return on that tool over 12 months. Understanding [what business assessments cost](/blog/strategic-business-assessment-cost) and whether they fit within your current investment capacity follows this same logic. Match the investment to the financial reality.
 
 
-## When "We Are Growing" Is a Warning Sign
+## When "Growth" Becomes a Warning Sign
 
-Revenue growth without financial readiness produces four patterns that I see repeatedly in companies between $5M and $20M.
+Revenue growth without financial readiness produces four patterns that show up repeatedly in companies between $5M and $20M.
 
 **Revenue growing while margins compress.** The company is selling more, producing more, and earning less per unit. The top line looks strong. The economics underneath are deteriorating. This pattern is invisible in a standard P&L review if you track only revenue and net income. You have to track margin percentage alongside revenue growth to see it.
 

@@ -8,17 +8,17 @@ heroImage: "/blog/images/business-process-improvement-consulting-framework.png"
 draft: false
 ---
 
-Every company has broken processes. The question is whether leadership knows which ones are breaking it, how badly, and in what direction the friction is compounding.
+Every company has broken processes. The question is whether leadership knows which ones matter, how badly they damage performance, and how the friction is compounding.
 
-In most growing companies, the answer is a vague awareness of problems without a clear picture of their source or cost. Something is slow. Handoffs keep dropping. The same errors keep appearing. Customers are complaining about the same things. Revenue is growing but margin is not. These are the symptoms. The processes behind them are usually the diagnosis, and the companies that close the gap between symptom and diagnosis outperform the ones that manage around the symptoms indefinitely.
+In most growing companies, the answer is vague awareness of problems without clear understanding of source or cost. Something is slow. Handoffs keep dropping. Errors recur. Customers complain about the same issues. Revenue grows but margin does not. These are symptoms. The processes behind them are the diagnosis. Companies that close the gap between symptom and diagnosis outperform those that manage around problems indefinitely.
 
 Business process improvement consulting is the discipline that closes that gap. This is what the work actually looks like, what the engagement produces, and how to assess whether your company needs it.
 
 ## What Business Process Improvement Consulting Is
 
-Business process improvement consulting identifies the processes in your business that are producing suboptimal outcomes (inefficient, inconsistent, error-prone, or simply not designed for the volume and complexity the company now operates at) and redesigns them to perform better.
+Business process improvement consulting identifies processes producing suboptimal outcomes: those that are inefficient, inconsistent, error-prone, or not designed for current volume and complexity. It then redesigns them to perform better.
 
-The "consulting" component is important. Internal process improvement efforts are valuable but carry two systematic limitations. First, the people inside the process have trouble seeing it clearly. They have adapted to its friction, built workarounds around its gaps, and normalized its inefficiencies. Second, without external pattern recognition, internal teams often solve the symptom rather than the root cause. They fix the step that is failing without redesigning the system that produced the failure.
+The "consulting" component is important. Internal process improvement efforts are valuable but carry two systematic limitations. First, insiders struggle to see the process clearly. They have adapted to friction, built workarounds, and normalized inefficiencies. Second, without external pattern recognition, internal teams often solve the symptom rather than the root cause.
 
 An external consultant brings both distance and pattern recognition. Distance to see the process as it actually runs, not as it was designed to run or as leadership believes it runs. Pattern recognition from having seen the same class of problems in similar companies, which means the diagnosis is faster and the solution design is informed by what has worked elsewhere.
 
@@ -28,19 +28,19 @@ The diagnostic phase of a business process improvement engagement is where most 
 
 A proper diagnostic covers four things.
 
-**Process mapping.** The consultant documents how the process actually runs, step by step, role by role, system by system, through direct observation, interviews, and data review. This is distinct from the org chart version of how the process is supposed to work. In most companies, the gap between documented process and actual process is significant. The workarounds, the informal handoffs, the steps that were quietly added after a past failure: these only appear when you map what people actually do, not what the SOP says they should do.
+**Process mapping.** The consultant documents how the process actually runs, step by step, role by role, system by system, through direct observation, interviews, and data review. This is distinct from the org chart version of how the process is supposed to work. In most companies, the gap between documented process and actual process is significant. The workarounds, informal handoffs, and steps added after past failures only appear when you map what people actually do.
 
 **Bottleneck identification.** Once the process is mapped, the consultant identifies where throughput is constrained. A bottleneck is not just a slow step. It is a slow step that limits the entire system's output. The theory of constraints principle applies directly: improving a non-bottleneck step does not improve overall system performance. The improvement must target the constraint. Many internal improvement efforts fail because they optimize steps that are not the actual bottleneck.
 
 **Error and rework analysis.** Where are errors entering the process, and where are they being caught? Errors caught early are cheap. Errors caught late are expensive. Errors that reach customers are very expensive. The consultant traces the origin points of errors, the detection points, and the cost of the gap between them. This analysis often reveals that the most visible failure point, where errors surface, is three or four steps downstream from where they were introduced.
 
-**Handoff analysis.** Most process failures happen at handoffs: the transition points between roles, teams, or systems. Handoffs are where information gets lost, responsibility gets diffused, and accountability disappears. The consultant maps every handoff in the process and evaluates its quality: is the information transfer complete, is the receiving party ready to act, is there a defined quality check at the transition?
+**Handoff analysis.** Most process failures happen at handoffs. These are transition points between roles, teams, or systems where information gets lost, responsibility gets diffused, and accountability disappears. The consultant maps every handoff in the process and evaluates its quality. Is the information transfer complete? Is the receiving party ready to act? Is there a defined quality check at the transition?
 
 ## The Redesign Framework
 
 The redesign produces three outputs that constitute the actual deliverable of the engagement.
 
-**A redesigned process architecture.** The step-by-step workflow rebuilt for the current operating reality: the bottleneck addressed, the error introduction points eliminated or controlled, the handoffs standardized, and the process capacity matched to the actual volume requirements. The redesign is not a theoretical improvement. It is a deployable specification.
+**A redesigned process architecture.** The step-by-step workflow rebuilt for current operating reality. The bottleneck addressed. The error introduction points eliminated or controlled. The handoffs standardized. The process capacity matched to actual volume requirements. The redesign is not a theoretical improvement. It is a deployable specification.
 
 **Standard operating procedures.** Documentation that captures the redesigned process at a level of detail sufficient for consistent execution. This is not a list of steps in a Word document. A functional SOP specifies who does what, with what inputs, producing what outputs, according to what quality standards, with what escalation path when something goes wrong. If the SOP cannot be followed by someone new to the role, it is not a functional SOP. It is a reference document.
 
@@ -50,7 +50,7 @@ The redesign produces three outputs that constitute the actual deliverable of th
 
 For a company in the $2M to $25M range, a typical process improvement engagement moves through three phases.
 
-**Discovery (2 to 4 weeks).** The consultant maps the current-state processes in the target area, conducts the diagnostic, and produces a findings document identifying the highest-impact improvement opportunities ranked by effort-to-return ratio. This phase often surfaces issues the client did not know existed, because they were embedded in the workaround layer that internal teams had stopped seeing.
+**Discovery (2 to 4 weeks).** The consultant maps current-state processes and conducts the diagnostic. The output identifies highest-impact improvement opportunities ranked by effort-to-return ratio. This phase surfaces issues clients did not know existed because they were embedded in the workaround layer.
 
 **Design and development (3 to 6 weeks).** The redesigned processes are built, tested with the actual process participants, and refined. SOPs are written and reviewed. The measurement framework is defined. The change management plan is developed: who needs to learn what, in what sequence, with what support.
 

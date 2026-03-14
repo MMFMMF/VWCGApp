@@ -8,9 +8,9 @@ heroImage: "/blog/images/ai-consulting-vs-agency-vs-vendor.png"
 draft: false
 ---
 
-You have decided AI is worth pursuing. Now you are staring at three completely different types of companies that all claim they can help, and they all sound the same in their marketing. AI consultants, AI agencies, and AI tool vendors each serve different purposes at different stages -- and picking the wrong one wastes money in ways that do not become obvious for months.
+AI is strategically critical. Three completely different types of companies claim to help: AI consultants, AI agencies, and AI tool vendors. Each serves different purposes at different stages. Picking the wrong one wastes money in ways that do not become obvious for months.
 
-I have been on all sides of this. I have been the consultant helping companies evaluate vendors. I have cleaned up after agencies delivered projects that nobody could maintain. And I have watched companies buy tools they did not need because nobody helped them define the problem first.
+This distinction matters. Across 650+ engagements, a pattern emerges: companies often hire the wrong partner type for their situation. Agencies have delivered projects that clients could not maintain. Companies have purchased tools they did not need because no one helped them define the problem first. The cost of mismatching partner type to stage is predictable and avoidable.
 
 Here is what each one actually does, who needs which, and how to decide without getting sold something you do not need.
 
@@ -18,27 +18,27 @@ Here is what each one actually does, who needs which, and how to decide without 
 
 **Tool vendors** sell software. They have built an AI-powered product -- a CRM with AI features, an AI writing tool, an automated reporting platform, a customer service chatbot. You buy a subscription, your team configures it, and you use it. The vendor provides the technology. You provide everything else: the [strategy](https://kamyarshah.com/strategy/), the integration, the change management, and the ongoing governance.
 
-Vendors are the right choice when you know exactly what you need automated, you have identified the specific tool that does it, and your team has the capacity to implement and manage it. The tool does one thing well. Your job is to make sure that one thing is the right thing.
+Vendors are the right choice when strategic clarity exists. The company knows exactly what needs automation, has identified the specific tool, and has team capacity to implement and manage it. The tool does one thing well. The company must ensure that one thing is the right thing.
 
 **AI agencies** build projects. They take a defined scope -- "automate our intake process," "build an AI-powered recommendation engine for our product," "create an automated reporting pipeline" -- and they build it. They write code, configure platforms, integrate systems, and deliver a working solution. Some agencies also handle the strategic scoping, but their core competency is execution.
 
-Agencies are the right choice when you know what you want built but do not have the technical capability to build it. You need someone who can turn a requirements document into a deployed solution. The agency delivers the project. You manage the ongoing operation.
+Agencies are the right choice when the build scope is clear but internal technical capability is absent. A requirements document exists. A deployed solution is needed. The agency delivers the project. The company manages the ongoing operation.
 
-**AI consultants** operate at the strategic layer. They assess your business, identify where AI creates the most value, design the implementation roadmap, select the right tools or build partners, and -- in the best cases -- stick around to govern the deployment and measure results. They do not sell a specific tool and they do not write code. They make sure the right things get built in the right sequence.
+**AI consultants** operate at the strategic layer. They assess the business, identify where AI creates the most value, and design the implementation roadmap. They select the right tools or build partners, then stay engaged to govern deployment and measure results. They do not sell a specific tool and they do not write code. They ensure the right things get built in the right sequence.
 
-Consultants are the right choice when you are [not sure where to start](/blog/ai-readiness-assessment-company-ready), when the stakes are high enough that picking the wrong approach would be costly, or when you need someone who can connect AI investments to business outcomes rather than technical deliverables.
+Consultants are the right choice when strategic clarity is absent or stakes are high enough that picking the wrong approach would be costly. Business outcomes must connect to AI investments, not just technical deliverables. See the [AI readiness assessment](/blog/ai-readiness-assessment-company-ready) to evaluate starting readiness.
 
 ## The Decision Framework
 
 The right choice depends on three factors: how clear your AI strategy is, how technical the implementation is, and how much ongoing governance you need.
 
-**You know exactly what to automate, and the tool exists.** Go with a vendor. If you have identified that your customer service needs an AI chatbot and you have narrowed it to two or three platforms, you do not need a consultant to tell you that. Subscribe, configure, pilot, measure. Total cost: the subscription plus 20-40 hours of internal setup time.
+**Scenario: Clear automation target and tool already identified.** Go with a vendor. If customer service automation requires an AI chatbot and two or three platforms have been shortlisted, consultant input is unnecessary. Subscribe, configure, pilot, measure. Total cost: subscription plus 20-40 hours of internal setup time.
 
-**You know what to build, but you cannot build it.** Go with an agency. If the project scope is clear -- "we need an automated pipeline that takes inbound leads, scores them based on these criteria, routes them to the right rep, and generates a weekly performance report" -- that is a build job. An agency will scope it, build it, and hand it over. Total cost: $10K-$75K depending on complexity, plus ongoing hosting and maintenance.
+**Scenario: Clear build scope but no internal technical capacity.** Go with an agency. If scope is defined ("automate lead intake, score based on criteria, route to the right rep, generate weekly reports"), the project is suitable for agency execution. An agency will scope it, build it, and hand it over. Total cost: $10K-$75K depending on complexity, plus ongoing hosting and maintenance.
 
-**You know AI could help, but you are not sure where or how.** Go with a consultant. If you are staring at your business wondering which of the 47 possible AI applications would actually move the needle, you need strategic guidance before you need technology. A consultant will assess your operations, identify the highest-ROI opportunities, and build a prioritized roadmap. Then you can engage a vendor or agency to execute against a clear plan. Total cost: $5K-$25K for the assessment and roadmap, with execution budgeted separately.
+**Scenario: AI opportunity exists but strategic direction is unclear.** Go with a consultant. If multiple AI applications exist but strategic prioritization is absent, strategic guidance comes before technology selection. A consultant assesses operations, identifies highest-ROI opportunities, and builds a prioritized roadmap. Then a vendor or agency can execute against that clear plan. Total cost: $5K-$25K for the assessment and roadmap, with execution budgeted separately.
 
-**You need all three.** This is more common than people expect. A consultant identifies the strategy and roadmap. An agency builds the custom components. Vendors supply the off-the-shelf tools. The consultant coordinates the whole thing and makes sure it ties together into business outcomes. This is the enterprise model scaled down for SMBs, and it is exactly what I do as a [fractional COO](https://kamyarshah.com/fractional-coo/) -- sit in the operator seat and make sure all the pieces connect.
+**Scenario: All three are required.** This is more common than expected. A consultant identifies strategy and roadmap. An agency builds custom components. Vendors supply off-the-shelf tools. The consultant coordinates the whole thing and ensures it ties together into business outcomes. This is the enterprise model scaled down for SMBs. A fractional operator sits in the [COO seat](https://kamyarshah.com/fractional-coo/) to ensure all pieces connect.
 
 ## What Goes Wrong With Each Choice
 
@@ -46,7 +46,7 @@ The right choice depends on three factors: how clear your AI strategy is, how te
 
 **Agency failures** usually happen at the handoff. The agency builds a beautiful solution, demos it to applause, and hands over the keys. Three months later, nobody is maintaining it, the configuration is outdated, and the team has reverted to manual processes because nobody trained them properly. Prevention: build maintenance, training, and transition planning into the agency scope from day one.
 
-**Consultant failures** usually happen when the engagement ends at the PowerPoint. A consultant produces a gorgeous strategy deck with a prioritized roadmap, and then... nothing. The company does not have the internal capacity to execute the roadmap, and the consultant does not do execution. Prevention: choose consultants who either execute or stay engaged through execution. That is why I work as a fractional operator, not a project-based advisor -- I stay in the seat until the work is done.
+**Consultant failures** usually happen when engagement ends at the PowerPoint. A strategy deck with a prioritized roadmap is delivered. Then execution stalls. The company lacks internal capacity to execute the roadmap. The consultant offers no execution support. Prevention: choose consultants who either execute or stay engaged through execution. The fractional operator model ensures the operator stays in the seat until the work is done.
 
 ## The Questions to Ask Before You Hire
 
@@ -54,7 +54,7 @@ Regardless of which type you are evaluating, these questions separate the operat
 
 *"Can you show me a similar project for a company my size?"* Enterprise case studies are irrelevant to a $5M company. You need proof they have worked at your scale, with your resource constraints.
 
-*"What does your engagement look like after the initial delivery?"* If the answer is "we hand it off and you are on your own," that is fine for a clearly scoped project but dangerous for a strategic initiative. Understand the ongoing relationship before you sign.
+*"What does your engagement look like after the initial delivery?"* If the answer is "we hand it off," that is fine for scoped projects but risky for strategic work. Understand the ongoing relationship structure before signing.
 
 *"How do you measure success?"* The answer should be specific and tied to business outcomes, not deliverables. "We measure the ROI of the deployed solution at 30, 60, and 90 days" beats "we deliver the project on time and on budget." Delivery is not success. Results are success.
 
@@ -70,7 +70,7 @@ Start by assessing where you actually are. Not where you want to be. Not where y
 
 The [VWCG Strategic Assessment](https://vwcg.app/invite) helps you figure that out in about 10 minutes. It evaluates your business across seven dimensions and tells you where your strengths and constraints actually live. That clarity makes the vendor-agency-consultant decision much simpler -- because you will know whether you need strategy, execution, tools, or some combination.
 
-No signup. No cost. Just a clear picture.
+No signup required. No cost. Just a clear picture.
 
 [Take the assessment ->](https://vwcg.app/invite)
 

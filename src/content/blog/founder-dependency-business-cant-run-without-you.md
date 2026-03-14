@@ -8,7 +8,7 @@ heroImage: "/blog/images/founder-dependency-business-cant-run-without-you.png"
 draft: false
 ---
 
-You built this company from nothing. Every system, every client relationship, every operational decision carries your fingerprint. That is precisely the problem. Founder dependency is the single most common scaling blocker I diagnose in companies between $2M and $25M in revenue, and the founder is almost always the last person to see it.
+You built this company from nothing. Every system, every client relationship, every operational decision carries your fingerprint. That is precisely the problem. Founder dependency is the single most common scaling blocker in companies between $2M and $25M in revenue. The founder is almost always the last person to recognize it.
 
 ## The Bottleneck You Built
 
@@ -21,7 +21,7 @@ Process is how you protect people from chaos. When the process depends on a sing
 
 ## Five Signs Your Business Depends on You
 
-I have seen these indicators across hundreds of engagements. Score yourself honestly on each one.
+These indicators appear across hundreds of engagements. Score yourself on each one.
 
 **Every decision requires your approval.** Not just the strategic ones. Your team asks about expense approvals under $500, client communication tone, scheduling conflicts, vendor selections. If the volume of daily decisions that pass through you exceeds ten, the organization has not been given clear decision rights.
 
@@ -31,7 +31,7 @@ I have seen these indicators across hundreds of engagements. Score yourself hone
 
 **Client relationships are personal to you.** Your top ten clients call you directly. They trust you, not the company. If you stepped away, those relationships would degrade within 90 days. That is not a relationship strength. It is a revenue concentration risk tied to one person.
 
-**You have tried to delegate and it "always comes back."** You hand something off. Quality drops. You take it back. The conclusion feels obvious: "nobody can do it like I can." The accurate diagnosis is different. You delegated the task without transferring the decision framework, the quality criteria, or the escalation path. You gave away the work but kept the judgment.
+**You have tried to delegate and it "always comes back."** You hand something off. Quality drops. You take it back. The conclusion feels obvious: "nobody can do it like I can." The accurate diagnosis is different. You delegated the task without transferring the decision framework, the quality criteria, or the escalation path. You gave away the work but retained the judgment.
 
 
 ## Why Smart Founders Get Stuck Here
@@ -62,9 +62,9 @@ The advice "delegate more" is useless without a method. Here is the sequence tha
 
 **Identify the three decisions you make daily that someone else should own.** Not "could" own, "should" own. Decisions under $1,000, internal scheduling conflicts, standard client responses. Assign clear ownership. Define the criteria for a good decision. Then stop reviewing the outcomes for 30 days unless someone escalates.
 
-**Build a 30-day unreachability test.** Choose one category of decisions, operational scheduling, for example, and make yourself unavailable for it. Do not peek. Do not "just check in." At day 30, review the outcomes. In most cases, the team performed at 85% to 95% of your quality level, and they improved week over week as confidence grew.
+**Build a 30-day unreachability test.** Choose one category of decisions (operational scheduling, for example) and make yourself unavailable for it. Do not peek. Do not "just check in." At day 30, review the outcomes. In most cases, the team performed at 85% to 95% of your quality level and improved week over week as confidence grew.
 
-A founder who owns everything cannot execute a [quarterly roadmap](/blog/90-day-roadmap-quarterly-execution-beats-annual-planning) because there is no capacity left for strategic work. Unwinding dependency is not about doing less. It is about redirecting your effort from operational maintenance to strategic leadership. The same principle applies to [automating yourself out of operational bottlenecks](/blog/ai-implementation-small-business-no-tech-team): the goal is to build systems that replace your involvement in repeatable tasks.
+A founder who owns everything cannot execute a [quarterly roadmap](/blog/90-day-roadmap-quarterly-execution-beats-annual-planning) because there is no capacity left for strategic work. Unwinding dependency is not about doing less. It is about redirecting effort from operational maintenance to strategic leadership. The same principle applies to [automating operational bottlenecks](/blog/ai-implementation-small-business-no-tech-team): the goal is to build systems that replace repetitive personal involvement.
 
 Every system you build to replace your involvement teaches someone else how to think. That is leadership.
 

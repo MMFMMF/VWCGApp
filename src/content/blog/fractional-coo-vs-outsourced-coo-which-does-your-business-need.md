@@ -16,11 +16,11 @@ This is a clear breakdown of what each model is, what it produces, what it costs
 
 ## What a Fractional COO Is
 
-A fractional COO is a senior operations executive who works with your company on a part-time basis, typically 2 to 4 days per week, as a member of your leadership team. They hold the COO function inside your organization. They attend leadership meetings, interact with your team, make operational decisions, and carry accountability for operational outcomes. They are a fractional version of a full-time hire, not an external advisor.
+A fractional COO is a senior operations executive. They work with a company part-time, typically 2 to 4 days per week, as a leadership team member. They hold the COO function inside the organization. They attend leadership meetings, interact with the team, and make operational decisions. They carry accountability for operational outcomes. They are a fractional hire, not an external advisor.
 
 The key characteristic is integration. A fractional COO is inside the company: in the systems, in the relationships, in the accountability structure. They own things. When a problem in operations lands, it lands on them, not on a consultant they hired. That ownership distinction is what separates the fractional model from advisory models.
 
-Fractional COOs are typically hired when the company needs full-time COO-level leadership but does not yet have the revenue or operating needs to justify a full-time hire. A $5M company that runs five days a week of legitimate COO work might only need three days of COO-level capacity. Hiring full-time to fill a three-day need overpays by 40 percent. The fractional model matches the capacity purchase to the actual demand.
+Fractional COOs are hired when companies need full-time COO-level leadership but lack the revenue to justify a full-time hire. A $5M company running five days of COO work might need only three days of capacity. Hiring full-time to fill a three-day need overpays by 40 percent. The fractional model matches capacity purchase to actual demand.
 
 ## What an Outsourced COO Is
 
@@ -28,7 +28,7 @@ An outsourced COO is a service provider (often a firm rather than an individual)
 
 The distinction matters because the accountability structure is different. An outsourced COO arrangement typically specifies what the provider will deliver: a reporting package, a project management function, a process improvement program, an operations audit. The provider is accountable for those deliverables. They are not typically accountable for the full operational health of the business the way an integrated leader is.
 
-Outsourced COO arrangements work well for specific, bounded operational functions: managing a particular workflow, maintaining a specific system, running a defined process. They work less well for the holistic operational leadership function (the judgment, the cross-functional coordination, the team development, the culture) that a COO role in a growing company actually requires.
+Outsourced COO arrangements work well for specific, bounded operational functions: managing a particular workflow, maintaining a specific system, running a defined process. They work less well for comprehensive operational leadership (the judgment, the cross-functional coordination, the team development, the culture) that a COO role in a growing company requires.
 
 ## The Practical Difference
 
@@ -36,29 +36,29 @@ The clearest way to see the difference is to ask a specific question: if there i
 
 In a fractional COO arrangement, the answer is the fractional COO. They are part of the leadership team. They own operational outcomes. They are reachable for urgent issues because they are inside the organization's accountability structure.
 
-In an outsourced COO arrangement, the answer depends on the contract. If the crisis is within the scope of the outsourced function, the provider handles it. If it is outside the scope (which crises often are, because they cross functional lines) the founder handles it. The outsourced model does not carry broad operational accountability; it carries scope-defined accountability.
+In an outsourced COO arrangement, the answer depends on the contract. If the crisis is within the scope of the outsourced function, the provider handles it. If it is outside the scope (which crises often are because they cross functional lines), the founder handles it. The outsourced model does not carry broad operational accountability. It carries scope-defined accountability.
 
 Neither model is universally better. The right model depends on what you need.
 
 ## When to Choose a Fractional COO
 
-A fractional COO is the right choice when your company needs integrated operational leadership (someone in the room, in the decisions, in the team dynamics) but the role does not yet require or justify five days per week of senior-level attention.
+A fractional COO is right when a company needs integrated operational leadership. Someone in the room, in decisions, in team dynamics. But the role does not require five days per week of senior-level attention.
 
 The most common situations:
 
-**The founder is running operations and needs to exit that role.** The business has reached a size where the founder can no longer be both the strategic leader and the operational backbone. They need to hand off the operational leadership function to someone with the experience to run it. A fractional COO takes on that function, frees the founder to work on the business rather than in it, and builds the operational infrastructure the business needs to scale. This is the most frequent use case and often the highest-ROI one.
+**The founder is running operations and needs to exit that role.** The business has reached a size where the founder cannot be both strategic leader and operational backbone. They need to hand off operational leadership. A fractional COO takes that function, frees the founder to work on the business, and builds necessary operational infrastructure. This is the most frequent use case with the highest ROI.
 
-**The company is scaling rapidly and needs senior operational judgment.** Fast growth creates operational problems faster than most internal teams can diagnose and solve them. A fractional COO brings pattern recognition from having navigated similar scaling challenges in other companies, and the authority to implement changes quickly.
+**The company is scaling rapidly and needs senior operational judgment.** Fast growth creates operational problems faster than most internal teams can diagnose and solve them. A fractional COO brings pattern recognition from having navigated similar scaling challenges in other companies and the authority to implement changes quickly.
 
 **There is a specific operational problem that requires senior leadership attention.** A broken process that has persisted because nobody senior enough to own it has been available. A team structure that is generating consistent dysfunction. A systems environment that is creating operational chaos. A fractional COO takes ownership of these problems in a way that a consultant or a project manager does not.
 
-**The company is preparing for acquisition, fundraising, or a major strategic transition.** These events require operational leadership with the credibility and experience to represent the company to external parties and to manage the internal transition simultaneously.
+**The company is preparing for acquisition, fundraising, or a major strategic transition.** These events require operational leadership. The leader must represent the company to external parties and manage internal transition simultaneously.
 
 ## When to Choose an Outsourced COO (or a Different Model)
 
 An outsourced arrangement makes more sense when the need is function-specific rather than role-specific.
 
-If you need someone to run your financial reporting function, manage your project delivery process, oversee a specific operational workflow, or maintain a defined system (and those needs are bounded and well-specified) an outsourced arrangement that specifies those deliverables will be more cost-effective and appropriately scoped.
+If a company needs someone to run the financial reporting function or manage project delivery, an outsourced arrangement works. The same applies for oversee specific workflows or maintain defined systems (when needs are bounded and well-specified). Outsourced arrangements specifying deliverables will be more cost-effective.
 
 The risk to watch for: companies sometimes choose the outsourced model because it is cheaper, not because it matches the need. If what the company actually needs is integrated operational leadership, the outsourced model will underdeliver regardless of what the contract says. The savings on the engagement cost will be paid back in leadership bandwidth consumed managing around the limitations of the model.
 
@@ -66,9 +66,9 @@ The risk to watch for: companies sometimes choose the outsourced model because i
 
 Fractional COO pricing follows a similar structure to other fractional executive roles.
 
-**Retainer-based engagements:** $5,000 to $15,000 per month for two to four days per week of engagement, depending on the scope, the complexity of the business, and the experience level of the individual. Most companies in the $3M to $15M range find their fit between $6,000 and $10,000 per month.
+**Retainer-based engagements:** $5,000 to $15,000 per month for 2-4 days per week. Pricing depends on scope, business complexity, and experience level. Companies in the $3M to $15M range typically fit between $6,000 and $10,000 monthly.
 
-For context: a full-time COO at this company size typically costs $150,000 to $220,000 per year in salary, plus benefits and overhead. A fractional COO at $8,000 per month delivers 60 percent of the executive capacity at roughly 35 percent of the fully-loaded cost. The math works clearly when the COO function does not yet demand five days per week.
+For context: a full-time COO at this company size costs $150,000 to $220,000 annually in salary plus benefits and overhead. A fractional COO at $8,000 monthly delivers 60 percent of executive capacity at roughly 35 percent of the fully-loaded cost. The math is clear when the COO function does not demand five days per week.
 
 **Project-based engagements:** $15,000 to $50,000 for defined operational projects: a process redesign, a team restructuring, an operational audit, a systems implementation. This model works when the need is specific and time-bounded rather than ongoing.
 
@@ -76,11 +76,11 @@ For context: a full-time COO at this company size typically costs $150,000 to $2
 
 The evaluation criteria that matter most are different from what most companies default to when hiring for senior roles.
 
-Pattern recognition in your specific context matters more than general experience. A fractional COO who has navigated your specific combination of challenges (the scaling stage, the industry, the operational complexity level) will diagnose faster and implement better than one with impressive credentials in a different context. Ask them to describe the most similar company they have worked with and walk you through what they found and what they built.
+Pattern recognition in the specific context matters more than general experience. A fractional COO who has navigated a specific combination of challenges (scaling stage, industry, operational complexity) will diagnose and implement faster than one with impressive credentials in a different context. Ask them about the most similar company they worked with. Walk through what they found and what they built.
 
-Operational specificity in their diagnosis tells you whether they are a genuine operator or a well-packaged advisor. Ask them to describe a specific process problem they encountered in a past engagement, how they diagnosed it, and what they implemented. If the answer is conceptual rather than operational (frameworks and principles rather than specific steps and specific outcomes) that is a signal.
+Operational specificity in their diagnosis tells you whether they are a genuine operator or a well-packaged advisor. Ask them to describe a specific process problem they encountered in a past engagement, how they diagnosed it, and what they implemented. If the answer is conceptual rather than operational (frameworks and principles rather than specific steps and specific outcomes), that is a signal.
 
-Integration capacity matters as much as technical expertise. A fractional COO who cannot build trust with your leadership team will not be effective regardless of their operational knowledge. The role requires earning authority quickly, building working relationships with direct reports they do not manage full-time, and operating inside an organizational culture they did not build. Ask their past clients about the relational dimension, not just the deliverable dimension.
+Integration capacity matters as much as technical expertise. A fractional COO who cannot build trust with the leadership team will not be effective regardless of their operational knowledge. The role requires earning authority quickly, building working relationships with direct reports they do not manage full-time, and operating inside an organizational culture they did not build. Ask their past clients about the relational dimension, not just the deliverable dimension.
 
 ## Building the Right Foundation
 
@@ -88,7 +88,7 @@ The decision between fractional and outsourced is ultimately a decision about wh
 
 Getting this right matters because the wrong model does not just underdeliver. It consumes leadership bandwidth managing around its limitations, which is usually the problem the engagement was supposed to solve.
 
-The [VWCG Strategic Assessment](https://vwcg.app/invite) evaluates your company's operational maturity and leadership capacity to help you understand where the real gaps are before you make a hiring decision. If the assessment surfaces operational fragmentation as a primary constraint, the COO question has probably answered itself.
+The [VWCG Strategic Assessment](https://vwcg.app/invite) evaluates company operational maturity and leadership capacity to help understand where the real gaps are before a hiring decision. If the assessment surfaces operational fragmentation as a primary constraint, the COO question has probably answered itself.
 
 [Take the assessment ->](https://vwcg.app/invite)
 

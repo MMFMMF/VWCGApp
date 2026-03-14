@@ -19,11 +19,11 @@ This is not a discipline problem. It is a maturity problem. Having a documented 
 
 ## The SOP Maturity Spectrum
 
-I use a four-level framework to assess SOP maturity across every operational function in a company.
+A four-level framework assesses SOP maturity across every operational function in a company.
 
-**Level 1: Documented.** The process is written down. Steps are listed. Someone can read the document and understand what the process is supposed to be. At this level, there is no verification that anyone follows the document. No metrics attached. No review cycle. The SOP is a reference that may or may not reflect reality. Most companies I assess are here and believe they are at Level 3.
+**Level 1: Documented.** The process is written down. Steps are listed. Someone can read the document and understand what the process is supposed to be. At this level, there is no verification that anyone follows the document. No metrics attached. No review cycle. The SOP is a reference that may or may not reflect reality. Most companies at this stage believe they have reached Level 3.
 
-**Level 2: Followed.** The team uses the documentation as an active guide. You can verify compliance through spot checks, audits, or embedded checkpoints. New hires are trained against the current version. Deviations are identified and corrected. This level requires investment in training infrastructure and a review cadence, typically quarterly. Roughly 30% of companies I assess have achieved Level 2 across their core processes.
+**Level 2: Followed.** The team uses the documentation as an active guide. You can verify compliance through spot checks, audits, or embedded checkpoints. New hires are trained against the current version. Deviations are identified and corrected. This level requires investment in training infrastructure and a review cadence, typically quarterly. Roughly 30% of companies assessed have achieved Level 2 across their core processes.
 
 **Level 3: Measured.** Each process has performance metrics. You know the output quality, the cycle time, the error rate, and the throughput. When the process degrades, you detect it through the numbers before a customer complains or a deliverable fails. This is the critical transition. A process without metrics is like a budget without actuals. You have a plan but no mechanism to know whether reality matches.
 
@@ -49,7 +49,7 @@ Systems protect people from chaos. A system nobody follows protects nobody.
 
 ## The Metrics Gap
 
-The missing layer between "we have SOPs" and "our operations are reliable" is measurement. In my experience, this is the single most impactful improvement a $5M to $15M company can make to operational quality.
+The missing layer between documented SOPs and reliable operations is measurement. Across hundreds of engagements with growing companies, measurement is the single most impactful improvement a $5M to $15M company can make to operational quality.
 
 A documented process without metrics operates on faith. You believe the onboarding process works because nobody has complained recently. You believe the fulfillment process is consistent because returns are "low." You believe the sales process is effective because revenue is growing. None of these are measurements. They are assumptions that happen to feel comfortable.
 
@@ -57,7 +57,7 @@ Metrics make the invisible visible. Here is what measurement looks like at three
 
 **Onboarding:** Time-to-productivity per new hire, broken down by role. If your target is 30 days and your average is 58 days, the SOP is not working regardless of what the document says. The metric exposes the gap.
 
-**Fulfillment:** Error rate per 100 orders, cycle time from order to delivery, and quality check pass rate. A $7M e-commerce company I worked with discovered their fulfillment error rate was 4.2% when they assumed it was under 1%. The SOP existed. Nobody measured compliance.
+**Fulfillment:** Error rate per 100 orders, cycle time from order to delivery, and quality check pass rate. A $7M e-commerce company discovered their fulfillment error rate was 4.2% when they assumed it was under 1%. The SOP existed. Nobody measured compliance.
 
 **Sales:** Conversion rate by pipeline stage and average time in each stage. If Stage 2 to Stage 3 conversion drops from 40% to 28% over a quarter, the sales SOP for that stage is either not followed or not effective. Without the metric, the decline is invisible until quarterly revenue misses target.
 
