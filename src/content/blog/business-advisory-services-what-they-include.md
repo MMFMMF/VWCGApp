@@ -1,6 +1,7 @@
 ---
 title: "Business Advisory Services: What They Include, Who Provides Them, and What to Expect"
-description: "Business advisory services cover strategy, operations, finance, and leadership. The category is broad enough that most people are not sure what they are buying. Here is what it actually includes."
+seoTitle: "Business Advisory Services Explained"
+description: "Business advisory services cover strategy, operations, finance, and leadership. Here is what the category includes and what to expect from an engagement."
 pubDate: 2026-02-22
 author: "Kamyar Shah"
 tags: ["business advisory", "business advisory services", "business advisor", "strategic advisory", "small business advisory"]

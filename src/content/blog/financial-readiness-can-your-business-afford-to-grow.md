@@ -1,5 +1,6 @@
 ---
 title: "Financial Readiness Assessment: Can Your Business Actually Afford to Grow?"
+seoTitle: "Financial Readiness: Can You Afford Growth?"
 description: "Growth kills undercapitalized companies. Eight financial indicators that tell you whether your next move is sustainable. Free financial diagnostic."
 pubDate: 2026-02-11
 author: "Kamyar Shah"

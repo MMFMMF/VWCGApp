@@ -1,6 +1,7 @@
 ---
 title: "Business Process Improvement: A Consulting Framework for $2M-$25M Companies"
-description: "Business process improvement consulting diagnoses operational friction, installs repeatable systems, and measures coherence. Here is the framework and what the engagement actually produces."
+seoTitle: "Business Process Improvement Framework"
+description: "Business process improvement consulting diagnoses friction and installs repeatable systems. Here is the framework and what a real engagement produces."
 pubDate: 2026-02-19
 author: "Kamyar Shah"
 tags: ["business process improvement", "business process improvement consulting", "process consulting", "operational efficiency", "process improvement framework"]

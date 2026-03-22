@@ -1,6 +1,7 @@
 ---
 title: "What Does AI Actually Cost for a Small Business? A Realistic Breakdown"
-description: "Forget the enterprise pricing. Here's what SMBs in the $2M-$25M range actually pay for practical AI -- tools, implementation, and ongoing costs -- and when it's worth the investment."
+seoTitle: "AI Cost for Small Business: Realistic Numbers"
+description: "What SMBs in the $2M-$25M range pay for AI: tools, implementation, and ongoing costs, with guidance on when the investment pays off."
 pubDate: 2026-02-15
 author: "Kamyar Shah"
 tags: ["ai costs", "ai for small business", "ai budget", "ai implementation"]

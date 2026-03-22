@@ -1,5 +1,6 @@
 ---
 title: "Fractional COO vs Outsourced COO: What Is the Difference and Which Does Your Business Need?"
+seoTitle: "Fractional COO vs Outsourced COO"
 description: "Fractional COO and outsourced COO are not the same role. Here is what each model provides, what each costs, and how to determine which one your company needs."
 pubDate: 2026-02-21
 author: "Kamyar Shah"

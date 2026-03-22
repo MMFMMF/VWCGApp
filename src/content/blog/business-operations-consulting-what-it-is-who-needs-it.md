@@ -1,6 +1,7 @@
 ---
 title: "Business Operations Consulting: What It Is, Who Needs It, and What Engagement Looks Like"
-description: "Business operations consulting addresses how a company runs, not just what it should do. Here is what it covers, who it serves, and what working with an operations consultant actually produces."
+seoTitle: "Business Operations Consulting: What It Is"
+description: "Business operations consulting addresses how a company runs. Here is what it covers, who it serves, and what working with an operations consultant produces."
 pubDate: 2026-02-20
 author: "Kamyar Shah"
 tags: ["business operations consulting", "operations consulting", "operational excellence", "business operations", "operations strategy"]

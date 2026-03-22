@@ -1,6 +1,7 @@
 ---
 title: "AI Implementation for Small Business: Where to Start When You Don't Have a Tech Team"
-description: "You don't need data scientists or ML engineers to deploy AI. Here's how SMBs without technical teams are implementing practical AI in operations, reporting, sales, and customer service."
+seoTitle: "AI for Small Business Without a Tech Team"
+description: "No data scientists required. Here is how SMBs without technical teams are deploying practical AI in operations, reporting, sales, and customer service."
 pubDate: 2026-02-15
 author: "Kamyar Shah"
 tags: ["ai implementation", "ai for small business", "ai automation", "workflow automation"]
@@ -30,7 +31,7 @@ Most companies make the same mistake: they buy a tool first, then figure out wha
 
 **Step 1: Pick one workflow.** Not three. Not "all of sales ops." One specific, well-defined workflow that your team currently performs manually. Ideally, pick one that is performed frequently (weekly or more), follows a consistent pattern, and is owned by someone who is motivated to improve it.
 
-The best first AI project is usually the one where someone on your team says, "I can't believe I still do this by hand." That frustration is signal. Follow it.
+The best first AI project is usually the one where someone on your team says, "I cannot believe I still do this by hand." That frustration is signal. Follow it.
 
 **Step 2: Document the current process.** Before you evaluate any tools, write down exactly how the workflow works today. Every step, every decision point, every exception. This documentation serves two purposes: it shows you where automation fits, and it gives you the specification any tool needs to replicate the work.
 

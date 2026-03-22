@@ -1,5 +1,6 @@
 ---
 title: "How to Build a Strategic Vision That Your Team Actually Executes"
+seoTitle: "Strategic Vision Your Team Will Execute"
 description: "Most company vision statements are useless abstractions. Build a vision that connects to pillars, roadmap, and daily work. Free planning tool."
 pubDate: 2026-02-10
 author: "Kamyar Shah"

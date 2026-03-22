@@ -1,6 +1,7 @@
 ---
 title: "5 AI Use Cases That Actually Save Money for $2M-$25M Companies"
-description: "Not theoretical. Not enterprise-only. Five specific AI use cases that SMBs are deploying right now to cut costs, save time, and improve output quality -- with realistic ROI timelines."
+seoTitle: "5 AI Use Cases That Save SMB Money"
+description: "Five AI use cases SMBs are deploying now to cut costs and save time, with realistic ROI timelines for companies in the $2M-$25M range."
 pubDate: 2026-02-15
 author: "Kamyar Shah"
 tags: ["ai use cases", "ai roi", "practical ai", "ai automation", "small business ai"]

@@ -1,6 +1,7 @@
 ---
 title: "AI Readiness Assessment: Is Your Company Actually Ready for AI?"
-description: "Most companies jumping into AI aren't ready for it. Use this practical framework to assess your data, processes, team, and governance before spending a dollar on implementation."
+seoTitle: "AI Readiness Assessment for Business"
+description: "Most companies are not ready for AI. Use this framework to assess your data, processes, team, and governance before spending a dollar on implementation."
 pubDate: 2026-02-15
 author: "Kamyar Shah"
 tags: ["ai readiness", "ai assessment", "ai strategy", "small business ai"]

@@ -1,6 +1,7 @@
 ---
 title: "SOPs in Business: Why They Matter, What They Cover, and How to Build Ones That Get Followed"
-description: "Standard operating procedures are not documentation projects. They are management infrastructure. Here is what SOPs actually cover, why most fail, and how to build ones your team uses."
+seoTitle: "SOPs in Business: Why They Matter"
+description: "Standard operating procedures are management infrastructure. Here is what SOPs cover, why most fail, and how to build ones your team actually follows."
 pubDate: 2026-02-23
 author: "Kamyar Shah"
 tags: ["sop business", "standard operating procedures", "sop meaning in business", "how to create sops", "sop management"]

@@ -1,5 +1,6 @@
 ---
 title: "The 90-Day Roadmap: Why Quarterly Execution Beats Annual Planning for Growing Companies"
+seoTitle: "90-Day Roadmap: Execution Over Planning"
 description: "Annual plans die by March. Build a 90-day execution roadmap with real owners, dependencies, and kill criteria. Free planning diagnostic."
 pubDate: 2026-02-06
 author: "Kamyar Shah"

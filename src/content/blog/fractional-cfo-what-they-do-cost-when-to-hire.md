@@ -1,6 +1,7 @@
 ---
 title: "What Is a Fractional CFO? What They Do, What They Cost, and When to Hire One"
-description: "A fractional CFO gives growing companies CFO-level financial leadership without the full-time cost. Here is what they actually do, what it costs, and how to know when you need one."
+seoTitle: "Fractional CFO: Cost, Duties, When to Hire"
+description: "A fractional CFO gives growing companies CFO-level financial leadership without the full-time cost. Here is what they do, what they cost, and when to hire one."
 pubDate: 2026-02-16
 author: "Kamyar Shah"
 tags: ["fractional cfo", "fractional cfo services", "what is a fractional cfo", "fractional cfo cost", "financial leadership"]

@@ -1,5 +1,6 @@
 ---
 title: "The 5 Decisions Growing Companies Should Not Make Alone"
+seoTitle: "5 Decisions Don't Make Alone"
 description: "Pricing, org structure, expansion, leadership hires, technology bets. Five decision categories where internal-only thinking costs growing companies."
 pubDate: 2026-02-03
 author: "Kamyar Shah"

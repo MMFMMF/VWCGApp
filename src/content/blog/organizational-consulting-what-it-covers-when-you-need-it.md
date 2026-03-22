@@ -1,5 +1,6 @@
 ---
 title: "Organizational Consulting: What It Covers and When a Growing Company Needs It"
+seoTitle: "Organizational Consulting: What It Covers"
 description: "Organizational consulting addresses structure, culture, design, and effectiveness. Here is what it actually covers and how to know when your company needs it."
 pubDate: 2026-02-17
 author: "Kamyar Shah"

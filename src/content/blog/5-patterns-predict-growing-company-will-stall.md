@@ -1,5 +1,6 @@
 ---
 title: "The 5 Patterns That Predict Whether a Growing Company Will Stall"
+seoTitle: "5 Patterns That Predict Company Stall"
 description: "From 650+ consulting engagements: five diagnostic patterns that predict whether a growing company will scale or stall. Free business diagnostic."
 pubDate: 2026-02-15
 author: "Kamyar Shah"

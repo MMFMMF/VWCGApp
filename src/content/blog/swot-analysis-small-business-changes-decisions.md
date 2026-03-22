@@ -1,5 +1,6 @@
 ---
 title: "SWOT Analysis for Small Business: How to Do One That Actually Changes Decisions"
+seoTitle: "SWOT Analysis for Small Business"
 description: "Everyone has done a SWOT. Almost nobody has used one to make a real decision. The confidence-weighted, action-connected approach."
 pubDate: 2026-02-13
 author: "Kamyar Shah"

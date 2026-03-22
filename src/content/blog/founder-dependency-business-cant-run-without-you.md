@@ -1,5 +1,6 @@
 ---
 title: "Founder Dependency: How to Tell If Your Business Cannot Run Without You"
+seoTitle: "Founder Dependency: Diagnose and Fix It"
 description: "If your business stalls when you step away, that is founder dependency. Self-assessment framework for CEOs of $2M-$25M companies. Free diagnostic tool."
 pubDate: 2026-02-01
 author: "Kamyar Shah"
@@ -58,7 +59,7 @@ The solution is measurement from outside the system. An [executive coach](https:
 
 The advice "delegate more" is useless without a method. Here is the sequence that produces results in 30 to 90 days.
 
-**Document the five processes only you know.** Sit down for two hours and list every process where you are the sole knowledge holder. Pricing logic, vendor terms, client preferences, reporting methods, exception handling. Write the steps. Transfer them to your operations lead or a shared system. This alone reduces single-point-of-failure risk by 40% to 60% in most companies I work with.
+**Document the five processes only you know.** Sit down for two hours and list every process where you are the sole knowledge holder. Pricing logic, vendor terms, client preferences, reporting methods, exception handling. Write the steps. Transfer them to your operations lead or a shared system. This alone reduces single-point-of-failure risk by 40% to 60% across most companies in this range.
 
 **Identify the three decisions you make daily that someone else should own.** Not "could" own, "should" own. Decisions under $1,000, internal scheduling conflicts, standard client responses. Assign clear ownership. Define the criteria for a good decision. Then stop reviewing the outcomes for 30 days unless someone escalates.
 

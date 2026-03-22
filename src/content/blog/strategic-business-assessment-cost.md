@@ -1,5 +1,6 @@
 ---
 title: "How Much Does a Strategic Business Assessment Actually Cost?"
+seoTitle: "Strategic Business Assessment Cost"
 description: "Strategic business assessments range from free tools to $25,000+ consulting engagements. Here is what you get at each tier and when free is enough."
 pubDate: 2026-02-08
 author: "Kamyar Shah"

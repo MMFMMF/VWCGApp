@@ -1,6 +1,7 @@
 ---
 title: "AI Consulting vs AI Agencies vs Tool Vendors: Which One Does Your Company Need?"
-description: "Tool vendors sell software. AI agencies build projects. AI consultants deploy with governance and measurement. Here's a decision framework for which your company actually needs."
+seoTitle: "AI Consulting vs Agency vs Vendor"
+description: "Tool vendors sell software. AI agencies build projects. AI consultants deploy with governance. Here is a decision framework for which your company needs."
 pubDate: 2026-02-15
 author: "Kamyar Shah"
 tags: ["ai consulting", "ai agency", "ai vendor", "ai strategy"]

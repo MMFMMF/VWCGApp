@@ -119,7 +119,7 @@ const personSchema = {
 ---
 
 <MarketingLayout
-  title={`${post.data.title} | VWCG Blog`}
+  title={`${post.data.seoTitle ?? post.data.title} | VWCG Blog`}
   description={post.data.description}
   ogImage={post.data.heroImage}
   ogType="article"

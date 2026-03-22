@@ -1,6 +1,7 @@
 ---
 title: "AI Implementation for Business: Strategy, Roadmap, and What a Consultant Actually Does"
-description: "AI implementation is not a technology project. It is an operational change with a technology component. Here is how to approach it strategically and what a consultant does throughout the process."
+seoTitle: "AI Implementation Consulting Strategy"
+description: "AI implementation is an operational change, not a technology project. Here is how to approach strategy and what a consultant does throughout the process."
 pubDate: 2026-02-18
 author: "Kamyar Shah"
 tags: ["ai implementation", "ai implementation consulting", "ai strategy", "ai roadmap", "generative ai implementation"]
