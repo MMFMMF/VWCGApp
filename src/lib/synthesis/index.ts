@@ -9,10 +9,5 @@ export type {
   Insight
 } from './types';
 
-// Import rules to auto-register them
-// Each rule file auto-registers itself when imported
-import './rules/test-rule';
-import './rules/exampleRule';
-
-// Production synthesis rules (SYN-01 to SYN-07)
+// Production synthesis rules (E1-E11)
 import './rules';

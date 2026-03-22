@@ -11,7 +11,7 @@ const E11StrengthMultiplicationRule: SynthesisRule = {
   id: 'E11-strength-multiplication',
   name: 'Compounding Advantage',
   description: 'Detects multiplicative advantages across multiple dimensions',
-  requiredTools: ['leadership-dna', 'ai-readiness', 'business-eq'],
+  requiredTools: ['leadership-dna', 'ai-readiness'],
 
   evaluate(context: SynthesisContext): Insight[] {
     const insights: Insight[] = [];
@@ -73,7 +73,7 @@ const E11StrengthMultiplicationRule: SynthesisRule = {
         title: 'Compounding Advantages Detected',
         description: `You have ${strengths.length} areas scoring in the top tier across leadership, AI readiness, and emotional intelligence. These create multiplicative advantages: ${topStrengths.map(s => s.area).join(', ')}.`,
         recommendation: 'Leverage these compounding strengths by taking on more ambitious strategic initiatives. Your multi-dimensional strength position is rare and valuable.',
-        affectedTools: ['leadership-dna', 'ai-readiness', 'business-eq'],
+        affectedTools: ['leadership-dna', 'ai-readiness'],
         data: {
           totalHighScores: strengths.length,
           topStrengths

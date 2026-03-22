@@ -48,6 +48,7 @@ export interface WorkspaceState {
     loadWorkspace: (data: Partial<WorkspaceState>) => void;
     resetWorkspace: () => void;
     recomputeLogic: () => void;
+    refreshInsights: () => void;
     exportState: () => string;
 }
 
@@ -130,6 +131,14 @@ export const useWorkspaceStore = create<WorkspaceState>()(
                 },
                 provenance: newProvenance
             };
+        });
+    },
+
+    // Re-run synthesis against current tool data (used by InsightsDashboard Refresh button)
+    refreshInsights: () => {
+        set((state) => {
+            const newInsights = runSynthesis(state);
+            return { insights: newInsights };
         });
     },
 

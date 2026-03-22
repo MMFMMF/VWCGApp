@@ -1,15 +1,49 @@
 import { useState, useEffect, useMemo } from 'react';
 import type { ToolProps, ValidationResult, PDFSection } from '@types/tool';
 import { toolRegistry } from '@lib/tools';
-import { useWorkspaceStore } from '@stores/workspaceStore';
-import type { Insight, SynthesisResult } from '@lib/synthesis/types';
+import { useWorkspaceStore } from '../../store/workspaceStore';
+import type { Insight as EngineInsight } from '../../engine/types';
 import {
   Card,
-  CardHeader,
-  CardTitle,
   Button,
   Badge
 } from '@components/shared';
+
+// Normalize Architecture A insight shape to the UI display shape
+interface DisplayInsight {
+  id: string;
+  type: 'gap' | 'warning' | 'opportunity' | 'strength';
+  severity: 1 | 2 | 3 | 4 | 5;
+  title: string;
+  description: string;
+  recommendation: string;
+  affectedTools: string[];
+}
+
+function adaptInsight(insight: EngineInsight): DisplayInsight {
+  // Map Architecture A types to display types
+  const typeMap: Record<EngineInsight['type'], DisplayInsight['type']> = {
+    risk: 'warning',
+    conflict: 'gap',
+    opportunity: 'opportunity',
+    strength: 'strength'
+  };
+  // Map string severity to numeric severity
+  const severityMap: Record<EngineInsight['severity'], DisplayInsight['severity']> = {
+    high: 5,
+    medium: 3,
+    low: 1
+  };
+  return {
+    id: insight.id,
+    type: typeMap[insight.type],
+    severity: severityMap[insight.severity],
+    title: insight.title,
+    description: insight.message,
+    recommendation: insight.recommendation,
+    affectedTools: insight.relatedTools
+  };
+}
 
 interface InsightsDashboardData {
   lastViewed: number;
@@ -64,28 +98,33 @@ export default function InsightsDashboard({ data, onUpdate, readonly = false }: 
   const [formData, setFormData] = useState<InsightsDashboardData>(
     (data as InsightsDashboardData) || defaultData
   );
-  const [filterType, setFilterType] = useState<Insight['type'] | 'all'>('all');
+  const [filterType, setFilterType] = useState<DisplayInsight['type'] | 'all'>('all');
   const [filterSeverity, setFilterSeverity] = useState<number | 'all'>('all');
 
-  const synthesisResult = useWorkspaceStore(state => state.synthesisResult);
-  const runSynthesis = useWorkspaceStore(state => state.runSynthesis);
+  const rawInsights = useWorkspaceStore(state => state.insights);
+  const tools = useWorkspaceStore(state => state.tools);
+  const refreshInsights = useWorkspaceStore(state => state.refreshInsights);
+
+  // Normalize engine insights to display shape
+  const insights: DisplayInsight[] = useMemo(() => rawInsights.map(adaptInsight), [rawInsights]);
 
   useEffect(() => {
     if (data) setFormData(data as InsightsDashboardData);
   }, [data]);
 
-  // Trigger synthesis on mount if no results
+  // Trigger synthesis on mount if insights are empty but tools exist
   useEffect(() => {
-    if (!synthesisResult) {
-      runSynthesis();
+    if (rawInsights.length === 0 && Object.keys(tools).length > 0) {
+      refreshInsights();
     }
-  }, [synthesisResult, runSynthesis]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Count completed tools for status messaging
+  const completedToolCount = Object.keys(tools).length;
 
   // Filter insights
   const filteredInsights = useMemo(() => {
-    if (!synthesisResult?.insights) return [];
-
-    return synthesisResult.insights.filter((insight: Insight) => {
+    return insights.filter((insight: DisplayInsight) => {
       // Filter out dismissed
       if (formData.dismissedInsights.includes(insight.id)) return false;
 
@@ -97,34 +136,30 @@ export default function InsightsDashboard({ data, onUpdate, readonly = false }: 
 
       return true;
     });
-  }, [synthesisResult, formData.dismissedInsights, filterType, filterSeverity]);
+  }, [insights, formData.dismissedInsights, filterType, filterSeverity]);
 
   // Statistics
   const stats = useMemo(() => {
-    if (!synthesisResult?.insights) {
-      return { total: 0, byType: { gap: 0, warning: 0, opportunity: 0, strength: 0 }, bySeverity: { critical: 0, medium: 0, low: 0 }, critical: 0 };
-    }
-
-    const activeInsights = synthesisResult.insights.filter(
-      (i: Insight) => !formData.dismissedInsights.includes(i.id)
+    const activeInsights = insights.filter(
+      (i: DisplayInsight) => !formData.dismissedInsights.includes(i.id)
     );
 
     return {
       total: activeInsights.length,
       byType: {
-        gap: activeInsights.filter((i: Insight) => i.type === 'gap').length,
-        warning: activeInsights.filter((i: Insight) => i.type === 'warning').length,
-        opportunity: activeInsights.filter((i: Insight) => i.type === 'opportunity').length,
-        strength: activeInsights.filter((i: Insight) => i.type === 'strength').length
+        gap: activeInsights.filter((i: DisplayInsight) => i.type === 'gap').length,
+        warning: activeInsights.filter((i: DisplayInsight) => i.type === 'warning').length,
+        opportunity: activeInsights.filter((i: DisplayInsight) => i.type === 'opportunity').length,
+        strength: activeInsights.filter((i: DisplayInsight) => i.type === 'strength').length
       },
       bySeverity: {
-        critical: activeInsights.filter((i: Insight) => i.severity >= 4).length,
-        medium: activeInsights.filter((i: Insight) => i.severity === 3).length,
-        low: activeInsights.filter((i: Insight) => i.severity <= 2).length
+        critical: activeInsights.filter((i: DisplayInsight) => i.severity >= 4).length,
+        medium: activeInsights.filter((i: DisplayInsight) => i.severity === 3).length,
+        low: activeInsights.filter((i: DisplayInsight) => i.severity <= 2).length
       },
-      critical: activeInsights.filter((i: Insight) => i.severity >= 4).length
+      critical: activeInsights.filter((i: DisplayInsight) => i.severity >= 4).length
     };
-  }, [synthesisResult, formData.dismissedInsights]);
+  }, [insights, formData.dismissedInsights]);
 
   const dismissInsight = (insightId: string) => {
     const updated = {
@@ -152,11 +187,11 @@ export default function InsightsDashboard({ data, onUpdate, readonly = false }: 
           <div>
             <h3 className="text-lg font-semibold">Synthesis Insights</h3>
             <p className="text-sm text-gray-500">
-              {stats.total} active insights • {synthesisResult?.rulesEvaluated || 0} rules evaluated
+              {stats.total} active insights • {completedToolCount} tool{completedToolCount !== 1 ? 's' : ''} completed
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <Button size="sm" variant="secondary" onClick={runSynthesis}>
+            <Button size="sm" variant="secondary" onClick={refreshInsights}>
               Refresh
             </Button>
             {formData.dismissedInsights.length > 0 && (
@@ -172,7 +207,7 @@ export default function InsightsDashboard({ data, onUpdate, readonly = false }: 
           {Object.entries(insightTypeConfig).map(([type, config]) => (
             <button
               key={type}
-              onClick={() => setFilterType(filterType === type ? 'all' : type as Insight['type'])}
+              onClick={() => setFilterType(filterType === type ? 'all' : type as DisplayInsight['type'])}
               className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-colors ${
                 filterType === type
                   ? `${config.bgColor} ${config.borderColor} border-2`
@@ -233,10 +268,16 @@ export default function InsightsDashboard({ data, onUpdate, readonly = false }: 
         {filteredInsights.length === 0 ? (
           <Card>
             <div className="text-center py-8 text-gray-500">
-              {synthesisResult?.insights.length === 0 ? (
+              {insights.length === 0 ? (
                 <>
                   <p className="text-lg mb-2">No insights generated yet</p>
-                  <p className="text-sm">Complete more assessments to enable cross-tool analysis.</p>
+                  <p className="text-sm">
+                    {completedToolCount === 0
+                      ? 'Complete at least two assessments to enable cross-tool analysis.'
+                      : completedToolCount === 1
+                      ? 'Complete at least one more assessment to enable cross-tool analysis.'
+                      : 'No patterns detected yet. Complete additional assessments or click Refresh.'}
+                  </p>
                 </>
               ) : filterType !== 'all' || filterSeverity !== 'all' ? (
                 <>
@@ -252,7 +293,7 @@ export default function InsightsDashboard({ data, onUpdate, readonly = false }: 
             </div>
           </Card>
         ) : (
-          filteredInsights.map((insight: Insight) => {
+          filteredInsights.map((insight: DisplayInsight) => {
             const typeConfig = insightTypeConfig[insight.type];
             const sevConfig = severityConfig[insight.severity as keyof typeof severityConfig];
 
@@ -310,19 +351,17 @@ export default function InsightsDashboard({ data, onUpdate, readonly = false }: 
         )}
       </div>
 
-      {/* Skipped Rules Info */}
-      {synthesisResult && synthesisResult.rulesSkipped.length > 0 && (
+      {/* Tool completion hint */}
+      {completedToolCount > 0 && completedToolCount < 2 && insights.length === 0 && (
         <Card className="bg-gray-50">
           <div className="flex items-start gap-2">
             <span>ℹ️</span>
             <div>
               <h4 className="font-medium text-sm">
-                {synthesisResult.rulesSkipped.length} rule(s) skipped due to missing data
+                Cross-tool analysis requires at least 2 completed assessments
               </h4>
               <p className="text-xs text-gray-500 mt-1">
-                Complete more assessments to enable additional synthesis rules:
-                {synthesisResult.rulesSkipped.slice(0, 3).join(', ')}
-                {synthesisResult.rulesSkipped.length > 3 && ` and ${synthesisResult.rulesSkipped.length - 3} more`}
+                You have {completedToolCount} assessment completed. Finish one more to unlock synthesis insights.
               </p>
             </div>
           </div>
@@ -343,12 +382,19 @@ export function validateInsightsDashboard(data: unknown): ValidationResult {
 
 // PDF Export
 export function exportInsightsToPDF(data: unknown): PDFSection {
-  // This will be enhanced to include synthesis results
+  // Pull live insights from Architecture A store at export time
+  const storeInsights = useWorkspaceStore.getState().insights;
+  const adapted = storeInsights.map(adaptInsight);
+
+  const insightLines = adapted.length > 0
+    ? adapted.map(i => `[${i.type.toUpperCase()} | Severity ${i.severity}] ${i.title}: ${i.description} — Recommendation: ${i.recommendation}`)
+    : ['No synthesis insights generated. Complete at least two assessments to enable cross-tool analysis.'];
+
   return {
     title: 'Synthesis Insights',
-    summary: 'Cross-tool analysis findings',
+    summary: `${adapted.length} insight${adapted.length !== 1 ? 's' : ''} generated from cross-tool analysis`,
     tables: [],
-    insights: ['Complete assessments to generate synthesis insights'],
+    insights: insightLines,
     rawData: data
   };
 }

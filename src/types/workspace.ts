@@ -30,9 +30,17 @@ export interface WorkspaceMeta {
  * Tool identifiers in the application
  */
 export type ToolId =
-  | 'vision'
-  | 'workload-capacity-gap'
-  | 'capability-model';
+  | 'advisor-readiness'
+  | 'ai-readiness'
+  | 'business-eq'
+  | 'financial-readiness'
+  | 'insights-dashboard'
+  | 'leadership-dna'
+  | 'report-center'
+  | '90day-roadmap'
+  | 'sop-maturity'
+  | 'swot-analysis'
+  | 'vision-canvas';
 
 /**
  * Generic tool data structure

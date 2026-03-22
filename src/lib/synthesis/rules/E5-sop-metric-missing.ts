@@ -11,7 +11,7 @@ const E5SOPMetricMissingRule: SynthesisRule = {
   id: 'E5-sop-metric-missing',
   name: 'SOP Foundation Missing',
   description: 'Identifies areas where metrics cannot be trusted due to immature processes',
-  requiredTools: ['sop-maturity', 'vision-canvas'],
+  requiredTools: ['vision-canvas'],
 
   evaluate(context: SynthesisContext): Insight[] {
     const insights: Insight[] = [];
