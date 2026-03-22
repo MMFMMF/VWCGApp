@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import type { ToolProps, ValidationResult, PDFSection } from '@types/tool';
 import { toolRegistry } from '@lib/tools';
-import { useWorkspaceStore } from '@stores/workspaceStore';
+import { useWorkspaceStore } from '../../store/workspaceStore';
 import { generatePDFReport, getReportFilename } from '@lib/pdf/generator';
 import {
   Card,
@@ -31,7 +31,8 @@ export default function ReportCenterTool({ data, onUpdate, readonly = false }: T
   const [error, setError] = useState<string | null>(null);
 
   const workspaceState = useWorkspaceStore(state => state);
-  const synthesisResult = useWorkspaceStore(state => state.synthesisResult);
+  // Architecture A: insights is a flat array, not a synthesisResult object
+  const insightsList = useWorkspaceStore(state => state.insights || []);
   const allTools = toolRegistry.getAll();
 
   useEffect(() => {
@@ -44,12 +45,17 @@ export default function ReportCenterTool({ data, onUpdate, readonly = false }: T
       .filter(t => t.metadata.id !== 'report-center' && t.metadata.id !== 'insights-dashboard')
       .map(tool => {
         const toolData = workspaceState.tools[tool.metadata.id as keyof typeof workspaceState.tools];
+        // Architecture A: tool data is stored flat (no .data wrapper); completed is a top-level flag
         const hasData = toolData && toolData.completed;
+        // Support both flat (Architecture A) and legacy wrapped (Architecture B) data shapes
+        const toolPayload = (toolData && 'data' in toolData && typeof toolData.data === 'object' && toolData.data !== null)
+          ? toolData.data
+          : toolData;
         let pdfExport = null;
 
         if (hasData && tool.exportToPDF) {
           try {
-            pdfExport = tool.exportToPDF(toolData.data);
+            pdfExport = tool.exportToPDF(toolPayload);
           } catch (e) {
             console.error(`Failed to get PDF export for ${tool.metadata.id}:`, e);
           }
@@ -121,21 +127,27 @@ export default function ReportCenterTool({ data, onUpdate, readonly = false }: T
         .filter(t => formData.selectedSections.includes(t.id))
         .map(t => {
           const toolData = workspaceState.tools[t.id as keyof typeof workspaceState.tools];
+          // Support both flat (Architecture A) and legacy wrapped (Architecture B) data shapes
+          const payload = (toolData && 'data' in toolData && typeof toolData.data === 'object' && toolData.data !== null)
+            ? toolData.data
+            : toolData;
           return {
             toolId: t.id,
             toolName: t.name,
             enabled: true,
-            data: toolData?.data,
+            data: payload,
             pdfExport: t.pdfExport
           };
         });
 
+      // Architecture A: metadata.name (not meta.name); insights array (not synthesisResult object)
+      const workspaceName = workspaceState.metadata?.name || 'Workspace';
       const blob = await generatePDFReport({
-        workspaceName: workspaceState.meta.name || 'Workspace',
-        companyName: workspaceState.meta.name || '',
+        workspaceName,
+        companyName: workspaceName,
         generatedAt: new Date(),
         sections,
-        synthesisResult: formData.includeInsights ? synthesisResult : undefined,
+        synthesisResult: formData.includeInsights ? { insights: insightsList, scores: {} } : undefined,
         includeInsights: formData.includeInsights
       });
 
@@ -143,7 +155,7 @@ export default function ReportCenterTool({ data, onUpdate, readonly = false }: T
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = getReportFilename(workspaceState.meta.name || 'Workspace');
+      link.download = getReportFilename(workspaceState.metadata?.name || 'Workspace');
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -166,7 +178,7 @@ export default function ReportCenterTool({ data, onUpdate, readonly = false }: T
     totalTools: exportableTools.length,
     withData: exportableTools.filter(t => t.hasData).length,
     selected: formData.selectedSections.length,
-    insightCount: synthesisResult?.insights.length || 0
+    insightCount: insightsList.length || 0
   };
 
   // Group tools by category

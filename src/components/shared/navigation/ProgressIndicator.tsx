@@ -1,6 +1,6 @@
 import { cn } from '@lib/utils';
 import { toolRegistry } from '@lib/tools';
-import { useWorkspaceStore } from '@stores/workspaceStore';
+import { useWorkspaceStore } from '../../../store/workspaceStore';
 
 export function ProgressIndicator() {
   const tools = useWorkspaceStore(s => s.tools);

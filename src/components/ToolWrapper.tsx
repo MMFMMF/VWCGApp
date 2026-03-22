@@ -10,7 +10,7 @@
  */
 
 import { Suspense, useState } from 'react';
-import { useWorkspaceStore } from '../stores/workspaceStore';
+import { useWorkspaceStore } from '../store/workspaceStore';
 import { generateSingleToolPDF, getSingleToolReportFilename } from '../lib/pdf/singleToolReport';
 import type { ToolDefinition } from '../types/tool';
 
@@ -43,14 +43,18 @@ export function ToolWrapper({ tool, readonly = false }: Props) {
   // Get the tool component
   const Component = tool.component;
 
-  // Initialize with default data if not present
-  const data = toolData?.data ?? (tool.getDefaultData?.() || {});
+  // Architecture A stores tool data flat (no .data wrapper).
+  // Support both flat and legacy .data-wrapped shapes during hydration.
+  const data = (toolData && !('data' in toolData))
+    ? toolData
+    : (toolData?.data ?? (tool.getDefaultData?.() || {}));
 
-  // Create update callback that updates the store
+  // Create update callback that updates the store with flat data (no .data wrapper).
+  // completed is set to true so synthesis rules can treat the tool as filled in.
   const handleUpdate = (newData: Record<string, unknown>) => {
     updateToolData(tool.metadata.id as any, {
-      data: newData,
-      completed: false, // Will be set to true by tool when validation passes
+      ...newData,
+      completed: true,
     });
   };
 

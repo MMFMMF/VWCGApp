@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { toolRegistry } from '../lib/tools';
 import { ToolWrapper } from './ToolWrapper';
-import { useWorkspaceStore } from '../stores/workspaceStore';
+import { useWorkspaceStore } from '../store/workspaceStore';
 import { useAuthStore } from '@stores/authStore';
 
 /**

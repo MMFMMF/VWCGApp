@@ -50,6 +50,7 @@ export interface WorkspaceState {
     recomputeLogic: () => void;
     refreshInsights: () => void;
     exportState: () => string;
+    loadTeaserAnswers: () => boolean;
 }
 
 const INITIAL_STATE = {
@@ -212,6 +213,76 @@ export const useWorkspaceStore = create<WorkspaceState>()(
                 lastModified: new Date().toISOString(),
             }
         });
+    },
+
+    // Load teaser answers from the landing page mini-assessment into AI Readiness tool.
+    // Returns true if data was loaded, false if no valid teaser data exists.
+    loadTeaserAnswers: () => {
+        const teaserAnswersRaw = localStorage.getItem('vwcg-teaser-answers');
+        const teaserCompletedRaw = localStorage.getItem('vwcg-teaser-completed');
+
+        if (!teaserAnswersRaw || !teaserCompletedRaw) return false;
+
+        try {
+            const teaserAnswers = JSON.parse(teaserAnswersRaw);
+            const completedTimestamp = parseInt(teaserCompletedRaw, 10);
+
+            // Expire after 24 hours
+            const age = Date.now() - completedTimestamp;
+            if (age > 24 * 60 * 60 * 1000) {
+                localStorage.removeItem('vwcg-teaser-answers');
+                localStorage.removeItem('vwcg-teaser-completed');
+                localStorage.removeItem('vwcg-teaser-score');
+                return false;
+            }
+
+            // Don't overwrite if AI Readiness tool already has user data.
+            // Uses lowercase field names matching AIReadinessTool's data shape.
+            const currentToolData = useWorkspaceStore.getState().tools['ai-readiness'];
+            const DEFAULT_SCORE = 50;
+            const hasExistingData = currentToolData && (
+                currentToolData.strategy !== DEFAULT_SCORE ||
+                currentToolData.data !== DEFAULT_SCORE ||
+                currentToolData.infrastructure !== DEFAULT_SCORE ||
+                currentToolData.talent !== DEFAULT_SCORE ||
+                currentToolData.governance !== DEFAULT_SCORE ||
+                currentToolData.culture !== DEFAULT_SCORE
+            );
+
+            if (hasExistingData) {
+                localStorage.removeItem('vwcg-teaser-answers');
+                localStorage.removeItem('vwcg-teaser-completed');
+                localStorage.removeItem('vwcg-teaser-score');
+                return false;
+            }
+
+            // Load teaser data into AI Readiness using flat Architecture A format.
+            // Uses lowercase field names matching AIReadinessTool's data shape.
+            set((state) => {
+                const existing = state.tools['ai-readiness'] || {};
+                const merged = {
+                    ...existing,
+                    strategy: teaserAnswers.strategy ?? DEFAULT_SCORE,
+                    data: teaserAnswers.data ?? DEFAULT_SCORE,
+                    talent: teaserAnswers.talent ?? DEFAULT_SCORE,
+                    infrastructure: existing.infrastructure ?? DEFAULT_SCORE,
+                    governance: existing.governance ?? DEFAULT_SCORE,
+                    culture: existing.culture ?? DEFAULT_SCORE,
+                    completed: true,
+                };
+                const nextTools = { ...state.tools, 'ai-readiness': merged };
+                const newInsights = runSynthesis({ ...state, tools: nextTools });
+                return { tools: nextTools, insights: newInsights };
+            });
+
+            localStorage.removeItem('vwcg-teaser-answers');
+            localStorage.removeItem('vwcg-teaser-completed');
+            localStorage.removeItem('vwcg-teaser-score');
+            return true;
+        } catch (e) {
+            console.error('[Teaser Bridge] Failed to load teaser answers:', e);
+            return false;
+        }
     },
 
     exportState: () => {
